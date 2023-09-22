@@ -10,17 +10,11 @@ namespace LSLib.LS;
 
 public class NotAPackageException : Exception
 {
-    public NotAPackageException()
-    {
-    }
+    public NotAPackageException() { }
 
-    public NotAPackageException(string message) : base(message)
-    {
-    }
+    public NotAPackageException(string message) : base(message) { }
 
-    public NotAPackageException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
+    public NotAPackageException(string message, Exception innerException) : base(message, innerException) { }
 }
 
 public sealed class PackageReader : IDisposable
@@ -76,7 +70,7 @@ public sealed class PackageReader : IDisposable
             return package;
         }
 
-        OpenStreams(mainStream, (int) header.NumParts);
+        OpenStreams(mainStream, (int)header.NumParts);
         for (uint i = 0; i < header.NumFiles; i++)
         {
             var entry = BinUtils.ReadStruct<FileEntry7>(reader);
@@ -84,6 +78,7 @@ public sealed class PackageReader : IDisposable
             {
                 entry.OffsetInFile += header.DataOffset;
             }
+
             package.Files.Add(PackagedFileInfo.CreateFromEntry(entry, _streams[entry.ArchivePart]));
         }
 
@@ -127,7 +122,7 @@ public sealed class PackageReader : IDisposable
         var package = new Package();
         var header = BinUtils.ReadStruct<LSPKHeader13>(reader);
 
-        if (header.Version != (ulong) PackageVersion.V13)
+        if (header.Version != (ulong)PackageVersion.V13)
         {
             var msg = $"Unsupported package version {header.Version}; this package layout is only supported for {PackageVersion.V13}";
             throw new InvalidDataException(msg);
@@ -146,10 +141,18 @@ public sealed class PackageReader : IDisposable
         mainStream.Seek(header.FileListOffset, SeekOrigin.Begin);
         var numFiles = reader.ReadInt32();
         var fileBufferSize = Marshal.SizeOf(typeof(FileEntry13)) * numFiles;
-        var compressedFileList = reader.ReadBytes((int) header.FileListSize - 4);
+        var compressedFileList = reader.ReadBytes((int)header.FileListSize - 4);
 
         var uncompressedList = new byte[fileBufferSize];
-        var uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, true);
+        var uncompressedSize = LZ4Codec.Decode(
+            compressedFileList,
+            0,
+            compressedFileList.Length,
+            uncompressedList,
+            0,
+            fileBufferSize,
+            true);
+
         if (uncompressedSize != fileBufferSize)
         {
             var msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
@@ -176,6 +179,7 @@ public sealed class PackageReader : IDisposable
                 {
                     firstOffset = entry.OffsetInFile;
                 }
+
                 if (entry.OffsetInFile + entry.SizeOnDisk > lastOffset)
                 {
                     lastOffset = entry.OffsetInFile + entry.SizeOnDisk;
@@ -232,7 +236,15 @@ public sealed class PackageReader : IDisposable
 
         var fileBufferSize = Marshal.SizeOf(typeof(FileEntry15)) * numFiles;
         var uncompressedList = new byte[fileBufferSize];
-        var uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, true);
+        var uncompressedSize = LZ4Codec.Decode(
+            compressedFileList,
+            0,
+            compressedFileList.Length,
+            uncompressedList,
+            0,
+            fileBufferSize,
+            true);
+
         if (uncompressedSize != fileBufferSize)
         {
             var msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
@@ -259,7 +271,15 @@ public sealed class PackageReader : IDisposable
 
         var fileBufferSize = Marshal.SizeOf(typeof(FileEntry18)) * numFiles;
         var uncompressedList = new byte[fileBufferSize];
-        var uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, false);
+        var uncompressedSize = LZ4Codec.Decode(
+            compressedFileList,
+            0,
+            compressedFileList.Length,
+            uncompressedList,
+            0,
+            fileBufferSize,
+            false);
+
         if (uncompressedSize != fileBufferSize)
         {
             var msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
@@ -384,6 +404,7 @@ public sealed class PackageReader : IDisposable
             switch (version)
             {
                 case 10: return ReadPackageV10(mainStream, reader);
+
                 case 15:
                     mainStream.Seek(4, SeekOrigin.Begin);
                     return ReadPackageV15(mainStream, reader);
