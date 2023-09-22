@@ -14,7 +14,7 @@ public class LSJWriter : ILSWriter
         this.stream = stream;
     }
 
-    public void Write(Resource rsrc)
+    public void Write(Resource resource)
     {
         var settings = new JsonSerializerSettings
         {
@@ -29,7 +29,7 @@ public class LSJWriter : ILSWriter
         {
             writer.IndentChar = '\t';
             writer.Indentation = 1;
-            serializer.Serialize(writer, rsrc);
+            serializer.Serialize(writer, resource);
         }
     }
 }

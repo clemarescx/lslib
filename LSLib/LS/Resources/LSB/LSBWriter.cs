@@ -17,20 +17,20 @@ public class LSBWriter : ILSWriter
         this.stream = stream;
     }
 
-    public void Write(Resource rsrc)
+    public void Write(Resource resource)
     {
-        Version = rsrc.Metadata.MajorVersion;
-        using (writer = new(stream))
+        Version = resource.Metadata.MajorVersion;
+        using (writer = new BinaryWriter(stream))
         {
             var header = new LSBHeader
             {
                 TotalSize = 0, // Total size of file, will be updater after we finished serializing
                 BigEndian = 0, // Little-endian format
                 Unknown = 0,   // Unknown
-                Metadata = rsrc.Metadata
+                Metadata = resource.Metadata
             };
 
-            if (rsrc.Metadata.MajorVersion >= 4)
+            if (resource.Metadata.MajorVersion >= 4)
             {
                 header.Signature = BitConverter.ToUInt32(LSBHeader.SignatureBG3.AsSpan());
             }
@@ -41,10 +41,10 @@ public class LSBWriter : ILSWriter
 
             BinUtils.WriteStruct(writer, ref header);
 
-            CollectStaticStrings(rsrc);
+            CollectStaticStrings(resource);
             WriteStaticStrings();
 
-            WriteRegions(rsrc);
+            WriteRegions(resource);
 
             header.TotalSize = (uint)stream.Position;
             stream.Seek(0, SeekOrigin.Begin);
@@ -52,18 +52,18 @@ public class LSBWriter : ILSWriter
         }
     }
 
-    private void WriteRegions(Resource rsrc)
+    private void WriteRegions(Resource resource)
     {
-        writer.Write((uint)rsrc.Regions.Count);
+        writer.Write((uint)resource.Regions.Count);
         var regionMapOffset = stream.Position;
-        foreach (var rgn in rsrc.Regions)
+        foreach (var rgn in resource.Regions)
         {
             writer.Write(staticStrings[rgn.Key]);
             writer.Write((uint)0); // Offset of region, will be updater after we finished serializing
         }
 
         List<uint> regionPositions = new();
-        foreach (var rgn in rsrc.Regions)
+        foreach (var rgn in resource.Regions)
         {
             regionPositions.Add((uint)stream.Position);
             WriteNode(rgn.Value);
@@ -149,10 +149,10 @@ public class LSBWriter : ILSWriter
         }
     }
 
-    private void CollectStaticStrings(Resource rsrc)
+    private void CollectStaticStrings(Resource resource)
     {
         staticStrings.Clear();
-        foreach (var rgn in rsrc.Regions)
+        foreach (var rgn in resource.Regions)
         {
             AddStaticString(rgn.Key);
             CollectStaticStrings(rgn.Value);

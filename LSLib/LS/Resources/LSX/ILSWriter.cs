@@ -2,5 +2,5 @@
 
 public interface ILSWriter
 {
-    void Write(Resource rsrc);
+    void Write(Resource resource);
 }

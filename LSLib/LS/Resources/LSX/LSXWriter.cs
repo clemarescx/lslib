@@ -17,7 +17,7 @@ public class LSXWriter : ILSWriter
         this.stream = stream;
     }
 
-    public void Write(Resource rsrc)
+    public void Write(Resource resource)
     {
         var settings = new XmlWriterSettings
         {
@@ -31,13 +31,13 @@ public class LSXWriter : ILSWriter
 
             writer.WriteStartElement("version");
 
-            writer.WriteAttributeString("major", rsrc.Metadata.MajorVersion.ToString());
-            writer.WriteAttributeString("minor", rsrc.Metadata.MinorVersion.ToString());
-            writer.WriteAttributeString("revision", rsrc.Metadata.Revision.ToString());
-            writer.WriteAttributeString("build", rsrc.Metadata.BuildNumber.ToString());
+            writer.WriteAttributeString("major", resource.Metadata.MajorVersion.ToString());
+            writer.WriteAttributeString("minor", resource.Metadata.MinorVersion.ToString());
+            writer.WriteAttributeString("revision", resource.Metadata.Revision.ToString());
+            writer.WriteAttributeString("build", resource.Metadata.BuildNumber.ToString());
             writer.WriteEndElement();
 
-            WriteRegions(rsrc);
+            WriteRegions(resource);
 
             writer.WriteEndElement();
             writer.Flush();
