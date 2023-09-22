@@ -1089,7 +1089,7 @@ public class StoryEmitter
             Variables = new(rule.Variables.Count),
             Line = 0,
             DerivedGoalRef = new(Story, goal),
-            IsQuery = (rule.Type == RuleType.Query)
+            IsQuery = rule.Type == RuleType.Query
         };
 
         foreach (var variable in rule.Variables)
@@ -1217,7 +1217,7 @@ public class StoryEmitter
             else
             {
                 var func = condition as IRFuncCondition;
-                var leftFunc = (i == 1) ? initialCall : null;
+                var leftFunc = i == 1 ? initialCall : null;
                 var join = EmitJoin(lastConditionNode, lastCondition, func, rule, goal, referencedDb);
                 lastConditionNode = join;
             }

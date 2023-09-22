@@ -372,7 +372,7 @@ public class Vertex
             {
                 // BoneIndices refers to Mesh.BoneBindings[index], not Skeleton.Bones[index] !
                 BoneIndices[influence] = boneIndex;
-                BoneWeights[influence] = (byte)(Math.Round(weight * 255));
+                BoneWeights[influence] = (byte)Math.Round(weight * 255);
                 break;
             }
         }

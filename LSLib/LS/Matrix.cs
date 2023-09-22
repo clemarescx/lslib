@@ -58,7 +58,7 @@ public class Matrix
 
     public Boolean IsSquare()
     {
-        return (rows == cols);
+        return rows == cols;
     }
 
     public double this[int iRow, int iCol] // Access this matrix as a 2D array
@@ -556,7 +556,7 @@ public class Matrix
         // Make it easier by first replacing \r\n’s with |’s then
         // restore the |’s with \r\n’s
         matStr = matStr.Replace("\r\n", "|");
-        while (matStr.LastIndexOf("|") == (matStr.Length - 1))
+        while (matStr.LastIndexOf("|") == matStr.Length - 1)
             matStr = matStr[..^1];
 
         matStr = matStr.Replace("|", "\r\n");

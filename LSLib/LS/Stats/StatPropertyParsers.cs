@@ -31,7 +31,7 @@ public class BooleanParser : IStatValueParser
         if (value is "Yes" or "No")
         {
             succeeded = true;
-            return (value == "Yes");
+            return value == "Yes";
         }
         else
         {

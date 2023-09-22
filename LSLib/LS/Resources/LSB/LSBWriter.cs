@@ -204,7 +204,7 @@ public class LSBWriter : ILSWriter
     private void WriteWideString(string s, bool nullTerminated)
     {
         byte[] unicode = System.Text.Encoding.Unicode.GetBytes(s);
-        int length = (unicode.Length / 2) + (nullTerminated ? 1 : 0);
+        int length = unicode.Length / 2 + (nullTerminated ? 1 : 0);
         writer.Write(length);
         writer.Write(unicode);
         if (nullTerminated)

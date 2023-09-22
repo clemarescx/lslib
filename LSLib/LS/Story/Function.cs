@@ -69,7 +69,7 @@ public class ParameterList : OsirisSerializable
             {
                 var id = reader.ReadUInt32();
                 reader.BaseStream.Position -= 4;
-                reader.ShortTypeIds = (id > 0xff);
+                reader.ShortTypeIds = id > 0xff;
             }
 
             if (reader.ShortTypeIds == true)

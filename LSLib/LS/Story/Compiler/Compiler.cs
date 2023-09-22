@@ -36,7 +36,7 @@ public class Compiler
                 return;
             }
 
-            object paramName = (param.Name != null) ? (object)param.Name : paramIndex;
+            object paramName = param.Name != null ? (object)param.Name : paramIndex;
             Context.Log.Error(value.Location,
                 DiagnosticCode.LocalTypeMismatch,
                 "Parameter {0} of {1} \"{2}\" expects {3}; {4} specified",
@@ -46,7 +46,7 @@ public class Compiler
 
         if (IsGuidAliasToAliasCast(param.Type, value.Type))
         {
-            object paramName = (param.Name != null) ? (object)param.Name : paramIndex;
+            object paramName = param.Name != null ? (object)param.Name : paramIndex;
             Context.Log.Error(value.Location,
                 DiagnosticCode.GuidAliasMismatch,
                 "Parameter {0} of {1} \"{2}\" has GUID type {3}; {4} specified",
@@ -353,7 +353,7 @@ public class Compiler
                 // The variable was bound after this node (so it is still unbound here)
              || (conditionIndex != -1 && ruleVar.FirstBindingIndex >= conditionIndex)
             ) {
-                object paramName = (param.Name != null) ? (object)param.Name : (parameterIndex + 1);
+                object paramName = param.Name != null ? (object)param.Name : parameterIndex + 1;
                 if (!ruleVar.IsUnused())
                 {
                     Context.Log.Error(variable.Location,
@@ -864,7 +864,7 @@ public class Compiler
             signature = new()
             {
                 Name = name.Name,
-                Type = (type == null) ? FunctionType.Database : (FunctionType)type,
+                Type = type == null ? FunctionType.Database : (FunctionType)type,
                 Inserted = false,
                 Deleted = false,
                 Read = false
@@ -953,7 +953,7 @@ public class Compiler
     private bool PropagateSignatureIfRequired(IRRule rule, FunctionNameAndArity name, FunctionType? type, List<IRValue> parameters, bool allowPartial, ref bool updated)
     {
         var signature = Context.LookupSignature(name);
-        bool signatureOk = (signature != null && signature.FullyTyped);
+        bool signatureOk = signature != null && signature.FullyTyped;
         if (!signatureOk && TryPropagateSignature(rule, name, type, parameters, allowPartial, ref updated))
         {
             signature = Context.LookupSignature(name);

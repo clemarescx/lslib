@@ -271,8 +271,8 @@ public class fx_surface_init_from_common
 
     public fx_surface_init_from_common()
     {
-        mipField = ((0));
-        sliceField = ((0));
+        mipField = 0;
+        sliceField = 0;
         faceField = fx_surface_face_enum.POSITIVE_X;
     }
 
@@ -420,8 +420,8 @@ public class fx_sampler2D_common
         minfilterField = fx_sampler_filter_common.NONE;
         magfilterField = fx_sampler_filter_common.NONE;
         mipfilterField = fx_sampler_filter_common.NONE;
-        mipmap_maxlevelField = ((255));
-        mipmap_biasField = ((0F));
+        mipmap_maxlevelField = 255;
+        mipmap_biasField = 0F;
     }
 
     /// <remarks />
@@ -676,7 +676,7 @@ public class fx_surface_common
 
     public fx_surface_common()
     {
-        mip_levelsField = ((0));
+        mip_levelsField = 0;
     }
 
     /// <remarks />
@@ -1526,8 +1526,8 @@ public class fx_samplerRECT_common
         minfilterField = fx_sampler_filter_common.NONE;
         magfilterField = fx_sampler_filter_common.NONE;
         mipfilterField = fx_sampler_filter_common.NONE;
-        mipmap_maxlevelField = ((255));
-        mipmap_biasField = ((0F));
+        mipmap_maxlevelField = 255;
+        mipmap_biasField = 0F;
     }
 
     /// <remarks />
@@ -1641,8 +1641,8 @@ public class fx_samplerCUBE_common
         minfilterField = fx_sampler_filter_common.NONE;
         magfilterField = fx_sampler_filter_common.NONE;
         mipfilterField = fx_sampler_filter_common.NONE;
-        mipmap_maxlevelField = ((255));
-        mipmap_biasField = ((0F));
+        mipmap_maxlevelField = 255;
+        mipmap_biasField = 0F;
     }
 
     /// <remarks />
@@ -1764,8 +1764,8 @@ public class fx_sampler3D_common
         minfilterField = fx_sampler_filter_common.NONE;
         magfilterField = fx_sampler_filter_common.NONE;
         mipfilterField = fx_sampler_filter_common.NONE;
-        mipmap_maxlevelField = ((255));
-        mipmap_biasField = ((0F));
+        mipmap_maxlevelField = 255;
+        mipmap_biasField = 0F;
     }
 
     /// <remarks />
@@ -1883,8 +1883,8 @@ public class fx_sampler1D_common
         minfilterField = fx_sampler_filter_common.NONE;
         magfilterField = fx_sampler_filter_common.NONE;
         mipfilterField = fx_sampler_filter_common.NONE;
-        mipmap_maxlevelField = ((0));
-        mipmap_biasField = ((0F));
+        mipmap_maxlevelField = 0;
+        mipmap_biasField = 0F;
     }
 
     /// <remarks />
@@ -3496,8 +3496,8 @@ public class float_array
 
     public float_array()
     {
-        digitsField = ((6));
-        magnitudeField = ((38));
+        digitsField = 6;
+        magnitudeField = 38;
     }
 
     /// <remarks />
@@ -3680,8 +3680,8 @@ public class accessor
 
     public accessor()
     {
-        offsetField = ((ulong) (0m));
-        strideField = ((ulong) (1m));
+        offsetField = (ulong) 0m;
+        strideField = (ulong) 1m;
     }
 
     /// <remarks />
@@ -4666,7 +4666,7 @@ public class image
 
     public image()
     {
-        depthField = ((ulong) (1m));
+        depthField = (ulong) 1m;
     }
 
     /// <remarks />
@@ -9868,7 +9868,7 @@ public partial class COLLADA
                     value.ToString(
                         "0.000000",
                         NumberFormatInfo.InvariantInfo));
-                if ((i + 1) < array.Count)
+                if (i + 1 < array.Count)
                     text.Append(" ");
             }
         }
@@ -9877,7 +9877,7 @@ public partial class COLLADA
             for (int i = 0; i < array.Count; i++)
             {
                 text.Append(Convert.ToString(array[i], NumberFormatInfo.InvariantInfo));
-                if ((i + 1) < array.Count)
+                if (i + 1 < array.Count)
                     text.Append(" ");
             }
         }

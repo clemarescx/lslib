@@ -257,7 +257,7 @@ public class ColladaImporter
 
                     var userDefinedProperties = UserDefinedPropertiesHelpers.MeshFlagsToUserDefinedProperties(accumulatedFlags);
                     bone.ExtendedData.UserDefinedProperties = userDefinedProperties;
-                    bone.ExtendedData.IsRigid = (accumulatedFlags.IsRigid()) ? 1 : 0;
+                    bone.ExtendedData.IsRigid = accumulatedFlags.IsRigid() ? 1 : 0;
                 }
             }
         }
@@ -528,7 +528,7 @@ public class ColladaImporter
         MakeExtendedData(mesh, m);
 
         Utils.Info(String.Format("Imported {0} mesh ({1} tri groups, {2} tris)", 
-            (m.VertexFormat.HasBoneWeights ? "skinned" : "rigid"), 
+            m.VertexFormat.HasBoneWeights ? "skinned" : "rigid", 
             m.PrimaryTopology.Groups.Count, 
             collada.TriangleCount));
 
@@ -869,7 +869,7 @@ public class ColladaImporter
     {
         var trackGroup = new TrackGroup
         {
-            Name = (skeleton != null) ? skeleton.Name : "Dummy_Root",
+            Name = skeleton != null ? skeleton.Name : "Dummy_Root",
             TransformTracks = new(),
             InitialPlacement = new(),
             AccumulationFlags = 2,

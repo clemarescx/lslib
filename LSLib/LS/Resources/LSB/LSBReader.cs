@@ -37,7 +37,7 @@ public class LSBReader : ILSReader
             if (header.BigEndian != 0)
                 throw new InvalidFormatException("Big-endian LSB files are not supported");
 
-            IsBG3 = (header.Signature == BitConverter.ToUInt32(LSBHeader.SignatureBG3, 0));
+            IsBG3 = header.Signature == BitConverter.ToUInt32(LSBHeader.SignatureBG3, 0);
             ReadStaticStrings();
 
             Resource rsrc = new()

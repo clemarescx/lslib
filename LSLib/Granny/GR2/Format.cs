@@ -42,11 +42,11 @@ public class Transform
     public Quaternion Rotation = Quaternion.Identity;
     public Matrix3 ScaleShear = Matrix3.Identity;
 
-    public bool HasTranslation => ((Flags & (uint)TransformFlags.HasTranslation) != 0);
+    public bool HasTranslation => (Flags & (uint)TransformFlags.HasTranslation) != 0;
 
-    public bool HasRotation => ((Flags & (uint)TransformFlags.HasRotation) != 0);
+    public bool HasRotation => (Flags & (uint)TransformFlags.HasRotation) != 0;
 
-    public bool HasScaleShear => ((Flags & (uint)TransformFlags.HasScaleShear) != 0);
+    public bool HasScaleShear => (Flags & (uint)TransformFlags.HasScaleShear) != 0;
 
     public void SetTranslation(Vector3 translation)
     {
@@ -891,8 +891,8 @@ public class MemberDefinition
 
     public bool ShouldSerialize(UInt32 version)
     {
-        return ((MinVersion == 0 || MinVersion <= version) &&
-                (MaxVersion == 0 || MaxVersion >= version));
+        return (MinVersion == 0 || MinVersion <= version) &&
+               (MaxVersion == 0 || MaxVersion >= version);
     }
 
     private void LoadAttributes(FieldInfo info, GR2Writer writer)

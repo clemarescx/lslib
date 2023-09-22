@@ -104,7 +104,7 @@ public class LSXReader : ILSReader
                 resource.Metadata.MinorVersion = Convert.ToUInt32(reader["minor"]);
                 resource.Metadata.Revision = Convert.ToUInt32(reader["revision"]);
                 resource.Metadata.BuildNumber = Convert.ToUInt32(reader["build"]);
-                Version = (resource.Metadata.MajorVersion >= 4) ? LSXVersion.V4 : LSXVersion.V3;
+                Version = resource.Metadata.MajorVersion >= 4 ? LSXVersion.V4 : LSXVersion.V3;
                 break;
 
             case "region":
@@ -184,7 +184,7 @@ public class LSXReader : ILSReader
                         attr.Value = new TranslatedString();
                     }
 
-                    var ts = ((TranslatedString)attr.Value);
+                    var ts = (TranslatedString)attr.Value;
                     ts.Handle = reader["handle"];
                     Debug.Assert(ts.Handle != null);
 
@@ -195,7 +195,7 @@ public class LSXReader : ILSReader
                 }
                 else if (attr.Type == NodeAttribute.DataType.DT_TranslatedFSString)
                 {
-                    var fs = ((TranslatedFSString)attr.Value);
+                    var fs = (TranslatedFSString)attr.Value;
                     ReadTranslatedFSString(fs);
                 }
 

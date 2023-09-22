@@ -193,8 +193,7 @@ public class Node
     public readonly Dictionary<string, List<Node>> Children = new();
 
     public int ChildCount =>
-        (from c in Children
-         select c.Value.Count).Sum();
+        Children.Select(c => c.Value.Count).Sum();
 
     public int TotalChildCount()
     {

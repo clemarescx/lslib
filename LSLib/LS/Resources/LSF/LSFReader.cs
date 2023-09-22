@@ -285,7 +285,7 @@ public class LSFReader : ILSReader
             return new();
         }
             
-        bool chunked = (Version >= LSFVersion.VerChunkedCompress && allowChunked);
+        bool chunked = Version >= LSFVersion.VerChunkedCompress && allowChunked;
         bool isCompressed = BinUtils.CompressionFlagsToMethod(Metadata.CompressionFlags) != CompressionMethod.None;
         uint compressedSize = isCompressed ? sizeOnDisk : uncompressedSize;
         byte[] compressed = reader.ReadBytes((int)compressedSize);
@@ -501,9 +501,9 @@ public class LSFReader : ILSReader
                 var str = new TranslatedString();
 
                 if (Version >= LSFVersion.VerBG3 || 
-                    (GameVersion.Major > 4 || 
-                     (GameVersion.Major == 4 && GameVersion.Revision > 0) ||
-                     (GameVersion.Major == 4 && GameVersion.Revision == 0 && GameVersion.Build >= 0x1a)))
+                    GameVersion.Major > 4 || 
+                    (GameVersion.Major == 4 && GameVersion.Revision > 0) ||
+                    (GameVersion.Major == 4 && GameVersion.Revision == 0 && GameVersion.Build >= 0x1a))
                 {
                     str.Version = reader.ReadUInt16();
                 }

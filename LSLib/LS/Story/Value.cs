@@ -260,7 +260,7 @@ public class Value : OsirisSerializable
 
             case Type.String:
             case Type.GuidString:
-                if (!aliased || (writer.Ver >= OsiVersion.VerEnhancedTypes))
+                if (!aliased || writer.Ver >= OsiVersion.VerEnhancedTypes)
                 {
                     writer.Write(StringValue != null);
                 }

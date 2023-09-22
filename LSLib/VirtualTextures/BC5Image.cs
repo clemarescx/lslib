@@ -27,7 +27,7 @@ public class BC5Image
 
     public int CalculateOffset(int x, int y)
     {
-        if ((x % 4) != 0 || (y % 4) != 0)
+        if (x % 4 != 0 || y % 4 != 0)
         {
             throw new ArgumentException("BC coordinates must be multiples if 4");
         }
@@ -37,7 +37,7 @@ public class BC5Image
 
     public void CopyTo(BC5Image destination, int srcX, int srcY, int dstX, int dstY, int width, int height)
     {
-        if ((srcX % 4) != 0 || (srcY % 4) != 0 || (dstX % 4) != 0 || (dstY % 4) != 0 || (width % 4) != 0 || (height % 4) != 0)
+        if (srcX % 4 != 0 || srcY % 4 != 0 || dstX % 4 != 0 || dstY % 4 != 0 || width % 4 != 0 || height % 4 != 0)
         {
             throw new ArgumentException("BC coordinates must be multiples if 4");
         }

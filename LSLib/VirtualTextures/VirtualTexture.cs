@@ -144,9 +144,9 @@ public class VirtualTileSet : IDisposable
                     throw new($"Unrecognized FourCC type tag: {header.Format}");
             }
 
-            if ((fs.Position % 4) != 0)
+            if (fs.Position % 4 != 0)
             {
-                fs.Position += 4 - (fs.Position % 4);
+                fs.Position += 4 - fs.Position % 4;
             }
 
             elements.Add(cc);
@@ -173,7 +173,7 @@ public class VirtualTileSet : IDisposable
 
             case FourCCElementType.String:
                 header.Format = 2;
-                header.Subformat = (byte)((element.Str.Length >= 0x7fff) ? 1 : 0);
+                header.Subformat = (byte)(element.Str.Length >= 0x7fff ? 1 : 0);
                 break;
 
 
@@ -241,7 +241,7 @@ public class VirtualTileSet : IDisposable
                 throw new InvalidDataException($"Unsupported FourCC value type: {element.Type}");
         }
 
-        while ((fs.Position % 4) != 0)
+        while (fs.Position % 4 != 0)
         {
             writer.Write((Byte)0);
         }
@@ -594,7 +594,7 @@ public class VirtualTileSet : IDisposable
         }
 
         // Temporary workaround for page files that contain split textures
-        if (!foundPages || (maxX - minX) > 16 || (maxY - minY) > 16)
+        if (!foundPages || maxX - minX > 16 || maxY - minY > 16)
         {
             return null;
         }

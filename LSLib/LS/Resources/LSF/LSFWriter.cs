@@ -394,9 +394,9 @@ public class LSFWriter :ILSWriter
     private void WriteTranslatedFSString(BinaryWriter writer, TranslatedFSString fs)
     {
         if (Version >= LSFVersion.VerBG3 ||
-            (Meta.MajorVersion > 4 ||
-             (Meta.MajorVersion == 4 && Meta.Revision > 0) ||
-             (Meta.MajorVersion == 4 && Meta.Revision == 0 && Meta.BuildNumber >= 0x1a)))
+            Meta.MajorVersion > 4 ||
+            (Meta.MajorVersion == 4 && Meta.Revision > 0) ||
+            (Meta.MajorVersion == 4 && Meta.Revision == 0 && Meta.BuildNumber >= 0x1a))
         {
             writer.Write(fs.Version);
         }

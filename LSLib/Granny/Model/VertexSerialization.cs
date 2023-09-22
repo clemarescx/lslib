@@ -152,7 +152,7 @@ public static class VertexSerializationHelpers
         const float threshold16bit = 1.0f / 32767.0f;
         if (Math.Abs(quat.W) < threshold16bit)
         {
-            var bias16bit = (float)Math.Sqrt(1.0f - (threshold16bit * threshold16bit));
+            var bias16bit = (float)Math.Sqrt(1.0f - threshold16bit * threshold16bit);
             quat *= bias16bit;
             quat.W = threshold16bit;
         }
@@ -176,7 +176,7 @@ public static class VertexSerializationHelpers
             0.0f, 0.0f, 0.0f
         );
             
-        m.Row2 = Vector3.Cross(m.Row0, m.Row1) * ((q.W < 0.0f) ? -1.0f : 1.0f);
+        m.Row2 = Vector3.Cross(m.Row0, m.Row1) * (q.W < 0.0f ? -1.0f : 1.0f);
         return m;
     }
 

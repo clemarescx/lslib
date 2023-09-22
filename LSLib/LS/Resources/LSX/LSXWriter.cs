@@ -105,7 +105,7 @@ public class LSXWriter : ILSWriter
 
             if (attribute.Value.Type == NodeAttribute.DataType.DT_TranslatedString)
             {
-                var ts = ((TranslatedString)attribute.Value.Value);
+                var ts = (TranslatedString)attribute.Value.Value;
                 writer.WriteAttributeString("handle", ts.Handle);
                 if (ts.Value != null)
                 {
@@ -118,7 +118,7 @@ public class LSXWriter : ILSWriter
             }
             else if (attribute.Value.Type == NodeAttribute.DataType.DT_TranslatedFSString)
             {
-                var fs = ((TranslatedFSString)attribute.Value.Value);
+                var fs = (TranslatedFSString)attribute.Value.Value;
                 writer.WriteAttributeString("value", fs.Value);
                 WriteTranslatedFSStringInner(fs);
             }

@@ -257,7 +257,7 @@ public class WritableSection : Section
         if (Writer == MainWriter)
         {
             // Align the struct so its size (and the address of the subsequent struct) is a multiple of 4
-            while ((MainStream.Position % Header.alignment) != 0)
+            while (MainStream.Position % Header.alignment != 0)
             {
                 Writer.Write((Byte)0);
             }
@@ -265,7 +265,7 @@ public class WritableSection : Section
         else
         {
             // Align the struct so its size (and the address of the subsequent struct) is a multiple of 4
-            while ((DataStream.Position % Header.alignment) != 0)
+            while (DataStream.Position % Header.alignment != 0)
             {
                 Writer.Write((Byte)0);
             }
@@ -313,7 +313,7 @@ public class WritableSection : Section
 
     internal void WriteArray(MemberDefinition arrayDefn, Type elementType, System.Collections.IList list)
     {
-        bool dataArea = arrayDefn.DataArea || (Writer == DataWriter);
+        bool dataArea = arrayDefn.DataArea || Writer == DataWriter;
         AlignWrite();
 
         switch (arrayDefn.Type)
@@ -408,7 +408,7 @@ public class WritableSection : Section
     private void WriteElement(MemberDefinition definition, Type propertyType, object node)
     {
         var type = definition.CachedField.FieldType;
-        bool dataArea = definition.DataArea || (Writer == DataWriter);
+        bool dataArea = definition.DataArea || Writer == DataWriter;
 
         switch (definition.Type)
         {
@@ -838,7 +838,7 @@ public class GR2Writer
             foreach (var section in Sections)
             {
                 // Pad section size to a multiple of the section alignment
-                while ((section.MainStream.Position % section.Header.alignment) > 0)
+                while (section.MainStream.Position % section.Header.alignment > 0)
                     section.Writer.Write((Byte)0);
 
                 section.MainStream.Flush();

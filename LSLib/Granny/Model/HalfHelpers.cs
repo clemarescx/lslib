@@ -156,11 +156,11 @@ internal static class HalfHelpers
     public static unsafe float HalfToSingle(ushort half)
     {
         uint result = mantissaTable[offsetTable[half >> 10] + (half & 0x3ff)] + exponentTable[half >> 10];
-        return *((float*)&result);
+        return *(float*)&result;
     }
     public static unsafe ushort SingleToHalf(float single)
     {
-        uint value = *((uint*)&single);
+        uint value = *(uint*)&single;
 
         return (ushort)(baseTable[(value >> 23) & 0x1ff] + ((value & 0x007fffff) >> shiftTable[value >> 23]));
     }

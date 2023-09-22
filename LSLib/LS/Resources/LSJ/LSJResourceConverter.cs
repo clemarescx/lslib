@@ -223,7 +223,7 @@ public class LSJResourceConverter : JsonConverter
                             if (reader.Value.GetType() == typeof(Int64))
                                 attribute.Value = Convert.ToUInt64((long)reader.Value);
                             else if (reader.Value.GetType() == typeof(BigInteger))
-                                attribute.Value = (ulong)((BigInteger)reader.Value);
+                                attribute.Value = (ulong)(BigInteger)reader.Value;
                             else
                                 attribute.Value = (ulong)reader.Value;
                             break;
@@ -373,7 +373,7 @@ public class LSJResourceConverter : JsonConverter
 
                 if (attribute.Value != null)
                 {
-                    var fs = ((TranslatedFSString)attribute.Value);
+                    var fs = (TranslatedFSString)attribute.Value;
                     fs.Arguments = args;
                 }
                 else

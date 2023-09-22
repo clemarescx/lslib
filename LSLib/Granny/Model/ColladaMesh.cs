@@ -157,7 +157,7 @@ public class ColladaMesh
             var tangent = (t - n * Vector3.Dot(n, t)).Normalized();
 
             // Calculate handedness
-            var w = (Vector3.Dot(Vector3.Cross(n, t), b) < 0.0F) ? 1.0F : -1.0F;
+            var w = Vector3.Dot(Vector3.Cross(n, t), b) < 0.0F ? 1.0F : -1.0F;
             var binormal = (Vector3.Cross(n, t) * w).Normalized();
 
             v.Tangent = tangent;
@@ -197,7 +197,7 @@ public class ColladaMesh
             {
                 if (VertexIndex(triVertIdx) == vertexIdx)
                 {
-                    int baseIdx = ((int)(triVertIdx / 3)) * 3;
+                    int baseIdx = (int)(triVertIdx / 3) * 3;
                     var indices = new int[] {
                         VertexIndex(baseIdx + 0),
                         VertexIndex(baseIdx + 1),

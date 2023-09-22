@@ -199,7 +199,7 @@ public class UncompressedPackagedFileStream : Stream
         }
 
         long readable = (long)FileInfo.SizeOnDisk - Position;
-        int bytesToRead = (readable < count) ? (int)readable : count;
+        int bytesToRead = readable < count ? (int)readable : count;
         return PackageStream.Read(buffer, offset, bytesToRead);
     }
 

@@ -74,7 +74,7 @@ public class PageFile : IDisposable
 
     public byte[] UnpackTile(int pageIndex, int chunkIndex, int outputSize)
     {
-        Stream.Position = ChunkOffsets[pageIndex][chunkIndex] + (pageIndex * PageSize);
+        Stream.Position = ChunkOffsets[pageIndex][chunkIndex] + pageIndex * PageSize;
         var chunkHeader = BinUtils.ReadStruct<GTPChunkHeader>(Reader);
         return chunkHeader.Codec switch
         {

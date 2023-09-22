@@ -214,7 +214,7 @@ public class Exporter
             writer.VersionTag -= 1;
         }
 
-        var body = writer.Write(root, (root.Meshes != null) ? (uint)root.Meshes.Count : 0);
+        var body = writer.Write(root, root.Meshes != null ? (uint)root.Meshes.Count : 0);
         writer.Dispose();
 
         FileStream f = File.Open(outPath, FileMode.Create, FileAccess.Write, FileShare.None);
