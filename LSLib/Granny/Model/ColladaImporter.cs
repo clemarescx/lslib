@@ -173,7 +173,7 @@ public class ColladaImporter
                 }
             }
 
-            if (collada.asset.contributor != null && collada.asset.contributor.Length > 0)
+            if (collada.asset.contributor is { Length: > 0 })
             {
                 var contributor = collada.asset.contributor[0];
                 if (contributor.authoring_tool != null)
@@ -360,7 +360,7 @@ public class ColladaImporter
     {
         if (int.TryParse(order, out int parsedOrder))
         {
-            if (parsedOrder >= 0 && parsedOrder < 100)
+            if (parsedOrder is >= 0 and < 100)
             {
                 mesh.ExportOrder = parsedOrder;
             }
@@ -371,7 +371,7 @@ public class ColladaImporter
     {
         if (int.TryParse(lod, out int parsedLod))
         {
-            if (parsedLod >= 0 && parsedLod < 100)
+            if (parsedLod is >= 0 and < 100)
             {
                 props.LOD = parsedLod;
                 if (parsedLod == 0)

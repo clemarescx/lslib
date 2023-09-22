@@ -63,7 +63,7 @@ public class ModPathVisitor
         Resources = resources;
     }
 
-    private static void EnumerateFiles(List<string> paths, string rootPath, string currentPath, string pattern)
+    private static void EnumerateFiles(ICollection<string> paths, string rootPath, string currentPath, string pattern)
     {
         foreach (string filePath in Directory.GetFiles(currentPath, pattern))
         {
@@ -128,7 +128,7 @@ public class ModPathVisitor
         if (file.Name.EndsWith("meta.lsx", StringComparison.Ordinal))
         {
             var match = metaRe.Match(file.Name);
-            if (match != null && match.Success)
+            if (match is { Success: true })
             {
                 AddMetadataToMod(match.Groups[1].Value, file);
             }
@@ -139,7 +139,7 @@ public class ModPathVisitor
             if (file.Name.EndsWith(".txt", StringComparison.Ordinal) && file.Name.Contains("/Story/RawFiles/Goals"))
             {
                 var match = scriptRe.Match(file.Name);
-                if (match != null && match.Success)
+                if (match is { Success: true })
                 {
                     AddScriptToMod(match.Groups[1].Value, match.Groups[2].Value, file);
                 }
@@ -148,7 +148,7 @@ public class ModPathVisitor
             if (file.Name.EndsWith("/Story/story_orphanqueries_ignore_local.txt", StringComparison.Ordinal))
             {
                 var match = orphanQueryIgnoresRe.Match(file.Name);
-                if (match != null && match.Success)
+                if (match is { Success: true })
                 {
                     GetMod(match.Groups[1].Value).OrphanQueryIgnoreList = file;
                 }
@@ -157,7 +157,7 @@ public class ModPathVisitor
             if (file.Name.EndsWith("/Story/RawFiles/story_header.div", StringComparison.Ordinal))
             {
                 var match = storyDefinitionsRe.Match(file.Name);
-                if (match != null && match.Success)
+                if (match is { Success: true })
                 {
                     GetMod(match.Groups[1].Value).StoryHeaderFile = file;
                 }
@@ -166,7 +166,7 @@ public class ModPathVisitor
             if (file.Name.EndsWith("/Story/RawFiles/TypeCoercionWhitelist.txt", StringComparison.Ordinal))
             {
                 var match = typeCoercionWhitelistRe.Match(file.Name);
-                if (match != null && match.Success)
+                if (match is { Success: true })
                 {
                     GetMod(match.Groups[1].Value).TypeCoercionWhitelistFile = file;
                 }
@@ -178,7 +178,7 @@ public class ModPathVisitor
             if (file.Name.EndsWith(".txt", StringComparison.Ordinal) && file.Name.Contains("/Stats/Generated/Data"))
             {
                 var match = statRe.Match(file.Name);
-                if (match != null && match.Success)
+                if (match is { Success: true })
                 {
                     AddStatToMod(match.Groups[1].Value, match.Groups[2].Value, file);
                 }
@@ -190,7 +190,7 @@ public class ModPathVisitor
             if (file.Name.EndsWith(".lsf", StringComparison.Ordinal) && file.Name.Contains("/Globals/"))
             {
                 var match = globalsRe.Match(file.Name);
-                if (match != null && match.Success)
+                if (match is { Success: true })
                 {
                     AddGlobalsToMod(match.Groups[1].Value, match.Groups[0].Value, file);
                 }
@@ -202,7 +202,7 @@ public class ModPathVisitor
             if (file.Name.EndsWith(".lsf", StringComparison.Ordinal) && file.Name.Contains("/Levels/"))
             {
                 var match = levelObjectsRe.Match(file.Name);
-                if (match != null && match.Success)
+                if (match is { Success: true })
                 {
                     AddLevelObjectsToMod(match.Groups[1].Value, match.Groups[0].Value, file);
                 }

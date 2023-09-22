@@ -216,8 +216,7 @@ public class RuleNode : RelNode
         if (IsQuery)
         {
             var ruleRoot = GetRoot(story);
-            if (ruleRoot.Name != null &&
-                ruleRoot.Name.Length > 7 &&
+            if (ruleRoot.Name is { Length: > 7 } &&
                 ruleRoot.Name[^7..] == "__DEF__")
             {
                 ruleRoot.Name = ruleRoot.Name[..^7];

@@ -59,7 +59,7 @@ public class Bone
     private void ImportLSLibProfile(node node)
     {
         var extraData = ColladaImporter.FindExporterExtraData(node.extra);
-        if (extraData != null && extraData.Any != null)
+        if (extraData is { Any: not null })
         {
             foreach (var setting in extraData.Any)
             {

@@ -184,7 +184,7 @@ public class WritableSection : Section
 
     public void WriteArrayReference(System.Collections.IList list)
     {
-        if (list != null && list.Count > 0)
+        if (list is { Count: > 0 })
         {
             Writer.Write((uint)list.Count);
             AddFixup(list);
@@ -498,7 +498,7 @@ public class WritableSection : Section
                 var list = node as System.Collections.IList;
                 WriteArrayIndicesReference(list);
 
-                if (list != null && list.Count > 0)
+                if (list is { Count: > 0 })
                 {
                     GR2.QueueArrayWrite(Type, dataArea, type.GetGenericArguments().Single(), definition, list);
                 }
@@ -511,7 +511,7 @@ public class WritableSection : Section
                 var list = node as System.Collections.IList;
                 WriteArrayIndicesReference(list);
 
-                if (list != null && list.Count > 0)
+                if (list is { Count: > 0 })
                 {
                     GR2.QueueArrayWrite(Type, dataArea, type.GetGenericArguments().Single(), definition, list);
                 }
@@ -522,7 +522,7 @@ public class WritableSection : Section
             {
                 var list = node as System.Collections.IList;
 
-                if (list != null && list.Count > 0)
+                if (list is { Count: > 0 })
                 {
                     var inferredType = list[0].GetType();
                     if (definition.TypeSelector != null)

@@ -857,7 +857,7 @@ public class Compiler
     {
         var registeredSignature = Context.LookupSignature(name);
         var signature = registeredSignature;
-        if (signature != null && signature.FullyTyped)
+        if (signature is { FullyTyped: true })
         {
             throw new InvalidOperationException("Cannot apply signature to an already typed name");
         }
@@ -956,7 +956,7 @@ public class Compiler
     private bool PropagateSignatureIfRequired(IRRule rule, FunctionNameAndArity name, FunctionType? type, List<IRValue> parameters, bool allowPartial, ref bool updated)
     {
         var signature = Context.LookupSignature(name);
-        bool signatureOk = signature != null && signature.FullyTyped;
+        bool signatureOk = signature is { FullyTyped: true };
         if (!signatureOk && TryPropagateSignature(rule, name, type, parameters, allowPartial, ref updated))
         {
             signature = Context.LookupSignature(name);

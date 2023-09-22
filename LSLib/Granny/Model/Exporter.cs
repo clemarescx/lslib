@@ -279,7 +279,7 @@ public class Exporter
 
                 foreach (var mesh in model.MeshBindings)
                 {
-                    if (mesh.Mesh.BoneBindings != null && mesh.Mesh.BoneBindings.Count > 0)
+                    if (mesh.Mesh.BoneBindings is { Count: > 0 })
                     {
                         throw new ParsingException("Failed to generate dummy skeleton: Mesh already has bone bindings.");
                     }
@@ -428,7 +428,7 @@ public class Exporter
         {
             // If we're exporting animations without a skeleton, copy the source skeleton
             // and check if all animation tracks are referencing existing bones.
-            if (Root.Animations != null && Root.Animations.Count > 0)
+            if (Root.Animations is { Count: > 0 })
             {
                 Root.Skeletons = skeletons.ToList();
                 if (Root.Skeletons.Count != 1)

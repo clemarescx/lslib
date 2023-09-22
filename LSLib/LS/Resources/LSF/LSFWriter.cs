@@ -395,8 +395,8 @@ public class LSFWriter :ILSWriter
     {
         if (Version >= LSFVersion.VerBG3 ||
             Meta.MajorVersion > 4 ||
-            Meta.MajorVersion == 4 && Meta.Revision > 0 ||
-            Meta.MajorVersion == 4 && Meta.Revision == 0 && Meta.BuildNumber >= 0x1a)
+            Meta is { MajorVersion: 4, Revision: > 0 } ||
+            Meta.MajorVersion == 4 && Meta is { Revision: 0, BuildNumber: >= 0x1a })
         {
             writer.Write(fs.Version);
         }

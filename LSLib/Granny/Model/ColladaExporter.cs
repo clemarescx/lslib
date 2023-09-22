@@ -319,8 +319,7 @@ public class ColladaMeshExporter
         LastInputOffset = 0;
 
         var vertexData = ExportedMesh.PrimaryVertexData;
-        if (vertexData.Vertices != null
-         && vertexData.Vertices.Count > 0)
+        if (vertexData.Vertices is { Count: > 0 })
         {
             var vertex = vertexData.Vertices[0];
             DetermineInputsFromVertex(vertex);
@@ -613,7 +612,7 @@ public class ColladaExporter
         foreach(var model in root.Models)
         {
             string skelRef = null;
-            if (model.Skeleton != null && !model.Skeleton.IsDummy && model.Skeleton.Bones.Count > 1 && root.Skeletons.Any(s => s.Name == model.Skeleton.Name))
+            if (model.Skeleton is { IsDummy: false } && model.Skeleton.Bones.Count > 1 && root.Skeletons.Any(s => s.Name == model.Skeleton.Name))
             {
                 Utils.Info($"Exporting model {model.Name} with skeleton {model.Skeleton.Name}");
                 var skeleton = ExportSkeleton(model.Skeleton, model.Name);
@@ -639,7 +638,7 @@ public class ColladaExporter
         };
 
         var props = new List<XmlElement>();
-        if (extData != null && extData.SkeletonResourceID != null && extData.SkeletonResourceID != "")
+        if (extData is { SkeletonResourceID: not null } && extData.SkeletonResourceID != "")
         {
             var prop = Xml.CreateElement("SkeletonResourceID");
             prop.InnerText = extData.SkeletonResourceID;

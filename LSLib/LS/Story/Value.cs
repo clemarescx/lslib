@@ -420,7 +420,7 @@ public class Variable : TypedValue
     public override void DebugDump(TextWriter writer, Story story)
     {
         writer.Write("#{0} ", Index);
-        if (VariableName != null && VariableName.Length > 0)
+        if (VariableName is { Length: > 0 })
         {
             writer.Write("'{0}' ", VariableName);
         }
@@ -451,7 +451,7 @@ public class Variable : TypedValue
         }
         else if (Adapted)
         {
-            if (VariableName != null && VariableName.Length > 0)
+            if (VariableName is { Length: > 0 })
             {
                 if (printTypes && TypeId > 0)
                 {

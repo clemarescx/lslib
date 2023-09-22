@@ -694,15 +694,13 @@ public class Mesh
     {
         DivinityModelFlag flags = 0;
 
-        if (ExtendedData != null 
-         && ExtendedData.UserMeshProperties != null
+        if (ExtendedData is { UserMeshProperties: not null }
          && ExtendedData.UserMeshProperties.MeshFlags != 0)
         {
             return ExtendedData.UserMeshProperties.MeshFlags;
         }
 
-        if (ExtendedData != null 
-         && ExtendedData.UserDefinedProperties != null)
+        if (ExtendedData is { UserDefinedProperties: not null })
         {
             flags = UserDefinedPropertiesHelpers.UserDefinedPropertiesToMeshType(ExtendedData.UserDefinedProperties);
         }
@@ -725,14 +723,12 @@ public class Mesh
 
     public List<string> VertexComponentNames()
     {
-        if (PrimaryVertexData.VertexComponentNames != null
-         && PrimaryVertexData.VertexComponentNames.Count > 0
+        if (PrimaryVertexData.VertexComponentNames is { Count: > 0 }
          && PrimaryVertexData.VertexComponentNames[0].String != "")
         {
             return PrimaryVertexData.VertexComponentNames.Select(s => s.String).ToList();
         }
-        else if (PrimaryVertexData.Vertices != null
-              && PrimaryVertexData.Vertices.Count > 0)
+        else if (PrimaryVertexData.Vertices is { Count: > 0 })
         {
             return PrimaryVertexData.Vertices[0].Format.ComponentNames();
         }

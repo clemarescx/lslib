@@ -293,7 +293,7 @@ public class StoryReader
 
         story.Types = ReadTypes(reader, story);
 
-        if (reader.Ver >= OsiVersion.VerExternalStringTable && reader.Ver < OsiVersion.VerRemoveExternalStringTable)
+        if (reader.Ver is >= OsiVersion.VerExternalStringTable and < OsiVersion.VerRemoveExternalStringTable)
         {
             story.ExternalStringTable = ReadStrings(reader);
         }
@@ -512,7 +512,7 @@ public class StoryWriter
             }
 
             // TODO: regenerate string table?
-            if (Writer.Ver >= OsiVersion.VerExternalStringTable && Writer.Ver < OsiVersion.VerRemoveExternalStringTable)
+            if (Writer.Ver is >= OsiVersion.VerExternalStringTable and < OsiVersion.VerRemoveExternalStringTable)
             {
                 WriteStrings(story.ExternalStringTable);
             }

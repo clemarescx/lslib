@@ -499,8 +499,8 @@ public class LSFReader : ILSReader
 
                 if (Version >= LSFVersion.VerBG3 || 
                     GameVersion.Major > 4 || 
-                    (GameVersion.Major == 4 && GameVersion.Revision > 0) ||
-                    (GameVersion.Major == 4 && GameVersion.Revision == 0 && GameVersion.Build >= 0x1a))
+                    GameVersion is { Major: 4, Revision: > 0 } ||
+                    (GameVersion.Major == 4 && GameVersion is { Revision: 0, Build: >= 0x1a }))
                 {
                     str.Version = reader.ReadUInt16();
                 }
