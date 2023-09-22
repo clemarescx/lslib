@@ -762,7 +762,7 @@ public class ArrayIndicesReference : ArrayReference
 #endif
             var originalPos = gr2.Stream.Position;
             gr2.Seek(this);
-            Items = new List<RelocatableReference>();
+            Items = new();
             for (int i = 0; i < Size; i++)
             {
                 Items.Add(gr2.ReadReference());
@@ -1054,7 +1054,7 @@ public class MemberDefinition
 public class StructDefinition
 {
     public Type Type;
-    public List<MemberDefinition> Members = new List<MemberDefinition>();
+    public List<MemberDefinition> Members = new();
     /// <summary>
     /// Should we do mixed marshalling on this struct?
     /// </summary>

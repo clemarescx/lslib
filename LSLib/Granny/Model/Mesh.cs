@@ -11,8 +11,8 @@ namespace LSLib.Granny.Model;
 public class Deduplicator<T>
 {
     private IEqualityComparer<T> Comparer;
-    public Dictionary<int, int> DeduplicationMap = new Dictionary<int, int>();
-    public List<T> Uniques = new List<T>();
+    public Dictionary<int, int> DeduplicationMap = new();
+    public List<T> Uniques = new();
 
     public Deduplicator(IEqualityComparer<T> comparer)
     {
@@ -84,10 +84,10 @@ public struct SkinnedVertex : IEquatable<SkinnedVertex>
     
 public class VertexDeduplicator
 {
-    public Deduplicator<SkinnedVertex> Vertices = new Deduplicator<SkinnedVertex>(new GenericEqualityComparer<SkinnedVertex>());
-    public Deduplicator<Matrix3> Normals = new Deduplicator<Matrix3>(new GenericEqualityComparer<Matrix3>());
-    public List<Deduplicator<Vector2>> UVs = new List<Deduplicator<Vector2>>();
-    public List<Deduplicator<Vector4>> Colors = new List<Deduplicator<Vector4>>();
+    public Deduplicator<SkinnedVertex> Vertices = new(new GenericEqualityComparer<SkinnedVertex>());
+    public Deduplicator<Matrix3> Normals = new(new GenericEqualityComparer<Matrix3>());
+    public List<Deduplicator<Vector2>> UVs = new();
+    public List<Deduplicator<Vector4>> Colors = new();
 
     public void MakeIdentityMapping(List<Vertex> vertices)
     {
@@ -206,13 +206,13 @@ public class VertexData
         // Fix missing vertex component names
         if (VertexComponentNames == null)
         {
-            VertexComponentNames = new List<GrannyString>();
+            VertexComponentNames = new();
             if (Vertices.Count > 0)
             {
                 var components = Vertices[0].Format.ComponentNames();
                 foreach (var name in components)
                 {
-                    VertexComponentNames.Add(new GrannyString(name));
+                    VertexComponentNames.Add(new(name));
                 }
             }
         }
@@ -220,7 +220,7 @@ public class VertexData
 
     public void Deduplicate()
     {
-        Deduplicator = new VertexDeduplicator();
+        Deduplicator = new();
         Deduplicator.Deduplicate(Vertices);
     }
 
@@ -231,7 +231,7 @@ public class VertexData
         // To deduplicate GR2 vertex data, Deduplicate() should be called before any Collada export call.
         if (Deduplicator == null)
         {
-            Deduplicator = new VertexDeduplicator();
+            Deduplicator = new();
             Deduplicator.MakeIdentityMapping(Vertices);
         }
     }
@@ -379,9 +379,9 @@ public class VertexData
         if (Deduplicator == null) return;
 
         // Implements CollectionsMarshal.AsSpan from .NET 5 by reflection
-        Span<T> AsSpan<T>(List<T> list) => new Span<T>(list.GetType()
-                                                           .GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance)
-                                                           .GetValue(list) as T[], 0, list.Count);
+        Span<T> AsSpan<T>(List<T> list) => new(list.GetType()
+                                                   .GetField("_items", BindingFlags.NonPublic | BindingFlags.Instance)
+                                                   .GetValue(list) as T[], 0, list.Count);
 
         foreach (ref SkinnedVertex vertex in AsSpan(Deduplicator.Vertices.Uniques))
         {
@@ -496,7 +496,7 @@ public class TriTopology
         // (for convenience, so we won't have to handle both Indices and Indices16 in all code paths)
         if (Indices16 != null)
         {
-            Indices = new List<Int32>(Indices16.Count);
+            Indices = new(Indices16.Count);
             foreach (var index in Indices16)
             {
                 Indices.Add(index);
@@ -515,11 +515,13 @@ public class TriTopology
         int numTris = (from grp in Groups
                        select grp.TriCount).Sum();
 
-        var tris = new triangles();
-        tris.count = (ulong)numTris;
-        tris.input = inputs;
+        var tris = new triangles
+        {
+            count = (ulong)numTris,
+            input = inputs
+        };
 
-        List<Dictionary<int, int>> inputMaps = new List<Dictionary<int, int>>();
+        List<Dictionary<int, int>> inputMaps = new();
         int uvIndex = 0, colorIndex = 0;
         for (int i = 0; i < inputs.Length; i++)
         {

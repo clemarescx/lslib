@@ -61,21 +61,21 @@ public class BC5Image
 
     public void SaveDDS(string path)
     {
-        var header = new DDSHeader();
-        header.dwMagic = 0x20534444;
-        header.dwSize = 0x7c;
-        header.dwFlags = 0x1007;
-        header.dwWidth = (uint)Width;
-        header.dwHeight = (uint)Height;
-        header.dwPitchOrLinearSize = (uint)(Width * Height);
-        header.dwDepth = 1;
-        header.dwMipMapCount = 1;
-
-        header.dwPFSize = 32;
-        header.dwPFFlags = 0x04;
-        header.dwFourCC = 0x35545844;
-
-        header.dwCaps = 0x1000;
+        var header = new DDSHeader
+        {
+            dwMagic = 0x20534444,
+            dwSize = 0x7c,
+            dwFlags = 0x1007,
+            dwWidth = (uint)Width,
+            dwHeight = (uint)Height,
+            dwPitchOrLinearSize = (uint)(Width * Height),
+            dwDepth = 1,
+            dwMipMapCount = 1,
+            dwPFSize = 32,
+            dwPFFlags = 0x04,
+            dwFourCC = 0x35545844,
+            dwCaps = 0x1000
+        };
 
         using (var pagef = new FileStream(path, FileMode.Create, FileAccess.Write))
         using (var bw = new BinaryWriter(pagef))

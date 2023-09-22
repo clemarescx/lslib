@@ -11,14 +11,16 @@ namespace LSLib.Granny.Model;
 internal class ColladaSource
 {
     public String id;
-    public Dictionary<String, List<Single>> FloatParams = new Dictionary<string, List<float>>();
-    public Dictionary<String, List<Matrix4>> MatrixParams = new Dictionary<string, List<Matrix4>>();
-    public Dictionary<String, List<String>> NameParams = new Dictionary<string, List<string>>();
+    public Dictionary<String, List<Single>> FloatParams = new();
+    public Dictionary<String, List<Matrix4>> MatrixParams = new();
+    public Dictionary<String, List<String>> NameParams = new();
 
     public static ColladaSource FromCollada(source src)
     {
-        var source = new ColladaSource();
-        source.id = src.id;
+        var source = new ColladaSource
+        {
+            id = src.id
+        };
 
         var accessor = src.technique_common.accessor;
         // TODO: check src.#ID?
@@ -115,7 +117,7 @@ class RootBoneInfo
 public class ColladaImporter
 {
     [Serialization(Kind = SerializationKind.None)]
-    public ExporterOptions Options = new ExporterOptions();
+    public ExporterOptions Options = new();
 
     private bool ZUp = false;
 
@@ -128,12 +130,15 @@ public class ColladaImporter
     private ArtToolInfo ImportArtToolInfo(COLLADA collada)
     {
         ZUp = false;
-        var toolInfo = new ArtToolInfo();
-        toolInfo.FromArtToolName = "Unknown";
-        toolInfo.ArtToolMajorRevision = 1;
-        toolInfo.ArtToolMinorRevision = 0;
-        toolInfo.ArtToolPointerSize = Options.Is64Bit ? 64 : 32;
-        toolInfo.Origin = new float[] { 0, 0, 0 };
+        var toolInfo = new ArtToolInfo
+        {
+            FromArtToolName = "Unknown",
+            ArtToolMajorRevision = 1,
+            ArtToolMinorRevision = 0,
+            ArtToolPointerSize = Options.Is64Bit ? 64 : 32,
+            Origin = new float[] { 0, 0, 0 }
+        };
+
         toolInfo.SetYUp();
 
         if (collada.asset != null)
@@ -158,7 +163,7 @@ public class ColladaImporter
             switch (collada.asset.up_axis)
             {
                 case UpAxisType.X_UP:
-                    throw new Exception("X-up not supported yet!");
+                    throw new("X-up not supported yet!");
 
                 case UpAxisType.Y_UP:
                     toolInfo.SetYUp();
@@ -176,12 +181,15 @@ public class ColladaImporter
 
     private ExporterInfo ImportExporterInfo(COLLADA collada)
     {
-        var exporterInfo = new ExporterInfo();
-        exporterInfo.ExporterName = String.Format("LSLib GR2 Exporter v{0}", Common.LibraryVersion());
-        exporterInfo.ExporterMajorRevision = Common.MajorVersion;
-        exporterInfo.ExporterMinorRevision = Common.MinorVersion;
-        exporterInfo.ExporterBuildNumber = 0;
-        exporterInfo.ExporterCustomization = Common.PatchVersion;
+        var exporterInfo = new ExporterInfo
+        {
+            ExporterName = String.Format("LSLib GR2 Exporter v{0}", Common.LibraryVersion()),
+            ExporterMajorRevision = Common.MajorVersion,
+            ExporterMinorRevision = Common.MinorVersion,
+            ExporterBuildNumber = 0,
+            ExporterCustomization = Common.PatchVersion
+        };
+
         return exporterInfo;
     }
 
@@ -244,7 +252,7 @@ public class ColladaImporter
                 {
                     if (bone.ExtendedData == null)
                     {
-                        bone.ExtendedData = new DivinityBoneExtendedData();
+                        bone.ExtendedData = new();
                     }
 
                     var userDefinedProperties = UserDefinedPropertiesHelpers.MeshFlagsToUserDefinedProperties(accumulatedFlags);
@@ -476,12 +484,15 @@ public class ColladaImporter
         bool isSkinned = SkinnedMeshes.Contains(geom.id);
         collada.ImportFromCollada(mesh, vertexFormat, isSkinned, Options);
 
-        var m = new Mesh();
-        m.VertexFormat = collada.InternalVertexType;
-        m.Name = "Unnamed";
-
-        m.PrimaryVertexData = new VertexData();
-        m.PrimaryVertexData.Vertices = collada.ConsolidatedVertices;
+        var m = new Mesh
+        {
+            VertexFormat = collada.InternalVertexType,
+            Name = "Unnamed",
+            PrimaryVertexData = new()
+            {
+                Vertices = collada.ConsolidatedVertices
+            }
+        };
 
         if (!Options.StripMetadata)
         {
@@ -493,17 +504,23 @@ public class ColladaImporter
             m.PrimaryVertexData.VertexComponentNames = null;
         }
 
-        m.PrimaryTopology = new TriTopology();
-        m.PrimaryTopology.Indices = collada.ConsolidatedIndices;
-        m.PrimaryTopology.Groups = new List<TriTopologyGroup>();
-        var triGroup = new TriTopologyGroup();
-        triGroup.MaterialIndex = 0;
-        triGroup.TriFirst = 0;
-        triGroup.TriCount = collada.TriangleCount;
+        m.PrimaryTopology = new()
+        {
+            Indices = collada.ConsolidatedIndices,
+            Groups = new()
+        };
+
+        var triGroup = new TriTopologyGroup
+        {
+            MaterialIndex = 0,
+            TriFirst = 0,
+            TriCount = collada.TriangleCount
+        };
+
         m.PrimaryTopology.Groups.Add(triGroup);
 
-        m.MaterialBindings = new List<MaterialBinding>();
-        m.MaterialBindings.Add(new MaterialBinding());
+        m.MaterialBindings = new();
+        m.MaterialBindings.Add(new());
 
         // m.BoneBindings; - TODO
 
@@ -570,7 +587,7 @@ public class ColladaImporter
                     throw new ParsingException("Joint input source 'JOINT' must contain array of names.");
 
                 var skeleton = root.Skeletons[0];
-                joints = new List<Bone>();
+                joints = new();
                 foreach (var name in jointNames)
                 {
                     Bone bone = null;
@@ -667,7 +684,7 @@ public class ColladaImporter
         if (boundBones.Count > 127)
             throw new ParsingException("D:OS supports at most 127 bound bones per mesh.");
 
-        mesh.BoneBindings = new List<BoneBinding>();
+        mesh.BoneBindings = new();
         var boneToIndexMaps = new Dictionary<Bone, int>();
         for (var i = 0; i < joints.Count; i++)
         {
@@ -687,13 +704,16 @@ public class ColladaImporter
 
                 // Bind all bones that affect vertices to the mesh, so we can reference them
                 // later from the vertexes BoneIndices.
-                var binding = new BoneBinding();
-                binding.BoneName = joints[i].Name;
-                // TODO
-                // Use small bounding box values, as it interferes with object placement
-                // in D:OS 2 (after the Gift Bag 2 update)
-                binding.OBBMin = new float[] { -0.1f, -0.1f, -0.1f };
-                binding.OBBMax = new float[] { 0.1f, 0.1f, 0.1f };
+                var binding = new BoneBinding
+                {
+                    BoneName = joints[i].Name,
+                    // TODO
+                    // Use small bounding box values, as it interferes with object placement
+                    // in D:OS 2 (after the Gift Bag 2 update)
+                    OBBMin = new float[] { -0.1f, -0.1f, -0.1f },
+                    OBBMax = new float[] { 0.1f, 0.1f, 0.1f }
+                };
+
                 mesh.BoneBindings.Add(binding);
                 boneToIndexMaps.Add(joints[i], boneToIndexMaps.Count);
             }
@@ -775,10 +795,10 @@ public class ColladaImporter
         var obbs = new List<OBB>(mesh.BoneBindings.Count);
         for (var i = 0; i < mesh.BoneBindings.Count; i++)
         {
-            obbs.Add(new OBB
+            obbs.Add(new()
             {
-                Min = new Vector3(1000.0f, 1000.0f, 1000.0f),
-                Max = new Vector3(-1000.0f, -1000.0f, -1000.0f),
+                Min = new(1000.0f, 1000.0f, 1000.0f),
+                Max = new(-1000.0f, -1000.0f, -1000.0f),
             });
         }
             
@@ -833,7 +853,7 @@ public class ColladaImporter
             switch (setting.LocalName)
             {
                 case "SkeletonResourceID":
-                    loaded.ExtendedData = new BG3TrackGroupExtendedData
+                    loaded.ExtendedData = new()
                     {
                         SkeletonResourceID = setting.InnerText.Trim()
                     };
@@ -851,8 +871,8 @@ public class ColladaImporter
         var trackGroup = new TrackGroup
         {
             Name = (skeleton != null) ? skeleton.Name : "Dummy_Root",
-            TransformTracks = new List<TransformTrack>(),
-            InitialPlacement = new Transform(),
+            TransformTracks = new(),
+            InitialPlacement = new(),
             AccumulationFlags = 2,
             LoopTranslation = new float[] { 0, 0, 0 }
         };
@@ -865,7 +885,7 @@ public class ColladaImporter
             DefaultLoopCount = 1,
             Flags = 1,
             Duration = .0f,
-            TrackGroups = new List<TrackGroup> { trackGroup }
+            TrackGroups = new() { trackGroup }
         };
 
         foreach (var colladaTrack in anims)
@@ -899,7 +919,7 @@ public class ColladaImporter
         var duration = .0f;
         if (childAnims < colladaAnim.Items.Length)
         {
-            ColladaAnimation importAnim = new ColladaAnimation();
+            ColladaAnimation importAnim = new();
             if (importAnim.ImportFromCollada(colladaAnim, skeleton))
             {
                 duration = Math.Max(duration, importAnim.Duration);
@@ -930,16 +950,16 @@ public class ColladaImporter
 
         root.FromFileName = inputPath;
 
-        root.Skeletons = new List<Skeleton>();
-        root.VertexDatas = new List<VertexData>();
-        root.TriTopologies = new List<TriTopology>();
-        root.Meshes = new List<Mesh>();
-        root.Models = new List<Model>();
-        root.TrackGroups = new List<TrackGroup>();
-        root.Animations = new List<Animation>();
+        root.Skeletons = new();
+        root.VertexDatas = new();
+        root.TriTopologies = new();
+        root.Meshes = new();
+        root.Models = new();
+        root.TrackGroups = new();
+        root.Animations = new();
 
-        ColladaGeometries = new Dictionary<string, Mesh>();
-        SkinnedMeshes = new HashSet<string>();
+        ColladaGeometries = new();
+        SkinnedMeshes = new();
 
         var collGeometries = new List<geometry>();
         var collSkins = new List<skin>();
@@ -982,7 +1002,7 @@ public class ColladaImporter
                             foreach (var node in scene.node)
                             {
                                 collNodes.Add(node);
-                                FindRootBones(new List<node>(), node, rootBones);
+                                FindRootBones(new(), node, rootBones);
                             }
                         }
                     }
@@ -1059,19 +1079,25 @@ public class ColladaImporter
             ImportAnimations(collAnimations, root, root.Skeletons.FirstOrDefault());
         }
 
-        var rootModel = new Model();
-        rootModel.Name = "Unnamed"; // TODO
+        var rootModel = new Model
+        {
+            Name = "Unnamed" // TODO
+        };
+
         if (root.Skeletons.Count > 0)
         {
             rootModel.Skeleton = root.Skeletons[0];
             rootModel.Name = rootModel.Skeleton.Bones[0].Name;
         }
-        rootModel.InitialPlacement = new Transform();
-        rootModel.MeshBindings = new List<MeshBinding>();
+        rootModel.InitialPlacement = new();
+        rootModel.MeshBindings = new();
         foreach (var mesh in root.Meshes)
         {
-            var binding = new MeshBinding();
-            binding.Mesh = mesh;
+            var binding = new MeshBinding
+            {
+                Mesh = mesh
+            };
+
             rootModel.MeshBindings.Add(binding);
         }
 

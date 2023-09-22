@@ -20,9 +20,11 @@ public class LSXWriter
 
     public void Write(Resource rsrc)
     {
-        var settings = new XmlWriterSettings();
-        settings.Indent = PrettyPrint;
-        settings.IndentChars = "\t";
+        var settings = new XmlWriterSettings
+        {
+            Indent = PrettyPrint,
+            IndentChars = "\t"
+        };
 
         using (this.writer = XmlWriter.Create(stream, settings))
         {

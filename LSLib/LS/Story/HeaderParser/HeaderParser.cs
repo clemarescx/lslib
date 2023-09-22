@@ -9,7 +9,7 @@ public abstract class HeaderScanBase : AbstractScanner<ASTNode, LexLocation>
 {
     protected virtual bool yywrap() { return true; }
 
-    protected ASTLiteral MakeLiteral(string lit) => new ASTLiteral()
+    protected ASTLiteral MakeLiteral(string lit) => new()
     {
         Literal = lit
     };
@@ -31,7 +31,7 @@ public partial class HeaderParser
         return CurrentSemanticValue as ASTDeclarations;
     }
         
-    private ASTDeclarations MakeDeclarationList() => new ASTDeclarations();
+    private ASTDeclarations MakeDeclarationList() => new();
 
     private ASTDeclarations MakeDeclarationList(ASTNode declarations, ASTNode declaration)
     {
@@ -58,7 +58,7 @@ public partial class HeaderParser
     private ASTFunction MakeFunction(ASTNode type, ASTNode name, ASTNode args, ASTNode metadata)
     {
         var meta = metadata as ASTFunctionMetadata;
-        return new ASTFunction()
+        return new()
         {
             Type = (type as ASTFunctionTypeNode).Type,
             Name = (name as ASTLiteral).Literal,
@@ -70,12 +70,12 @@ public partial class HeaderParser
         };
     }
 
-    private ASTFunctionTypeNode MakeFunctionType(Compiler.FunctionType type) => new ASTFunctionTypeNode()
+    private ASTFunctionTypeNode MakeFunctionType(Compiler.FunctionType type) => new()
     {
         Type = type
     };
 
-    private ASTFunctionMetadata MakeFunctionMetadata(ASTNode meta1, ASTNode meta2, ASTNode meta3, ASTNode meta4) => new ASTFunctionMetadata()
+    private ASTFunctionMetadata MakeFunctionMetadata(ASTNode meta1, ASTNode meta2, ASTNode meta3, ASTNode meta4) => new()
     {
         Meta1 = uint.Parse((meta1 as ASTLiteral).Literal),
         Meta2 = uint.Parse((meta2 as ASTLiteral).Literal),
@@ -83,7 +83,7 @@ public partial class HeaderParser
         Meta4 = uint.Parse((meta4 as ASTLiteral).Literal)
     };
         
-    private ASTFunctionParamList MakeFunctionParamList() => new ASTFunctionParamList();
+    private ASTFunctionParamList MakeFunctionParamList() => new();
 
     private ASTFunctionParamList MakeFunctionParamList(ASTNode param)
     {
@@ -99,28 +99,28 @@ public partial class HeaderParser
         return paramList;
     }
 
-    private ASTFunctionParam MakeParam(ASTNode type, ASTNode name) => new ASTFunctionParam()
+    private ASTFunctionParam MakeParam(ASTNode type, ASTNode name) => new()
     {
         Name = (name as ASTLiteral).Literal,
         Type = (type as ASTLiteral).Literal,
         Direction = ParamDirection.In
     };
 
-    private ASTFunctionParam MakeParam(ParamDirection direction, ASTNode type, ASTNode name) => new ASTFunctionParam()
+    private ASTFunctionParam MakeParam(ParamDirection direction, ASTNode type, ASTNode name) => new()
     {
         Name = (name as ASTLiteral).Literal,
         Type = (type as ASTLiteral).Literal,
         Direction = direction
     };
 
-    private ASTAlias MakeAlias(ASTNode typeName, ASTNode typeId, ASTNode aliasId) => new ASTAlias()
+    private ASTAlias MakeAlias(ASTNode typeName, ASTNode typeId, ASTNode aliasId) => new()
     {
         TypeName = (typeName as ASTLiteral).Literal,
         TypeId = uint.Parse((typeId as ASTLiteral).Literal),
         AliasId = uint.Parse((aliasId as ASTLiteral).Literal)
     };
 
-    private ASTOption MakeOption(ASTNode option) => new ASTOption()
+    private ASTOption MakeOption(ASTNode option) => new()
     {
         Name = (option as ASTLiteral).Literal
     };

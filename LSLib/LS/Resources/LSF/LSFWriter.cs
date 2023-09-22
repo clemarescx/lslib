@@ -49,22 +49,22 @@ public class LSFWriter
 
         Meta = resource.Metadata;
 
-        using (this.Writer = new BinaryWriter(Stream, Encoding.Default, true))
-        using (this.NodeStream = new MemoryStream())
-        using (this.NodeWriter = new BinaryWriter(NodeStream))
-        using (this.AttributeStream = new MemoryStream())
-        using (this.AttributeWriter = new BinaryWriter(AttributeStream))
-        using (this.ValueStream = new MemoryStream())
-        using (this.ValueWriter = new BinaryWriter(ValueStream))
+        using (this.Writer = new(Stream, Encoding.Default, true))
+        using (this.NodeStream = new())
+        using (this.NodeWriter = new(NodeStream))
+        using (this.AttributeStream = new())
+        using (this.AttributeWriter = new(AttributeStream))
+        using (this.ValueStream = new())
+        using (this.ValueWriter = new(ValueStream))
         {
             NextNodeIndex = 0;
             NextAttributeIndex = 0;
-            NodeIndices = new Dictionary<Node, int>();
+            NodeIndices = new();
             NextSiblingIndices = null;
-            StringHashMap = new List<List<string>>(StringHashMapSize);
+            StringHashMap = new(StringHashMapSize);
             while (StringHashMap.Count < StringHashMapSize)
             {
-                StringHashMap.Add(new List<string>());
+                StringHashMap.Add(new());
             }
 
             if (EncodeSiblingData)
@@ -86,12 +86,15 @@ public class LSFWriter
             var attributeBuffer = AttributeStream.ToArray();
             var valueBuffer = ValueStream.ToArray();
 
-            var magic = new LSFMagic();
-            magic.Magic = BitConverter.ToUInt32(LSFMagic.Signature, 0);
-            magic.Version = (uint)Version;
+            var magic = new LSFMagic
+            {
+                Magic = BitConverter.ToUInt32(LSFMagic.Signature, 0),
+                Version = (uint)Version
+            };
+
             BinUtils.WriteStruct<LSFMagic>(Writer, ref magic);
 
-            PackedVersion gameVersion = new PackedVersion
+            PackedVersion gameVersion = new()
             {
                 Major = resource.Metadata.MajorVersion,
                 Minor = resource.Metadata.MinorVersion,
@@ -101,14 +104,20 @@ public class LSFWriter
 
             if (Version < LSFVersion.VerBG3ExtendedHeader)
             {
-                var header = new LSFHeader();
-                header.EngineVersion = gameVersion.ToVersion32();
+                var header = new LSFHeader
+                {
+                    EngineVersion = gameVersion.ToVersion32()
+                };
+
                 BinUtils.WriteStruct<LSFHeader>(Writer, ref header);
             }
             else
             {
-                var header = new LSFHeaderV5();
-                header.EngineVersion = gameVersion.ToVersion64();
+                var header = new LSFHeaderV5
+                {
+                    EngineVersion = gameVersion.ToVersion64()
+                };
+
                 BinUtils.WriteStruct<LSFHeaderV5>(Writer, ref header);
             }
 
@@ -120,11 +129,13 @@ public class LSFWriter
 
             if (Version < LSFVersion.VerBG3AdditionalBlob)
             {
-                var meta = new LSFMetadataV5();
-                meta.StringsUncompressedSize = (UInt32)stringBuffer.Length;
-                meta.NodesUncompressedSize = (UInt32)nodeBuffer.Length;
-                meta.AttributesUncompressedSize = (UInt32)attributeBuffer.Length;
-                meta.ValuesUncompressedSize = (UInt32)valueBuffer.Length;
+                var meta = new LSFMetadataV5
+                {
+                    StringsUncompressedSize = (UInt32)stringBuffer.Length,
+                    NodesUncompressedSize = (UInt32)nodeBuffer.Length,
+                    AttributesUncompressedSize = (UInt32)attributeBuffer.Length,
+                    ValuesUncompressedSize = (UInt32)valueBuffer.Length
+                };
 
                 if (Compression == CompressionMethod.None)
                 {
@@ -150,11 +161,13 @@ public class LSFWriter
             }
             else
             {
-                var meta = new LSFMetadataV6();
-                meta.StringsUncompressedSize = (UInt32)stringBuffer.Length;
-                meta.NodesUncompressedSize = (UInt32)nodeBuffer.Length;
-                meta.AttributesUncompressedSize = (UInt32)attributeBuffer.Length;
-                meta.ValuesUncompressedSize = (UInt32)valueBuffer.Length;
+                var meta = new LSFMetadataV6
+                {
+                    StringsUncompressedSize = (UInt32)stringBuffer.Length,
+                    NodesUncompressedSize = (UInt32)nodeBuffer.Length,
+                    AttributesUncompressedSize = (UInt32)attributeBuffer.Length,
+                    ValuesUncompressedSize = (UInt32)valueBuffer.Length
+                };
 
                 if (Compression == CompressionMethod.None)
                 {
@@ -214,7 +227,7 @@ public class LSFWriter
     private void ComputeSiblingIndices(Resource resource)
     {
         NextNodeIndex = 0;
-        NextSiblingIndices = new List<int>();
+        NextSiblingIndices = new();
 
         int lastRegionIndex = -1;
         foreach (var region in resource.Regions)

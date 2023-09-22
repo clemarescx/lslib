@@ -23,8 +23,8 @@ public class CurveRegistry
             return;
         }
 
-        TypeToFormatMap = new Dictionary<Type, CurveFormat>();
-        NameToTypeMap = new Dictionary<String, Type>();
+        TypeToFormatMap = new();
+        NameToTypeMap = new();
 
         Register(typeof(DaKeyframes32f), CurveFormat.DaKeyframes32f);
         Register(typeof(DaK32fC32f), CurveFormat.DaK32fC32f);
@@ -219,7 +219,7 @@ public abstract class AnimationCurveData
     public virtual List<Quaternion> GetQuaternions()
     {
         var matrices = GetMatrices();
-        List<Quaternion> quats = new List<Quaternion>(matrices.Count);
+        List<Quaternion> quats = new(matrices.Count);
         foreach (var matrix in matrices)
         {
             // Check that the matrix is orthogonal

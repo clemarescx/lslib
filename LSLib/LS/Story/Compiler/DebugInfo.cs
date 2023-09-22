@@ -119,9 +119,9 @@ public class StoryDebugInfo
     public const UInt32 CurrentVersion = 2;
 
     public UInt32 Version;
-    public Dictionary<UInt32, DatabaseDebugInfo> Databases = new Dictionary<UInt32, DatabaseDebugInfo>();
-    public Dictionary<UInt32, GoalDebugInfo> Goals = new Dictionary<UInt32, GoalDebugInfo>();
-    public Dictionary<UInt32, RuleDebugInfo> Rules = new Dictionary<UInt32, RuleDebugInfo>();
-    public Dictionary<UInt32, NodeDebugInfo> Nodes = new Dictionary<UInt32, NodeDebugInfo>();
-    public Dictionary<FunctionNameAndArity, FunctionDebugInfo> Functions = new Dictionary<FunctionNameAndArity, FunctionDebugInfo>();
+    public Dictionary<UInt32, DatabaseDebugInfo> Databases = new();
+    public Dictionary<UInt32, GoalDebugInfo> Goals = new();
+    public Dictionary<UInt32, RuleDebugInfo> Rules = new();
+    public Dictionary<UInt32, NodeDebugInfo> Nodes = new();
+    public Dictionary<FunctionNameAndArity, FunctionDebugInfo> Functions = new();
 }

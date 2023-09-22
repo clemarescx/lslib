@@ -19,7 +19,7 @@ public class Call : OsirisSerializable
             var hasParams = reader.ReadByte();
             if (hasParams > 0)
             {
-                Parameters = new List<TypedValue>();
+                Parameters = new();
                 var numParams = reader.ReadByte();
                 while (numParams-- > 0)
                 {
@@ -28,7 +28,7 @@ public class Call : OsirisSerializable
                     if (type == 1)
                         param = new Variable();
                     else
-                        param = new TypedValue();
+                        param = new();
                     param.Read(reader);
                     Parameters.Add(param);
                 }

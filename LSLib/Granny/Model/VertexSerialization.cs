@@ -55,11 +55,14 @@ public static class VertexSerializationHelpers
 
     public static Quaternion ReadBinormalShortVector4(GR2Reader reader)
     {
-        Quaternion v = new Quaternion();
-        v.X = reader.Reader.ReadInt16() / 32767.0f;
-        v.Y = reader.Reader.ReadInt16() / 32767.0f;
-        v.Z = reader.Reader.ReadInt16() / 32767.0f;
-        v.W = reader.Reader.ReadInt16() / 32767.0f;
+        Quaternion v = new()
+        {
+            X = reader.Reader.ReadInt16() / 32767.0f,
+            Y = reader.Reader.ReadInt16() / 32767.0f,
+            Z = reader.Reader.ReadInt16() / 32767.0f,
+            W = reader.Reader.ReadInt16() / 32767.0f
+        };
+
         return v;
     }
 
@@ -122,9 +125,9 @@ public static class VertexSerializationHelpers
     private static Matrix3 Orthonormalize(Matrix3 m)
     {
         Vector3 x = new Vector3(m.M11, m.M21, m.M31).Normalized();
-        Vector3 y = Vector3.Cross(new Vector3(m.M13, m.M23, m.M33), x).Normalized();
+        Vector3 y = Vector3.Cross(new(m.M13, m.M23, m.M33), x).Normalized();
         Vector3 z = Vector3.Cross(x, y);
-        return new Matrix3(
+        return new(
             x.X, y.X, z.X,
             x.Y, y.Y, z.Y,
             x.Z, y.Z, z.Z
@@ -167,7 +170,7 @@ public static class VertexSerializationHelpers
 
     private static Matrix3 QTangentToMatrix(Quaternion q)
     {
-        Matrix3 m = new Matrix3(
+        Matrix3 m = new(
             1.0f - 2.0f * (q.Y * q.Y + q.Z * q.Z), 2 * (q.X * q.Y + q.W * q.Z), 2 * (q.X * q.Z - q.W * q.Y),
             2.0f * (q.X * q.Y - q.W * q.Z), 1 - 2 * (q.X * q.X + q.Z * q.Z), 2 * (q.Y * q.Z + q.W * q.X),
             0.0f, 0.0f, 0.0f
@@ -295,7 +298,7 @@ public static class VertexSerializationHelpers
     {
         var n2 = Vector3.Cross(tangent, binormal).Normalized();
         var reflection = Vector3.Dot(normal, n2);
-        Matrix3 normals = new Matrix3(tangent, binormal, n2);
+        Matrix3 normals = new(tangent, binormal, n2);
         var qTangent = MatrixToQTangent(normals, reflection < 0.0f);
         WriteBinormalShortVector4(section, qTangent);
     }
@@ -361,7 +364,7 @@ public static class VertexSerializationHelpers
                 {
                     case ColorMapType.Float4: WriteVector4(section, color); break;
                     case ColorMapType.Byte4:  WriteNormalByteVector4(section, color); break;
-                    default:                  throw new Exception($"Cannot unserialize color map: Unsupported format {d.ColorMapType}");
+                    default:                  throw new($"Cannot unserialize color map: Unsupported format {d.ColorMapType}");
                 }
             }
         }
@@ -375,7 +378,7 @@ public static class VertexSerializationHelpers
                 {
                     case TextureCoordinateType.Float2: WriteVector2(section, uv); break;
                     case TextureCoordinateType.Half2:  WriteHalfVector2(section, uv); break;
-                    default:                           throw new Exception($"Cannot serialize UV map: Unsupported format {d.TextureCoordinateType}");
+                    default:                           throw new($"Cannot serialize UV map: Unsupported format {d.TextureCoordinateType}");
                 }
             }
         }
@@ -448,7 +451,7 @@ public static class VertexSerializationHelpers
                 {
                     ColorMapType.Float4 => ReadVector4(reader),
                     ColorMapType.Byte4  => ReadNormalByteVector4(reader),
-                    _                   => throw new Exception($"Cannot unserialize color map: Unsupported format {d.ColorMapType}")
+                    _                   => throw new($"Cannot unserialize color map: Unsupported format {d.ColorMapType}")
                 };
 
                 v.SetColor(i, color);
@@ -463,7 +466,7 @@ public static class VertexSerializationHelpers
                 {
                     TextureCoordinateType.Float2 => ReadVector2(reader),
                     TextureCoordinateType.Half2  => ReadHalfVector2(reader),
-                    _                            => throw new Exception($"Cannot unserialize UV map: Unsupported format {d.TextureCoordinateType}")
+                    _                            => throw new($"Cannot unserialize UV map: Unsupported format {d.TextureCoordinateType}")
                 };
 
                 v.SetUV(i, uv);
@@ -539,7 +542,7 @@ class VertexDefinitionSelector : StructDefinitionSelector
         var desc = (instance as Vertex).Format;
         var defn = new StructDefinition
         {
-            Members = new List<MemberDefinition>(),
+            Members = new(),
             MixedMarshal = true,
             Type = typeof(Vertex)
         };

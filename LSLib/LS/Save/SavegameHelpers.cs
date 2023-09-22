@@ -15,7 +15,7 @@ public class SavegameHelpers : IDisposable
 
     public SavegameHelpers(string path)
     {
-        Reader = new PackageReader(path);
+        Reader = new(path);
         Package = Reader.Read();
     }
 
@@ -96,9 +96,12 @@ public class SavegameHelpers : IDisposable
 
         // Save globals.lsf
         var rewrittenStream = new MemoryStream();
-        var rsrcWriter = new LSFWriter(rewrittenStream);
-        rsrcWriter.Version = conversionParams.LSF;
-        rsrcWriter.EncodeSiblingData = false;
+        var rsrcWriter = new LSFWriter(rewrittenStream)
+        {
+            Version = conversionParams.LSF,
+            EncodeSiblingData = false
+        };
+
         rsrcWriter.Write(globals);
         rewrittenStream.Seek(0, SeekOrigin.Begin);
         return rewrittenStream;

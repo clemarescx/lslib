@@ -306,7 +306,7 @@ public class Value : OsirisSerializable
                 break;
 
             default:
-                throw new Exception("Unsupported builtin type ID");
+                throw new("Unsupported builtin type ID");
         }
     }
 
@@ -340,7 +340,7 @@ public class Value : OsirisSerializable
                 break;
 
             default:
-                throw new Exception("Unsupported builtin type ID");
+                throw new("Unsupported builtin type ID");
         }
     }
 }
@@ -452,8 +452,8 @@ public class Variable : TypedValue
 
 public class Tuple : OsirisSerializable
 {
-    public List<Value> Physical = new List<Value>();
-    public Dictionary<int, Value> Logical = new Dictionary<int, Value>();
+    public List<Value> Physical = new();
+    public Dictionary<int, Value> Logical = new();
 
     public void Read(OsiReader reader)
     {

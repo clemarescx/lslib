@@ -13,8 +13,8 @@ public class StatEntity
     public StatSubtypeDefinition Type;
     public StatEntity BaseClass;
     public CodeLocation Location;
-    public Dictionary<string, object> Properties = new Dictionary<string, object>();
-    public Dictionary<string, CodeLocation> PropertyLocations = new Dictionary<string, CodeLocation>();
+    public Dictionary<string, object> Properties = new();
+    public Dictionary<string, CodeLocation> PropertyLocations = new();
 }
 
 /// <summary>
@@ -69,13 +69,13 @@ public class StatLoadingError
 public class StatLoadingContext
 {
     public StatDefinitionRepository Definitions;
-    public List<StatLoadingError> Errors = new List<StatLoadingError>();
-    public Dictionary<string, Dictionary<string, StatDeclaration>> DeclarationsByType = new Dictionary<string, Dictionary<string, StatDeclaration>>();
-    public Dictionary<string, Dictionary<string, StatDeclaration>> ResolvedDeclarationsByType = new Dictionary<string, Dictionary<string, StatDeclaration>>();
+    public List<StatLoadingError> Errors = new();
+    public Dictionary<string, Dictionary<string, StatDeclaration>> DeclarationsByType = new();
+    public Dictionary<string, Dictionary<string, StatDeclaration>> ResolvedDeclarationsByType = new();
 
     public void LogError(string code, string message, string path = null, int line = 0, string statObjectName = null)
     {
-        Errors.Add(new StatLoadingError
+        Errors.Add(new()
         {
             Code = code,
             Message = message,
@@ -164,7 +164,7 @@ class StatBaseClassResolver
             var succeeded = ResolveBaseClass(definition, declaration.Value, declarations, out StatDeclaration baseClass);
             if (succeeded && baseClass != null)
             {
-                mappings.Add(new BaseClassMapping
+                mappings.Add(new()
                 {
                     Declaration = declaration.Value,
                     BaseClass = baseClass
@@ -207,7 +207,7 @@ class StatLoaderReferenceValidator : IStatReferenceValidator
                     var subtypeProperty = Context.Definitions.Definitions[statType].SubtypeProperty;
                     if (subtypeProperty == null)
                     {
-                        throw new Exception($"Reference constraint found for stat type '{statType}' that has no subtype.");
+                        throw new($"Reference constraint found for stat type '{statType}' that has no subtype.");
                     }
 
                     var subtype = (string)stat.Properties[subtypeProperty];
@@ -232,8 +232,8 @@ public class StatLoader
     public StatLoader(StatLoadingContext ctx)
     {
         Context = ctx;
-        ReferenceValidator = new StatLoaderReferenceValidator(ctx);
-        ParserFactory = new StatValueParserFactory(ReferenceValidator);
+        ReferenceValidator = new(ctx);
+        ParserFactory = new(ReferenceValidator);
     }
 
     private List<StatDeclaration> ParseStatStream(string path, Stream stream)
@@ -287,7 +287,7 @@ public class StatLoader
             Dictionary<String, StatDeclaration> declarationsByType;
             if (!Context.DeclarationsByType.TryGetValue(statType, out declarationsByType))
             {
-                declarationsByType = new Dictionary<string, StatDeclaration>();
+                declarationsByType = new();
                 Context.DeclarationsByType[statType] = declarationsByType;
             }
 
@@ -401,7 +401,7 @@ public class StatLoader
             Type = subtype,
             BaseClass = null, // FIXME
             Location = location,
-            Properties = new Dictionary<string, object>(),
+            Properties = new(),
             PropertyLocations = propertyLocations
         };
 

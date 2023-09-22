@@ -166,13 +166,15 @@ public class LSFReader : IDisposable
             {
                 var attribute = BinUtils.ReadStruct<LSFAttributeEntryV2>(reader);
 
-                var resolved = new LSFAttributeInfo();
-                resolved.NameIndex = attribute.NameIndex;
-                resolved.NameOffset = attribute.NameOffset;
-                resolved.TypeId = attribute.TypeId;
-                resolved.Length = attribute.Length;
-                resolved.DataOffset = dataOffset;
-                resolved.NextAttributeIndex = -1;
+                var resolved = new LSFAttributeInfo
+                {
+                    NameIndex = attribute.NameIndex,
+                    NameOffset = attribute.NameOffset,
+                    TypeId = attribute.TypeId,
+                    Length = attribute.Length,
+                    DataOffset = dataOffset,
+                    NextAttributeIndex = -1
+                };
 
                 var nodeIndex = attribute.NodeIndex + 1;
                 if (prevAttributeRefs.Count > nodeIndex)
@@ -240,13 +242,15 @@ public class LSFReader : IDisposable
             {
                 var attribute = BinUtils.ReadStruct<LSFAttributeEntryV3>(reader);
 
-                var resolved = new LSFAttributeInfo();
-                resolved.NameIndex = attribute.NameIndex;
-                resolved.NameOffset = attribute.NameOffset;
-                resolved.TypeId = attribute.TypeId;
-                resolved.Length = attribute.Length;
-                resolved.DataOffset = attribute.Offset;
-                resolved.NextAttributeIndex = attribute.NextAttributeIndex;
+                var resolved = new LSFAttributeInfo
+                {
+                    NameIndex = attribute.NameIndex,
+                    NameOffset = attribute.NameOffset,
+                    TypeId = attribute.TypeId,
+                    Length = attribute.Length,
+                    DataOffset = attribute.Offset,
+                    NextAttributeIndex = attribute.NextAttributeIndex
+                };
 
                 Attributes.Add(resolved);
             }
@@ -281,12 +285,12 @@ public class LSFReader : IDisposable
                 }
 #endif
 
-            return new MemoryStream(buf);
+            return new(buf);
         }
 
         if (sizeOnDisk == 0 && uncompressedSize == 0) // no data
         {
-            return new MemoryStream();
+            return new();
         }
             
         bool chunked = (Version >= LSFVersion.VerChunkedCompress && allowChunked);
@@ -302,7 +306,7 @@ public class LSFReader : IDisposable
             }
 #endif
 
-        return new MemoryStream(uncompressed);
+        return new(uncompressed);
     }
 
     private void ReadHeaders(BinaryReader reader)
@@ -348,7 +352,7 @@ public class LSFReader : IDisposable
         if (Version < LSFVersion.VerBG3AdditionalBlob)
         {
             var meta = BinUtils.ReadStruct<LSFMetadataV5>(reader);
-            Metadata = new LSFMetadataV6
+            Metadata = new()
             {
                 StringsUncompressedSize = meta.StringsUncompressedSize,
                 StringsSizeOnDisk = meta.StringsSizeOnDisk,
@@ -374,14 +378,14 @@ public class LSFReader : IDisposable
         {
             ReadHeaders(reader);
 
-            Names = new List<List<String>>();
+            Names = new();
             var namesStream = Decompress(reader, Metadata.StringsSizeOnDisk, Metadata.StringsUncompressedSize, "strings.bin", false);
             using (namesStream)
             {
                 ReadNames(namesStream);
             }
 
-            Nodes = new List<LSFNodeInfo>();
+            Nodes = new();
             var nodesStream = Decompress(reader, Metadata.NodesSizeOnDisk, Metadata.NodesUncompressedSize, "nodes.bin", true);
             using (nodesStream)
             {
@@ -390,7 +394,7 @@ public class LSFReader : IDisposable
                 ReadNodes(nodesStream, longNodes);
             }
 
-            Attributes = new List<LSFAttributeInfo>();
+            Attributes = new();
             var attributesStream = Decompress(reader, Metadata.AttributesSizeOnDisk, Metadata.AttributesUncompressedSize, "attributes.bin", true);
             using (attributesStream)
             {
@@ -408,7 +412,7 @@ public class LSFReader : IDisposable
 
             this.Values = Decompress(reader, Metadata.ValuesSizeOnDisk, Metadata.ValuesUncompressedSize, "values.bin", true);
 
-            Resource resource = new Resource();
+            Resource resource = new();
             ReadRegions(resource);
 
             resource.Metadata.MajorVersion = GameVersion.Major;
@@ -423,7 +427,7 @@ public class LSFReader : IDisposable
     private void ReadRegions(Resource resource)
     {
         var attrReader = new BinaryReader(Values);
-        NodeInstances = new List<Node>();
+        NodeInstances = new();
         for (int i = 0; i < Nodes.Count; i++)
         {
             var defn = Nodes[i];
@@ -493,8 +497,11 @@ public class LSFReader : IDisposable
             case NodeAttribute.DataType.DT_WString:
             case NodeAttribute.DataType.DT_LSWString:
             {
-                var attr = new NodeAttribute(type);
-                attr.Value = ReadString(reader, (int)length);
+                var attr = new NodeAttribute(type)
+                {
+                    Value = ReadString(reader, (int)length)
+                };
+
                 return attr;
             }
 
@@ -526,15 +533,21 @@ public class LSFReader : IDisposable
 
             case NodeAttribute.DataType.DT_TranslatedFSString:
             {
-                var attr = new NodeAttribute(type);
-                attr.Value = ReadTranslatedFSString(reader);
+                var attr = new NodeAttribute(type)
+                {
+                    Value = ReadTranslatedFSString(reader)
+                };
+
                 return attr;
             }
 
             case NodeAttribute.DataType.DT_ScratchBuffer:
             {
-                var attr = new NodeAttribute(type);
-                attr.Value = reader.ReadBytes((int)length);
+                var attr = new NodeAttribute(type)
+                {
+                    Value = reader.ReadBytes((int)length)
+                };
+
                 return attr;
             }
 
@@ -562,7 +575,7 @@ public class LSFReader : IDisposable
         str.Handle = ReadString(reader, handleLength);
 
         var arguments = reader.ReadInt32();
-        str.Arguments = new List<TranslatedFSStringArgument>(arguments);
+        str.Arguments = new(arguments);
         for (int i = 0; i < arguments; i++)
         {
             var arg = new TranslatedFSStringArgument();
@@ -600,7 +613,7 @@ public class LSFReader : IDisposable
 
     private string ReadString(BinaryReader reader)
     {
-        List<byte> bytes = new List<byte>();
+        List<byte> bytes = new();
         while (true)
         {
             var b = reader.ReadByte();

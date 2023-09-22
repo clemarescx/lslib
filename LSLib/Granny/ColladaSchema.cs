@@ -9849,14 +9849,14 @@ public class ellipsoid
 /// </summary>
 public partial class COLLADA
 {
-    private static Regex regex = new Regex(@"\s+");
+    private static Regex regex = new(@"\s+");
 
     public static string ConvertFromArray<T>(IList<T> array)
     {
         if (array == null)
             return null;
 
-        StringBuilder text = new StringBuilder();
+        StringBuilder text = new();
         if (typeof (T) == typeof (double))
         {
             // If type is double, then use a plain ToString with no exponent
@@ -9930,7 +9930,7 @@ public partial class COLLADA
 
     public static COLLADA Load(string fileName)
     {
-        FileStream stream = new FileStream(fileName, FileMode.Open);
+        FileStream stream = new(fileName, FileMode.Open);
         COLLADA result;
         try
         {
@@ -9945,15 +9945,15 @@ public partial class COLLADA
 
     public static COLLADA Load(Stream stream)
     {
-        StreamReader str = new StreamReader(stream);
-        XmlSerializer xSerializer = new XmlSerializer(typeof(COLLADA));
+        StreamReader str = new(stream);
+        XmlSerializer xSerializer = new(typeof(COLLADA));
 
         return (COLLADA)xSerializer.Deserialize(str);
     }
 
     public void Save(string fileName)
     {
-        FileStream stream = new FileStream(fileName, FileMode.Create);
+        FileStream stream = new(fileName, FileMode.Create);
         try
         {
             Save(stream);
@@ -9966,8 +9966,8 @@ public partial class COLLADA
 
     public void Save(Stream stream)
     {
-        XmlTextWriter writer = new XmlTextWriter(stream, Encoding.UTF8);
-        XmlSerializer xSerializer = new XmlSerializer(typeof(COLLADA));
+        XmlTextWriter writer = new(stream, Encoding.UTF8);
+        XmlSerializer xSerializer = new(typeof(COLLADA));
         writer.Formatting = Formatting.Indented;
         xSerializer.Serialize(writer, this);
     }

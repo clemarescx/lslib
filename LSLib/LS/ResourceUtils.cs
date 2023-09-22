@@ -44,10 +44,13 @@ public class ResourceConversionParameters
 
     public static ResourceConversionParameters FromGameVersion(Game game)
     {
-        ResourceConversionParameters p = new ResourceConversionParameters();
-        p.PAKVersion = game.PAKVersion();
-        p.LSF = game.LSFVersion();
-        p.LSX = game.LSXVersion();
+        ResourceConversionParameters p = new()
+        {
+            PAKVersion = game.PAKVersion(),
+            LSF = game.LSFVersion(),
+            LSX = game.LSXVersion()
+        };
+
         return p;
     }
 }
@@ -150,9 +153,12 @@ public class ResourceUtils
             {
                 case ResourceFormat.LSX:
                 {
-                    var writer = new LSXWriter(file);
-                    writer.Version = conversionParams.LSX;
-                    writer.PrettyPrint = conversionParams.PrettyPrint;
+                    var writer = new LSXWriter(file)
+                    {
+                        Version = conversionParams.LSX,
+                        PrettyPrint = conversionParams.PrettyPrint
+                    };
+
                     writer.Write(resource);
                     break;
                 }
@@ -166,19 +172,25 @@ public class ResourceUtils
 
                 case ResourceFormat.LSF:
                 {
-                    var writer = new LSFWriter(file);
-                    writer.Version = conversionParams.LSF;
-                    writer.EncodeSiblingData = conversionParams.LSFEncodeSiblingData;
-                    writer.Compression = conversionParams.Compression;
-                    writer.CompressionLevel = conversionParams.CompressionLevel;
+                    var writer = new LSFWriter(file)
+                    {
+                        Version = conversionParams.LSF,
+                        EncodeSiblingData = conversionParams.LSFEncodeSiblingData,
+                        Compression = conversionParams.Compression,
+                        CompressionLevel = conversionParams.CompressionLevel
+                    };
+
                     writer.Write(resource);
                     break;
                 }
 
                 case ResourceFormat.LSJ:
                 {
-                    var writer = new LSJWriter(file);
-                    writer.PrettyPrint = conversionParams.PrettyPrint;
+                    var writer = new LSJWriter(file)
+                    {
+                        PrettyPrint = conversionParams.PrettyPrint
+                    };
+
                     writer.Write(resource);
                     break;
                 }

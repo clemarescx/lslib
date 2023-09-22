@@ -69,7 +69,7 @@ public class Matrix
 
     public Matrix GetCol(int k)
     {
-        Matrix m = new Matrix(rows, 1);
+        Matrix m = new(rows, 1);
         for (int i = 0; i < rows; i++) m[i, 0] = mat[i, k];
         return m;
     }
@@ -137,7 +137,7 @@ public class Matrix
         if (rows != v.rows) throw new MException("Wrong number of results in solution vector!");
         if (L == null) MakeLU();
 
-        Matrix b = new Matrix(rows, 1);
+        Matrix b = new(rows, 1);
         for (int i = 0; i < rows; i++) b[i, 0] = v[pi[i], 0]; // switch two items in "v" due to permutation matrix
 
         Matrix z = SubsForth(L, b);
@@ -150,7 +150,7 @@ public class Matrix
     {
         if (L == null) MakeLU();
 
-        Matrix inv = new Matrix(rows, cols);
+        Matrix inv = new(rows, cols);
 
         for (int i = 0; i < rows; i++)
         {
@@ -182,7 +182,7 @@ public class Matrix
 
     public Matrix Duplicate() // Function returns the copy of this matrix
     {
-        Matrix matrix = new Matrix(rows, cols);
+        Matrix matrix = new(rows, cols);
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 matrix[i, j] = mat[i, j];
@@ -193,7 +193,7 @@ public class Matrix
     {
         if (A.L == null) A.MakeLU();
         int n = A.rows;
-        Matrix x = new Matrix(n, 1);
+        Matrix x = new(n, 1);
 
         for (int i = 0; i < n; i++)
         {
@@ -208,7 +208,7 @@ public class Matrix
     {
         if (A.L == null) A.MakeLU();
         int n = A.rows;
-        Matrix x = new Matrix(n, 1);
+        Matrix x = new(n, 1);
 
         for (int i = n - 1; i > -1; i--)
         {
@@ -221,7 +221,7 @@ public class Matrix
 
     public static Matrix ZeroMatrix(int iRows, int iCols) // Function generates the zero matrix
     {
-        Matrix matrix = new Matrix(iRows, iCols);
+        Matrix matrix = new(iRows, iCols);
         for (int i = 0; i < iRows; i++)
             for (int j = 0; j < iCols; j++)
                 matrix[i, j] = 0;
@@ -238,8 +238,8 @@ public class Matrix
 
     public static Matrix RandomMatrix(int iRows, int iCols, int dispersion) // Function generates the random matrix
     {
-        Random random = new Random();
-        Matrix matrix = new Matrix(iRows, iCols);
+        Random random = new();
+        Matrix matrix = new(iRows, iCols);
         for (int i = 0; i < iRows; i++)
             for (int j = 0; j < iCols; j++)
                 matrix[i, j] = random.Next(-dispersion, dispersion);
@@ -251,7 +251,7 @@ public class Matrix
         string s = NormalizeMatrixString(ps);
         string[] rows = Regex.Split(s, "\r\n");
         string[] nums = rows[0].Split(' ');
-        Matrix matrix = new Matrix(rows.Length, nums.Length);
+        Matrix matrix = new(rows.Length, nums.Length);
         try
         {
             for (int i = 0; i < rows.Length; i++)
@@ -277,7 +277,7 @@ public class Matrix
 
     public static Matrix Transpose(Matrix m) // Matrix transpose, for any rectangular matrix
     {
-        Matrix t = new Matrix(m.cols, m.rows);
+        Matrix t = new(m.cols, m.rows);
         for (int i = 0; i < m.rows; i++)
             for (int j = 0; j < m.cols; j++)
                 t[j, i] = m[i, j];
@@ -390,7 +390,7 @@ public class Matrix
         for (int i = 0; i < n - 4; i++) // rows
         {
             z = (int)Math.Pow(2, n - i - 1);
-            for (int j = 0; j < 9; j++) mField[i, j] = new Matrix(z, z);
+            for (int j = 0; j < 9; j++) mField[i, j] = new(z, z);
         }
 
         SafeAplusBintoC(A, 0, 0, A, h, h, mField[0, 0], h);
@@ -421,7 +421,7 @@ public class Matrix
         SafeAplusBintoC(B, 0, h, B, h, h, mField[0, 1], h);
         StrassenMultiplyRun(mField[0, 0], mField[0, 1], mField[0, 1 + 7], 1, mField); // (A12 - A22) * (B21 + B22);
 
-        R = new Matrix(A.rows, B.cols); // result
+        R = new(A.rows, B.cols); // result
 
         /// C11
         for (int i = 0; i < Math.Min(h, R.rows); i++)     // rows
@@ -526,7 +526,7 @@ public class Matrix
     }
     private static Matrix Multiply(double n, Matrix m) // Multiplication by constant n
     {
-        Matrix r = new Matrix(m.rows, m.cols);
+        Matrix r = new(m.rows, m.cols);
         for (int i = 0; i < m.rows; i++)
             for (int j = 0; j < m.cols; j++)
                 r[i, j] = m[i, j] * n;
@@ -535,7 +535,7 @@ public class Matrix
     private static Matrix Add(Matrix m1, Matrix m2) // Sčítání matic
     {
         if (m1.rows != m2.rows || m1.cols != m2.cols) throw new MException("Matrices must have the same dimensions!");
-        Matrix r = new Matrix(m1.rows, m1.cols);
+        Matrix r = new(m1.rows, m1.cols);
         for (int i = 0; i < r.rows; i++)
             for (int j = 0; j < r.cols; j++)
                 r[i, j] = m1[i, j] + m2[i, j];

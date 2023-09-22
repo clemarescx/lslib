@@ -45,7 +45,7 @@ public class DaK32fC32f : AnimationCurveData
 
     public void SetKnots(List<float> knots)
     {
-        Knots = new List<float>(knots);
+        Knots = new(knots);
     }
 
     public override List<Vector3> GetPoints()

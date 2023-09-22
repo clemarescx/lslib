@@ -114,7 +114,7 @@ public class MultiValueEnumParser : IStatValueParser
 
     public MultiValueEnumParser(StatEnumeration enumeration)
     {
-        Parser = new EnumParser(enumeration);
+        Parser = new(enumeration);
     }
 
     public object Parse(string value, ref bool succeeded, ref string errorText)
@@ -197,7 +197,7 @@ public class MultiValueStatReferenceParser : IStatValueParser
 
     public MultiValueStatReferenceParser(IStatReferenceValidator validator, List<StatReferenceConstraint> constraints)
     {
-        Parser = new StatReferenceParser(validator, constraints);
+        Parser = new(validator, constraints);
     }
 
     public object Parse(string value, ref bool succeeded, ref string errorText)
@@ -240,7 +240,7 @@ public class ExpressionParser : IStatValueParser
         var valueBytes = Encoding.UTF8.GetBytes("__TYPE_" + ExpressionType + "__ " + value);
         using (var buf = new MemoryStream(valueBytes))
         {
-            List<string> errorTexts = new List<string>();
+            List<string> errorTexts = new();
 
             var scanner = new StatPropertyScanner();
             scanner.SetSource(buf);
@@ -275,7 +275,7 @@ public class ConditionsParser : IStatValueParser
 
     public ConditionsParser(StatDefinitionRepository definitions, StatValueParserFactory parserFactory)
     {
-        ExprParser = new ExpressionParser("Conditions", definitions, parserFactory);
+        ExprParser = new("Conditions", definitions, parserFactory);
     }
 
     public object Parse(string value, ref bool succeeded, ref string errorText)

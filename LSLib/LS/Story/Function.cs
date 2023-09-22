@@ -13,14 +13,14 @@ public class FunctionSignature : OsirisSerializable
     public void Read(OsiReader reader)
     {
         Name = reader.ReadString();
-        OutParamMask = new List<byte>();
+        OutParamMask = new();
         var outParamBytes = reader.ReadUInt32();
         while (outParamBytes-- > 0)
         {
             OutParamMask.Add(reader.ReadByte());
         }
 
-        Parameters = new ParameterList();
+        Parameters = new();
         Parameters.Read(reader);
     }
 
@@ -59,7 +59,7 @@ public class ParameterList : OsirisSerializable
 
     public void Read(OsiReader reader)
     {
-        Types = new List<UInt32>();
+        Types = new();
         var count = reader.ReadByte();
         while (count-- > 0)
         {
@@ -145,7 +145,7 @@ public class Function : OsirisSerializable
         Meta2 = reader.ReadUInt32();
         Meta3 = reader.ReadUInt32();
         Meta4 = reader.ReadUInt32();
-        Name = new FunctionSignature();
+        Name = new();
         Name.Read(reader);
     }
 

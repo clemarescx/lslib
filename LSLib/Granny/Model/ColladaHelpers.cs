@@ -21,7 +21,7 @@ static class NodeHelpers
     public static Matrix4 ToMatrix4(this matrix m)
     {
         var v = m.Values;
-        return new Matrix4(
+        return new(
             (float)v[0], (float)v[1], (float)v[2], (float)v[3],
             (float)v[4], (float)v[5], (float)v[6], (float)v[7],
             (float)v[8], (float)v[9], (float)v[10], (float)v[11],
@@ -65,7 +65,7 @@ static class NodeHelpers
                     ItemsChoiceType2.translate => (n.Items[i] as TargetableFloat3).TranslationToMatrix4() * Matrix4.Identity,
                     ItemsChoiceType2.rotate    => (n.Items[i] as rotate).ToMatrix4() * Matrix4.Identity,
                     ItemsChoiceType2.scale     => (n.Items[i] as TargetableFloat3).ScaleToMatrix4() * Matrix4.Identity,
-                    _                          => throw new Exception("Unsupported Collada NODE transform: " + name)
+                    _                          => throw new("Unsupported Collada NODE transform: " + name)
                 };
             }
         }
@@ -204,7 +204,7 @@ class ColladaHelpers
 
     public static Matrix4 FloatsToMatrix(float[] items)
     {
-        return new Matrix4(
+        return new(
             items[0], items[1], items[2], items[3],
             items[4], items[5], items[6], items[7],
             items[8], items[9], items[10], items[11],
@@ -223,7 +223,7 @@ class ColladaHelpers
         var positions = new List<Vector3>(x.Count);
         for (var i = 0; i < x.Count; i++)
         {
-            positions.Add(new Vector3(x[i], y[i], z[i]));
+            positions.Add(new(x[i], y[i], z[i]));
         }
 
         return positions;

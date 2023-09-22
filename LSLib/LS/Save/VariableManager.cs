@@ -12,8 +12,8 @@ namespace LSLib.LS.Save;
 public class OsirisVariableHelper
 {
     private Int32 NumericStringId;
-    private Dictionary<string, Int32> IdentifierToKey = new Dictionary<string, Int32>();
-    private Dictionary<Int32, string> KeyToIdentifier = new Dictionary<Int32, string>();
+    private Dictionary<string, Int32> IdentifierToKey = new();
+    private Dictionary<Int32, string> KeyToIdentifier = new();
 
     public void Load(Node helper)
     {
@@ -41,8 +41,8 @@ public class OsirisVariableHelper
 
 abstract public class VariableHolder<TValue>
 {
-    protected List<TValue> Values = new List<TValue>();
-    private List<UInt16> Remaps = new List<UInt16>();
+    protected List<TValue> Values = new();
+    private List<UInt16> Remaps = new();
         
     public TValue GetRaw(int index)
     {
@@ -247,7 +247,7 @@ public class Float3VariableHolder : VariableHolder<Vector3>
         {
             for (var i = 0; i < numVars; i++)
             {
-                Vector3 vec = new Vector3
+                Vector3 vec = new()
                 {
                     X = reader.ReadSingle(),
                     Y = reader.ReadSingle(),
@@ -308,13 +308,13 @@ internal struct Key2TableEntry
 public class VariableManager
 {
     private readonly OsirisVariableHelper VariableHelper;
-    private readonly Dictionary<int, Key2TableEntry> Keys = new Dictionary<int, Key2TableEntry>();
-    private readonly IntVariableHolder IntList = new IntVariableHolder();
-    private readonly Int64VariableHolder Int64List = new Int64VariableHolder();
-    private readonly FloatVariableHolder FloatList = new FloatVariableHolder();
-    private readonly StringVariableHolder StringList = new StringVariableHolder();
-    private readonly StringVariableHolder FixedStringList = new StringVariableHolder();
-    private readonly Float3VariableHolder Float3List = new Float3VariableHolder();
+    private readonly Dictionary<int, Key2TableEntry> Keys = new();
+    private readonly IntVariableHolder IntList = new();
+    private readonly Int64VariableHolder Int64List = new();
+    private readonly FloatVariableHolder FloatList = new();
+    private readonly StringVariableHolder StringList = new();
+    private readonly StringVariableHolder FixedStringList = new();
+    private readonly Float3VariableHolder Float3List = new();
 
     public VariableManager(OsirisVariableHelper variableHelper)
     {

@@ -239,7 +239,7 @@ public class StoryReader
     {
         if (reader.Ver < OsiVersion.VerAddTypeMap)
         {
-            return new Dictionary<uint, OsirisType>();
+            return new();
         }
 
         var types = ReadTypes(reader);
@@ -301,7 +301,7 @@ public class StoryReader
             if (reader.Ver >= OsiVersion.VerExternalStringTable && reader.Ver < OsiVersion.VerRemoveExternalStringTable)
                 story.ExternalStringTable = ReadStrings(reader);
             else
-                story.ExternalStringTable = new List<string>();
+                story.ExternalStringTable = new();
 
             story.Types[0] = OsirisType.MakeBuiltin(0, "UNKNOWN");
             story.Types[1] = OsirisType.MakeBuiltin(1, "INTEGER");
@@ -340,7 +340,7 @@ public class StoryReader
             }
             else
             {
-                story.Enums = new Dictionary<uint, OsirisEnum>();
+                story.Enums = new();
             }
 
             story.DivObjects = reader.ReadList<OsirisDivObject>();
@@ -352,7 +352,7 @@ public class StoryReader
             story.GlobalActions = reader.ReadList<Call>();
             story.ShortTypeIds = (bool)reader.ShortTypeIds;
 
-            story.FunctionSignatureMap = new Dictionary<string, Function>();
+            story.FunctionSignatureMap = new();
             foreach (var func in story.Functions)
             {
                 story.FunctionSignatureMap.Add(func.Name.Name + "/" + func.Name.Parameters.Types.Count.ToString(), func);
@@ -441,7 +441,7 @@ public class StoryWriter
 
     public void Write(Stream stream, Story story, bool leaveOpen)
     {
-        using (Writer = new OsiWriter(stream, leaveOpen))
+        using (Writer = new(stream, leaveOpen))
         {
             foreach (var node in story.Nodes)
             {

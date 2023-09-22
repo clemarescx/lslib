@@ -27,10 +27,10 @@ public class RelOpNode : RelNode
         LeftValueIndex = reader.ReadSByte();
         RightValueIndex = reader.ReadSByte();
 
-        LeftValue = new Value();
+        LeftValue = new();
         LeftValue.Read(reader);
 
-        RightValue = new Value();
+        RightValue = new();
         RightValue.Read(reader);
 
         RelOp = (RelOpType)reader.ReadInt32();

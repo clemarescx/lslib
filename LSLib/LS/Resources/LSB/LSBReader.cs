@@ -8,7 +8,7 @@ public class LSBReader : IDisposable
 {
     private Stream stream;
     private BinaryReader reader;
-    private Dictionary<UInt32, string> staticStrings = new Dictionary<UInt32, string>();
+    private Dictionary<UInt32, string> staticStrings = new();
     private bool IsBG3;
 
     public LSBReader(Stream stream)
@@ -23,7 +23,7 @@ public class LSBReader : IDisposable
 
     public Resource Read()
     {
-        using (this.reader = new BinaryReader(stream))
+        using (this.reader = new(stream))
         {
             // Check for BG3 header
             var header = BinUtils.ReadStruct<LSBHeader>(reader);
@@ -40,8 +40,11 @@ public class LSBReader : IDisposable
             IsBG3 = (header.Signature == BitConverter.ToUInt32(LSBHeader.SignatureBG3, 0));
             ReadStaticStrings();
 
-            Resource rsrc = new Resource();
-            rsrc.Metadata = header.Metadata;
+            Resource rsrc = new()
+            {
+                Metadata = header.Metadata
+            };
+
             ReadRegions(rsrc);
             return rsrc;
         }
@@ -55,8 +58,11 @@ public class LSBReader : IDisposable
             UInt32 regionNameId = reader.ReadUInt32();
             UInt32 regionOffset = reader.ReadUInt32();
 
-            Region rgn = new Region();
-            rgn.RegionName = staticStrings[regionNameId];
+            Region rgn = new()
+            {
+                RegionName = staticStrings[regionNameId]
+            };
+
             var lastRegionPos = stream.Position;
 
             stream.Seek(regionOffset, SeekOrigin.Begin);
@@ -85,8 +91,11 @@ public class LSBReader : IDisposable
 
         for (UInt32 i = 0; i < childCount; i++)
         {
-            Node child = new Node();
-            child.Parent = node;
+            Node child = new()
+            {
+                Parent = node
+            };
+
             ReadNode(child);
             node.AppendChild(child);
         }
@@ -101,16 +110,22 @@ public class LSBReader : IDisposable
             case NodeAttribute.DataType.DT_FixedString:
             case NodeAttribute.DataType.DT_LSString:
             {
-                var attr = new NodeAttribute(type);
-                attr.Value = ReadString(true);
+                var attr = new NodeAttribute(type)
+                {
+                    Value = ReadString(true)
+                };
+
                 return attr;
             }
 
             case NodeAttribute.DataType.DT_WString:
             case NodeAttribute.DataType.DT_LSWString:
             {
-                var attr = new NodeAttribute(type);
-                attr.Value = ReadWideString(true);
+                var attr = new NodeAttribute(type)
+                {
+                    Value = ReadWideString(true)
+                };
+
                 return attr;
             }
 

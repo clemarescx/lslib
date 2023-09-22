@@ -24,7 +24,7 @@ public class RuleNode : RelNode
         base.Read(reader);
         Calls = reader.ReadList<Call>();
 
-        Variables = new List<Variable>();
+        Variables = new();
         var variables = reader.ReadByte();
         while (variables-- > 0)
         {

@@ -19,11 +19,11 @@ public class ASTNode
 public class ASTDeclarations : ASTNode
 {
     // Debug options
-    public List<String> Options = new List<String>();
+    public List<String> Options = new();
     // Declared type aliases
-    public List<ASTAlias> Aliases = new List<ASTAlias>();
+    public List<ASTAlias> Aliases = new();
     // Declared functions
-    public List<ASTFunction> Functions = new List<ASTFunction>();
+    public List<ASTFunction> Functions = new();
 }
 
 /// <summary>
@@ -73,7 +73,7 @@ public class ASTFunction : ASTNode
 public class ASTFunctionParamList : ASTNode
 {
     // Function parameters
-    public List<ASTFunctionParam> Params = new List<ASTFunctionParam>();
+    public List<ASTFunctionParam> Params = new();
 }
 
 /// <summary>

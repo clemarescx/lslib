@@ -35,7 +35,7 @@ public class LSXReader : IDisposable
         Debug.Assert(fs.Handle != null);
 
         var arguments = Convert.ToInt32(reader["arguments"]);
-        fs.Arguments = new List<TranslatedFSStringArgument>(arguments);
+        fs.Arguments = new(arguments);
         if (arguments > 0)
         {
             while (reader.Read() && reader.NodeType != XmlNodeType.Element);
@@ -54,9 +54,11 @@ public class LSXReader : IDisposable
                         throw new InvalidFormatException(String.Format("Expected <argument>: {0}", reader.Name));
                     }
 
-                    var arg = new TranslatedFSStringArgument();
-                    arg.Key = reader["key"];
-                    arg.Value = reader["value"];
+                    var arg = new TranslatedFSStringArgument
+                    {
+                        Key = reader["key"],
+                        Value = reader["value"]
+                    };
 
                     while (reader.Read() && reader.NodeType != XmlNodeType.Element);
                     if (reader.Name != "string")
@@ -64,7 +66,7 @@ public class LSXReader : IDisposable
                         throw new InvalidFormatException(String.Format("Expected <string>: {0}", reader.Name));
                     }
 
-                    arg.String = new TranslatedFSString();
+                    arg.String = new();
                     ReadTranslatedFSString(arg.String);
 
                     fs.Arguments.Add(arg);
@@ -110,8 +112,11 @@ public class LSXReader : IDisposable
                     throw new InvalidFormatException("A <region> can only start at the root level of a resource.");
 
                 Debug.Assert(!reader.IsEmptyElement);
-                var region = new Region();
-                region.RegionName = reader["id"];
+                var region = new Region
+                {
+                    RegionName = reader["id"]
+                };
+
                 Debug.Assert(region.RegionName != null);
                 resource.Regions.Add(region.RegionName, region);
                 currentRegion = region;
@@ -130,8 +135,10 @@ public class LSXReader : IDisposable
                 else
                 {
                     // New node under the current parent
-                    node = new Node();
-                    node.Parent = stack.Last();
+                    node = new()
+                    {
+                        Parent = stack.Last()
+                    };
                 }
 
                 node.Name = reader["id"];
@@ -260,9 +267,9 @@ public class LSXReader : IDisposable
 
     public Resource Read()
     {
-        resource = new Resource();
+        resource = new();
         currentRegion = null;
-        stack = new List<Node>();
+        stack = new();
         lastLine = lastColumn = 0;
         var resultResource = resource;
 
@@ -274,7 +281,7 @@ public class LSXReader : IDisposable
         {
             if (lastLine > 0)
             {
-                throw new Exception($"Parsing error at or near line {lastLine}, column {lastColumn}:{Environment.NewLine}{e.Message}", e);
+                throw new($"Parsing error at or near line {lastLine}, column {lastColumn}:{Environment.NewLine}{e.Message}", e);
             }
             else
             {

@@ -24,12 +24,12 @@ public abstract class JoinNode : TreeNode
         RightAdapterRef = reader.ReadAdapterRef();
 
         LeftDatabaseNodeRef = reader.ReadNodeRef();
-        LeftDatabaseJoin = new NodeEntryItem();
+        LeftDatabaseJoin = new();
         LeftDatabaseJoin.Read(reader);
         LeftDatabaseIndirection = reader.ReadByte();
 
         RightDatabaseNodeRef = reader.ReadNodeRef();
-        RightDatabaseJoin = new NodeEntryItem();
+        RightDatabaseJoin = new();
         RightDatabaseJoin.Read(reader);
         RightDatabaseIndirection = reader.ReadByte();
     }

@@ -31,7 +31,7 @@ public abstract class DataNode : Node
                 if (!reference.GoalRef.IsNull &&
                     ruleNode is RuleNode)
                 {
-                    (ruleNode as RuleNode).DerivedGoalRef = new GoalReference(story, reference.GoalRef.Index);
+                    (ruleNode as RuleNode).DerivedGoalRef = new(story, reference.GoalRef.Index);
                 }
             }
         }

@@ -22,7 +22,7 @@ public class PackageWriter : IDisposable
 
     private readonly Package _package;
     private readonly String _path;
-    private readonly List<Stream> _streams = new List<Stream>();
+    private readonly List<Stream> _streams = new();
     public PackageVersion Version = Package.CurrentVersion;
     public WriteProgressDelegate WriteProgress = delegate { };
 

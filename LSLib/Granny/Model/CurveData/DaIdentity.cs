@@ -18,16 +18,16 @@ public class DaIdentity : AnimationCurveData
 
     public override List<float> GetKnots()
     {
-        return new List<float>() { 0.0f };
+        return new() { 0.0f };
     }
 
     public override List<Vector3> GetPoints()
     {
-        return new List<Vector3>() { new Vector3(0.0f, 0.0f, 0.0f) };
+        return new() { new(0.0f, 0.0f, 0.0f) };
     }
 
     public override List<Matrix3> GetMatrices()
     {
-        return new List<Matrix3>() { Matrix3.Identity };
+        return new() { Matrix3.Identity };
     }
 }

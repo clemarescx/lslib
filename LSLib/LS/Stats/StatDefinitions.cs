@@ -13,15 +13,15 @@ public class StatEnumeration
     public StatEnumeration(string name)
     {
         Name = name;
-        Values = new List<string>();
-        ValueToIndexMap = new Dictionary<string, int>();
+        Values = new();
+        ValueToIndexMap = new();
     }
 
     public void AddItem(int index, string value)
     {
         if (Values.Count != index)
         {
-            throw new Exception("Enumeration items must be added in order.");
+            throw new("Enumeration items must be added in order.");
         }
 
         Values.Add(value);
@@ -60,8 +60,8 @@ public class StatSubtypeDefinition
     {
         Type = type;
         Name = name;
-        Fields = new Dictionary<string, StatField>();
-        SubObjects = new Dictionary<string, StatSubtypeDefinition>();
+        Fields = new();
+        SubObjects = new();
     }
 }
 
@@ -85,7 +85,7 @@ public class StatTypeDefinition
     {
         Name = name;
         SubtypeProperty = subtypeProperty;
-        Subtypes = new Dictionary<string, StatSubtypeDefinition>();
+        Subtypes = new();
     }
 }
 
@@ -94,8 +94,8 @@ public class StatDefinitionRepository
     // Version of modified Enumerations.xml and StatObjectDefinitions.sod we expect
     public const string CustomizationsVersion = "1";
 
-    public readonly Dictionary<string, StatEnumeration> Enumerations = new Dictionary<string, StatEnumeration>();
-    public readonly Dictionary<string, StatTypeDefinition> Definitions = new Dictionary<string, StatTypeDefinition>();
+    public readonly Dictionary<string, StatEnumeration> Enumerations = new();
+    public readonly Dictionary<string, StatTypeDefinition> Definitions = new();
 
     private void AddField(StatTypeDefinition definition, StatSubtypeDefinition subtype, XElement field)
     {
@@ -124,7 +124,7 @@ public class StatDefinitionRepository
                 }
                 else if (definition.NameProperty != fieldName)
                 {
-                    throw new Exception(
+                    throw new(
                         $"Conflicting Name property for type '{definition.Name}': First seen using '{definition.NameProperty}', now seen using '{fieldName}'.");
                 }
 
@@ -137,7 +137,7 @@ public class StatDefinitionRepository
                 }
                 else if (definition.BaseClassProperty != fieldName)
                 {
-                    throw new Exception(
+                    throw new(
                         $"Conflicting BaseClass for type '{definition.Name}': First seen using '{definition.BaseClassProperty}', now seen using '{fieldName}'.");
                 }
 
@@ -145,11 +145,11 @@ public class StatDefinitionRepository
 
             case "StatReference":
             case "StatReferences":
-                referenceConstraints = new List<StatReferenceConstraint>();
+                referenceConstraints = new();
                 var descriptions = field.Element("stat_descriptions");
                 if (descriptions == null)
                 {
-                    throw new Exception("Field of type 'StatReference' must have a list of stat types in the <stat_descriptions> node");
+                    throw new("Field of type 'StatReference' must have a list of stat types in the <stat_descriptions> node");
                 }
 
                 var descs = descriptions.Elements("description");
@@ -182,7 +182,7 @@ public class StatDefinitionRepository
                 break;
 
             default:
-                throw new Exception($"Unsupported stat field type: '{typeName}'");
+                throw new($"Unsupported stat field type: '{typeName}'");
         }
 
         var statField = new StatField
@@ -228,7 +228,7 @@ public class StatDefinitionRepository
         if (!Definitions.TryGetValue(parentName, out StatTypeDefinition definition))
         {
             var subtypeProperty = defn.Attribute("subtype_property")?.Value ?? null;
-            definition = new StatTypeDefinition(parentName, subtypeProperty);
+            definition = new(parentName, subtypeProperty);
             Definitions.Add(parentName, definition);
         }
 
@@ -241,7 +241,7 @@ public class StatDefinitionRepository
         var name = enumEle.Attribute("name").Value;
         if (Enumerations.ContainsKey(name))
         {
-            throw new Exception($"Enumeration '{name}' defined multiple times!");
+            throw new($"Enumeration '{name}' defined multiple times!");
         }
 
         var enumType = new StatEnumeration(name);
@@ -275,11 +275,11 @@ public class StatDefinitionRepository
         var customizationVer = root.Attribute("lslib_customizations")?.Value;
         if (customizationVer == null)
         {
-            throw new Exception("Can only load StatObjectDefinitions.sod with LSLib-specific modifications");
+            throw new("Can only load StatObjectDefinitions.sod with LSLib-specific modifications");
         }
         else if (customizationVer != CustomizationsVersion)
         {
-            throw new Exception($"Needs StatObjectDefinitions.sod with customization version '{CustomizationsVersion}'; got version '{customizationVer}'");
+            throw new($"Needs StatObjectDefinitions.sod with customization version '{CustomizationsVersion}'; got version '{customizationVer}'");
         }
 
         var defnRoot = root.Element("stat_object_definitions");
@@ -297,11 +297,11 @@ public class StatDefinitionRepository
         var customizationVer = root.Attribute("lslib_customizations")?.Value;
         if (customizationVer == null)
         {
-            throw new Exception("Can only load Enumerations.xml with LSLib-specific modifications");
+            throw new("Can only load Enumerations.xml with LSLib-specific modifications");
         }
         else if (customizationVer != CustomizationsVersion)
         {
-            throw new Exception($"Needs Enumerations.xml with customization version '{CustomizationsVersion}'; got version '{customizationVer}'");
+            throw new($"Needs Enumerations.xml with customization version '{CustomizationsVersion}'; got version '{customizationVer}'");
         }
 
         var defnRoot = root.Element("enumerations");

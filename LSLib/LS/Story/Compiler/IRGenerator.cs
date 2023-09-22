@@ -25,10 +25,10 @@ public class IRGenerator
     {
         var goal = new IRGoal
         {
-            InitSection = new List<IRFact>(astGoal.InitSection.Count),
-            KBSection = new List<IRRule>(astGoal.KBSection.Count),
-            ExitSection = new List<IRFact>(astGoal.ExitSection.Count),
-            ParentTargetEdges = new List<IRTargetEdge>(astGoal.ParentTargetEdges.Count),
+            InitSection = new(astGoal.InitSection.Count),
+            KBSection = new(astGoal.KBSection.Count),
+            ExitSection = new(astGoal.ExitSection.Count),
+            ParentTargetEdges = new(astGoal.ParentTargetEdges.Count),
             Location = astGoal.Location
         };
 
@@ -49,9 +49,12 @@ public class IRGenerator
 
         foreach (var refGoal in astGoal.ParentTargetEdges)
         {
-            var edge = new IRTargetEdge();
-            edge.Goal = new IRGoalRef(refGoal.Goal);
-            edge.Location = refGoal.Location;
+            var edge = new IRTargetEdge
+            {
+                Goal = new(refGoal.Goal),
+                Location = refGoal.Location
+            };
+
             goal.ParentTargetEdges.Add(edge);
         }
 
@@ -64,10 +67,10 @@ public class IRGenerator
         {
             Goal = goal,
             Type = astRule.Type,
-            Conditions = new List<IRCondition>(astRule.Conditions.Count),
-            Actions = new List<IRStatement>(astRule.Actions.Count),
-            Variables = new List<IRRuleVariable>(),
-            VariablesByName = new Dictionary<String, IRRuleVariable>(),
+            Conditions = new(astRule.Conditions.Count),
+            Actions = new(astRule.Actions.Count),
+            Variables = new(),
+            VariablesByName = new(),
             Location = astRule.Location
         };
 
@@ -89,12 +92,12 @@ public class IRGenerator
         if (astAction is ASTGoalCompletedAction)
         {
             var astGoal = astAction as ASTGoalCompletedAction;
-            return new IRStatement
+            return new()
             {
                 Func = null,
                 Goal = rule.Goal,
                 Not = false,
-                Params = new List<IRValue>(),
+                Params = new(),
                 Location = astAction.Location
             };
         }
@@ -103,10 +106,10 @@ public class IRGenerator
             var astStmt = astAction as ASTStatement;
             var stmt = new IRStatement
             {
-                Func = new IRSymbolRef(new FunctionNameAndArity(astStmt.Name, astStmt.Params.Count)),
+                Func = new(new(astStmt.Name, astStmt.Params.Count)),
                 Goal = null,
                 Not = astStmt.Not,
-                Params = new List<IRValue>(astStmt.Params.Count),
+                Params = new(astStmt.Params.Count),
                 Location = astAction.Location
             };
 
@@ -130,9 +133,9 @@ public class IRGenerator
             var astFunc = astCondition as ASTFuncCondition;
             var func = new IRFuncCondition
             {
-                Func = new IRSymbolRef(new FunctionNameAndArity(astFunc.Name, astFunc.Params.Count)),
+                Func = new(new(astFunc.Name, astFunc.Params.Count)),
                 Not = astFunc.Not,
-                Params = new List<IRValue>(astFunc.Params.Count),
+                Params = new(astFunc.Params.Count),
                 TupleSize = -1,
                 Location = astCondition.Location
             };
@@ -209,9 +212,9 @@ public class IRGenerator
             var f = astFact as ASTFact;
             var fact = new IRFact
             {
-                Database = new IRSymbolRef(new FunctionNameAndArity(f.Database, f.Elements.Count)),
+                Database = new(new(f.Database, f.Elements.Count)),
                 Not = f.Not,
-                Elements = new List<IRConstant>(f.Elements.Count),
+                Elements = new(f.Elements.Count),
                 Goal = null,
                 Location = f.Location
             };
@@ -226,11 +229,11 @@ public class IRGenerator
         else if (astFact is ASTGoalCompletedFact)
         {
             var f = astFact as ASTGoalCompletedFact;
-            return new IRFact
+            return new()
             {
                 Database = null,
                 Not = false,
-                Elements = new List<IRConstant>(),
+                Elements = new(),
                 Goal = goal,
                 Location = f.Location
             };
@@ -273,7 +276,7 @@ public class IRGenerator
             type = ConstantTypeToValueType(astConstant.Type);
         }
 
-        return new IRConstant
+        return new()
         {
             ValueType = astConstant.Type,
             Type = type,

@@ -39,8 +39,8 @@ public class Goal : OsirisSerializable
         }
         else
         {
-            InitCalls = new List<Call>();
-            ExitCalls = new List<Call>();
+            InitCalls = new();
+            ExitCalls = new();
         }
     }
 

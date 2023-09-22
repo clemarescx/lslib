@@ -411,7 +411,7 @@ public class Vertex
 
 public class VertexSerializer : NodeSerializer
 {
-    private Dictionary<object, VertexDescriptor> VertexTypeCache = new Dictionary<object, VertexDescriptor>();
+    private Dictionary<object, VertexDescriptor> VertexTypeCache = new();
 
     public VertexDescriptor ConstructDescriptor(MemberDefinition memberDefn, StructDefinition defn, object parent)
     {
@@ -433,19 +433,19 @@ public class VertexSerializer : NodeSerializer
                     }
                     else
                     {
-                        throw new Exception($"Unsupported position format: {member.Type}, {member.ArraySize}");
+                        throw new($"Unsupported position format: {member.Type}, {member.ArraySize}");
                     }
                     break;
 
                 case "BoneWeights":
                     if (member.Type != MemberType.NormalUInt8)
                     {
-                        throw new Exception("Bone weight must be a NormalUInt8");
+                        throw new("Bone weight must be a NormalUInt8");
                     }
 
                     if (member.ArraySize != 2 && member.ArraySize != 4)
                     {
-                        throw new Exception($"Unsupported bone influence count: {member.ArraySize}");
+                        throw new($"Unsupported bone influence count: {member.ArraySize}");
                     }
 
                     desc.HasBoneWeights = true;
@@ -455,7 +455,7 @@ public class VertexSerializer : NodeSerializer
                 case "BoneIndices":
                     if (member.Type != MemberType.UInt8)
                     {
-                        throw new Exception("Bone index must be an UInt8");
+                        throw new("Bone index must be an UInt8");
                     }
                     break;
 
@@ -474,7 +474,7 @@ public class VertexSerializer : NodeSerializer
                     }
                     else
                     {
-                        throw new Exception($"Unsupported normal format: {member.Type}, {member.ArraySize}");
+                        throw new($"Unsupported normal format: {member.Type}, {member.ArraySize}");
                     }
                     break;
 
@@ -488,7 +488,7 @@ public class VertexSerializer : NodeSerializer
                     }
                     else
                     {
-                        throw new Exception($"Unsupported QTangent format: {member.Type}, {member.ArraySize}");
+                        throw new($"Unsupported QTangent format: {member.Type}, {member.ArraySize}");
                     }
                     break;
 
@@ -507,7 +507,7 @@ public class VertexSerializer : NodeSerializer
                     }
                     else
                     {
-                        throw new Exception($"Unsupported tangent format: {member.Type}, {member.ArraySize}");
+                        throw new($"Unsupported tangent format: {member.Type}, {member.ArraySize}");
                     }
                     break;
 
@@ -526,7 +526,7 @@ public class VertexSerializer : NodeSerializer
                     }
                     else
                     {
-                        throw new Exception($"Unsupported binormal format: {member.Type}, {member.ArraySize}");
+                        throw new($"Unsupported binormal format: {member.Type}, {member.ArraySize}");
                     }
                     break;
 
@@ -548,7 +548,7 @@ public class VertexSerializer : NodeSerializer
                     }
                     else
                     {
-                        throw new Exception($"Unsupported color map type: {member.Type}, {member.ArraySize}");
+                        throw new($"Unsupported color map type: {member.Type}, {member.ArraySize}");
                     }
                     break;
 
@@ -569,12 +569,12 @@ public class VertexSerializer : NodeSerializer
                     }
                     else
                     {
-                        throw new Exception($"Unsupported texture coordinate format: {member.Type}, {member.ArraySize}");
+                        throw new($"Unsupported texture coordinate format: {member.Type}, {member.ArraySize}");
                     }
                     break;
 
                 default:
-                    throw new Exception($"Unknown vertex property: {member.Name}");
+                    throw new($"Unknown vertex property: {member.Name}");
             }
         }
 

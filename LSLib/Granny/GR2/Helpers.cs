@@ -6,8 +6,8 @@ namespace LSLib.Granny.GR2;
 
 public static class Helpers
 {
-    private static Dictionary<Type, ObjectCtor> CachedConstructors = new Dictionary<Type, ObjectCtor>();
-    private static Dictionary<Type, ArrayCtor> CachedArrayConstructors = new Dictionary<Type, ArrayCtor>();
+    private static Dictionary<Type, ObjectCtor> CachedConstructors = new();
+    private static Dictionary<Type, ArrayCtor> CachedArrayConstructors = new();
 
     public delegate object ObjectCtor();
     public delegate object ArrayCtor(int size);

@@ -49,7 +49,7 @@ public class VirtualTileSet : IDisposable
     public GTSPackedTileID[] PackedTileIDs;
     public GTSFlatTileInfo[] FlatTileInfos;
 
-    private Dictionary<int, PageFile> PageFiles = new Dictionary<int, PageFile>();
+    private Dictionary<int, PageFile> PageFiles = new();
 
     public VirtualTileSet(string path, string pagePath)
     {
@@ -97,7 +97,7 @@ public class VirtualTileSet : IDisposable
                 case 1:
                 {
                     cc.Type = FourCCElementType.Node;
-                    cc.Children = new List<FourCCElement>();
+                    cc.Children = new();
                     var elementBytes = reader.ReadUInt32();
                     reader.ReadUInt16();
                     ParseFourCCMeta(fs, reader, elementBytes, cc.Children);
@@ -145,7 +145,7 @@ public class VirtualTileSet : IDisposable
                 }
 
                 default:
-                    throw new Exception($"Unrecognized FourCC type tag: {header.Format}");
+                    throw new($"Unrecognized FourCC type tag: {header.Format}");
             }
 
             if ((fs.Position % 4) != 0)
@@ -159,8 +159,10 @@ public class VirtualTileSet : IDisposable
 
     private void WriteFourCCMeta(Stream fs, BinaryWriter writer, FourCCElement element)
     {
-        var header = new GTSFourCCMetadata();
-        header.FourCCName = element.FourCC;
+        var header = new GTSFourCCMetadata
+        {
+            FourCCName = element.FourCC
+        };
 
         switch (element.Type)
         {
@@ -301,7 +303,7 @@ public class VirtualTileSet : IDisposable
         TileSetLevels = new GTSTileSetLevel[Header.NumLevels];
         BinUtils.ReadStructs<GTSTileSetLevel>(reader, TileSetLevels);
 
-        PerLevelFlatTileIndices = new List<Int32[]>();
+        PerLevelFlatTileIndices = new();
         foreach (var level in TileSetLevels)
         {
             fs.Position = (uint)level.FlatTileIndicesOffset;
@@ -314,7 +316,7 @@ public class VirtualTileSet : IDisposable
         ParameterBlockHeaders = new GTSParameterBlockHeader[Header.ParameterBlockHeadersCount];
         BinUtils.ReadStructs<GTSParameterBlockHeader>(reader, ParameterBlockHeaders);
 
-        ParameterBlocks = new Dictionary<UInt32, object>();
+        ParameterBlocks = new();
         foreach (var hdr in ParameterBlockHeaders)
         {
             fs.Position = (uint)hdr.FileInfoOffset;
@@ -356,11 +358,11 @@ public class VirtualTileSet : IDisposable
         var pageFileInfos = new GTSPageFileInfo[Header.NumPageFiles];
         BinUtils.ReadStructs<GTSPageFileInfo>(reader, pageFileInfos);
 
-        PageFileInfos = new List<PageFileInfo>();
+        PageFileInfos = new();
         uint nextPageIndex = 0;
         foreach (var info in pageFileInfos)
         {
-            PageFileInfos.Add(new PageFileInfo
+            PageFileInfos.Add(new()
             {
                 Meta = info,
                 FirstPageIndex = nextPageIndex,
@@ -463,8 +465,11 @@ public class VirtualTileSet : IDisposable
         Header.FourCCListSize = (uint)((ulong)fs.Position - Header.FourCCListOffset);
 
         Header.ThumbnailsOffset = (ulong)fs.Position;
-        var thumbHdr = new GTSThumbnailInfoHeader();
-        thumbHdr.NumThumbnails = 0;
+        var thumbHdr = new GTSThumbnailInfoHeader
+        {
+            NumThumbnails = 0
+        };
+
         BinUtils.WriteStruct<GTSThumbnailInfoHeader>(writer, ref thumbHdr);
 
         Header.PackedTileIDsOffset = (ulong)fs.Position;
@@ -504,7 +509,7 @@ public class VirtualTileSet : IDisposable
         if (!PageFiles.TryGetValue(pageFileIdx, out file))
         {
             var meta = PageFileInfos[pageFileIdx];
-            file = new PageFile(this, PagePath + Path.DirectorySeparatorChar + meta.Name);
+            file = new(this, PagePath + Path.DirectorySeparatorChar + meta.Name);
             PageFiles.Add(pageFileIdx, file);
         }
 
@@ -515,7 +520,7 @@ public class VirtualTileSet : IDisposable
     {
         var tileWidth = Header.TileWidth - Header.TileBorder * 2;
         var tileHeight = Header.TileHeight - Header.TileBorder * 2;
-        GTSFlatTileInfo tileInfo = new GTSFlatTileInfo();
+        GTSFlatTileInfo tileInfo = new();
         for (var y = minY; y <= maxY; y++)
         {
             for (var x = minX; x <= maxX; x++)
@@ -562,7 +567,7 @@ public class VirtualTileSet : IDisposable
         int minX = 0, maxX = 0, minY = 0, maxY = 0;
         bool foundPages = false;
 
-        GTSFlatTileInfo tile = new GTSFlatTileInfo();
+        GTSFlatTileInfo tile = new();
         var level = TileSetLevels[levelIndex];
         for (var x = 0; x < level.Width; x++)
         {

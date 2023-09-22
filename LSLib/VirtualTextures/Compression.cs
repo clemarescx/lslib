@@ -37,12 +37,12 @@ public static class FastLZ
                 len += 3;
                 if (op + len > op_limit)
                 {
-                    throw new Exception("Ran out of output buffer space");
+                    throw new("Ran out of output buffer space");
                 }
 
                 if (reff < 0)
                 {
-                    throw new Exception("Bad reference in stream");
+                    throw new("Bad reference in stream");
                 }
 
                 fastlz_memmove(output, op, output, (uint)reff, len);
@@ -53,11 +53,11 @@ public static class FastLZ
                 ctrl++;
                 if (op + ctrl > op_limit)
                 {
-                    throw new Exception("Ran out of output buffer space");
+                    throw new("Ran out of output buffer space");
                 }
                 if (ip + ctrl > ip_limit)
                 {
-                    throw new Exception("Ran out of input buffer");
+                    throw new("Ran out of input buffer");
                 }
 
                 fastlz_memmove(output, op, input, ip, ctrl);

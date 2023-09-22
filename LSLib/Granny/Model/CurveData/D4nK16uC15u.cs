@@ -76,7 +76,7 @@ public class D4nK16uC15u : AnimationCurveData
         f[swizzle4] = dataC;
         f[swizzle1] = dataD;
 
-        return new Quaternion(f[0], f[1], f[2], f[3]);
+        return new(f[0], f[1], f[2], f[3]);
     }
 
     public override List<Quaternion> GetQuaternions()

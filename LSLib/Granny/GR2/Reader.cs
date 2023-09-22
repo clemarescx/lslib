@@ -26,9 +26,9 @@ public class GR2Reader
     internal BinaryReader Reader;
     internal Magic Magic;
     internal Header Header;
-    internal List<Section> Sections = new List<Section>();
-    internal Dictionary<StructReference, StructDefinition> Types = new Dictionary<StructReference, StructDefinition>();
-    private Dictionary<UInt32, object> CachedStructs = new Dictionary<UInt32, object>();
+    internal List<Section> Sections = new();
+    internal Dictionary<StructReference, StructDefinition> Types = new();
+    private Dictionary<UInt32, object> CachedStructs = new();
 #if DEBUG_GR2_SERIALIZATION
         private HashSet<StructReference> DebugPendingResolve = new HashSet<StructReference>();
 #endif
@@ -51,7 +51,7 @@ public class GR2Reader
 
     public void Read(object root)
     {
-        using (this.InputReader = new BinaryReader(InputStream))
+        using (this.InputReader = new(InputStream))
         {
             Magic = ReadMagic();
 
@@ -61,8 +61,11 @@ public class GR2Reader
             Header = ReadHeader();
             for (int i = 0; i < Header.numSections; i++)
             {
-                var section = new Section();
-                section.Header = ReadSectionHeader();
+                var section = new Section
+                {
+                    Header = ReadSectionHeader()
+                };
+
                 Sections.Add(section);
             }
 
@@ -84,8 +87,10 @@ public class GR2Reader
                 }
             }
 
-            var rootStruct = new StructReference();
-            rootStruct.Offset = Sections[(int)Header.rootType.Section].Header.offsetInFile + Header.rootType.Offset;
+            var rootStruct = new StructReference
+            {
+                Offset = Sections[(int)Header.rootType.Section].Header.offsetInFile + Header.rootType.Offset
+            };
 
             Seek(Header.rootNode);
             ReadStruct(rootStruct.Resolve(this), MemberType.Inline, root, null);
@@ -94,8 +99,11 @@ public class GR2Reader
 
     private Magic ReadMagic()
     {
-        var magic = new Magic();
-        magic.signature = InputReader.ReadBytes(16);
+        var magic = new Magic
+        {
+            signature = InputReader.ReadBytes(16)
+        };
+
         magic.format = Magic.FormatFromSignature(magic.signature);
 
         magic.headersSize = InputReader.ReadUInt32();
@@ -120,16 +128,19 @@ public class GR2Reader
 
     private Header ReadHeader()
     {
-        var header = new Header();
-        header.version = InputReader.ReadUInt32();
-        header.fileSize = InputReader.ReadUInt32();
-        header.crc = InputReader.ReadUInt32();
-        header.sectionsOffset = InputReader.ReadUInt32();
-        header.numSections = InputReader.ReadUInt32();
-        header.rootType = ReadSectionReferenceUnchecked();
-        header.rootNode = ReadSectionReferenceUnchecked();
-        header.tag = InputReader.ReadUInt32();
-        header.extraTags = new UInt32[Header.ExtraTagCount];
+        var header = new Header
+        {
+            version = InputReader.ReadUInt32(),
+            fileSize = InputReader.ReadUInt32(),
+            crc = InputReader.ReadUInt32(),
+            sectionsOffset = InputReader.ReadUInt32(),
+            numSections = InputReader.ReadUInt32(),
+            rootType = ReadSectionReferenceUnchecked(),
+            rootNode = ReadSectionReferenceUnchecked(),
+            tag = InputReader.ReadUInt32(),
+            extraTags = new UInt32[Header.ExtraTagCount]
+        };
+
         for (int i = 0; i < Header.ExtraTagCount; i++)
             header.extraTags[i] = InputReader.ReadUInt32();
 
@@ -173,18 +184,20 @@ public class GR2Reader
 
     private SectionHeader ReadSectionHeader()
     {
-        var header = new SectionHeader();
-        header.compression = InputReader.ReadUInt32();
-        header.offsetInFile = InputReader.ReadUInt32();
-        header.compressedSize = InputReader.ReadUInt32();
-        header.uncompressedSize = InputReader.ReadUInt32();
-        header.alignment = InputReader.ReadUInt32();
-        header.first16bit = InputReader.ReadUInt32();
-        header.first8bit = InputReader.ReadUInt32();
-        header.relocationsOffset = InputReader.ReadUInt32();
-        header.numRelocations = InputReader.ReadUInt32();
-        header.mixedMarshallingDataOffset = InputReader.ReadUInt32();
-        header.numMixedMarshallingData = InputReader.ReadUInt32();
+        var header = new SectionHeader
+        {
+            compression = InputReader.ReadUInt32(),
+            offsetInFile = InputReader.ReadUInt32(),
+            compressedSize = InputReader.ReadUInt32(),
+            uncompressedSize = InputReader.ReadUInt32(),
+            alignment = InputReader.ReadUInt32(),
+            first16bit = InputReader.ReadUInt32(),
+            first8bit = InputReader.ReadUInt32(),
+            relocationsOffset = InputReader.ReadUInt32(),
+            numRelocations = InputReader.ReadUInt32(),
+            mixedMarshallingDataOffset = InputReader.ReadUInt32(),
+            numMixedMarshallingData = InputReader.ReadUInt32()
+        };
 
         Debug.Assert(header.offsetInFile <= Header.fileSize);
 
@@ -225,7 +238,7 @@ public class GR2Reader
         // Copy the whole file, as we'll update its contents because of relocations and marshalling fixups
         byte[] uncompressedStream = new byte[totalSize];
         this.Stream = new MemoryStream(uncompressedStream);
-        this.Reader = new BinaryReader(this.Stream);
+        this.Reader = new(this.Stream);
 
         for (int i = 0; i < Sections.Count; i++)
         {
@@ -369,8 +382,10 @@ public class GR2Reader
                 UInt32 offsetInSection = relocationsReader.ReadUInt32();
                 Debug.Assert(offsetInSection <= section.Header.uncompressedSize);
                 var type = ReadSectionReference(relocationsReader);
-                var typeDefn = new StructReference();
-                typeDefn.Offset = Sections[(int)type.Section].Header.offsetInFile + type.Offset;
+                var typeDefn = new StructReference
+                {
+                    Offset = Sections[(int)type.Section].Header.offsetInFile + type.Offset
+                };
 
                 Seek(section, offsetInSection);
                 MixedMarshal(count, typeDefn.Resolve(this));
@@ -409,9 +424,12 @@ public class GR2Reader
 
     public SectionReference ReadSectionReferenceUnchecked(BinaryReader reader)
     {
-        var reference = new SectionReference();
-        reference.Section = reader.ReadUInt32();
-        reference.Offset = reader.ReadUInt32();
+        var reference = new SectionReference
+        {
+            Section = reader.ReadUInt32(),
+            Offset = reader.ReadUInt32()
+        };
+
         return reference;
     }
 
@@ -465,8 +483,11 @@ public class GR2Reader
 
     public ArrayReference ReadArrayReference()
     {
-        var reference = new ArrayReference();
-        reference.Size = Reader.ReadUInt32();
+        var reference = new ArrayReference
+        {
+            Size = Reader.ReadUInt32()
+        };
+
         if (Magic.Is32Bit)
             reference.Offset = Reader.ReadUInt32();
         else
@@ -476,8 +497,11 @@ public class GR2Reader
 
     public ArrayIndicesReference ReadArrayIndicesReference()
     {
-        var reference = new ArrayIndicesReference();
-        reference.Size = Reader.ReadUInt32();
+        var reference = new ArrayIndicesReference
+        {
+            Size = Reader.ReadUInt32()
+        };
+
         if (Magic.Is32Bit)
             reference.Offset = Reader.ReadUInt32();
         else
@@ -976,8 +1000,10 @@ public class GR2Reader
                 break;
 
             case MemberType.Transform:
-                var transform = new Transform();
-                transform.Flags = Reader.ReadUInt32();
+                var transform = new Transform
+                {
+                    Flags = Reader.ReadUInt32()
+                };
 
                 for (int i = 0; i < 3; i++)
                     transform.Translation[i] = Reader.ReadSingle();

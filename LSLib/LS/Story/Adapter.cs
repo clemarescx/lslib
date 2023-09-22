@@ -32,17 +32,17 @@ public class Adapter : OsirisSerializable
     public void Read(OsiReader reader)
     {
         Index = reader.ReadUInt32();
-        Constants = new Tuple();
+        Constants = new();
         Constants.Read(reader);
 
-        LogicalIndices = new List<sbyte>();
+        LogicalIndices = new();
         var count = reader.ReadByte();
         while (count-- > 0)
         {
             LogicalIndices.Add(reader.ReadSByte());
         }
 
-        LogicalToPhysicalMap = new Dictionary<byte, byte>();
+        LogicalToPhysicalMap = new();
         count = reader.ReadByte();
         while (count-- > 0)
         {
@@ -108,9 +108,12 @@ public class Adapter : OsirisSerializable
             // If we haven't found a constant, emit a null variable
             else
             {
-                var nullValue = new Variable();
-                nullValue.TypeId = (uint)Value.Type.None;
-                nullValue.Unused = true;
+                var nullValue = new Variable
+                {
+                    TypeId = (uint)Value.Type.None,
+                    Unused = true
+                };
+
                 result.Physical.Add(nullValue);
             }
         }

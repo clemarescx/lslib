@@ -20,12 +20,12 @@ public class D4Constant32f : AnimationCurveData
 
     public override List<float> GetKnots()
     {
-        return new List<float>() { 0.0f };
+        return new() { 0.0f };
     }
 
     // TODO: GetMatrices
     public override List<Quaternion> GetQuaternions()
     {
-        return new List<Quaternion>() { new Quaternion(Controls[0], Controls[1], Controls[2], Controls[3]) };
+        return new() { new(Controls[0], Controls[1], Controls[2], Controls[3]) };
     }
 }

@@ -86,7 +86,7 @@ public class LocaReader : IDisposable
         {
             var loca = new LocaResource
             {
-                Entries = new List<LocalizedText>()
+                Entries = new()
             };
             var header = BinUtils.ReadStruct<LocaHeader>(reader);
 
@@ -102,7 +102,7 @@ public class LocaReader : IDisposable
             foreach (var entry in entries)
             {
                 var text = Encoding.UTF8.GetString(reader.ReadBytes((int)entry.Length - 1));
-                loca.Entries.Add(new LocalizedText
+                loca.Entries.Add(new()
                 {
                     Key = entry.KeyString,
                     Version = entry.Version,
@@ -141,7 +141,7 @@ public class LocaWriter
             for (var i = 0; i < entries.Length; i++)
             {
                 var entry = res.Entries[i];
-                entries[i] = new LocaEntry
+                entries[i] = new()
                 {
                     KeyString = entry.Key,
                     Version = entry.Version,
@@ -189,7 +189,7 @@ public class LocaXmlReader : IDisposable
                 var version = reader["version"] != null ? UInt16.Parse(reader["version"]) : (UInt16)1;
                 var text = reader.ReadString();
 
-                resource.Entries.Add(new LocalizedText
+                resource.Entries.Add(new()
                 {
                     Key = key,
                     Version = version,
@@ -204,9 +204,9 @@ public class LocaXmlReader : IDisposable
 
     public LocaResource Read()
     {
-        resource = new LocaResource
+        resource = new()
         {
-            Entries = new List<LocalizedText>()
+            Entries = new()
         };
 
         using (this.reader = XmlReader.Create(stream))
@@ -237,9 +237,11 @@ public class LocaXmlWriter
 
     public void Write(LocaResource res)
     {
-        var settings = new XmlWriterSettings();
-        settings.Indent = true;
-        settings.IndentChars = "\t";
+        var settings = new XmlWriterSettings
+        {
+            Indent = true,
+            IndentChars = "\t"
+        };
 
         using (this.writer = XmlWriter.Create(stream, settings))
         {

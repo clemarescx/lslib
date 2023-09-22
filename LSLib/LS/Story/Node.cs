@@ -95,7 +95,7 @@ public abstract class TreeNode : Node
     public override void Read(OsiReader reader)
     {
         base.Read(reader);
-        NextNode = new NodeEntryItem();
+        NextNode = new();
         NextNode.Read(reader);
     }
 
@@ -114,7 +114,7 @@ public abstract class TreeNode : Node
             var nextNode = NextNode.NodeRef.Resolve();
             if (nextNode is RuleNode)
             {
-                (nextNode as RuleNode).DerivedGoalRef = new GoalReference(story, NextNode.GoalRef.Index);
+                (nextNode as RuleNode).DerivedGoalRef = new(story, NextNode.GoalRef.Index);
             }
         }
     }

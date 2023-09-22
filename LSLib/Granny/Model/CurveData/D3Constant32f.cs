@@ -20,11 +20,11 @@ public class D3Constant32f : AnimationCurveData
 
     public override List<float> GetKnots()
     {
-        return new List<float>() { 0.0f };
+        return new() { 0.0f };
     }
 
     public override List<Vector3> GetPoints()
     {
-        return new List<Vector3>() { new Vector3(Controls[0], Controls[1], Controls[2]) };
+        return new() { new(Controls[0], Controls[1], Controls[2]) };
     }
 }

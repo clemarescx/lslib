@@ -11,7 +11,7 @@ public class Fact : OsirisSerializable
 
     public void Read(OsiReader reader)
     {
-        Columns = new List<Value>();
+        Columns = new();
         var count = reader.ReadByte();
         while (count-- > 0)
         {
@@ -180,7 +180,7 @@ public class FactCollection : List<Fact>, ITypedList
                 props.Add(new FactPropertyDescriptor(i, baseType, type.Index));
             }
 
-            Properties = new PropertyDescriptorCollection(props.ToArray(), true);
+            Properties = new(props.ToArray(), true);
         }
 
         return Properties;
@@ -203,11 +203,11 @@ public class Database : OsirisSerializable
     public void Read(OsiReader reader)
     {
         Index = reader.ReadUInt32();
-        Parameters = new ParameterList();
+        Parameters = new();
         Parameters.Read(reader);
 
         FactsPosition = reader.BaseStream.Position;
-        Facts = new FactCollection(this, reader.Story);
+        Facts = new(this, reader.Story);
         reader.ReadList<Fact>(Facts);
     }
 

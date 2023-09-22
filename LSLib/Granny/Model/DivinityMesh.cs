@@ -128,7 +128,7 @@ public class DivinityFormatDesc
 
     private static DivinityFormatDesc Make(DivinityVertexUsage usage, DivinityVertexAttributeFormat format, Byte size, Byte usageIndex = 0)
     {
-        return new DivinityFormatDesc
+        return new()
         {
             Stream = new SByte[] { 0 },
             Usage = new Byte[] { (byte)usage },
@@ -268,7 +268,7 @@ public class DivinityMeshExtendedData
 
     public static DivinityMeshExtendedData Make()
     {
-        return new DivinityMeshExtendedData
+        return new()
         {
             Rigid = 0,
             Cloth = 0,
@@ -276,7 +276,7 @@ public class DivinityMeshExtendedData
             Occluder = 0,
             LOD = 0,
             UserDefinedProperties = "",
-            UserMeshProperties = new DivinityMeshProperties
+            UserMeshProperties = new()
             {
                 Flags = new UInt32[] { 0, 0, 0, 0 },
                 Lod = new Int32[] { -1 },
@@ -336,7 +336,7 @@ public class DivinityMeshExtendedData
             else
             {
                 LSMVersion = 0;
-                UserMeshProperties.FormatDescs = new List<DivinityFormatDesc>();
+                UserMeshProperties.FormatDescs = new();
             }
         }
     }
@@ -357,7 +357,7 @@ public static class UserDefinedPropertiesHelpers
 
     public static string MeshFlagsToUserDefinedProperties(DivinityModelFlag meshFlags)
     {
-        List<string> properties = new List<string>();
+        List<string> properties = new();
         if (meshFlags.IsRigid())
         {
             properties.Add(UserDefinedProperties_Rigid);

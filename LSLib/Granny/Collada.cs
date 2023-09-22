@@ -41,12 +41,16 @@ class ColladaUtils
             parentName = string.Join("", hash.Select(c => ((int)c).ToString("X2")));
         }
 
-        var positions = new float_array();
-        positions.id = parentName + "-" + name + "-array";
+        var positions = new float_array
+        {
+            id = parentName + "-" + name + "-array"
+        };
 
-        var source = new source();
-        source.id = parentName + "-" + name;
-        source.name = name;
+        var source = new source
+        {
+            id = parentName + "-" + name,
+            name = name
+        };
 
         positions.count = (ulong)values.Length;
         positions.Values = values.Select(x => (double)x).ToArray();
@@ -59,12 +63,16 @@ class ColladaUtils
 
     public static source MakeNameSource(string parentName, string name, string[] components, string[] values, string type = "name")
     {
-        var names = new Name_array();
-        names.id = parentName + "-" + name + "-array";
+        var names = new Name_array
+        {
+            id = parentName + "-" + name + "-array"
+        };
 
-        var source = new source();
-        source.id = parentName + "-" + name;
-        source.name = name;
+        var source = new source
+        {
+            id = parentName + "-" + name,
+            name = name
+        };
 
         names.count = (ulong)values.Length;
         var varNames = from v in values

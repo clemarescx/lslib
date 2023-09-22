@@ -8,7 +8,7 @@ public class LSBWriter
 {
     private Stream stream;
     private BinaryWriter writer;
-    private Dictionary<string, UInt32> staticStrings = new Dictionary<string, UInt32>();
+    private Dictionary<string, UInt32> staticStrings = new();
     private UInt32 nextStaticStringId = 0;
     private UInt32 Version;
 
@@ -20,7 +20,7 @@ public class LSBWriter
     public void Write(Resource rsrc)
     {
         Version = rsrc.Metadata.MajorVersion;
-        using (this.writer = new BinaryWriter(stream))
+        using (this.writer = new(stream))
         {
             var header = new LSBHeader
             {
@@ -62,7 +62,7 @@ public class LSBWriter
             writer.Write((UInt32)0); // Offset of region, will be updater after we finished serializing
         }
 
-        List<UInt32> regionPositions = new List<UInt32>();
+        List<UInt32> regionPositions = new();
         foreach (var rgn in rsrc.Regions)
         {
             regionPositions.Add((UInt32)stream.Position);

@@ -83,8 +83,11 @@ public class Bone
     public static Bone FromCollada(node bone, int parentIndex, List<Bone> bones, Dictionary<string, Bone> boneSIDs, Dictionary<string, Bone> boneIDs)
     {
         var transMat = ColladaHelpers.TransformFromNode(bone);
-        var colladaBone = new Bone();
-        colladaBone.TransformSID = transMat.TransformSID;
+        var colladaBone = new Bone
+        {
+            TransformSID = transMat.TransformSID
+        };
+
         var myIndex = bones.Count;
         bones.Add(colladaBone);
         boneSIDs.Add(bone.sid, colladaBone);
@@ -131,17 +134,22 @@ public class Bone
 
     public node MakeCollada(XmlDocument Xml)
     {
-        var node = new node();
-        node.id = "Bone_" + Name.Replace(' ', '_');
-        node.name = Name; // .Replace(' ', '_');
-        node.sid = Name.Replace(' ', '_');
-        node.type = NodeType.JOINT;
+        var node = new node
+        {
+            id = "Bone_" + Name.Replace(' ', '_'),
+            name = Name, // .Replace(' ', '_');
+            sid = Name.Replace(' ', '_'),
+            type = NodeType.JOINT
+        };
 
         var transforms = new List<object>();
         var transformTypes = new List<ItemsChoiceType2>();
 
-        var transform = new matrix();
-        transform.sid = "Transform";
+        var transform = new matrix
+        {
+            sid = "Transform"
+        };
+
         var mat = Transform.ToMatrix4();
         mat.Transpose();
         transform.Values = new double[] {
@@ -158,7 +166,7 @@ public class Bone
 
         node.extra = new extra[]
         {
-            new extra
+            new()
             {
                 technique = new technique[]
                 {
@@ -190,12 +198,15 @@ public class Skeleton
 
     public static Skeleton FromCollada(node root)
     {
-        var skeleton = new Skeleton();
-        skeleton.Bones = new List<Bone>();
-        skeleton.LODType = 1;
-        skeleton.Name = root.name;
-        skeleton.BonesBySID = new Dictionary<string, Bone>();
-        skeleton.BonesByID = new Dictionary<string, Bone>();
+        var skeleton = new Skeleton
+        {
+            Bones = new(),
+            LODType = 1,
+            Name = root.name,
+            BonesBySID = new(),
+            BonesByID = new()
+        };
+
         Bone.FromCollada(root, -1, skeleton.Bones, skeleton.BonesBySID, skeleton.BonesByID);
         return skeleton;
     }
@@ -223,7 +234,7 @@ public class Skeleton
     {
         foreach (var bone in Bones) if (bone.IsRoot)
         {
-            bone.Transform.SetScale(new Vector3(-1, 1, 1));
+            bone.Transform.SetScale(new(-1, 1, 1));
         }
 
         UpdateWorldTransforms();

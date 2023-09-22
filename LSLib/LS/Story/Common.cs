@@ -91,7 +91,7 @@ public class OsiReader : BinaryReader
     public UInt32 MajorVersion;
     // Use 16-bit instead of 32-bit type IDs, BG3 Patch8+
     public bool? ShortTypeIds = null;
-    public Dictionary<uint, uint> TypeAliases = new Dictionary<uint, uint>();
+    public Dictionary<uint, uint> TypeAliases = new();
     // TODO: Make RO!
     public Story Story;
 
@@ -108,7 +108,7 @@ public class OsiReader : BinaryReader
 
     public override string ReadString()
     {
-        List<byte> bytes = new List<byte>();
+        List<byte> bytes = new();
         while (true)
         {
             var b = (byte)(ReadByte() ^ Scramble);
@@ -139,7 +139,7 @@ public class OsiReader : BinaryReader
     public Guid ReadGuid()
     {
         var guid = ReadBytes(16);
-        return new Guid(guid);
+        return new(guid);
     }
 
     public List<T> ReadList<T>() where T : OsirisSerializable, new()
@@ -219,8 +219,8 @@ public class OsiWriter : BinaryWriter
     public UInt32 MajorVersion;
     // Use 16-bit instead of 32-bit type IDs, BG3 Patch8+
     public bool ShortTypeIds;
-    public Dictionary<uint, uint> TypeAliases = new Dictionary<uint, uint>();
-    public Dictionary<uint, OsirisEnum> Enums = new Dictionary<uint, OsirisEnum>();
+    public Dictionary<uint, uint> TypeAliases = new();
+    public Dictionary<uint, OsirisEnum> Enums = new();
 
     public uint Ver
     {
@@ -328,11 +328,14 @@ public class OsirisType : OsirisSerializable
 
     public static OsirisType MakeBuiltin(byte index, string name)
     {
-        var type = new OsirisType();
-        type.Index = index;
-        type.Alias = 0;
-        type.Name = name;
-        type.IsBuiltin = true;
+        var type = new OsirisType
+        {
+            Index = index,
+            Alias = 0,
+            Name = name,
+            IsBuiltin = true
+        };
+
         return type;
     }
 
@@ -411,7 +414,7 @@ public class OsirisEnum : OsirisSerializable
     {
         UnderlyingType = reader.ReadUInt16();
         var elements = reader.ReadUInt32();
-        Elements = new List<OsirisEnumElement>();
+        Elements = new();
         while (elements-- > 0)
         {
             var e = new OsirisEnumElement();

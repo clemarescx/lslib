@@ -26,11 +26,11 @@ public class StoryEmitter
 {
     private CompilationContext Context;
     private Story Story;
-    private Dictionary<IRGoal, Goal> Goals = new Dictionary<IRGoal, Goal>();
-    private Dictionary<FunctionNameAndArity, Database> Databases = new Dictionary<FunctionNameAndArity, Database>();
-    private Dictionary<FunctionNameAndArity, Node> Funcs = new Dictionary<FunctionNameAndArity, Node>();
-    private Dictionary<FunctionNameAndArity, Function> FuncEntries = new Dictionary<FunctionNameAndArity, Function>();
-    private Dictionary<IRRule, RuleNode> Rules = new Dictionary<IRRule, RuleNode>();
+    private Dictionary<IRGoal, Goal> Goals = new();
+    private Dictionary<FunctionNameAndArity, Database> Databases = new();
+    private Dictionary<FunctionNameAndArity, Node> Funcs = new();
+    private Dictionary<FunctionNameAndArity, Function> FuncEntries = new();
+    private Dictionary<IRRule, RuleNode> Rules = new();
     public StoryDebugInfo DebugInfo;
 
     public StoryEmitter(CompilationContext context)
@@ -40,16 +40,21 @@ public class StoryEmitter
 
     public void EnableDebugInfo()
     {
-        DebugInfo = new StoryDebugInfo();
-        DebugInfo.Version = StoryDebugInfo.CurrentVersion;
+        DebugInfo = new()
+        {
+            Version = StoryDebugInfo.CurrentVersion
+        };
     }
 
     private void AddStoryTypes()
     {
         foreach (var type in Context.TypesById)
         {
-            var osiType = new OsirisType();
-            osiType.Index = (byte)type.Value.TypeId;
+            var osiType = new OsirisType
+            {
+                Index = (byte)type.Value.TypeId
+            };
+
             if (type.Value.TypeId == (uint)type.Value.IntrinsicTypeId)
             {
                 osiType.Alias = (byte)0;
@@ -125,10 +130,10 @@ public class StoryEmitter
         var osiSignature = new LS.Story.FunctionSignature
         {
             Name = signature.Name,
-            OutParamMask = new List<byte>(signature.Params.Count / 8 + 1),
-            Parameters = new ParameterList
+            OutParamMask = new(signature.Params.Count / 8 + 1),
+            Parameters = new()
             {
-                Types = new List<uint>(signature.Params.Count)
+                Types = new(signature.Params.Count)
             }
         };
 
@@ -164,7 +169,7 @@ public class StoryEmitter
                 Id = node.Index,
                 RuleId = 0,
                 Line = location != null ? location.StartLine : 0,
-                ColumnToVariableMaps = new Dictionary<Int32, Int32>(),
+                ColumnToVariableMaps = new(),
                 DatabaseId = node.DatabaseRef.Index,
                 Name = node.Name,
                 Type = node.NodeType(),
@@ -182,7 +187,7 @@ public class StoryEmitter
 
             if (node.Name != "")
             {
-                nodeDebug.FunctionName = new FunctionNameAndArity(node.Name, node.NumParams);
+                nodeDebug.FunctionName = new(node.Name, node.NumParams);
             }
 
             if (location != null)
@@ -243,13 +248,13 @@ public class StoryEmitter
             var funcDebug = new FunctionDebugInfo
             {
                 Name = osiFunc.Name.Name,
-                Params = new List<FunctionParamDebugInfo>(),
+                Params = new(),
                 TypeId = (UInt32)osiFunc.Type
             };
 
             foreach (var param in signature.Params)
             {
-                funcDebug.Params.Add(new FunctionParamDebugInfo
+                funcDebug.Params.Add(new()
                 {
                     TypeId = (UInt32)param.Type.IntrinsicTypeId,
                     Name = param.Name,
@@ -279,23 +284,23 @@ public class StoryEmitter
         InternalQueryNode osiQuery = null;
         if (refType == NameRefType.Condition)
         {
-            osiQuery = new InternalQueryNode
+            osiQuery = new()
             {
-                DatabaseRef = new DatabaseReference(),
+                DatabaseRef = new(),
                 Name = signature.Name,
                 NumParams = (byte)signature.Params.Count
             };
             AddNode(osiQuery);
         }
 
-        EmitFunction(LS.Story.FunctionType.SysQuery, signature, new NodeReference(Story, osiQuery), builtin);
+        EmitFunction(LS.Story.FunctionType.SysQuery, signature, new(Story, osiQuery), builtin);
         return osiQuery;
     }
 
     private void EmitSysCall(FunctionSignature signature)
     {
         var builtin = Context.LookupName(signature.GetNameAndArity()) as BuiltinFunction;
-        EmitFunction(LS.Story.FunctionType.SysCall, signature, new NodeReference(), builtin);
+        EmitFunction(LS.Story.FunctionType.SysCall, signature, new(), builtin);
     }
 
     private ProcNode EmitEvent(FunctionSignature signature, NameRefType refType)
@@ -304,17 +309,17 @@ public class StoryEmitter
         ProcNode osiProc = null;
         if (refType == NameRefType.Condition)
         {
-            osiProc = new ProcNode
+            osiProc = new()
             {
-                DatabaseRef = new DatabaseReference(),
+                DatabaseRef = new(),
                 Name = signature.Name,
                 NumParams = (byte)signature.Params.Count,
-                ReferencedBy = new List<NodeEntryItem>()
+                ReferencedBy = new()
             };
             AddNode(osiProc);
         }
 
-        EmitFunction(LS.Story.FunctionType.Event, signature, new NodeReference(Story, osiProc), builtin);
+        EmitFunction(LS.Story.FunctionType.Event, signature, new(Story, osiProc), builtin);
         return osiProc;
     }
 
@@ -324,17 +329,17 @@ public class StoryEmitter
         ProcNode osiProc = null;
         if (refType == NameRefType.Condition)
         {
-            osiProc = new ProcNode
+            osiProc = new()
             {
-                DatabaseRef = new DatabaseReference(),
+                DatabaseRef = new(),
                 Name = signature.Name,
                 NumParams = (byte)signature.Params.Count,
-                ReferencedBy = new List<NodeEntryItem>()
+                ReferencedBy = new()
             };
             AddNode(osiProc);
         }
 
-        EmitFunction(LS.Story.FunctionType.Call, signature, new NodeReference(Story, osiProc), builtin);
+        EmitFunction(LS.Story.FunctionType.Call, signature, new(Story, osiProc), builtin);
         return osiProc;
     }
 
@@ -344,16 +349,16 @@ public class StoryEmitter
         DivQueryNode osiQuery = null;
         if (refType == NameRefType.Condition)
         {
-            osiQuery = new DivQueryNode
+            osiQuery = new()
             {
-                DatabaseRef = new DatabaseReference(),
+                DatabaseRef = new(),
                 Name = signature.Name,
                 NumParams = (byte)signature.Params.Count
             };
             AddNode(osiQuery);
         }
 
-        EmitFunction(LS.Story.FunctionType.Query, signature, new NodeReference(Story, osiQuery), builtin);
+        EmitFunction(LS.Story.FunctionType.Query, signature, new(Story, osiQuery), builtin);
         return osiQuery;
     }
 
@@ -361,14 +366,14 @@ public class StoryEmitter
     {
         var osiProc = new ProcNode
         {
-            DatabaseRef = new DatabaseReference(),
+            DatabaseRef = new(),
             Name = signature.Name,
             NumParams = (byte)signature.Params.Count,
-            ReferencedBy = new List<NodeEntryItem>()
+            ReferencedBy = new()
         };
         AddNode(osiProc);
 
-        EmitFunction(LS.Story.FunctionType.Proc, signature, new NodeReference(Story, osiProc));
+        EmitFunction(LS.Story.FunctionType.Proc, signature, new(Story, osiProc));
         return osiProc;
     }
 
@@ -376,13 +381,13 @@ public class StoryEmitter
     {
         var osiQuery = new UserQueryNode
         {
-            DatabaseRef = new DatabaseReference(),
+            DatabaseRef = new(),
             Name = signature.Name,
             NumParams = (byte)signature.Params.Count
         };
         AddNode(osiQuery);
 
-        EmitFunction(LS.Story.FunctionType.Database, signature, new NodeReference(Story, osiQuery));
+        EmitFunction(LS.Story.FunctionType.Database, signature, new(Story, osiQuery));
         return osiQuery;
     }
 
@@ -391,9 +396,9 @@ public class StoryEmitter
         var osiDb = new Database
         {
             Index = (uint)Story.Databases.Count + 1,
-            Parameters = new ParameterList
+            Parameters = new()
             {
-                Types = new List<uint>(signature.Params.Count)
+                Types = new(signature.Params.Count)
             },
             OwnerNode = null,
             FactsPosition = 0
@@ -404,21 +409,21 @@ public class StoryEmitter
             osiDb.Parameters.Types.Add(param.Type.TypeId);
         }
 
-        osiDb.Facts = new FactCollection(osiDb, Story);
+        osiDb.Facts = new(osiDb, Story);
         Story.Databases.Add(osiDb.Index, osiDb);
 
         var osiDbNode = new DatabaseNode
         {
-            DatabaseRef = new DatabaseReference(Story, osiDb),
+            DatabaseRef = new(Story, osiDb),
             Name = signature.Name,
             NumParams = (byte)signature.Params.Count,
-            ReferencedBy = new List<NodeEntryItem>()
+            ReferencedBy = new()
         };
         AddNode(osiDbNode);
 
         osiDb.OwnerNode = osiDbNode;
 
-        EmitFunction(LS.Story.FunctionType.Database, signature, new NodeReference(Story, osiDbNode));
+        EmitFunction(LS.Story.FunctionType.Database, signature, new(Story, osiDbNode));
 
         if (DebugInfo != null)
         {
@@ -426,7 +431,7 @@ public class StoryEmitter
             {
                 Id = osiDb.Index,
                 Name = signature.Name,
-                ParamTypes = new List<uint>()
+                ParamTypes = new()
             };
             foreach (var param in signature.Params)
             {
@@ -459,7 +464,7 @@ public class StoryEmitter
         var osiDb = new Database
         {
             Index = (uint)Story.Databases.Count + 1,
-            Parameters = new ParameterList
+            Parameters = new()
             {
                 Types = paramTypes
             },
@@ -467,7 +472,7 @@ public class StoryEmitter
             FactsPosition = 0
         };
 
-        osiDb.Facts = new FactCollection(osiDb, Story);
+        osiDb.Facts = new(osiDb, Story);
         Story.Databases.Add(osiDb.Index, osiDb);
 
         if (DebugInfo != null)
@@ -476,7 +481,7 @@ public class StoryEmitter
             {
                 Id = osiDb.Index,
                 Name = "",
-                ParamTypes = new List<uint>()
+                ParamTypes = new()
             };
             foreach (var paramType in paramTypes)
             {
@@ -558,7 +563,7 @@ public class StoryEmitter
             var osiCall = new Call
             {
                 Name = fact.Database.Name.Name,
-                Parameters = new List<TypedValue>(fact.Elements.Count),
+                Parameters = new(fact.Elements.Count),
                 Negate = fact.Not,
                 // TODO const - InvalidGoalId?
                 GoalIdOrDebugHook = 0
@@ -574,10 +579,10 @@ public class StoryEmitter
         }
         else
         {
-            return new Call
+            return new()
             {
                 Name = "",
-                Parameters = new List<TypedValue>(),
+                Parameters = new(),
                 Negate = false,
                 GoalIdOrDebugHook = (int)Goals[fact.Goal].Index
             };
@@ -588,10 +593,10 @@ public class StoryEmitter
     {
         if (statement.Goal != null)
         {
-            return new Call
+            return new()
             {
                 Name = "",
-                Parameters = new List<TypedValue>(statement.Params.Count),
+                Parameters = new(statement.Params.Count),
                 Negate = false,
                 GoalIdOrDebugHook = (int)Goals[statement.Goal].Index
             };
@@ -604,7 +609,7 @@ public class StoryEmitter
             var osiCall = new Call
             {
                 Name = statement.Func.Name.Name,
-                Parameters = new List<TypedValue>(statement.Params.Count),
+                Parameters = new(statement.Params.Count),
                 Negate = statement.Not,
                 // TODO const - InvalidGoalId?
                 // TODO - use statement goal id if available?
@@ -625,9 +630,9 @@ public class StoryEmitter
     {
         var targetRef = new NodeEntryItem
         {
-            NodeRef = new NodeReference(Story, target),
+            NodeRef = new(Story, target),
             EntryPoint = entryPoint,
-            GoalRef = new GoalReference(Story, goal)
+            GoalRef = new(Story, goal)
         };
 
         if (node is TreeNode)
@@ -646,19 +651,19 @@ public class StoryEmitter
         {
             Debug.Assert(entryPoint == EntryPoint.None);
             var relNode = target as RelNode;
-            relNode.ParentRef = new NodeReference(Story, node);
+            relNode.ParentRef = new(Story, node);
         }
         else
         {
             var joinNode = target as JoinNode;
             if (entryPoint == EntryPoint.Left)
             {
-                joinNode.LeftParentRef = new NodeReference(Story, node);
+                joinNode.LeftParentRef = new(Story, node);
             }
             else
             {
                 Debug.Assert(entryPoint == EntryPoint.Right);
-                joinNode.RightParentRef = new NodeReference(Story, node);
+                joinNode.RightParentRef = new(Story, node);
             }
         }
     }
@@ -668,9 +673,9 @@ public class StoryEmitter
         var adapter = new Adapter
         {
             Index = (uint)Story.Adapters.Count + 1,
-            Constants = new Tuple(),
-            LogicalIndices = new List<sbyte>(),
-            LogicalToPhysicalMap = new Dictionary<byte, byte>()
+            Constants = new(),
+            LogicalIndices = new(),
+            LogicalToPhysicalMap = new()
         };
         Story.Adapters.Add(adapter.Index, adapter);
         return adapter;
@@ -795,26 +800,26 @@ public class StoryEmitter
             db = EmitIntermediateDatabase(rule, (int)rightCondition.TupleSize, null);
             if (db != null)
             {
-                database = new DatabaseReference(Story, db);
+                database = new(Story, db);
             }
             else
             {
-                database = new DatabaseReference();
+                database = new();
             }
         }
         else
         {
-            database = new DatabaseReference();
+            database = new();
         }
 
         // VERY TODO
         osiCall.DatabaseRef = database;
         osiCall.Name = "";
         osiCall.NumParams = 0;
-        osiCall.LeftParentRef = new NodeReference();
-        osiCall.RightParentRef = new NodeReference();
-        osiCall.LeftAdapterRef = new AdapterReference(Story, leftAdapter);
-        osiCall.RightAdapterRef = new AdapterReference(Story, rightAdapter);
+        osiCall.LeftParentRef = new();
+        osiCall.RightParentRef = new();
+        osiCall.LeftAdapterRef = new(Story, leftAdapter);
+        osiCall.RightAdapterRef = new(Story, rightAdapter);
         if (db == null)
         {
             osiCall.LeftDatabaseNodeRef = referencedDb.DbNodeRef;
@@ -823,17 +828,17 @@ public class StoryEmitter
         }
         else
         {
-            osiCall.LeftDatabaseNodeRef = new NodeReference();
+            osiCall.LeftDatabaseNodeRef = new();
             osiCall.LeftDatabaseIndirection = 0;
-            osiCall.LeftDatabaseJoin = new NodeEntryItem
+            osiCall.LeftDatabaseJoin = new()
             {
-                NodeRef = new NodeReference(),
+                NodeRef = new(),
                 EntryPoint = EntryPoint.None,
-                GoalRef = new GoalReference()
+                GoalRef = new()
             };
         }
 
-        SortedSet<byte> uniqueLogicalIndices = new SortedSet<byte>();
+        SortedSet<byte> uniqueLogicalIndices = new();
         foreach (var columnIndex in leftAdapter.LogicalToPhysicalMap.Keys)
         {
             uniqueLogicalIndices.Add(columnIndex);
@@ -848,22 +853,22 @@ public class StoryEmitter
 
         if (db != null)
         {
-            referencedDb.DbNodeRef = new NodeReference(Story, osiCall);
+            referencedDb.DbNodeRef = new(Story, osiCall);
             referencedDb.Indirection = 0;
-            referencedDb.JoinRef = new NodeEntryItem
+            referencedDb.JoinRef = new()
             {
-                NodeRef = new NodeReference(Story, osiCall),
-                GoalRef = new GoalReference(Story, goal),
+                NodeRef = new(Story, osiCall),
+                GoalRef = new(Story, goal),
                 EntryPoint = EntryPoint.None
             };
         }
         else if (referencedDb.DbNodeRef.IsValid
               && left.DatabaseRef.IsValid)
         {
-            referencedDb.JoinRef = new NodeEntryItem
+            referencedDb.JoinRef = new()
             {
-                NodeRef = new NodeReference(Story, osiCall),
-                GoalRef = new GoalReference(Story, goal),
+                NodeRef = new(Story, osiCall),
+                GoalRef = new(Story, goal),
                 EntryPoint = EntryPoint.Left
             };
             osiCall.LeftDatabaseJoin = referencedDb.JoinRef;
@@ -871,24 +876,24 @@ public class StoryEmitter
 
         if (right is DatabaseNode && db == null)
         {
-            osiCall.RightDatabaseNodeRef = new NodeReference(Story, right);
+            osiCall.RightDatabaseNodeRef = new(Story, right);
             osiCall.RightDatabaseIndirection = 1;
-            osiCall.RightDatabaseJoin = new NodeEntryItem
+            osiCall.RightDatabaseJoin = new()
             {
-                NodeRef = new NodeReference(Story, osiCall),
+                NodeRef = new(Story, osiCall),
                 EntryPoint = EntryPoint.Right,
-                GoalRef = new GoalReference(Story, goal)
+                GoalRef = new(Story, goal)
             };
         }
         else
         {
-            osiCall.RightDatabaseNodeRef = new NodeReference();
+            osiCall.RightDatabaseNodeRef = new();
             osiCall.RightDatabaseIndirection = 0;
-            osiCall.RightDatabaseJoin = new NodeEntryItem
+            osiCall.RightDatabaseJoin = new()
             {
-                NodeRef = new NodeReference(),
+                NodeRef = new(),
                 EntryPoint = EntryPoint.None,
-                GoalRef = new GoalReference()
+                GoalRef = new()
             };
         }
 
@@ -922,11 +927,11 @@ public class StoryEmitter
         if (previousNode.DatabaseRef.IsValid)
         {
             db = EmitIntermediateDatabase(rule, (int)condition.TupleSize, null);
-            database = new DatabaseReference(Story, db);
+            database = new(Story, db);
         }
         else
         {
-            database = new DatabaseReference();
+            database = new();
         }
 
         var adapter = EmitNodeAdapter(rule, previousCondition, previousNode);
@@ -937,7 +942,7 @@ public class StoryEmitter
             NumParams = 0,
                 
             ParentRef = null,
-            AdapterRef = new AdapterReference(Story, adapter),
+            AdapterRef = new(Story, adapter),
 
             RelOp = condition.Op
         };
@@ -949,7 +954,7 @@ public class StoryEmitter
         }
         else
         {
-            osiRelOp.LeftValue = new Value
+            osiRelOp.LeftValue = new()
             {
                 TypeId = (uint)Value.Type.None
             };
@@ -963,7 +968,7 @@ public class StoryEmitter
         }
         else
         {
-            osiRelOp.RightValue = new Value
+            osiRelOp.RightValue = new()
             {
                 TypeId = (uint)Value.Type.None
             };
@@ -974,11 +979,11 @@ public class StoryEmitter
         {
             db.OwnerNode = osiRelOp;
 
-            osiRelOp.RelDatabaseNodeRef = new NodeReference();
-            osiRelOp.RelJoin = new NodeEntryItem
+            osiRelOp.RelDatabaseNodeRef = new();
+            osiRelOp.RelJoin = new()
             {
-                NodeRef = new NodeReference(),
-                GoalRef = new GoalReference(),
+                NodeRef = new(),
+                GoalRef = new(),
                 EntryPoint = EntryPoint.None
             };
             osiRelOp.RelDatabaseIndirection = 0;
@@ -994,13 +999,13 @@ public class StoryEmitter
 
         if (db != null)
         {
-            referencedDb.DbNodeRef = new NodeReference(Story, osiRelOp);
+            referencedDb.DbNodeRef = new(Story, osiRelOp);
             referencedDb.Indirection = 0;
-            referencedDb.JoinRef = new NodeEntryItem
+            referencedDb.JoinRef = new()
             {
-                NodeRef = new NodeReference(),
+                NodeRef = new(),
                 EntryPoint = EntryPoint.None,
-                GoalRef = new GoalReference()
+                GoalRef = new()
             };
         }
 
@@ -1009,7 +1014,7 @@ public class StoryEmitter
 
     private Variable EmitVariable(IRRuleVariable variable)
     {
-        return new Variable
+        return new()
         {
             TypeId = variable.Type.TypeId,
             IsValid = false,
@@ -1036,29 +1041,29 @@ public class StoryEmitter
             db = EmitIntermediateDatabase(rule, (int)rule.Variables.Count, null);
             if (db != null)
             {
-                database = new DatabaseReference(Story, db);
+                database = new(Story, db);
 
                 // TODO - set Dummy referencedDb
-                referencedDb = new ReferencedDatabaseInfo
+                referencedDb = new()
                 {
-                    DbNodeRef = new NodeReference(),
+                    DbNodeRef = new(),
                     Indirection = 0,
-                    JoinRef = new NodeEntryItem
+                    JoinRef = new()
                     {
-                        NodeRef = new NodeReference(),
-                        GoalRef = new GoalReference(),
+                        NodeRef = new(),
+                        GoalRef = new(),
                         EntryPoint = EntryPoint.None
                     }
                 };
             }
             else
             {
-                database = new DatabaseReference();
+                database = new();
             }
         }
         else
         {
-            database = new DatabaseReference();
+            database = new();
         }
 
         Adapter adapter = EmitNodeAdapter(rule, lastCondition, previousNode);
@@ -1068,22 +1073,22 @@ public class StoryEmitter
             Name = "",
             NumParams = 0,
 
-            NextNode = new NodeEntryItem
+            NextNode = new()
             {
-                NodeRef = new NodeReference(),
+                NodeRef = new(),
                 EntryPoint = EntryPoint.None,
-                GoalRef = new GoalReference()
+                GoalRef = new()
             },
             ParentRef = null,
-            AdapterRef = new AdapterReference(Story, adapter),
+            AdapterRef = new(Story, adapter),
             RelDatabaseNodeRef = referencedDb.DbNodeRef,
             RelJoin = referencedDb.JoinRef,
             RelDatabaseIndirection = referencedDb.Indirection,
 
-            Calls = new List<Call>(rule.Actions.Count),
-            Variables = new List<Variable>(rule.Variables.Count),
+            Calls = new(rule.Actions.Count),
+            Variables = new(rule.Variables.Count),
             Line = 0,
-            DerivedGoalRef = new GoalReference(Story, goal),
+            DerivedGoalRef = new(Story, goal),
             IsQuery = (rule.Type == RuleType.Query)
         };
 
@@ -1101,10 +1106,10 @@ public class StoryEmitter
 
         if (referencedDb.DbNodeRef.IsValid && referencedDb.Indirection == 1)
         {
-            osiRule.RelJoin = new NodeEntryItem
+            osiRule.RelJoin = new()
             {
-                NodeRef = new NodeReference(Story, osiRule),
-                GoalRef = new GoalReference(Story, goal),
+                NodeRef = new(Story, osiRule),
+                GoalRef = new(Story, goal),
                 EntryPoint = EntryPoint.None
             };
         }
@@ -1124,10 +1129,10 @@ public class StoryEmitter
     {
         var osiProc = new ProcNode
         {
-            DatabaseRef = new DatabaseReference(),
+            DatabaseRef = new(),
             Name = signature.Name,
             NumParams = (byte)signature.Params.Count,
-            ReferencedBy = new List<NodeEntryItem>()
+            ReferencedBy = new()
         };
         AddNode(osiProc);
 
@@ -1142,7 +1147,7 @@ public class StoryEmitter
             Read = signature.Read
         };
 
-        var osiFunc = EmitFunction(LS.Story.FunctionType.UserQuery, aliasedSignature, new NodeReference(Story, osiProc));
+        var osiFunc = EmitFunction(LS.Story.FunctionType.UserQuery, aliasedSignature, new(Story, osiProc));
         if (queryFunc != null)
         {
             osiFunc.ConditionReferences = queryFunc.ConditionReferences;
@@ -1168,13 +1173,13 @@ public class StoryEmitter
 
     private class ReferencedDatabaseInfo
     {
-        public NodeReference DbNodeRef = new NodeReference();
+        public NodeReference DbNodeRef = new();
         public byte Indirection = 0;
-        public NodeEntryItem JoinRef = new NodeEntryItem
+        public NodeEntryItem JoinRef = new()
         {
-            NodeRef = new NodeReference(),
+            NodeRef = new(),
             EntryPoint = EntryPoint.None,
-            GoalRef = new GoalReference()
+            GoalRef = new()
         };
     }
 
@@ -1193,7 +1198,7 @@ public class StoryEmitter
             if (initialFunc is DatabaseNode)
             {
                 referencedDb.Indirection = 0;
-                referencedDb.DbNodeRef = new NodeReference(Story, initialFunc);
+                referencedDb.DbNodeRef = new(Story, initialFunc);
             }
         }
 
@@ -1233,8 +1238,8 @@ public class StoryEmitter
                 Id = osiRule.Index,
                 GoalId = (UInt32)Story.Goals.Count,
                 Name = (rule.Conditions.First() as IRFuncCondition).Func.Name.ToString(),
-                Variables = new List<RuleVariableDebugInfo>(),
-                Actions = new List<ActionDebugInfo>(),
+                Variables = new(),
+                Actions = new(),
                 ConditionsStartLine = (uint)rule.Location.StartLine,
                 ConditionsEndLine = (uint)rule.Conditions.Last().Location.EndLine,
                 ActionsStartLine = (uint)rule.Actions.First().Location.StartLine,
@@ -1255,7 +1260,7 @@ public class StoryEmitter
                 
             foreach (var action in rule.Actions)
             {
-                ruleDebug.Actions.Add(new ActionDebugInfo
+                ruleDebug.Actions.Add(new()
                 {
                     Line = (uint)action.Location.StartLine
                 });
@@ -1288,10 +1293,10 @@ public class StoryEmitter
         {
             Index = (uint)(Story.Goals.Count + 1),
             Name = goal.Name,
-            InitCalls = new List<Call>(goal.InitSection.Count),
-            ExitCalls = new List<Call>(goal.ExitSection.Count),
-            ParentGoals = new List<GoalReference>(),
-            SubGoals = new List<GoalReference>()
+            InitCalls = new(goal.InitSection.Count),
+            ExitCalls = new(goal.ExitSection.Count),
+            ParentGoals = new(),
+            SubGoals = new()
         };
 
         if (goal.ParentTargetEdges.Count > 0)
@@ -1323,13 +1328,13 @@ public class StoryEmitter
                 Id = osiGoal.Index,
                 Name = goal.Name,
                 Path = canonicalizedPath,
-                InitActions = new List<ActionDebugInfo>(),
-                ExitActions = new List<ActionDebugInfo>()
+                InitActions = new(),
+                ExitActions = new()
             };
 
             foreach (var action in goal.InitSection)
             {
-                goalDebug.InitActions.Add(new ActionDebugInfo
+                goalDebug.InitActions.Add(new()
                 {
                     Line = (uint)action.Location.StartLine
                 });
@@ -1337,7 +1342,7 @@ public class StoryEmitter
 
             foreach (var action in goal.ExitSection)
             {
-                goalDebug.ExitActions.Add(new ActionDebugInfo
+                goalDebug.ExitActions.Add(new()
                 {
                     Line = (uint)action.Location.StartLine
                 });
@@ -1405,8 +1410,8 @@ public class StoryEmitter
             {
                 var parentGoal = Context.LookupGoal(parent.Goal.Name);
                 var osiParentGoal = Goals[parentGoal];
-                osiGoal.ParentGoals.Add(new GoalReference(Story, osiParentGoal));
-                osiParentGoal.SubGoals.Add(new GoalReference(Story, osiGoal));
+                osiGoal.ParentGoals.Add(new(Story, osiParentGoal));
+                osiParentGoal.SubGoals.Add(new(Story, osiGoal));
             }
         }
     }
@@ -1436,11 +1441,11 @@ public class StoryEmitter
 
     public Story EmitStory()
     {
-        Story = new Story
+        Story = new()
         {
             MajorVersion = (byte)(OsiVersion.VerLastSupported >> 8),
             MinorVersion = (byte)(OsiVersion.VerLastSupported & 0xff),
-            Header = new SaveFileHeader
+            Header = new()
             {
                 Version = "Osiris save file dd. 03/30/17 07:28:20. Version 1.8.",
                 BigEndian = false,
@@ -1449,16 +1454,16 @@ public class StoryEmitter
                 MinorVersion = (byte)(OsiVersion.VerLastSupported & 0xff),
                 Unused = 0
             },
-            Types = new Dictionary<uint, OsirisType>(),
-            DivObjects = new List<OsirisDivObject>(),
-            Functions = new List<Function>(),
-            Nodes = new Dictionary<uint, Node>(),
-            Adapters = new Dictionary<uint, Adapter>(),
-            Databases = new Dictionary<uint, Database>(),
-            Goals = new Dictionary<uint, Goal>(),
-            GlobalActions = new List<Call>(),
-            ExternalStringTable = new List<string>(),
-            FunctionSignatureMap = new Dictionary<string, Function>()
+            Types = new(),
+            DivObjects = new(),
+            Functions = new(),
+            Nodes = new(),
+            Adapters = new(),
+            Databases = new(),
+            Goals = new(),
+            GlobalActions = new(),
+            ExternalStringTable = new(),
+            FunctionSignatureMap = new()
         };
 
         // TODO HEADER

@@ -161,7 +161,7 @@ public class LSJResourceConverter : JsonConverter
                         type = (uint)AttributeTypeMaps.TypeToId[(string)reader.Value];
                     }
 
-                    attribute = new NodeAttribute((NodeAttribute.DataType)type);
+                    attribute = new((NodeAttribute.DataType)type);
                     if (type == (uint)NodeAttribute.DataType.DT_TranslatedString)
                     {
                         attribute.Value = new TranslatedString
@@ -422,8 +422,11 @@ public class LSJResourceConverter : JsonConverter
                     }
                     else if (reader.TokenType == JsonToken.StartObject)
                     {
-                        var childNode = new Node();
-                        childNode.Name = key;
+                        var childNode = new Node
+                        {
+                            Name = key
+                        };
+
                         ReadNode(reader, childNode);
                         node.AppendChild(childNode);
                         childNode.Parent = node;
@@ -445,7 +448,7 @@ public class LSJResourceConverter : JsonConverter
 
     private Resource ReadResource(JsonReader reader, Resource resource)
     {
-        if (resource == null) resource = new Resource();
+        if (resource == null) resource = new();
 
         if (!reader.Read() || reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("save"))
         {

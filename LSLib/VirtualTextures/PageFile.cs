@@ -21,13 +21,13 @@ public class PageFile : IDisposable
     public PageFile(VirtualTileSet tileset, string path)
     {
         TileSet = tileset;
-        Stream = new FileStream(path, FileMode.Open, FileAccess.Read);
-        Reader = new BinaryReader(Stream);
+        Stream = new(path, FileMode.Open, FileAccess.Read);
+        Reader = new(Stream);
 
         Header = BinUtils.ReadStruct<GTPHeader>(Reader);
 
         var numPages = Stream.Length / PageSize;
-        ChunkOffsets = new List<UInt32[]>();
+        ChunkOffsets = new();
 
         for (var page = 0; page < numPages; page++)
         {
@@ -88,6 +88,6 @@ public class PageFile : IDisposable
     {
         var compressedSize = TileSet.Header.TileWidth * TileSet.Header.TileHeight * 2;
         var chunk = UnpackTile(pageIndex, chunkIndex, compressedSize);
-        return new BC5Image(chunk, TileSet.Header.TileWidth, TileSet.Header.TileHeight);
+        return new(chunk, TileSet.Header.TileWidth, TileSet.Header.TileHeight);
     }
 }

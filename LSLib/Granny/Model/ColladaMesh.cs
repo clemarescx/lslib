@@ -24,8 +24,8 @@ public class ColladaMesh
     private int NormalsInputIndex = -1;
     private int TangentsInputIndex = -1;
     private int BinormalsInputIndex = -1;
-    private List<int> UVInputIndices = new List<int>();
-    private List<int> ColorInputIndices = new List<int>();
+    private List<int> UVInputIndices = new();
+    private List<int> ColorInputIndices = new();
     private VertexDescriptor InputVertexType;
     private VertexDescriptor OutputVertexType;
     private bool HasNormals = false;
@@ -126,8 +126,8 @@ public class ColladaMesh
 
             if ((Single.IsNaN(r) || Single.IsInfinity(r)) && !Options.IgnoreUVNaN)
             {
-                throw new Exception($"Couldn't calculate tangents; the mesh most likely contains non-manifold geometry.{Environment.NewLine}"
-                                  + $"UV1: {w1}{Environment.NewLine}UV2: {w2}{Environment.NewLine}UV3: {w3}");
+                throw new($"Couldn't calculate tangents; the mesh most likely contains non-manifold geometry.{Environment.NewLine}"
+                        + $"UV1: {w1}{Environment.NewLine}UV2: {w2}{Environment.NewLine}UV3: {w3}");
             }
 
             var sdir = new Vector3(
@@ -194,7 +194,7 @@ public class ColladaMesh
     {
         for (var vertexIdx = 0; vertexIdx < Vertices.Count; vertexIdx++)
         {
-            Vector3 N = new Vector3(0, 0, 0);
+            Vector3 N = new(0, 0, 0);
             var numIndices = VertexIndexCount();
             for (int triVertIdx = 0; triVertIdx < numIndices; triVertIdx++)
             {
@@ -329,7 +329,7 @@ public class ColladaMesh
         if (VertexInputIndex == -1)
             throw new ParsingException("Required triangle input semantic missing: VERTEX");
 
-        Vertices = new List<Vertex>(vertexPositions.Count);
+        Vertices = new(vertexPositions.Count);
         for (var vert = 0; vert < vertexPositions.Count; vert++)
         {
             var vertex = OutputVertexType.CreateInstance();
@@ -361,7 +361,7 @@ public class ColladaMesh
     private void ImportColors()
     {
         ColorInputIndices.Clear();
-        Colors = new List<List<Vector4>>();
+        Colors = new();
         foreach (var input in Inputs)
         {
             if (input.semantic == "COLOR")
@@ -392,7 +392,7 @@ public class ColladaMesh
                 Colors.Add(colors);
                 for (var i = 0; i < r.Count; i++)
                 {
-                    colors.Add(new Vector4(r[i], g[i], b[i], 1.0f));
+                    colors.Add(new(r[i], g[i], b[i], 1.0f));
                 }
             }
         }
@@ -402,7 +402,7 @@ public class ColladaMesh
     {
         bool flip = Options.FlipUVs;
         UVInputIndices.Clear();
-        UVs = new List<List<Vector2>>();
+        UVs = new();
         foreach (var input in Inputs)
         {
             if (input.semantic == "TEXCOORD")
@@ -426,7 +426,7 @@ public class ColladaMesh
                 for (var i = 0; i < s.Count; i++)
                 {
                     if (flip) t[i] = 1.0f - t[i];
-                    uvs.Add(new Vector2(s[i], t[i]));
+                    uvs.Add(new(s[i], t[i]));
                 }
             }
         }
@@ -434,7 +434,7 @@ public class ColladaMesh
 
     private void ImportSources()
     {
-        Sources = new Dictionary<String, ColladaSource>();
+        Sources = new();
         foreach (var source in Mesh.source)
         {
             var src = ColladaSource.FromCollada(source);
@@ -444,8 +444,11 @@ public class ColladaMesh
 
     private VertexDescriptor FindVertexFormat(bool isSkinned)
     {
-        var desc = new VertexDescriptor();
-        desc.PositionType = PositionType.Float3;
+        var desc = new VertexDescriptor
+        {
+            PositionType = PositionType.Float3
+        };
+
         if (isSkinned)
         {
             desc.HasBoneWeights = true;
@@ -503,7 +506,7 @@ public class ColladaMesh
         }
 
         InputVertexType = vertexFormat;
-        OutputVertexType = new VertexDescriptor
+        OutputVertexType = new()
         {
             HasBoneWeights = InputVertexType.HasBoneWeights,
             NumBoneInfluences = InputVertexType.NumBoneInfluences,
@@ -538,9 +541,9 @@ public class ColladaMesh
                                        || NormalsInputIndex != -1 || TangentsInputIndex != -1 || BinormalsInputIndex != -1)
         {
             var outVertexIndices = new Dictionary<int[], int>(new VertexIndexComparer());
-            ConsolidatedIndices = new List<int>(TriangleCount * 3);
-            ConsolidatedVertices = new List<Vertex>(Vertices.Count);
-            OriginalToConsolidatedVertexIndexMap = new Dictionary<int, List<int>>();
+            ConsolidatedIndices = new(TriangleCount * 3);
+            ConsolidatedVertices = new(Vertices.Count);
+            OriginalToConsolidatedVertexIndexMap = new();
             for (var vert = 0; vert < TriangleCount * 3; vert++)
             {
                 var index = new int[InputOffsetCount];
@@ -581,7 +584,7 @@ public class ColladaMesh
                     List<int> mappedIndices = null;
                     if (!OriginalToConsolidatedVertexIndexMap.TryGetValue(vertexIndex, out mappedIndices))
                     {
-                        mappedIndices = new List<int>();
+                        mappedIndices = new();
                         OriginalToConsolidatedVertexIndexMap.Add(vertexIndex, mappedIndices);
                     }
 
@@ -599,13 +602,13 @@ public class ColladaMesh
 
             ConsolidatedVertices = Vertices;
 
-            ConsolidatedIndices = new List<int>(TriangleCount * 3);
+            ConsolidatedIndices = new(TriangleCount * 3);
             for (var vert = 0; vert < TriangleCount * 3; vert++)
                 ConsolidatedIndices.Add(VertexIndex(vert));
 
-            OriginalToConsolidatedVertexIndexMap = new Dictionary<int, List<int>>();
+            OriginalToConsolidatedVertexIndexMap = new();
             for (var i = 0; i < Vertices.Count; i++)
-                OriginalToConsolidatedVertexIndexMap.Add(i, new List<int> { i });
+                OriginalToConsolidatedVertexIndexMap.Add(i, new() { i });
         }
 
         if ((InputVertexType.TangentType == NormalType.None 

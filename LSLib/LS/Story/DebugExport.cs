@@ -19,7 +19,7 @@ public class StoryDebugExportVisitor
     public void Visit(Story story)
     {
         using (var streamWriter = new StreamWriter(stream))
-        using (this.writer = new JsonTextWriter(streamWriter))
+        using (this.writer = new(streamWriter))
         {
             writer.IndentChar = '\t';
             writer.Indentation = 1;
@@ -179,7 +179,7 @@ public class StoryDebugExportVisitor
         // else if (node is DataNode)
         //     Visit(node as DataNode);
         else
-            throw new Exception("Unsupported node type");
+            throw new("Unsupported node type");
     }
 
     public void Visit(Value val)

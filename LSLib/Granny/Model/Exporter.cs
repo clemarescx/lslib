@@ -93,7 +93,7 @@ public class ExporterOptions
     public bool ConformAnimations = true;
     public bool ConformMeshBoneBindings = true;
     public bool ConformModels = true;
-    public Dictionary<string, VertexDescriptor> VertexFormats = new Dictionary<string, VertexDescriptor>();
+    public Dictionary<string, VertexDescriptor> VertexFormats = new();
     // Extended model info format to use when exporting to D:OS
     public DivinityModelInfoFormat ModelInfoFormat = DivinityModelInfoFormat.None;
     // Model flags to use when exporting
@@ -117,9 +117,9 @@ public class ExporterOptions
     // See: Spherical Skinning with Dual-Quaternions and QTangents, Crytek R&D
     public bool EnableQTangents = true;
 
-    public List<string> DisabledAnimations = new List<string>();
-    public List<string> DisabledModels = new List<string>();
-    public List<string> DisabledSkeletons = new List<string>();
+    public List<string> DisabledAnimations = new();
+    public List<string> DisabledModels = new();
+    public List<string> DisabledSkeletons = new();
 
     public void LoadGameSettings(Game game)
     {
@@ -163,7 +163,7 @@ public class ExporterOptions
 
 public class Exporter
 {
-    public ExporterOptions Options = new ExporterOptions();
+    public ExporterOptions Options = new();
     private Root Root;
 
     private Root LoadGR2(string inPath)
@@ -180,8 +180,11 @@ public class Exporter
 
     private Root LoadDAE(string inPath)
     {
-        var importer = new ColladaImporter();
-        importer.Options = Options;
+        var importer = new ColladaImporter
+        {
+            Options = Options
+        };
+
         return importer.Import(inPath);
     }
 
@@ -198,12 +201,12 @@ public class Exporter
     private void SaveGR2(string outPath, Root root)
     {
         root.PreSave();
-        var writer = new LSLib.Granny.GR2.GR2Writer();
-
-        writer.Format = Options.Is64Bit ? Magic.Format.LittleEndian64 : Magic.Format.LittleEndian32;
-        writer.AlternateMagic = Options.AlternateSignature;
-        writer.VersionTag = Options.VersionTag;
-
+        var writer = new LSLib.Granny.GR2.GR2Writer
+        {
+            Format = Options.Is64Bit ? Magic.Format.LittleEndian64 : Magic.Format.LittleEndian32,
+            AlternateMagic = Options.AlternateSignature,
+            VersionTag = Options.VersionTag
+        };
 
         if (Options.UseObsoleteVersionTag)
         {
@@ -222,8 +225,11 @@ public class Exporter
 
     private void SaveDAE(Root root, ExporterOptions options)
     {
-        var exporter = new ColladaExporter();
-        exporter.Options = options;
+        var exporter = new ColladaExporter
+        {
+            Options = options
+        };
+
         exporter.Export(root, options.OutputPath);
     }
 
@@ -252,17 +258,23 @@ public class Exporter
             if (model.Skeleton == null)
             {
                 Utils.Info($"Generating dummy skeleton for model '{model.Name}'");
-                var skeleton = new Skeleton();
-                skeleton.Name = model.Name;
-                skeleton.LODType = 1;
-                skeleton.IsDummy = true;
+                var skeleton = new Skeleton
+                {
+                    Name = model.Name,
+                    LODType = 1,
+                    IsDummy = true
+                };
+
                 root.Skeletons.Add(skeleton);
 
-                var bone = new Bone();
-                bone.Name = model.Name;
-                bone.ParentIndex = -1;
-                skeleton.Bones = new List<Bone> { bone };
-                bone.Transform = new Transform();
+                var bone = new Bone
+                {
+                    Name = model.Name,
+                    ParentIndex = -1
+                };
+
+                skeleton.Bones = new() { bone };
+                bone.Transform = new();
 
                 // TODO: Transform / IWT is not always identity on dummy bones!
                 skeleton.UpdateWorldTransforms();
@@ -275,14 +287,17 @@ public class Exporter
                         throw new ParsingException("Failed to generate dummy skeleton: Mesh already has bone bindings.");
                     }
 
-                    var binding = new BoneBinding();
-                    binding.BoneName = bone.Name;
-                    // TODO: Calculate bounding box!
-                    // Use small bounding box values, as it interferes with object placement
-                    // in D:OS 2 (after the Gift Bag 2 update)
-                    binding.OBBMin = new float[] { -0.1f, -0.1f, -0.1f };
-                    binding.OBBMax = new float[] { 0.1f, 0.1f, 0.1f };
-                    mesh.Mesh.BoneBindings = new List<BoneBinding> { binding };
+                    var binding = new BoneBinding
+                    {
+                        BoneName = bone.Name,
+                        // TODO: Calculate bounding box!
+                        // Use small bounding box values, as it interferes with object placement
+                        // in D:OS 2 (after the Gift Bag 2 update)
+                        OBBMin = new float[] { -0.1f, -0.1f, -0.1f },
+                        OBBMax = new float[] { 0.1f, 0.1f, 0.1f }
+                    };
+
+                    mesh.Mesh.BoneBindings = new() { binding };
                 }
             }
         }
@@ -420,11 +435,14 @@ public class Exporter
                 // be able to bind the animations to anything
                 if (Root.Models == null)
                 {
-                    Root.Models = new List<Model>();
-                    var model = new Model();
-                    model.InitialPlacement = new Transform();
-                    model.Name = skeleton.Name;
-                    model.Skeleton = skeleton;
+                    Root.Models = new();
+                    var model = new Model
+                    {
+                        InitialPlacement = new(),
+                        Name = skeleton.Name,
+                        Skeleton = skeleton
+                    };
+
                     Root.Models.Add(model);
                 }
 
@@ -466,7 +484,7 @@ public class Exporter
     {
         if (mesh.BoneBindings == null)
         {
-            mesh.BoneBindings = new List<BoneBinding>();
+            mesh.BoneBindings = new();
         }
 
         foreach (var conformBone in conformToMesh.BoneBindings)
@@ -484,8 +502,11 @@ public class Exporter
             if (inputBone == null)
             {
                 // Create a new "dummy" binding if it does not exist in the new mesh
-                inputBone = new BoneBinding();
-                inputBone.BoneName = conformBone.BoneName;
+                inputBone = new()
+                {
+                    BoneName = conformBone.BoneName
+                };
+
                 mesh.BoneBindings.Add(inputBone);
             }
 
@@ -525,33 +546,45 @@ public class Exporter
 
     private Mesh GenerateDummyMesh(MeshBinding meshBinding)
     {
-        var vertexData = new VertexData();
-        vertexData.VertexComponentNames = meshBinding.Mesh.PrimaryVertexData.VertexComponentNames
-                                                     .Select(name => new GrannyString(name.String)).ToList();
-        vertexData.Vertices = new List<Vertex>();
+        var vertexData = new VertexData
+        {
+            VertexComponentNames = meshBinding.Mesh.PrimaryVertexData.VertexComponentNames
+                                              .Select(name => new GrannyString(name.String)).ToList(),
+            Vertices = new()
+        };
+
         var dummyVertex = meshBinding.Mesh.VertexFormat.CreateInstance();
         vertexData.Vertices.Add(dummyVertex);
         Root.VertexDatas.Add(vertexData);
 
-        var topology = new TriTopology();
-        topology.Groups = new List<TriTopologyGroup>();
-        var group = new TriTopologyGroup();
-        group.MaterialIndex = 0;
-        group.TriCount = 0;
-        group.TriFirst = 0;
+        var topology = new TriTopology
+        {
+            Groups = new()
+        };
+
+        var group = new TriTopologyGroup
+        {
+            MaterialIndex = 0,
+            TriCount = 0,
+            TriFirst = 0
+        };
+
         topology.Groups.Add(group);
 
-        topology.Indices = new List<int>();
+        topology.Indices = new();
         Root.TriTopologies.Add(topology);
 
-        var mesh = new Mesh();
-        mesh.Name = meshBinding.Mesh.Name;
-        mesh.VertexFormat = meshBinding.Mesh.VertexFormat;
-        mesh.PrimaryTopology = topology;
-        mesh.PrimaryVertexData = vertexData;
+        var mesh = new Mesh
+        {
+            Name = meshBinding.Mesh.Name,
+            VertexFormat = meshBinding.Mesh.VertexFormat,
+            PrimaryTopology = topology,
+            PrimaryVertexData = vertexData
+        };
+
         if (meshBinding.Mesh.BoneBindings != null)
         {
-            mesh.BoneBindings = new List<BoneBinding>();
+            mesh.BoneBindings = new();
             ConformMeshBoneBindings(mesh, meshBinding.Mesh);
         }
 
@@ -560,9 +593,11 @@ public class Exporter
 
     private Model MakeDummyModel(Model original)
     {
-        var newModel = new Model();
-        newModel.InitialPlacement = original.InitialPlacement;
-        newModel.Name = original.Name;
+        var newModel = new Model
+        {
+            InitialPlacement = original.InitialPlacement,
+            Name = original.Name
+        };
 
         if (original.Skeleton != null)
         {
@@ -577,7 +612,7 @@ public class Exporter
 
         if (original.MeshBindings != null)
         {
-            newModel.MeshBindings = new List<MeshBinding>();
+            newModel.MeshBindings = new();
             foreach (var meshBinding in original.MeshBindings)
             {
                 // Try to bind the original mesh, if it exists in the source file.
@@ -589,8 +624,11 @@ public class Exporter
                     Root.Meshes.Add(mesh);
                 }
 
-                var binding = new MeshBinding();
-                binding.Mesh = mesh;
+                var binding = new MeshBinding
+                {
+                    Mesh = mesh
+                };
+
                 newModel.MeshBindings.Add(binding);
             }
         }
@@ -609,7 +647,7 @@ public class Exporter
         // Rebuild the model list to match the order used in the original GR2
         // If a model is missing, generate a dummy model & mesh.
         var originalModels = Root.Models;
-        Root.Models = new List<Model>();
+        Root.Models = new();
 
         foreach (var model in models)
         {
@@ -782,7 +820,7 @@ public class Exporter
 
                         if (!hasHighIndex)
                         {
-                            topology.Indices16 = new List<ushort>(topology.Indices.Count);
+                            topology.Indices16 = new(topology.Indices.Count);
                             foreach (var index in topology.Indices)
                             {
                                 topology.Indices16.Add((ushort)index);

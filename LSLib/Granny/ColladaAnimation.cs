@@ -23,7 +23,7 @@ public class ColladaAnimation
 
     private void ImportSources()
     {
-        Sources = new Dictionary<String, ColladaSource>();
+        Sources = new();
         foreach (var item in Animation.Items)
         {
             if (item is source)

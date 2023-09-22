@@ -195,7 +195,7 @@ public class UncompressedPackagedFileStream : Stream
         if (PackageStream.Position < (long)FileInfo.OffsetInFile
          || PackageStream.Position > (long)FileInfo.OffsetInFile + (long)FileInfo.SizeOnDisk)
         {
-            throw new Exception("Stream at unexpected position while reading packaged file?");
+            throw new("Stream at unexpected position while reading packaged file?");
         }
 
         long readable = (long)FileInfo.SizeOnDisk - Position;
@@ -605,8 +605,8 @@ public class Package
         0x4B
     };
 
-    public PackageMetadata Metadata = new PackageMetadata();
-    public List<AbstractFileInfo> Files = new List<AbstractFileInfo>();
+    public PackageMetadata Metadata = new();
+    public List<AbstractFileInfo> Files = new();
     public PackageVersion Version;
 
     public static string MakePartFilename(string path, int part)

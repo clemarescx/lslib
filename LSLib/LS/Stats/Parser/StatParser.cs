@@ -38,10 +38,10 @@ public abstract class StatScanBase : AbstractScanner<object, CodeLocation>
         var matches = re.Match(lit);
         if (!matches.Success)
         {
-            throw new Exception("Stat data entry match error");
+            throw new("Stat data entry match error");
         }
 
-        return new StatProperty
+        return new()
         {
             Key = matches.Groups[1].Value,
             Value = matches.Groups[2].Value,
@@ -59,7 +59,7 @@ public partial class StatScanner
 
     public CodeLocation LastLocation()
     {
-        return new CodeLocation(null, tokLin, tokCol, tokELin, tokECol);
+        return new(null, tokLin, tokCol, tokELin, tokECol);
     }
 }
 
@@ -74,7 +74,7 @@ public partial class StatParser
         return (StatDeclarations)CurrentSemanticValue;
     }
 
-    private StatDeclarations MakeDeclarationList() => new StatDeclarations();
+    private StatDeclarations MakeDeclarationList() => new();
 
     private StatDeclarations AddDeclaration(object declarations, object declaration)
     {
@@ -83,9 +83,9 @@ public partial class StatParser
         return decls;
     }
 
-    private StatDeclaration MakeDeclaration() => new StatDeclaration();
+    private StatDeclaration MakeDeclaration() => new();
 
-    private StatDeclaration MakeDeclaration(CodeLocation location) => new StatDeclaration()
+    private StatDeclaration MakeDeclaration(CodeLocation location) => new()
     {
         Location = location
     };
@@ -163,45 +163,45 @@ public partial class StatParser
         }
         else
         {
-            throw new Exception("Unknown property type");
+            throw new("Unknown property type");
         }
 
         return decl;
     }
 
-    private StatProperty MakeProperty(object key, object value) => new StatProperty()
+    private StatProperty MakeProperty(object key, object value) => new()
     {
         Key = (string)key,
         Value = (string)value
     };
 
-    private StatProperty MakeProperty(String key, object value) => new StatProperty()
+    private StatProperty MakeProperty(String key, object value) => new()
     {
         Key = key,
         Value = (string)value
     };
 
-    private StatProperty MakeProperty(String key, String value) => new StatProperty()
+    private StatProperty MakeProperty(String key, String value) => new()
     {
         Key = key,
         Value = value
     };
 
-    private StatProperty MakeProperty(CodeLocation location, object key, object value) => new StatProperty()
+    private StatProperty MakeProperty(CodeLocation location, object key, object value) => new()
     {
         Key = (string)key,
         Value = (string)value,
         Location = location
     };
 
-    private StatProperty MakeProperty(CodeLocation location, String key, object value) => new StatProperty()
+    private StatProperty MakeProperty(CodeLocation location, String key, object value) => new()
     {
         Key = key,
         Value = (string)value,
         Location = location
     };
 
-    private StatProperty MakeProperty(CodeLocation location, String key, String value) => new StatProperty()
+    private StatProperty MakeProperty(CodeLocation location, String key, String value) => new()
     {
         Key = key,
         Value = value,
@@ -212,7 +212,7 @@ public partial class StatParser
     {
         if (value is string)
         {
-            return new StatElement()
+            return new()
             {
                 Collection = key,
                 Value = (string)value
@@ -220,7 +220,7 @@ public partial class StatParser
         }
         else if (value is StatCollection)
         {
-            return new StatElement()
+            return new()
             {
                 Collection = key,
                 Value = (StatCollection)value
@@ -228,7 +228,7 @@ public partial class StatParser
         }
         else if (value is Dictionary<string, object>)
         {
-            return new StatElement()
+            return new()
             {
                 Collection = key,
                 Value = (Dictionary<string, object>)value
@@ -236,7 +236,7 @@ public partial class StatParser
         }
         else if (value is StatDeclaration)
         {
-            return new StatElement()
+            return new()
             {
                 Collection = key,
                 Value = ((StatDeclaration)value).Properties
@@ -244,11 +244,11 @@ public partial class StatParser
         }
         else
         {
-            throw new Exception("Unknown stat element type");
+            throw new("Unknown stat element type");
         }
     }
 
-    private StatCollection MakeCollection() => new List<object>();
+    private StatCollection MakeCollection() => new();
 
     private StatCollection AddElement(object collection, object element)
     {

@@ -7,8 +7,8 @@ namespace LSLib.LS.Story.Compiler;
 
 public class Compiler
 {
-    public CompilationContext Context = new CompilationContext();
-    public HashSet<FunctionNameAndArity> IgnoreUnusedDatabases = new HashSet<FunctionNameAndArity>();
+    public CompilationContext Context = new();
+    public HashSet<FunctionNameAndArity> IgnoreUnusedDatabases = new();
     public TargetGame Game = TargetGame.DOS2;
     public bool AllowTypeCoercion = false;
     public HashSet<string> TypeCoercionWhitelist;
@@ -452,7 +452,7 @@ public class Compiler
                     break;
 
                 default:
-                    throw new Exception("Unknown rule type");
+                    throw new("Unknown rule type");
             }
         }
         else
@@ -865,7 +865,7 @@ public class Compiler
 
         if (signature == null)
         {
-            signature = new FunctionSignature
+            signature = new()
             {
                 Name = name.Name,
                 Type = (type == null) ? FunctionType.Database : (FunctionType)type,
@@ -888,7 +888,7 @@ public class Compiler
         }
 
         signature.FullyTyped = !paramTypes.Any(ty => ty == null);
-        signature.Params = new List<FunctionParam>(paramTypes.Count);
+        signature.Params = new(paramTypes.Count);
         foreach (var paramType in paramTypes)
         {
             var sigParam = new FunctionParam

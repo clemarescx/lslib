@@ -18,7 +18,7 @@ public class ColladaMeshExporter
     private List<InputLocal> Inputs;
     private List<InputLocalOffset> InputOffsets;
     private ulong LastInputOffset = 0;
-    private XmlDocument Xml = new XmlDocument();
+    private XmlDocument Xml = new();
 
 
     public ColladaMeshExporter(Mesh mesh, ExporterOptions options)
@@ -36,18 +36,24 @@ public class ColladaMeshExporter
 
         if (inputSemantic != null)
         {
-            var input = new InputLocal();
-            input.semantic = inputSemantic;
-            input.source = "#" + collSource.id;
+            var input = new InputLocal
+            {
+                semantic = inputSemantic,
+                source = "#" + collSource.id
+            };
+
             Inputs.Add(input);
         }
 
         if (localInputSemantic != null)
         {
-            var vertexInputOff = new InputLocalOffset();
-            vertexInputOff.semantic = localInputSemantic;
-            vertexInputOff.source = "#" + collSource.id;
-            vertexInputOff.offset = LastInputOffset++;
+            var vertexInputOff = new InputLocalOffset
+            {
+                semantic = localInputSemantic,
+                source = "#" + collSource.id,
+                offset = LastInputOffset++
+            };
+
             if (localInputSemantic == "TEXCOORD" || localInputSemantic == "COLOR")
             {
                 vertexInputOff.set = setIndex;
@@ -309,9 +315,9 @@ public class ColladaMeshExporter
     public mesh Export()
     {
         // Jank we need to create XMLElements on the fly
-        Sources = new List<source>();
-        Inputs = new List<InputLocal>();
-        InputOffsets = new List<InputLocalOffset>();
+        Sources = new();
+        Inputs = new();
+        InputOffsets = new();
         LastInputOffset = 0;
 
         var vertexData = ExportedMesh.PrimaryVertexData;
@@ -336,19 +342,23 @@ public class ColladaMeshExporter
             vertexData.Deduplicator.Colors.Select(color => color.DeduplicationMap).ToList()
         );
 
-        var colladaMesh = new mesh();
-        colladaMesh.vertices = new vertices();
-        colladaMesh.vertices.id = ExportedMesh.Name + "-vertices";
-        colladaMesh.vertices.input = Inputs.ToArray();
-        colladaMesh.source = Sources.ToArray();
-        colladaMesh.Items = new object[] { triangles };
-        colladaMesh.extra = new extra[]
+        var colladaMesh = new mesh
         {
-            new extra
+            vertices = new()
             {
-                technique = new technique[]
+                id = ExportedMesh.Name + "-vertices",
+                input = Inputs.ToArray()
+            },
+            source = Sources.ToArray(),
+            Items = new object[] { triangles },
+            extra = new extra[]
+            {
+                new()
                 {
-                    ExportLSLibProfile()
+                    technique = new technique[]
+                    {
+                        ExportLSLibProfile()
+                    }
                 }
             }
         };
@@ -361,18 +371,21 @@ public class ColladaMeshExporter
 public class ColladaExporter
 {
     [Serialization(Kind = SerializationKind.None)]
-    public ExporterOptions Options = new ExporterOptions();
+    public ExporterOptions Options = new();
 
-    private XmlDocument Xml = new XmlDocument();
+    private XmlDocument Xml = new();
 
     private void ExportMeshBinding(Model model, string skelRef, MeshBinding meshBinding, List<geometry> geometries, List<controller> controllers, List<node> geomNodes)
     {
         var exporter = new ColladaMeshExporter(meshBinding.Mesh, Options);
         var mesh = exporter.Export();
-        var geom = new geometry();
-        geom.id = meshBinding.Mesh.Name + "-geom";
-        geom.name = meshBinding.Mesh.Name;
-        geom.Item = mesh;
+        var geom = new geometry
+        {
+            id = meshBinding.Mesh.Name + "-geom",
+            name = meshBinding.Mesh.Name,
+            Item = mesh
+        };
+
         geometries.Add(geom);
 
         bool hasSkin = skelRef != null && meshBinding.Mesh.IsSkinned();
@@ -387,29 +400,40 @@ public class ColladaExporter
             }
 
             skin = ExportSkin(meshBinding.Mesh, model.Skeleton.Bones, boneNames, geom.id);
-            ctrl = new controller();
-            ctrl.id = meshBinding.Mesh.Name + "-skin";
-            ctrl.name = meshBinding.Mesh.Name + "_Skin";
-            ctrl.Item = skin;
+            ctrl = new()
+            {
+                id = meshBinding.Mesh.Name + "-skin",
+                name = meshBinding.Mesh.Name + "_Skin",
+                Item = skin
+            };
+
             controllers.Add(ctrl);
         }
 
-        var geomNode = new node();
-        geomNode.id = geom.name + "-node";
-        geomNode.name = geom.name;
-        geomNode.type = NodeType.NODE;
+        var geomNode = new node
+        {
+            id = geom.name + "-node",
+            name = geom.name,
+            type = NodeType.NODE
+        };
 
         if (hasSkin)
         {
-            var controllerInstance = new instance_controller();
-            controllerInstance.url = "#" + ctrl.id;
-            controllerInstance.skeleton = new string[] { "#" + skelRef };
+            var controllerInstance = new instance_controller
+            {
+                url = "#" + ctrl.id,
+                skeleton = new string[] { "#" + skelRef }
+            };
+
             geomNode.instance_controller = new instance_controller[] { controllerInstance };
         }
         else
         {
-            var geomInstance = new instance_geometry();
-            geomInstance.url = "#" + geom.id;
+            var geomInstance = new instance_geometry
+            {
+                url = "#" + geom.id
+            };
+
             geomNode.instance_geometry = new instance_geometry[] { geomInstance };
         }
 
@@ -485,33 +509,47 @@ public class ColladaExporter
             vertexInfluenceCounts.Add(influences);
         }
 
-        var jointOffsets = new InputLocalOffset();
-        jointOffsets.semantic = "JOINT";
-        jointOffsets.source = "#" + jointSource.id;
-        jointOffsets.offset = 0;
+        var jointOffsets = new InputLocalOffset
+        {
+            semantic = "JOINT",
+            source = "#" + jointSource.id,
+            offset = 0
+        };
 
-        var weightOffsets = new InputLocalOffset();
-        weightOffsets.semantic = "WEIGHT";
-        weightOffsets.source = "#" + weightsSource.id;
-        weightOffsets.offset = 1;
+        var weightOffsets = new InputLocalOffset
+        {
+            semantic = "WEIGHT",
+            source = "#" + weightsSource.id,
+            offset = 1
+        };
 
-        var vertWeights = new skinVertex_weights();
-        vertWeights.count = (ulong)vertices.Count;
-        vertWeights.input = new InputLocalOffset[] { jointOffsets, weightOffsets };
-        vertWeights.v = string.Join(" ", vertexInfluences.Select(x => x.ToString()).ToArray());
-        vertWeights.vcount = string.Join(" ", vertexInfluenceCounts.Select(x => x.ToString()).ToArray());
+        var vertWeights = new skinVertex_weights
+        {
+            count = (ulong)vertices.Count,
+            input = new InputLocalOffset[] { jointOffsets, weightOffsets },
+            v = string.Join(" ", vertexInfluences.Select(x => x.ToString()).ToArray()),
+            vcount = string.Join(" ", vertexInfluenceCounts.Select(x => x.ToString()).ToArray())
+        };
 
-        var skin = new skin();
-        skin.source1 = "#" + geometryId;
-        skin.bind_shape_matrix = "1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1";
+        var skin = new skin
+        {
+            source1 = "#" + geometryId,
+            bind_shape_matrix = "1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1"
+        };
 
         var skinJoints = new skinJoints();
-        var skinJointInput = new InputLocal();
-        skinJointInput.semantic = "JOINT";
-        skinJointInput.source = "#" + jointSource.id;
-        var skinInvBindInput = new InputLocal();
-        skinInvBindInput.semantic = "INV_BIND_MATRIX";
-        skinInvBindInput.source = "#" + poseSource.id;
+        var skinJointInput = new InputLocal
+        {
+            semantic = "JOINT",
+            source = "#" + jointSource.id
+        };
+
+        var skinInvBindInput = new InputLocal
+        {
+            semantic = "INV_BIND_MATRIX",
+            source = "#" + poseSource.id
+        };
+
         skinJoints.input = new InputLocal[] { skinJointInput, skinInvBindInput };
 
         skin.joints = skinJoints;
@@ -659,35 +697,51 @@ public class ColladaExporter
         }
 
         var knotsSource = ColladaUtils.MakeFloatSource(name, "inputs", new string[] { "TIME" }, knots.ToArray());
-        var knotsInput = new InputLocal();
-        knotsInput.semantic = "INPUT";
-        knotsInput.source = "#" + knotsSource.id;
+        var knotsInput = new InputLocal
+        {
+            semantic = "INPUT",
+            source = "#" + knotsSource.id
+        };
+
         inputs.Add(knotsInput);
 
         var outSource = ColladaUtils.MakeFloatSource(name, "outputs", new string[] { "TRANSFORM" }, outputs.ToArray(), 16, "float4x4");
-        var outInput = new InputLocal();
-        outInput.semantic = "OUTPUT";
-        outInput.source = "#" + outSource.id;
+        var outInput = new InputLocal
+        {
+            semantic = "OUTPUT",
+            source = "#" + outSource.id
+        };
+
         inputs.Add(outInput);
 
         var interpSource = ColladaUtils.MakeNameSource(name, "interpolations", new string[] { "INTERPOLATION" }, interpolations.ToArray());
 
-        var interpInput = new InputLocal();
-        interpInput.semantic = "INTERPOLATION";
-        interpInput.source = "#" + interpSource.id;
+        var interpInput = new InputLocal
+        {
+            semantic = "INTERPOLATION",
+            source = "#" + interpSource.id
+        };
+
         inputs.Add(interpInput);
 
-        var sampler = new sampler();
-        sampler.id = name + "_sampler";
-        sampler.input = inputs.ToArray();
+        var sampler = new sampler
+        {
+            id = name + "_sampler",
+            input = inputs.ToArray()
+        };
 
-        var channel = new channel();
-        channel.source = "#" + sampler.id;
-        channel.target = target;
+        var channel = new channel
+        {
+            source = "#" + sampler.id,
+            target = target
+        };
 
-        var animation = new animation();
-        animation.id = name;
-        animation.name = name;
+        var animation = new animation
+        {
+            id = name,
+            name = name
+        };
+
         var animItems = new List<object>();
         animItems.Add(knotsSource);
         animItems.Add(outSource);
@@ -698,7 +752,7 @@ public class ColladaExporter
 
         animation.extra = new extra[]
         {
-            new extra
+            new()
             {
                 technique = new technique[]
                 {
@@ -842,8 +896,11 @@ public class ColladaExporter
         asset.contributor = new assetContributor[] { contributor };
         asset.created = DateTime.Now;
         asset.modified = DateTime.Now;
-        asset.unit = new assetUnit();
-        asset.unit.name = "meter";
+        asset.unit = new()
+        {
+            name = "meter"
+        };
+
         // TODO: Handle up vector, etc. properly?
         if (root.ArtToolInfo != null)
             asset.unit.meter = root.ArtToolInfo.UnitsPerMeter;
@@ -864,18 +921,23 @@ public class ColladaExporter
         {
             var anims = ExportAnimations(anim);
             animations.AddRange(anims);
-            var clip = new animation_clip();
-            clip.id = anim.Name + "_Animation";
-            clip.name = anim.Name;
-            clip.start = 0.0;
-            clip.end = anim.Duration;
-            clip.endSpecified = true;
+            var clip = new animation_clip
+            {
+                id = anim.Name + "_Animation",
+                name = anim.Name,
+                start = 0.0,
+                end = anim.Duration,
+                endSpecified = true
+            };
 
             var animInstances = new List<InstanceWithExtra>();
             foreach (var animChannel in anims)
             {
-                var instance = new InstanceWithExtra();
-                instance.url = "#" + animChannel.id;
+                var instance = new InstanceWithExtra
+                {
+                    url = "#" + animChannel.id
+                };
+
                 animInstances.Add(instance);
             }
 
@@ -887,53 +949,73 @@ public class ColladaExporter
 
         if (animations.Count > 0)
         {
-            var animationLib = new library_animations();
-            animationLib.animation = animations.ToArray();
+            var animationLib = new library_animations
+            {
+                animation = animations.ToArray()
+            };
+
             rootElements.Add(animationLib);
         }
 
         if (animationClips.Count > 0)
         {
-            var animationClipLib = new library_animation_clips();
-            animationClipLib.animation_clip = animationClips.ToArray();
+            var animationClipLib = new library_animation_clips
+            {
+                animation_clip = animationClips.ToArray()
+            };
+
             rootElements.Add(animationClipLib);
         }
 
         if (geometries.Count > 0)
         {
-            var geometryLib = new library_geometries();
-            geometryLib.geometry = geometries.ToArray();
+            var geometryLib = new library_geometries
+            {
+                geometry = geometries.ToArray()
+            };
+
             rootElements.Add(geometryLib);
         }
 
         if (controllers.Count > 0)
         {
-            var controllerLib = new library_controllers();
-            controllerLib.controller = controllers.ToArray();
+            var controllerLib = new library_controllers
+            {
+                controller = controllers.ToArray()
+            };
+
             rootElements.Add(controllerLib);
         }
 
         var visualScenes = new library_visual_scenes();
-        var visualScene = new visual_scene();
-        visualScene.id = "DefaultVisualScene";
-        visualScene.name = "unnamed";
+        var visualScene = new visual_scene
+        {
+            id = "DefaultVisualScene",
+            name = "unnamed",
+            node = geomNodes.ToArray()
+        };
 
-        visualScene.node = geomNodes.ToArray();
         visualScenes.visual_scene = new visual_scene[] { visualScene };
 
-        var visualSceneInstance = new InstanceWithExtra();
-        visualSceneInstance.url = "#DefaultVisualScene";
+        var visualSceneInstance = new InstanceWithExtra
+        {
+            url = "#DefaultVisualScene"
+        };
+
         rootElements.Add(visualScenes);
 
-        var scene = new COLLADAScene();
-        scene.instance_visual_scene = visualSceneInstance;
+        var scene = new COLLADAScene
+        {
+            instance_visual_scene = visualSceneInstance
+        };
+
         collada.scene = scene;
 
         collada.Items = rootElements.ToArray();
 
         collada.extra = new extra[]
         {
-            new extra
+            new()
             {
                 technique = new technique[]
                 {

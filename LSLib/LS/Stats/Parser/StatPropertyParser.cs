@@ -63,9 +63,9 @@ public partial class StatPropertyParser
             RequirementsWithArgument = definitions.Enumerations["CUSTOM_Requirement_1arg"];
             EngineStatuses = definitions.Enumerations["CUSTOM_EngineStatus"];
 
-            StatusParser = parserFactory.CreateReferenceParser(new List<StatReferenceConstraint>
+            StatusParser = parserFactory.CreateReferenceParser(new()
             {
-                new StatReferenceConstraint
+                new()
                 {
                     StatType = "StatusData"
                 }
@@ -78,7 +78,7 @@ public partial class StatPropertyParser
         return CurrentSemanticValue;
     }
 
-    private List<Requirement> MakeRequirements() => new List<Requirement>();
+    private List<Requirement> MakeRequirements() => new();
 
     private List<Requirement> AddRequirement(object requirements, object requirement)
     {
@@ -98,7 +98,7 @@ public partial class StatPropertyParser
     {
         Validate(RequirementParser, name as string);
 
-        return new Requirement
+        return new()
         {
             Not = false,
             RequirementName = name as string,
@@ -117,7 +117,7 @@ public partial class StatPropertyParser
             OnError?.Invoke($"Requirement '{reqmtName}' doesn't need any arguments");
         }
 
-        return new Requirement
+        return new()
         {
             Not = false,
             RequirementName = reqmtName,
@@ -128,7 +128,7 @@ public partial class StatPropertyParser
 
     private Requirement MakeTagRequirement(object name, object tag)
     {
-        return new Requirement
+        return new()
         {
             Not = false,
             RequirementName = name as string,
@@ -137,7 +137,7 @@ public partial class StatPropertyParser
         };
     }
 
-    private List<Property> MakePropertyList() => new List<Property>();
+    private List<Property> MakePropertyList() => new();
 
     private List<Property> AddProperty(object properties, object property)
     {
@@ -146,14 +146,14 @@ public partial class StatPropertyParser
         return props;
     }
 
-    private Property MakeProperty(object context, object condition, object action) => new Property
+    private Property MakeProperty(object context, object condition, object action) => new()
     {
         Context = (PropertyContext)context,
         Condition = condition as object,
         Action = action as PropertyAction
     };
 
-    private PropertyAction MakeAction(object action, object arguments) => new PropertyAction
+    private PropertyAction MakeAction(object action, object arguments) => new()
     {
         Action = action as string,
         Arguments = arguments as List<object>
@@ -175,7 +175,7 @@ public partial class StatPropertyParser
         };
     }
 
-    private List<object> MakeArgumentList(params object[] args) => new List<object>(args);
+    private List<object> MakeArgumentList(params object[] args) => new(args);
 
     private List<object> PrependArgumentList(object argument, object arguments)
     {
@@ -184,13 +184,13 @@ public partial class StatPropertyParser
         return args;
     }
 
-    private StatusBoost MakeStatusBoostType(object type, object surfaces) => new StatusBoost
+    private StatusBoost MakeStatusBoostType(object type, object surfaces) => new()
     {
         Type = (StatusBoostType)type,
         SurfaceTypes = surfaces as List<string>
     };
 
-    private List<string> MakeSurfaceList() => new List<string>();
+    private List<string> MakeSurfaceList() => new();
 
     private List<string> AddSurface(object surfaces, object surface)
     {
@@ -269,7 +269,7 @@ public partial class StatPropertyParser
             }
         }
 
-        return new UnaryCondition
+        return new()
         {
             ConditionType = conditionType,
             Argument = conditionArg
@@ -283,7 +283,7 @@ public partial class StatPropertyParser
         return cond;
     }
 
-    private BinaryCondition MakeBinaryCondition(object lhs, object oper, object rhs) => new BinaryCondition
+    private BinaryCondition MakeBinaryCondition(object lhs, object oper, object rhs) => new()
     {
         Left = lhs as Condition,
         Operator = (ConditionOperator)oper,

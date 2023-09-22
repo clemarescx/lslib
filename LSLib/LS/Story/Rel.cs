@@ -17,7 +17,7 @@ public abstract class RelNode : TreeNode
         AdapterRef = reader.ReadAdapterRef();
 
         RelDatabaseNodeRef = reader.ReadNodeRef();
-        RelJoin = new NodeEntryItem();
+        RelJoin = new();
         RelJoin.Read(reader);
         RelDatabaseIndirection = reader.ReadByte();
     }

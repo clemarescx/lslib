@@ -11,7 +11,7 @@ public static class QuatHelpers
 {
     public static Quaternion Product(Quaternion r, Quaternion q)
     {
-        return new Quaternion(
+        return new(
             r.W * q.W - r.X * q.X - r.Y * q.Y - r.Z * q.Z,
             r.W * q.X + r.X * q.W - r.Y * q.Z + r.Z * q.Y,
             r.W * q.Y + r.X * q.Z + r.Y * q.W - r.Z * q.X,
@@ -47,10 +47,15 @@ public class AnimationCurve
         if (this.Degree == 0)
         {
             // Degree 0 curves are identities in all cases
-            var curve = new DaIdentity();
-            curve.CurveDataHeader_DaIdentity = new CurveDataHeader();
-            curve.CurveDataHeader_DaIdentity.Format = (byte)CurveFormat.DaIdentity;
-            curve.CurveDataHeader_DaIdentity.Degree = 0;
+            var curve = new DaIdentity
+            {
+                CurveDataHeader_DaIdentity = new()
+                {
+                    Format = (byte)CurveFormat.DaIdentity,
+                    Degree = 0
+                }
+            };
+
             this.CurveData = curve;
         }
         else if (this.Degree == 2)
@@ -61,12 +66,17 @@ public class AnimationCurve
             }
 
             // Degree 2 curves are stored in K32fC32f (v6 didn't support multiple curve formats)
-            var curve = new DaK32fC32f();
-            curve.CurveDataHeader_DaK32fC32f = new CurveDataHeader();
-            curve.CurveDataHeader_DaK32fC32f.Format = (byte)CurveFormat.DaK32fC32f;
-            curve.CurveDataHeader_DaK32fC32f.Degree = 2;
-            curve.Controls = Controls;
-            curve.Knots = Knots;
+            var curve = new DaK32fC32f
+            {
+                CurveDataHeader_DaK32fC32f = new()
+                {
+                    Format = (byte)CurveFormat.DaK32fC32f,
+                    Degree = 2
+                },
+                Controls = Controls,
+                Knots = Knots
+            };
+
             this.CurveData = curve;
         }
         else
@@ -105,7 +115,7 @@ public class Keyframe
 
 public class KeyframeTrack
 {
-    public SortedList<Single, Keyframe> Keyframes = new SortedList<float, Keyframe>();
+    public SortedList<Single, Keyframe> Keyframes = new();
 
     private static Int32 FindFrame<T>(IList<T> list, T value, IComparer<T> comparer = null)
     {
@@ -157,8 +167,11 @@ public class KeyframeTrack
         Keyframe frame = FindFrame(time, threshold);
         if (frame == null)
         {
-            frame = new Keyframe();
-            frame.Time = time;
+            frame = new()
+            {
+                Time = time
+            };
+
             Keyframes.Add(time, frame);
         }
 
@@ -534,67 +547,87 @@ public class TransformTrack
 
     public static TransformTrack FromKeyframes(KeyframeTrack keyframes)
     {
-        var track = new TransformTrack();
-        track.Flags = 0;
-            
+        var track = new TransformTrack
+        {
+            Flags = 0
+        };
+
         var translateTimes = keyframes.Keyframes.Where(f => f.Value.HasTranslation).Select(f => f.Key).ToList();
         var translations = keyframes.Keyframes.Where(f => f.Value.HasTranslation).Select(f => f.Value.Translation).ToList();
         if (translateTimes.Count == 1)
         {
-            var posCurve = new D3Constant32f();
-            posCurve.CurveDataHeader_D3Constant32f = new CurveDataHeader { Format = (int)CurveFormat.D3Constant32f, Degree = 2 };
-            posCurve.Controls = new float[3] { translations[0].X, translations[0].Y, translations[0].Z };
-            track.PositionCurve = new AnimationCurve { CurveData = posCurve };
+            var posCurve = new D3Constant32f
+            {
+                CurveDataHeader_D3Constant32f = new() { Format = (int)CurveFormat.D3Constant32f, Degree = 2 },
+                Controls = new float[3] { translations[0].X, translations[0].Y, translations[0].Z }
+            };
+
+            track.PositionCurve = new() { CurveData = posCurve };
         }
         else
         {
-            var posCurve = new DaK32fC32f();
-            posCurve.CurveDataHeader_DaK32fC32f = new CurveDataHeader { Format = (int)CurveFormat.DaK32fC32f, Degree = 2 };
+            var posCurve = new DaK32fC32f
+            {
+                CurveDataHeader_DaK32fC32f = new() { Format = (int)CurveFormat.DaK32fC32f, Degree = 2 }
+            };
+
             posCurve.SetKnots(translateTimes);
             posCurve.SetPoints(translations);
-            track.PositionCurve = new AnimationCurve { CurveData = posCurve };
+            track.PositionCurve = new() { CurveData = posCurve };
         }
 
         var rotationTimes = keyframes.Keyframes.Where(f => f.Value.HasRotation).Select(f => f.Key).ToList();
         var rotations = keyframes.Keyframes.Where(f => f.Value.HasRotation).Select(f => f.Value.Rotation).ToList();
         if (rotationTimes.Count == 1)
         {
-            var rotCurve = new D4Constant32f();
-            rotCurve.CurveDataHeader_D4Constant32f = new CurveDataHeader { Format = (int)CurveFormat.D4Constant32f, Degree = 2 };
-            rotCurve.Controls = new float[4] { rotations[0].X, rotations[0].Y, rotations[0].Z, rotations[0].W };
-            track.OrientationCurve = new AnimationCurve { CurveData = rotCurve };
+            var rotCurve = new D4Constant32f
+            {
+                CurveDataHeader_D4Constant32f = new() { Format = (int)CurveFormat.D4Constant32f, Degree = 2 },
+                Controls = new float[4] { rotations[0].X, rotations[0].Y, rotations[0].Z, rotations[0].W }
+            };
+
+            track.OrientationCurve = new() { CurveData = rotCurve };
         }
         else
         {
-            var rotCurve = new DaK32fC32f();
-            rotCurve.CurveDataHeader_DaK32fC32f = new CurveDataHeader { Format = (int)CurveFormat.DaK32fC32f, Degree = 2 };
+            var rotCurve = new DaK32fC32f
+            {
+                CurveDataHeader_DaK32fC32f = new() { Format = (int)CurveFormat.DaK32fC32f, Degree = 2 }
+            };
+
             rotCurve.SetKnots(rotationTimes);
             rotCurve.SetQuaternions(rotations);
-            track.OrientationCurve = new AnimationCurve { CurveData = rotCurve };
+            track.OrientationCurve = new() { CurveData = rotCurve };
         }
 
         var scaleTimes = keyframes.Keyframes.Where(f => f.Value.HasScaleShear).Select(f => f.Key).ToList();
         var scales = keyframes.Keyframes.Where(f => f.Value.HasScaleShear).Select(f => f.Value.ScaleShear).ToList();
         if (scaleTimes.Count == 1)
         {
-            var scaleCurve = new DaConstant32f();
-            scaleCurve.CurveDataHeader_DaConstant32f = new CurveDataHeader { Format = (int)CurveFormat.DaConstant32f, Degree = 2 };
+            var scaleCurve = new DaConstant32f
+            {
+                CurveDataHeader_DaConstant32f = new() { Format = (int)CurveFormat.DaConstant32f, Degree = 2 }
+            };
+
             var m = scales[0];
-            scaleCurve.Controls = new List<float>
+            scaleCurve.Controls = new()
             {
                 m[0, 0], m[0, 1], m[0, 2],
                 m[1, 0], m[1, 1], m[1, 2],
                 m[2, 0], m[2, 1], m[2, 2]
             };
-            track.ScaleShearCurve = new AnimationCurve { CurveData = scaleCurve };
+            track.ScaleShearCurve = new() { CurveData = scaleCurve };
         }
         else
         {
-            var scaleCurve = new DaK32fC32f();
-            scaleCurve.CurveDataHeader_DaK32fC32f = new CurveDataHeader { Format = (int)CurveFormat.DaK32fC32f, Degree = 2 };
+            var scaleCurve = new DaK32fC32f
+            {
+                CurveDataHeader_DaK32fC32f = new() { Format = (int)CurveFormat.DaK32fC32f, Degree = 2 }
+            };
+
             scaleCurve.SetKnots(scaleTimes);
             scaleCurve.SetMatrices(scales);
-            track.ScaleShearCurve = new AnimationCurve { CurveData = scaleCurve };
+            track.ScaleShearCurve = new() { CurveData = scaleCurve };
         }
 
         return track;

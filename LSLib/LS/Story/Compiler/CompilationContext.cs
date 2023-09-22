@@ -153,7 +153,7 @@ public class FunctionSignature
     // Indicates that the function is "read" in at least one place
     public Boolean Read;
 
-    public FunctionNameAndArity GetNameAndArity() => new FunctionNameAndArity(Name, Params.Count);
+    public FunctionNameAndArity GetNameAndArity() => new(Name, Params.Count);
 }
 
 /// <summary>
@@ -362,12 +362,12 @@ public class Diagnostic
 
 public class CompilationLog
 {
-    public List<Diagnostic> Log = new List<Diagnostic>();
+    public List<Diagnostic> Log = new();
     /// <summary>
     /// Controls whether specific warnings are enabled or disabled.
     /// All are enabled by default.
     /// </summary>
-    public Dictionary<string, bool> WarningSwitches = new Dictionary<string, bool>();
+    public Dictionary<string, bool> WarningSwitches = new();
 
     public CompilationLog()
     {
@@ -463,13 +463,13 @@ public class CompilationContext
 {
     public const uint MaxIntrinsicTypeId = 5;
 
-    public Dictionary<uint, ValueType> TypesById = new Dictionary<uint, ValueType>();
-    public Dictionary<String, ValueType> TypesByName = new Dictionary<String, ValueType>();
-    public Dictionary<String, IRGoal> GoalsByName = new Dictionary<String, IRGoal>();
-    public Dictionary<FunctionNameAndArity, FunctionSignature> Signatures = new Dictionary<FunctionNameAndArity, FunctionSignature>();
-    public Dictionary<FunctionNameAndArity, object> Functions = new Dictionary<FunctionNameAndArity, object>();
-    public Dictionary<String, GameObjectInfo> GameObjects = new Dictionary<String, GameObjectInfo>();
-    public CompilationLog Log = new CompilationLog();
+    public Dictionary<uint, ValueType> TypesById = new();
+    public Dictionary<String, ValueType> TypesByName = new();
+    public Dictionary<String, IRGoal> GoalsByName = new();
+    public Dictionary<FunctionNameAndArity, FunctionSignature> Signatures = new();
+    public Dictionary<FunctionNameAndArity, object> Functions = new();
+    public Dictionary<String, GameObjectInfo> GameObjects = new();
+    public CompilationLog Log = new();
 
     public CompilationContext()
     {

@@ -11,10 +11,10 @@ public class ModInfo
 {
     public string Name;
     public AbstractFileInfo Meta;
-    public Dictionary<string, AbstractFileInfo> Scripts = new Dictionary<string, AbstractFileInfo>();
-    public Dictionary<string, AbstractFileInfo> Stats = new Dictionary<string, AbstractFileInfo>();
-    public Dictionary<string, AbstractFileInfo> Globals = new Dictionary<string, AbstractFileInfo>();
-    public Dictionary<string, AbstractFileInfo> LevelObjects = new Dictionary<string, AbstractFileInfo>();
+    public Dictionary<string, AbstractFileInfo> Scripts = new();
+    public Dictionary<string, AbstractFileInfo> Stats = new();
+    public Dictionary<string, AbstractFileInfo> Globals = new();
+    public Dictionary<string, AbstractFileInfo> LevelObjects = new();
     public AbstractFileInfo OrphanQueryIgnoreList;
     public AbstractFileInfo StoryHeaderFile;
     public AbstractFileInfo TypeCoercionWhitelistFile;
@@ -27,8 +27,8 @@ public class ModInfo
 
 public class ModResources : IDisposable
 {
-    public Dictionary<string, ModInfo> Mods = new Dictionary<string, ModInfo>();
-    public List<PackageReader> LoadedPackages = new List<PackageReader>();
+    public Dictionary<string, ModInfo> Mods = new();
+    public List<PackageReader> LoadedPackages = new();
 
     public void Dispose()
     {
@@ -39,16 +39,16 @@ public class ModResources : IDisposable
 
 public class ModPathVisitor
 {
-    private static readonly Regex metaRe = new Regex("^Mods/([^/]+)/meta\\.lsx$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex scriptRe = new Regex("^Mods/([^/]+)/Story/RawFiles/Goals/(.*\\.txt)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex statRe = new Regex("^Public/([^/]+)/Stats/Generated/Data/(.*\\.txt)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex orphanQueryIgnoresRe = new Regex("^Mods/([^/]+)/Story/story_orphanqueries_ignore_local\\.txt$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex storyDefinitionsRe = new Regex("^Mods/([^/]+)/Story/RawFiles/story_header\\.div$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex typeCoercionWhitelistRe = new Regex("^Mods/([^/]+)/Story/RawFiles/TypeCoercionWhitelist\\.txt$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex globalsRe = new Regex("^Mods/([^/]+)/Globals/.*/.*/.*\\.lsf$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex levelObjectsRe = new Regex("^Mods/([^/]+)/Levels/.*/(Characters|Items|Triggers)/.*\\.lsf$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex metaRe = new("^Mods/([^/]+)/meta\\.lsx$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex scriptRe = new("^Mods/([^/]+)/Story/RawFiles/Goals/(.*\\.txt)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex statRe = new("^Public/([^/]+)/Stats/Generated/Data/(.*\\.txt)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex orphanQueryIgnoresRe = new("^Mods/([^/]+)/Story/story_orphanqueries_ignore_local\\.txt$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex storyDefinitionsRe = new("^Mods/([^/]+)/Story/RawFiles/story_header\\.div$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex typeCoercionWhitelistRe = new("^Mods/([^/]+)/Story/RawFiles/TypeCoercionWhitelist\\.txt$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex globalsRe = new("^Mods/([^/]+)/Globals/.*/.*/.*\\.lsf$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    private static readonly Regex levelObjectsRe = new("^Mods/([^/]+)/Levels/.*/(Characters|Items|Triggers)/.*\\.lsf$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
     // Pattern for excluding subsequent parts of a multi-part archive
-    public static readonly Regex archivePartRe = new Regex("^(.*)_[0-9]+\\.pak$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
+    public static readonly Regex archivePartRe = new("^(.*)_[0-9]+\\.pak$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     private readonly ModResources Resources;
 
@@ -87,7 +87,7 @@ public class ModPathVisitor
     {
         if (!Resources.Mods.TryGetValue(modName, out ModInfo mod))
         {
-            mod = new ModInfo(modName);
+            mod = new(modName);
             Resources.Mods[modName] = mod;
         }
 
@@ -225,7 +225,7 @@ public class ModPathVisitor
         // List of packages we won't ever load
         // These packages don't contain any mod resources, but have a large
         // file table that makes loading unneccessarily slow.
-        HashSet<string> packageBlacklist = new HashSet<string>
+        HashSet<string> packageBlacklist = new()
         {
             "Assets.pak",
             "Effects.pak",
@@ -257,7 +257,7 @@ public class ModPathVisitor
             {
                 var reader = new PackageReader(path, true);
                 var package = reader.Read();
-                packagePriorities.Add(new Tuple<string, int>(path, package.Metadata.Priority));
+                packagePriorities.Add(new(path, package.Metadata.Priority));
             }
         }
 
@@ -292,7 +292,7 @@ public class ModPathVisitor
         var goalPath = modPath + @"\Story\RawFiles\Goals";
         if (!Directory.Exists(goalPath)) return;
 
-        List<string> goalFiles = new List<string>();
+        List<string> goalFiles = new();
         EnumerateFiles(goalFiles, goalPath, goalPath, "*.txt");
 
         foreach (var goalFile in goalFiles)
@@ -311,7 +311,7 @@ public class ModPathVisitor
         var statsPath = modPublicPath + @"\Stats\Generated\Data";
         if (!Directory.Exists(statsPath)) return;
 
-        List<string> statFiles = new List<string>();
+        List<string> statFiles = new();
         EnumerateFiles(statFiles, statsPath, statsPath, "*.txt");
 
         foreach (var statFile in statFiles)
@@ -330,7 +330,7 @@ public class ModPathVisitor
         var globalsPath = modPath + @"\Globals";
         if (!Directory.Exists(globalsPath)) return;
 
-        List<string> globalFiles = new List<string>();
+        List<string> globalFiles = new();
         EnumerateFiles(globalFiles, globalsPath, globalsPath, "*.lsf");
 
         foreach (var globalFile in globalFiles)
@@ -349,7 +349,7 @@ public class ModPathVisitor
         var levelsPath = modPath + @"\Levels";
         if (!Directory.Exists(levelsPath)) return;
 
-        List<string> levelFiles = new List<string>();
+        List<string> levelFiles = new();
         EnumerateFiles(levelFiles, levelsPath, levelsPath, "*.lsf");
 
         var levelObjectsRe = new Regex("^(Characters|Items|Triggers)/.*\\.lsf$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);

@@ -21,7 +21,7 @@ public struct PackedVersion
 
     public static PackedVersion FromInt64(Int64 packed)
     {
-        return new PackedVersion
+        return new()
         {
             Major = (UInt32)((packed >> 55) & 0x7f),
             Minor = (UInt32)((packed >> 47) & 0xff),
@@ -32,7 +32,7 @@ public struct PackedVersion
 
     public static PackedVersion FromInt32(Int32 packed)
     {
-        return new PackedVersion
+        return new()
         {
             Major = (UInt32)((packed >> 28) & 0x0f),
             Minor = (UInt32)((packed >> 24) & 0x0f),
@@ -92,7 +92,7 @@ public struct LSBHeader
 
 public static class AttributeTypeMaps
 {
-    public static Dictionary<string, NodeAttribute.DataType> TypeToId = new Dictionary<string, NodeAttribute.DataType>
+    public static Dictionary<string, NodeAttribute.DataType> TypeToId = new()
     {
         { "None", NodeAttribute.DataType.DT_None },
         { "uint8", NodeAttribute.DataType.DT_Byte },
@@ -130,7 +130,7 @@ public static class AttributeTypeMaps
         { "TranslatedFSString", NodeAttribute.DataType.DT_TranslatedFSString },
     };
 
-    public static Dictionary<NodeAttribute.DataType, string> IdToType = new Dictionary<NodeAttribute.DataType, string>
+    public static Dictionary<NodeAttribute.DataType, string> IdToType = new()
     {
         { NodeAttribute.DataType.DT_None, "None" },
         { NodeAttribute.DataType.DT_Byte, "uint8" },
@@ -172,7 +172,7 @@ public static class AttributeTypeMaps
 public class Resource
 {
     public LSMetadata Metadata;
-    public Dictionary<string, Region> Regions = new Dictionary<string,Region>();
+    public Dictionary<string, Region> Regions = new();
 
     public Resource()
     {
@@ -189,8 +189,8 @@ public class Node
 {
     public string Name;
     public Node Parent;
-    public Dictionary<string, NodeAttribute> Attributes = new Dictionary<string, NodeAttribute>();
-    public Dictionary<string, List<Node>> Children = new Dictionary<string, List<Node>>();
+    public Dictionary<string, NodeAttribute> Attributes = new();
+    public Dictionary<string, List<Node>> Children = new();
 
     public int ChildCount
     {
@@ -221,7 +221,7 @@ public class Node
         List<Node> children;
         if (!Children.TryGetValue(child.Name, out children))
         {
-            children = new List<Node>();
+            children = new();
             Children.Add(child.Name, children);
         }
 

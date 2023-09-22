@@ -27,20 +27,20 @@ public class WritableSection : Section
     public BinaryWriter Writer;
     public GR2Writer GR2;
 
-    public Dictionary<UInt32, object> Fixups = new Dictionary<UInt32, object>();
+    public Dictionary<UInt32, object> Fixups = new();
     // Fixups for the data area that we'll need to update after serialization is finished
-    public Dictionary<UInt32, object> DataFixups = new Dictionary<UInt32, object>();
+    public Dictionary<UInt32, object> DataFixups = new();
 
-    public List<MixedMarshallingData> MixedMarshalling = new List<MixedMarshallingData>();
+    public List<MixedMarshallingData> MixedMarshalling = new();
 
     public WritableSection(SectionType type, GR2Writer writer)
     {
         Type = type;
-        MainStream = new MemoryStream();
-        MainWriter = new BinaryWriter(MainStream);
+        MainStream = new();
+        MainWriter = new(MainStream);
 
-        DataStream = new MemoryStream();
-        DataWriter = new BinaryWriter(DataStream);
+        DataStream = new();
+        DataWriter = new(DataStream);
 
         Writer = MainWriter;
         Header = InitHeader();
@@ -61,18 +61,20 @@ public class WritableSection : Section
 
     private SectionHeader InitHeader()
     {
-        var header = new SectionHeader();
-        header.compression = 0;
-        header.offsetInFile = 0;     // Set after serialization is finished
-        header.compressedSize = 0;   // Set after serialization is finished
-        header.uncompressedSize = 0; // Set after serialization is finished
-        header.alignment = 4;
-        header.first16bit = 0;                 // Set after serialization is finished
-        header.first8bit = 0;                  // Set after serialization is finished
-        header.relocationsOffset = 0;          // Set after serialization is finished
-        header.numRelocations = 0;             // Set after serialization is finished
-        header.mixedMarshallingDataOffset = 0; // Set after serialization is finished
-        header.numMixedMarshallingData = 0;    // Set after serialization is finished
+        var header = new SectionHeader
+        {
+            compression = 0,
+            offsetInFile = 0,     // Set after serialization is finished
+            compressedSize = 0,   // Set after serialization is finished
+            uncompressedSize = 0, // Set after serialization is finished
+            alignment = 4,
+            first16bit = 0,                 // Set after serialization is finished
+            first8bit = 0,                  // Set after serialization is finished
+            relocationsOffset = 0,          // Set after serialization is finished
+            numRelocations = 0,             // Set after serialization is finished
+            mixedMarshallingDataOffset = 0, // Set after serialization is finished
+            numMixedMarshallingData = 0     // Set after serialization is finished
+        };
 
         return header;
     }
@@ -91,10 +93,13 @@ public class WritableSection : Section
 
     internal void AddMixedMarshalling(object o, UInt32 count, StructDefinition type)
     {
-        var marshal = new MixedMarshallingData();
-        marshal.Obj = o;
-        marshal.Count = count;
-        marshal.Type = type;
+        var marshal = new MixedMarshallingData
+        {
+            Obj = o,
+            Count = count,
+            Type = type
+        };
+
         MixedMarshalling.Add(marshal);
     }
 
@@ -205,7 +210,7 @@ public class WritableSection : Section
     public void WriteStructDefinition(StructDefinition defn)
     {
         Debug.Assert(Writer == MainWriter);
-        GR2.ObjectOffsets[defn] = new SectionReference(Type, (UInt32)MainStream.Position);
+        GR2.ObjectOffsets[defn] = new(Type, (UInt32)MainStream.Position);
 
         var tag = GR2.Header.tag;
         foreach (var member in defn.Members)
@@ -216,9 +221,12 @@ public class WritableSection : Section
             }
         }
 
-        var end = new MemberDefinition();
-        end.Type = MemberType.None;
-        end.Extra = new UInt32[] { 0, 0, 0 };
+        var end = new MemberDefinition
+        {
+            Type = MemberType.None,
+            Extra = new UInt32[] { 0, 0, 0 }
+        };
+
         WriteMemberDefinition(end);
     }
 
@@ -236,11 +244,11 @@ public class WritableSection : Section
     {
         if (Writer == MainWriter)
         {
-            GR2.ObjectOffsets[o] = new SectionReference(Type, (UInt32)MainStream.Position);
+            GR2.ObjectOffsets[o] = new(Type, (UInt32)MainStream.Position);
         }
         else
         {
-            GR2.DataObjectOffsets[o] = new SectionReference(Type, (UInt32)DataStream.Position);
+            GR2.DataObjectOffsets[o] = new(Type, (UInt32)DataStream.Position);
         }
     }
 
@@ -565,7 +573,7 @@ public class WritableSection : Section
 
     internal void WriteString(string s)
     {
-        GR2.DataObjectOffsets[s] = new SectionReference(Type, (UInt32)DataStream.Position);
+        GR2.DataObjectOffsets[s] = new(Type, (UInt32)DataStream.Position);
         var bytes = Encoding.UTF8.GetBytes(s);
         DataWriter.Write(bytes);
         DataWriter.Write((Byte)0);
@@ -611,8 +619,8 @@ public class RelocationArea
 
     public RelocationArea(GR2Writer writer)
     {
-        Stream = new MemoryStream();
-        Writer = new BinaryWriter(Stream);
+        Stream = new();
+        Writer = new(Stream);
         GR2 = writer;
     }
 
@@ -679,17 +687,17 @@ public class GR2Writer
     internal Magic Magic;
     internal Header Header;
     internal WritableSection CurrentSection;
-    internal List<WritableSection> Sections = new List<WritableSection>();
-    internal Dictionary<Type, StructDefinition> Types = new Dictionary<Type, StructDefinition>();
+    internal List<WritableSection> Sections = new();
+    internal Dictionary<Type, StructDefinition> Types = new();
     internal RelocationArea Relocations;
 
-    private List<QueuedSerialization> StructWrites = new List<QueuedSerialization>();
-    private List<QueuedArraySerialization> ArrayWrites = new List<QueuedArraySerialization>();
-    private List<QueuedStringSerialization> StringWrites = new List<QueuedStringSerialization>();
+    private List<QueuedSerialization> StructWrites = new();
+    private List<QueuedArraySerialization> ArrayWrites = new();
+    private List<QueuedStringSerialization> StringWrites = new();
 
-    internal Dictionary<object, SectionReference> ObjectOffsets = new Dictionary<object, SectionReference>();
-    internal Dictionary<object, SectionReference> DataObjectOffsets = new Dictionary<object, SectionReference>();
-    internal HashSet<string> Strings = new HashSet<string>();
+    internal Dictionary<object, SectionReference> ObjectOffsets = new();
+    internal Dictionary<object, SectionReference> DataObjectOffsets = new();
+    internal HashSet<string> Strings = new();
 
     // Version tag that will be written to the GR2 file
     public UInt32 VersionTag = Header.DefaultTag;
@@ -702,7 +710,7 @@ public class GR2Writer
 
     public GR2Writer()
     {
-        this.Stream = new MemoryStream();
+        this.Stream = new();
     }
 
     public void Dispose()
@@ -720,9 +728,9 @@ public class GR2Writer
         var arrayWrites = ArrayWrites;
         var structWrites = StructWrites;
         var stringWrites = StringWrites;
-        ArrayWrites = new List<QueuedArraySerialization>();
-        StructWrites = new List<QueuedSerialization>();
-        StringWrites = new List<QueuedStringSerialization>();
+        ArrayWrites = new();
+        StructWrites = new();
+        StringWrites = new();
 
         foreach (var write in structWrites)
         {
@@ -773,7 +781,7 @@ public class GR2Writer
 
     public byte[] Write(object root, uint numCustomSections = 0)
     {
-        using (this.Writer = new BinaryWriter(Stream))
+        using (this.Writer = new(Stream))
         {
             this.Magic = InitMagic();
             WriteMagic(Magic);
@@ -781,7 +789,7 @@ public class GR2Writer
             this.Header = InitHeader(numCustomSections);
             WriteHeader(Header);
 
-            this.Relocations = new RelocationArea(this);
+            this.Relocations = new(this);
 
             for (int i = 0; i < Header.numSections; i++)
             {
@@ -851,7 +859,7 @@ public class GR2Writer
 
             var rootStruct = LookupStructDefinition(root.GetType(), root);
             Header.rootType = ObjectOffsets[rootStruct];
-            Header.rootNode = new SectionReference(SectionType.Main, 0);
+            Header.rootNode = new(SectionType.Main, 0);
             Header.fileSize = (UInt32)Stream.Length;
 
             Stream.Seek(Magic.MagicSize + Header.Size(), SeekOrigin.Begin);
@@ -872,8 +880,11 @@ public class GR2Writer
 
     private Magic InitMagic()
     {
-        var magic = new Magic();
-        magic.format = Magic.Format.LittleEndian32;
+        var magic = new Magic
+        {
+            format = Magic.Format.LittleEndian32
+        };
+
         magic.signature = Magic.SignatureFromFormat(magic.format);
 
         magic.headersSize = 0; // Updated after headers are serialized
@@ -896,13 +907,16 @@ public class GR2Writer
 
     private Header InitHeader(uint numCustomSections)
     {
-        var header = new Header();
-        header.version = Header.Version;
-        header.fileSize = 0; // Set after serialization is finished
-        header.crc = 0;      // Set after serialization is finished
+        var header = new Header
+        {
+            version = Header.Version,
+            fileSize = 0, // Set after serialization is finished
+            crc = 0       // Set after serialization is finished
+        };
+
         header.sectionsOffset = header.Size();
-        header.rootType = new SectionReference(); // Updated after serialization is finished
-        header.rootNode = new SectionReference(); // Updated after serialization is finished
+        header.rootType = new(); // Updated after serialization is finished
+        header.rootNode = new(); // Updated after serialization is finished
         header.numSections = (UInt32)SectionType.FirstVertexData + numCustomSections;
         header.tag = VersionTag;
         header.extraTags = new UInt32[Header.ExtraTagCount];
@@ -980,7 +994,7 @@ public class GR2Writer
 
         if (defn == null)
         {
-            defn = new StructDefinition();
+            defn = new();
             Types.Add(type, defn);
             defn.LoadFromType(type, this);
         }

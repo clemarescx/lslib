@@ -170,7 +170,7 @@ public class IRRule
         if (v == null)
         {
             // Allocate a new variable slot if no variable with the same name exists
-            v = new IRRuleVariable
+            v = new()
             {
                 Index = Variables.Count,
                 Name = name,

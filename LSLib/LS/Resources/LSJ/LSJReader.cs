@@ -26,7 +26,7 @@ public class LSJReader : IDisposable
         var serializer = JsonSerializer.Create(settings);
 
         using (var streamReader = new StreamReader(stream))
-        using (this.reader = new JsonTextReader(streamReader))
+        using (this.reader = new(streamReader))
         {
             return serializer.Deserialize<Resource>(this.reader);
         }
