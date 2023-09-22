@@ -125,7 +125,7 @@ public class CodeLocation : IMerge<CodeLocation>
     /// <returns>The merged span</returns>
     public CodeLocation Merge(CodeLocation last)
     {
-        return new(this.fileName, this.startLine, this.startColumn, last.endLine, last.endColumn);
+        return new(fileName, startLine, startColumn, last.endLine, last.endColumn);
     }
 }
 

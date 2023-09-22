@@ -290,7 +290,7 @@ public class WritableSection : Section
             {
                 var value = member.CachedField.GetValue(node);
                 if (member.SerializationKind == SerializationKind.UserRaw)
-                    member.Serializer.Write(this.GR2, this, member, value);
+                    member.Serializer.Write(GR2, this, member, value);
                 else
                     WriteInstance(member, member.CachedField.FieldType, value);
             }
@@ -345,14 +345,14 @@ public class WritableSection : Section
 
                 if (arrayDefn.SerializationKind == SerializationKind.UserMember)
                 {
-                    arrayDefn.Serializer.Write(this.GR2, this, arrayDefn, list);
+                    arrayDefn.Serializer.Write(GR2, this, arrayDefn, list);
                 }
                 else if (arrayDefn.SerializationKind == SerializationKind.UserElement)
                 {
                     for (int i = 0; i < list.Count; i++)
                     {
                         StoreObjectOffset(list[i]);
-                        arrayDefn.Serializer.Write(this.GR2, this, arrayDefn, list[i]);
+                        arrayDefn.Serializer.Write(GR2, this, arrayDefn, list[i]);
                     }
                 }
                 else
@@ -414,7 +414,7 @@ public class WritableSection : Section
         {
             case MemberType.Inline:
                 if (definition.SerializationKind == SerializationKind.UserMember)
-                    definition.Serializer.Write(this.GR2, this, definition, node);
+                    definition.Serializer.Write(GR2, this, definition, node);
                 else
                     WriteStruct(type, node, false);
                 break;
@@ -710,7 +710,7 @@ public class GR2Writer
 
     public GR2Writer()
     {
-        this.Stream = new();
+        Stream = new();
     }
 
     public void Dispose()
@@ -781,15 +781,15 @@ public class GR2Writer
 
     public byte[] Write(object root, uint numCustomSections = 0)
     {
-        using (this.Writer = new(Stream))
+        using (Writer = new(Stream))
         {
-            this.Magic = InitMagic();
+            Magic = InitMagic();
             WriteMagic(Magic);
 
-            this.Header = InitHeader(numCustomSections);
+            Header = InitHeader(numCustomSections);
             WriteHeader(Header);
 
-            this.Relocations = new(this);
+            Relocations = new(this);
 
             for (int i = 0; i < Header.numSections; i++)
             {

@@ -91,24 +91,24 @@ public class NodeAttribute
 
     public override string ToString()
     {
-        return this.type switch
+        return type switch
         {
             DataType.DT_ScratchBuffer =>
                 // ScratchBuffer is a special case, as its stored as byte[] and ToString() doesn't really do what we want
-                Convert.ToBase64String((byte[])this.value),
-            DataType.DT_IVec2 => String.Join(" ", new List<int>((int[])this.value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_IVec3 => String.Join(" ", new List<int>((int[])this.value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_IVec4 => String.Join(" ", new List<int>((int[])this.value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec2  => String.Join(" ", new List<float>((float[])this.value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec3  => String.Join(" ", new List<float>((float[])this.value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec4  => String.Join(" ", new List<float>((float[])this.value).ConvertAll(i => i.ToString()).ToArray()),
-            _                 => this.value.ToString()
+                Convert.ToBase64String((byte[])value),
+            DataType.DT_IVec2 => String.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec3 => String.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec4 => String.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec2  => String.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec3  => String.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec4  => String.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
+            _                 => value.ToString()
         };
     }
 
     public int GetRows()
     {
-        return this.type switch
+        return type switch
         {
             DataType.DT_IVec2  => 1,
             DataType.DT_IVec3  => 1,
@@ -127,7 +127,7 @@ public class NodeAttribute
 
     public int GetColumns()
     {
-        return this.type switch
+        return type switch
         {
             DataType.DT_IVec2  => 2,
             DataType.DT_Vec2   => 2,
@@ -146,7 +146,7 @@ public class NodeAttribute
 
     public bool IsNumeric()
     {
-        return this.type is DataType.DT_Byte or DataType.DT_Short or DataType.DT_Short or DataType.DT_Int or DataType.DT_UInt or DataType.DT_Float or DataType.DT_Double or DataType.DT_ULongLong or DataType.DT_Long or DataType.DT_Int8;
+        return type is DataType.DT_Byte or DataType.DT_Short or DataType.DT_Short or DataType.DT_Int or DataType.DT_UInt or DataType.DT_Float or DataType.DT_Double or DataType.DT_ULongLong or DataType.DT_Long or DataType.DT_Int8;
     }
 
     public void FromString(string str)
@@ -165,7 +165,7 @@ public class NodeAttribute
             }
         }
 
-        switch (this.type)
+        switch (type)
         {
             case DataType.DT_None:
                 // This is a null type, cannot have a value
@@ -300,7 +300,7 @@ public class NodeAttribute
 
             default:
                 // This should not happen!
-                throw new NotImplementedException(String.Format("FromString() not implemented for type {0}", this.type));
+                throw new NotImplementedException(String.Format("FromString() not implemented for type {0}", type));
         }
     }
 }

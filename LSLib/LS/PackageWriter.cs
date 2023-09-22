@@ -28,8 +28,8 @@ public class PackageWriter : IDisposable
 
     public PackageWriter(Package package, string path)
     {
-        this._package = package;
-        this._path = path;
+        _package = package;
+        _path = path;
     }
 
     public void Dispose()

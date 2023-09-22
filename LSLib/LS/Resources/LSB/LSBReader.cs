@@ -23,7 +23,7 @@ public class LSBReader : ILSReader
 
     public Resource Read()
     {
-        using (this.reader = new(stream))
+        using (reader = new(stream))
         {
             // Check for BG3 header
             var header = BinUtils.ReadStruct<LSBHeader>(reader);

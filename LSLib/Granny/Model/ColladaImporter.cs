@@ -1106,7 +1106,7 @@ public class ColladaImporter
         if (root.Skeletons.Count > 0)
             root.Skeletons[0].UpdateWorldTransforms();
         root.ZUp = ZUp;
-        root.PostLoad(GR2.Header.DefaultTag);
+        root.PostLoad(Header.DefaultTag);
 
         BuildExtendedData(root);
 

@@ -223,7 +223,7 @@ public class Skeleton
             if (bone.IsRoot)
             {
                 var boneTransform = bone.Transform.ToMatrix4() * transform;
-                bone.Transform = GR2.Transform.FromMatrix4(boneTransform);
+                bone.Transform = Transform.FromMatrix4(boneTransform);
             }
         }
 
@@ -276,7 +276,7 @@ public class Skeleton
         if (!hasSkinnedMeshes || Bones.Count == 1)
         {
             IsDummy = true;
-            Utils.Info(String.Format("Skeleton '{0}' marked as dummy", this.Name));
+            Utils.Info(String.Format("Skeleton '{0}' marked as dummy", Name));
         }
 
         for (var i = 0; i < Bones.Count; i++)

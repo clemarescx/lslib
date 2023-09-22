@@ -555,7 +555,7 @@ public class VirtualTileSet : IDisposable
 
     public void ReleasePageFiles()
     {
-        this.PageFiles.Clear();
+        PageFiles.Clear();
     }
 
     public BC5Image ExtractPageFileTexture(int pageFileIndex, int levelIndex, int layer)

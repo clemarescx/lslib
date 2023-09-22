@@ -154,7 +154,7 @@ public class Matrix
 
         for (int i = 0; i < rows; i++)
         {
-            Matrix Ei = Matrix.ZeroMatrix(rows, 1);
+            Matrix Ei = ZeroMatrix(rows, 1);
             Ei[i, 0] = 1;
             Matrix col = SolveWith(Ei);
             inv.SetCol(col, i);
@@ -566,19 +566,19 @@ public class Matrix
     //   O P E R A T O R S
 
     public static Matrix operator -(Matrix m)
-    { return Matrix.Multiply(-1, m); }
+    { return Multiply(-1, m); }
 
     public static Matrix operator +(Matrix m1, Matrix m2)
-    { return Matrix.Add(m1, m2); }
+    { return Add(m1, m2); }
 
     public static Matrix operator -(Matrix m1, Matrix m2)
-    { return Matrix.Add(m1, -m2); }
+    { return Add(m1, -m2); }
 
     public static Matrix operator *(Matrix m1, Matrix m2)
-    { return Matrix.StrassenMultiply(m1, m2); }
+    { return StrassenMultiply(m1, m2); }
 
     public static Matrix operator *(double n, Matrix m)
-    { return Matrix.Multiply(n, m); }
+    { return Multiply(n, m); }
 }
 
 //  The class for exceptions

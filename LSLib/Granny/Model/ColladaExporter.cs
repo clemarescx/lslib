@@ -873,7 +873,7 @@ public class ColladaExporter
         props.Add(prop);
 
         var game = DetectGame(root);
-        if (game != LS.Enums.Game.Unset)
+        if (game != Game.Unset)
         {
             prop = Xml.CreateElement("Game");
             prop.InnerText = game.ToString();

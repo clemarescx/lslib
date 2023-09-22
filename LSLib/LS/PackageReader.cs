@@ -31,8 +31,8 @@ public class PackageReader : IDisposable
 
     public PackageReader(string path, bool metadataOnly = false)
     {
-        this._path = path;
-        this._metadataOnly = metadataOnly;
+        _path = path;
+        _metadataOnly = metadataOnly;
     }
 
     public void Dispose()

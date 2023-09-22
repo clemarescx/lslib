@@ -20,7 +20,7 @@ public class LSBWriter : ILSWriter
     public void Write(Resource rsrc)
     {
         Version = rsrc.Metadata.MajorVersion;
-        using (this.writer = new(stream))
+        using (writer = new(stream))
         {
             var header = new LSBHeader
             {

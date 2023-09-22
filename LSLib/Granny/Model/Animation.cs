@@ -42,9 +42,9 @@ public class AnimationCurve
     public void UpgradeToGr7()
     {
         // Skip if we've already upgraded
-        if (this.CurveData != null) return;
+        if (CurveData != null) return;
 
-        if (this.Degree == 0)
+        if (Degree == 0)
         {
             // Degree 0 curves are identities in all cases
             var curve = new DaIdentity
@@ -56,11 +56,11 @@ public class AnimationCurve
                 }
             };
 
-            this.CurveData = curve;
+            CurveData = curve;
         }
-        else if (this.Degree == 2)
+        else if (Degree == 2)
         {
-            if (this.Knots == null || this.Controls == null)
+            if (Knots == null || Controls == null)
             {
                 throw new InvalidOperationException("Could not upgrade animation curve: knots/controls unavailable");
             }
@@ -77,7 +77,7 @@ public class AnimationCurve
                 Knots = Knots
             };
 
-            this.CurveData = curve;
+            CurveData = curve;
         }
         else
         {

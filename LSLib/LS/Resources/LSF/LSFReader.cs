@@ -48,7 +48,7 @@ public class LSFReader : ILSReader
 
     public LSFReader(Stream stream)
     {
-        this.Stream = stream;
+        Stream = stream;
     }
 
     public void Dispose()
@@ -84,7 +84,7 @@ public class LSFReader : ILSReader
             {
                 var nameLen = reader.ReadUInt16();
                 byte[] bytes = reader.ReadBytes(nameLen);
-                var name = System.Text.Encoding.UTF8.GetString(bytes);
+                var name = Encoding.UTF8.GetString(bytes);
                 hash.Add(name);
 #if DEBUG_LSF_SERIALIZATION
                         Console.WriteLine(String.Format("{0,3:X}/{1}: {2}", Names.Count - 1, hash.Count - 1, name));
@@ -401,7 +401,7 @@ public class LSFReader : ILSReader
             }
         }
 
-        this.Values = Decompress(reader, Metadata.ValuesSizeOnDisk, Metadata.ValuesUncompressedSize, "values.bin", true);
+        Values = Decompress(reader, Metadata.ValuesSizeOnDisk, Metadata.ValuesUncompressedSize, "values.bin", true);
 
         Resource resource = new();
         ReadRegions(resource);

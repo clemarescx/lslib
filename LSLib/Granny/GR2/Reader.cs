@@ -40,7 +40,7 @@ public class GR2Reader
 
     public GR2Reader(Stream stream)
     {
-        this.InputStream = stream;
+        InputStream = stream;
     }
 
     public void Dispose()
@@ -51,7 +51,7 @@ public class GR2Reader
 
     public void Read(object root)
     {
-        using (this.InputReader = new(InputStream))
+        using (InputReader = new(InputStream))
         {
             Magic = ReadMagic();
 
@@ -237,8 +237,8 @@ public class GR2Reader
 
         // Copy the whole file, as we'll update its contents because of relocations and marshalling fixups
         byte[] uncompressedStream = new byte[totalSize];
-        this.Stream = new MemoryStream(uncompressedStream);
-        this.Reader = new(this.Stream);
+        Stream = new MemoryStream(uncompressedStream);
+        Reader = new(Stream);
 
         for (int i = 0; i < Sections.Count; i++)
         {
@@ -605,7 +605,7 @@ public class GR2Reader
 
         // Work around serialization of UserData and ExtendedData fields
         // whose structure may differ depending on the game and GR2 version
-        if (node != null && node.GetType() == typeof(System.Object))
+        if (node != null && node.GetType() == typeof(Object))
         {
             node = null;
         }

@@ -26,7 +26,7 @@ public class LSXWriter : ILSWriter
             IndentChars = "\t"
         };
 
-        using (this.writer = XmlWriter.Create(stream, settings))
+        using (writer = XmlWriter.Create(stream, settings))
         {
             writer.WriteStartElement("save");
 

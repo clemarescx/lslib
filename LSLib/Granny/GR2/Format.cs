@@ -360,24 +360,24 @@ public class Magic
 
         if (alternateSignature)
         {
-            this.signature = format switch
+            signature = format switch
             {
                 Format.LittleEndian32 => LittleEndian32Magic2,
                 Format.LittleEndian64 => LittleEndian64Magic2,
                 Format.BigEndian32    => BigEndian32Magic2,
                 Format.BigEndian64    => BigEndian64Magic2,
-                _                     => this.signature
+                _                     => signature
             };
         }
         else
         {
-            this.signature = format switch
+            signature = format switch
             {
                 Format.LittleEndian32 => LittleEndian32Magic,
                 Format.LittleEndian64 => LittleEndian64Magic,
                 Format.BigEndian32    => BigEndian32Magic,
                 Format.BigEndian64    => BigEndian64Magic,
-                _                     => this.signature
+                _                     => signature
             };
         }
     }
@@ -794,7 +794,7 @@ public class MemberDefinition
 
     // We need to keep a separate cached flag, as we can cache null fields as well
     public bool HasCachedField = false;
-    public System.Reflection.FieldInfo CachedField;
+    public FieldInfo CachedField;
 
     public NodeSerializer Serializer;
     public VariantTypeSelector TypeSelector;
@@ -963,7 +963,7 @@ public class MemberDefinition
         }
     }
 
-    public System.Reflection.FieldInfo LookupFieldInfo(object instance)
+    public FieldInfo LookupFieldInfo(object instance)
     {
         if (HasCachedField)
             return CachedField;
@@ -1185,7 +1185,7 @@ public interface StructDefinitionSelector
 /// Tells the Granny serializer about the way we want it to write a field to the .GR2 file.
 /// </summary>
 [AttributeUsage(AttributeTargets.Field)]
-public class SerializationAttribute : System.Attribute
+public class SerializationAttribute : Attribute
 {
     /// <summary>
     /// Which section should this field be serialized into
@@ -1246,7 +1246,7 @@ public class SerializationAttribute : System.Attribute
 /// Tells the Granny serializer about the way we want it to write a struct to the .GR2 file.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class StructSerializationAttribute : System.Attribute
+public class StructSerializationAttribute : Attribute
 {
     /// <summary>
     /// Should we do mixed marshalling on this struct?

@@ -301,7 +301,7 @@ public class IRGenerator
         }
         else
         {
-            this.LastLocation = scanner.LastLocation();
+            LastLocation = scanner.LastLocation();
             return null;
         }
     }

@@ -220,7 +220,7 @@ public class LSJResourceConverter : JsonConverter
                             break;
 
                         case NodeAttribute.DataType.DT_ULongLong:
-                            if (reader.Value.GetType() == typeof(System.Int64))
+                            if (reader.Value.GetType() == typeof(Int64))
                                 attribute.Value = Convert.ToUInt64((long)reader.Value);
                             else if (reader.Value.GetType() == typeof(BigInteger))
                                 attribute.Value = (ulong)((BigInteger)reader.Value);

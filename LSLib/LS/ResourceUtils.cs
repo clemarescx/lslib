@@ -89,11 +89,6 @@ public class ResourceUtils
     public static Resource LoadResource(string inputPath, ResourceFormat format)
     {
         using var stream = File.Open(inputPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        return LoadResource(stream, format);
-    }
-
-    public static Resource LoadResource(Stream stream, ResourceFormat format)
-    {
         using ILSReader reader = format switch
         {
             ResourceFormat.LSX => new LSXReader(stream),
@@ -104,11 +99,6 @@ public class ResourceUtils
         };
 
         return reader.Read();
-    }
-
-    public static void SaveResource(Resource resource, string outputPath, ResourceConversionParameters conversionParams)
-    {
-        SaveResource(resource, outputPath, ExtensionToResourceFormat(outputPath), conversionParams);
     }
 
     public static void SaveResource(
@@ -182,11 +172,11 @@ public class ResourceUtils
         ResourceFormat outputFormat,
         ResourceConversionParameters conversionParams)
     {
-        this.progressUpdate("Enumerating files ...", 0, 1);
+        progressUpdate("Enumerating files ...", 0, 1);
         var paths = new List<string>();
         EnumerateFiles(paths, inputDir, inputDir, inputFormat);
 
-        this.progressUpdate("Converting resources ...", 0, 1);
+        progressUpdate("Converting resources ...", 0, 1);
         for (var i = 0; i < paths.Count; i++)
         {
             var path = paths[i];
@@ -195,7 +185,7 @@ public class ResourceUtils
 
             FileManager.TryToCreateDirectory(outPath);
 
-            this.progressUpdate("Converting: " + inPath, i, paths.Count);
+            progressUpdate("Converting: " + inPath, i, paths.Count);
             try
             {
                 var resource = LoadResource(inPath, inputFormat);

@@ -19,11 +19,11 @@ public class StoryDebugExportVisitor
     public void Visit(Story story)
     {
         using var streamWriter = new StreamWriter(stream);
-        using (this.writer = new(streamWriter))
+        using (writer = new(streamWriter))
         {
             writer.IndentChar = '\t';
             writer.Indentation = 1;
-            writer.Formatting = Newtonsoft.Json.Formatting.Indented;
+            writer.Formatting = Formatting.Indented;
 
             writer.WriteStartObject();
 

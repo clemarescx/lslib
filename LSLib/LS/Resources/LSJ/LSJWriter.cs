@@ -18,14 +18,14 @@ public class LSJWriter : ILSWriter
     {
         var settings = new JsonSerializerSettings
         {
-            Formatting = Newtonsoft.Json.Formatting.Indented
+            Formatting = Formatting.Indented
         };
 
         settings.Converters.Add(new LSJResourceConverter());
         var serializer = JsonSerializer.Create(settings);
 
         using var streamWriter = new StreamWriter(stream);
-        using (this.writer = new(streamWriter))
+        using (writer = new(streamWriter))
         {
             writer.IndentChar = '\t';
             writer.Indentation = 1;

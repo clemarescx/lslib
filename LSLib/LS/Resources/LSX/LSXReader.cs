@@ -241,7 +241,7 @@ public class LSXReader : ILSReader
 
     private void ReadInternal()
     {
-        using (this.reader = XmlReader.Create(stream))
+        using (reader = XmlReader.Create(stream))
         {
             try
             {

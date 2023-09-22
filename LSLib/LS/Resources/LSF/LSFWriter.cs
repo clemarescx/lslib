@@ -36,7 +36,7 @@ public class LSFWriter :ILSWriter
 
     public LSFWriter(Stream stream)
     {
-        this.Stream = stream;
+        Stream = stream;
     }
 
     public void Write(Resource resource)
@@ -49,13 +49,13 @@ public class LSFWriter :ILSWriter
 
         Meta = resource.Metadata;
 
-        using (this.Writer = new(Stream, Encoding.Default, true))
-        using (this.NodeStream = new())
-        using (this.NodeWriter = new(NodeStream))
-        using (this.AttributeStream = new())
-        using (this.AttributeWriter = new(AttributeStream))
-        using (this.ValueStream = new())
-        using (this.ValueWriter = new(ValueStream))
+        using (Writer = new(Stream, Encoding.Default, true))
+        using (NodeStream = new())
+        using (NodeWriter = new(NodeStream))
+        using (AttributeStream = new())
+        using (AttributeWriter = new(AttributeStream))
+        using (ValueStream = new())
+        using (ValueWriter = new(ValueStream))
         {
             NextNodeIndex = 0;
             NextAttributeIndex = 0;
@@ -497,14 +497,14 @@ public class LSFWriter :ILSWriter
 
     private void WriteStaticString(BinaryWriter writer, string s)
     {
-        byte[] utf = System.Text.Encoding.UTF8.GetBytes(s);
+        byte[] utf = Encoding.UTF8.GetBytes(s);
         writer.Write((UInt16)utf.Length);
         writer.Write(utf);
     }
 
     private void WriteStringWithLength(BinaryWriter writer, string s)
     {
-        byte[] utf = System.Text.Encoding.UTF8.GetBytes(s);
+        byte[] utf = Encoding.UTF8.GetBytes(s);
         writer.Write((Int32)(utf.Length + 1));
         writer.Write(utf);
         writer.Write((Byte)0);
@@ -512,7 +512,7 @@ public class LSFWriter :ILSWriter
 
     private void WriteString(BinaryWriter writer, string s)
     {
-        byte[] utf = System.Text.Encoding.UTF8.GetBytes(s);
+        byte[] utf = Encoding.UTF8.GetBytes(s);
         writer.Write(utf);
         writer.Write((Byte)0);
     }

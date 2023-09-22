@@ -58,7 +58,7 @@ public class ExporterOptions
     // which is a slow process. The advantage of a mismatched tag is that we don't
     // have to 1:1 match the GR2 structs for that version, as it won't just
     // memcpy the struct from the GR2 file directly.
-    public UInt32 VersionTag = GR2.Header.DefaultTag;
+    public UInt32 VersionTag = Header.DefaultTag;
     // Export vertex normals to DAE/GR2 file
     public bool ExportNormals = true;
     // Export tangents/binormals to DAE/GR2 file
@@ -168,9 +168,9 @@ public class Exporter
 
     private Root LoadGR2(string inPath)
     {
-        var root = new LSLib.Granny.Model.Root();
-        FileStream fs = File.Open(inPath, FileMode.Open, System.IO.FileAccess.Read, FileShare.ReadWrite);
-        var gr2 = new LSLib.Granny.GR2.GR2Reader(fs);
+        var root = new Root();
+        FileStream fs = File.Open(inPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        var gr2 = new GR2Reader(fs);
         gr2.Read(root);
         root.PostLoad(gr2.Tag);
         fs.Close();
@@ -201,7 +201,7 @@ public class Exporter
     private void SaveGR2(string outPath, Root root)
     {
         root.PreSave();
-        var writer = new LSLib.Granny.GR2.GR2Writer
+        var writer = new GR2Writer
         {
             Format = Options.Is64Bit ? Magic.Format.LittleEndian64 : Magic.Format.LittleEndian32,
             AlternateMagic = Options.AlternateSignature,
@@ -217,7 +217,7 @@ public class Exporter
         var body = writer.Write(root, (root.Meshes != null) ? (uint)root.Meshes.Count : 0);
         writer.Dispose();
 
-        FileStream f = File.Open(outPath, FileMode.Create, System.IO.FileAccess.Write, FileShare.None);
+        FileStream f = File.Open(outPath, FileMode.Create, FileAccess.Write, FileShare.None);
         f.Write(body, 0, body.Length);
         f.Close();
         f.Dispose();

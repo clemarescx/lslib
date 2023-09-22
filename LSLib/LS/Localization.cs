@@ -72,7 +72,7 @@ public class LocaReader : IDisposable
 
     public LocaReader(Stream stream)
     {
-        this.Stream = stream;
+        Stream = stream;
     }
 
     public void Dispose()
@@ -205,7 +205,7 @@ public class LocaXmlReader : IDisposable
             Entries = new()
         };
 
-        using (this.reader = XmlReader.Create(stream))
+        using (reader = XmlReader.Create(stream))
         {
             while (reader.Read())
             {
@@ -239,7 +239,7 @@ public class LocaXmlWriter
             IndentChars = "\t"
         };
 
-        using (this.writer = XmlWriter.Create(stream, settings))
+        using (writer = XmlWriter.Create(stream, settings))
         {
             writer.WriteStartElement("contentList");
 
