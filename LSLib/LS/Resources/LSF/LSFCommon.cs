@@ -168,12 +168,12 @@ internal struct LSFNodeEntryV2
     /// <summary>
     /// Index into name hash table
     /// </summary>
-    public int NameIndex => (int)(NameHashTableIndex >> 16);
+    public readonly int NameIndex => (int)(NameHashTableIndex >> 16);
 
     /// <summary>
     /// Offset in hash chain
     /// </summary>
-    public int NameOffset => (int)(NameHashTableIndex & 0xffff);
+    public readonly int NameOffset => (int)(NameHashTableIndex & 0xffff);
 }
 
 /// <summary>
@@ -266,22 +266,22 @@ internal struct LSFAttributeEntryV2
     /// <summary>
     /// Index into name hash table
     /// </summary>
-    public int NameIndex => (int)(NameHashTableIndex >> 16);
+    public readonly int NameIndex => (int)(NameHashTableIndex >> 16);
 
     /// <summary>
     /// Offset in hash chain
     /// </summary>
-    public int NameOffset => (int)(NameHashTableIndex & 0xffff);
+    public readonly int NameOffset => (int)(NameHashTableIndex & 0xffff);
 
     /// <summary>
     /// Type of this attribute (see NodeAttribute.DataType)
     /// </summary>
-    public uint TypeId => TypeAndLength & 0x3f;
+    public readonly uint TypeId => TypeAndLength & 0x3f;
 
     /// <summary>
     /// Length of this attribute
     /// </summary>
-    public uint Length => TypeAndLength >> 6;
+    public readonly uint Length => TypeAndLength >> 6;
 }
 
 /// <summary>
@@ -316,22 +316,22 @@ internal struct LSFAttributeEntryV3
     /// <summary>
     /// Index into name hash table
     /// </summary>
-    public int NameIndex => (int)(NameHashTableIndex >> 16);
+    public readonly int NameIndex => (int)(NameHashTableIndex >> 16);
 
     /// <summary>
     /// Offset in hash chain
     /// </summary>
-    public int NameOffset => (int)(NameHashTableIndex & 0xffff);
+    public readonly int NameOffset => (int)(NameHashTableIndex & 0xffff);
 
     /// <summary>
     /// Type of this attribute (see NodeAttribute.DataType)
     /// </summary>
-    public uint TypeId => TypeAndLength & 0x3f;
+    public readonly uint TypeId => TypeAndLength & 0x3f;
 
     /// <summary>
     /// Length of this attribute
     /// </summary>
-    public uint Length => TypeAndLength >> 6;
+    public readonly uint Length => TypeAndLength >> 6;
 }
 
 internal class LSFAttributeInfo
