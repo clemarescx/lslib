@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 namespace LSLib.LS;
 
@@ -57,6 +58,7 @@ public class NodeAttribute
         DT_LSString = 23,
         DT_ULongLong = 24,
         DT_ScratchBuffer = 25,
+
         // Seems to be unused?
         DT_Long = 26,
         DT_Int8 = 27,
@@ -66,92 +68,72 @@ public class NodeAttribute
         DT_UUID = 31,
         DT_Int64 = 32,
         DT_TranslatedFSString = 33,
+
         // Last supported datatype, always keep this one at the end
         DT_Max = DT_TranslatedFSString
     }
 
-    private DataType type;
-    private object value;
+    public DataType Type { get; }
 
-    public DataType Type => type;
-
-    public object Value
-    {
-        get => value;
-        set => this.value = value;
-    }
+    public object Value { get; set; }
 
     public NodeAttribute(DataType type)
     {
-        this.type = type;
+        Type = type;
     }
 
-    public override string ToString()
-    {
-        return type switch
+    public override string ToString() =>
+        Type switch
         {
             DataType.DT_ScratchBuffer =>
                 // ScratchBuffer is a special case, as its stored as byte[] and ToString() doesn't really do what we want
-                Convert.ToBase64String((byte[])value),
-            DataType.DT_IVec2 => string.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_IVec3 => string.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_IVec4 => string.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec2  => string.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec3  => string.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec4  => string.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
-            _                 => value.ToString()
+                Convert.ToBase64String((byte[])Value),
+            DataType.DT_IVec2 => string.Join(" ", new List<int>((int[])Value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec3 => string.Join(" ", new List<int>((int[])Value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec4 => string.Join(" ", new List<int>((int[])Value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec2  => string.Join(" ", new List<float>((float[])Value).ConvertAll(i => i.ToString(CultureInfo.InvariantCulture)).ToArray()),
+            DataType.DT_Vec3  => string.Join(" ", new List<float>((float[])Value).ConvertAll(i => i.ToString(CultureInfo.InvariantCulture)).ToArray()),
+            DataType.DT_Vec4  => string.Join(" ", new List<float>((float[])Value).ConvertAll(i => i.ToString(CultureInfo.InvariantCulture)).ToArray()),
+            _                 => Value.ToString()
         };
-    }
 
-    public int GetRows()
-    {
-        return type switch
+    public int GetRows() =>
+        Type switch
         {
-            DataType.DT_IVec2  => 1,
-            DataType.DT_IVec3  => 1,
-            DataType.DT_IVec4  => 1,
-            DataType.DT_Vec2   => 1,
-            DataType.DT_Vec3   => 1,
-            DataType.DT_Vec4   => 1,
-            DataType.DT_Mat2   => 2,
-            DataType.DT_Mat3   => 3,
-            DataType.DT_Mat3x4 => 3,
-            DataType.DT_Mat4x3 => 4,
-            DataType.DT_Mat4   => 4,
-            _                  => throw new NotSupportedException("Data type does not have rows")
+            DataType.DT_IVec2 or DataType.DT_IVec3 or DataType.DT_IVec4 or DataType.DT_Vec2 or DataType.DT_Vec3 or DataType.DT_Vec4 => 1,
+            DataType.DT_Mat2 => 2,
+            DataType.DT_Mat3 or DataType.DT_Mat3x4 => 3,
+            DataType.DT_Mat4x3 or DataType.DT_Mat4 => 4,
+            _ => throw new NotSupportedException("Data type does not have rows")
         };
-    }
 
-    public int GetColumns()
-    {
-        return type switch
+    public int GetColumns() =>
+        Type switch
         {
-            DataType.DT_IVec2  => 2,
-            DataType.DT_Vec2   => 2,
-            DataType.DT_Mat2   => 2,
-            DataType.DT_IVec3  => 3,
-            DataType.DT_Vec3   => 3,
-            DataType.DT_Mat3   => 3,
-            DataType.DT_Mat4x3 => 3,
-            DataType.DT_IVec4  => 4,
-            DataType.DT_Vec4   => 4,
-            DataType.DT_Mat3x4 => 4,
-            DataType.DT_Mat4   => 4,
-            _                  => throw new NotSupportedException("Data type does not have columns")
+            DataType.DT_IVec2 or DataType.DT_Vec2 or DataType.DT_Mat2 => 2,
+            DataType.DT_IVec3 or DataType.DT_Vec3 or DataType.DT_Mat3 or DataType.DT_Mat4x3 => 3,
+            DataType.DT_IVec4 or DataType.DT_Vec4 or DataType.DT_Mat3x4 or DataType.DT_Mat4 => 4,
+            _ => throw new NotSupportedException("Data type does not have columns")
         };
-    }
 
-    public bool IsNumeric()
-    {
-        return type is DataType.DT_Byte or DataType.DT_Short or DataType.DT_Short or DataType.DT_Int or DataType.DT_UInt or DataType.DT_Float or DataType.DT_Double or DataType.DT_ULongLong or DataType.DT_Long or DataType.DT_Int8;
-    }
+    public bool IsNumeric() =>
+        Type is DataType.DT_Byte
+             or DataType.DT_Short
+             or DataType.DT_Short
+             or DataType.DT_Int
+             or DataType.DT_UInt
+             or DataType.DT_Float
+             or DataType.DT_Double
+             or DataType.DT_ULongLong
+             or DataType.DT_Long
+             or DataType.DT_Int8;
 
     public void FromString(string str)
     {
         if (IsNumeric())
         {
             // Workaround: Some XML files use empty strings, instead of "0" for zero values.
-            if (str == "")
+            if (str == string.Empty)
             {
                 str = "0";
             }
@@ -162,38 +144,39 @@ public class NodeAttribute
             }
         }
 
-        switch (type)
+        switch (Type)
         {
             case DataType.DT_None:
                 // This is a null type, cannot have a value
+                Value = null;
                 break;
 
             case DataType.DT_Byte:
-                value = Convert.ToByte(str);
+                Value = Convert.ToByte(str);
                 break;
 
             case DataType.DT_Short:
-                value = Convert.ToInt16(str);
+                Value = Convert.ToInt16(str);
                 break;
 
             case DataType.DT_UShort:
-                value = Convert.ToUInt16(str);
+                Value = Convert.ToUInt16(str);
                 break;
 
             case DataType.DT_Int:
-                value = Convert.ToInt32(str);
+                Value = Convert.ToInt32(str);
                 break;
 
             case DataType.DT_UInt:
-                value = Convert.ToUInt32(str);
+                Value = Convert.ToUInt32(str);
                 break;
 
             case DataType.DT_Float:
-                value = Convert.ToSingle(str);
+                Value = Convert.ToSingle(str);
                 break;
 
             case DataType.DT_Double:
-                value = Convert.ToDouble(str);
+                Value = Convert.ToDouble(str);
                 break;
 
             case DataType.DT_IVec2:
@@ -213,7 +196,7 @@ public class NodeAttribute
                     vec[i] = int.Parse(nums[i]);
                 }
 
-                value = vec;
+                Value = vec;
                 break;
             }
 
@@ -234,7 +217,7 @@ public class NodeAttribute
                     vec[i] = float.Parse(nums[i]);
                 }
 
-                value = vec;
+                Value = vec;
                 break;
             }
 
@@ -249,21 +232,21 @@ public class NodeAttribute
                     throw new FormatException("Invalid column/row count for matrix");
                 }
 
-                value = mat;
+                Value = mat;
                 break;
 
             case DataType.DT_Bool:
                 if (str == "0")
                 {
-                    value = false;
+                    Value = false;
                 }
                 else if (str == "1")
                 {
-                    value = true;
+                    Value = true;
                 }
                 else
                 {
-                    value = Convert.ToBoolean(str);
+                    Value = Convert.ToBoolean(str);
                 }
 
                 break;
@@ -274,55 +257,55 @@ public class NodeAttribute
             case DataType.DT_LSString:
             case DataType.DT_WString:
             case DataType.DT_LSWString:
-                value = str;
+                Value = str;
                 break;
 
             case DataType.DT_TranslatedString:
                 // We'll only set the value part of the translated string, not the TranslatedStringKey / Handle part
                 // That can be changed separately via attribute.Value.Handle
-                if (value == null)
+                if (Value == null)
                 {
-                    value = new TranslatedString();
+                    Value = new TranslatedString();
                 }
 
-                ((TranslatedString)value).Value = str;
+                ((TranslatedString)Value).Value = str;
                 break;
 
             case DataType.DT_TranslatedFSString:
                 // We'll only set the value part of the translated string, not the TranslatedStringKey / Handle part
                 // That can be changed separately via attribute.Value.Handle
-                if (value == null)
+                if (Value == null)
                 {
-                    value = new TranslatedFSString();
+                    Value = new TranslatedFSString();
                 }
 
-                ((TranslatedFSString)value).Value = str;
+                ((TranslatedFSString)Value).Value = str;
                 break;
 
             case DataType.DT_ULongLong:
-                value = Convert.ToUInt64(str);
+                Value = Convert.ToUInt64(str);
                 break;
 
             case DataType.DT_ScratchBuffer:
-                value = Convert.FromBase64String(str);
+                Value = Convert.FromBase64String(str);
                 break;
 
             case DataType.DT_Long:
             case DataType.DT_Int64:
-                value = Convert.ToInt64(str);
+                Value = Convert.ToInt64(str);
                 break;
 
             case DataType.DT_Int8:
-                value = Convert.ToSByte(str);
+                Value = Convert.ToSByte(str);
                 break;
 
             case DataType.DT_UUID:
-                value = new Guid(str);
+                Value = new Guid(str);
                 break;
 
             default:
                 // This should not happen!
-                throw new NotImplementedException($"FromString() not implemented for type {type}");
+                throw new NotImplementedException($"FromString() not implemented for type {Type}");
         }
     }
 }
