@@ -4,7 +4,7 @@ using System.IO;
 
 namespace LSLib.LS;
 
-public class LSBWriter
+public class LSBWriter : ILSWriter
 {
     private Stream stream;
     private BinaryWriter writer;

@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace LSLib.LS;
 
-public class LSXReader : IDisposable
+public class LSXReader : ILSReader
 {
     private Stream stream;
     private XmlReader reader;

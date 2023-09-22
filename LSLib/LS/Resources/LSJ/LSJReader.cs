@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace LSLib.LS;
 
-public class LSJReader : IDisposable
+public class LSJReader : ILSReader
 {
     private Stream stream;
     private JsonTextReader reader;

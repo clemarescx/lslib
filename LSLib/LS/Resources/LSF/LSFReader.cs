@@ -9,7 +9,7 @@ using LSLib.LS.Enums;
 
 namespace LSLib.LS;
 
-public class LSFReader : IDisposable
+public class LSFReader : ILSReader
 {
     /// <summary>
     /// Input stream

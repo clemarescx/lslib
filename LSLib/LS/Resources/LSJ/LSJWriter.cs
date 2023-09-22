@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace LSLib.LS;
 
-public class LSJWriter
+public class LSJWriter : ILSWriter
 {
     private Stream stream;
     private JsonTextWriter writer;

@@ -95,43 +95,16 @@ public class ResourceUtils
 
     public static Resource LoadResource(Stream stream, ResourceFormat format)
     {
-        switch (format)
+        using ILSReader reader = format switch
         {
-            case ResourceFormat.LSX:
-            {
-                using (var reader = new LSXReader(stream))
-                {
-                    return reader.Read();
-                }
-            }
+            ResourceFormat.LSX => new LSXReader(stream),
+            ResourceFormat.LSB => new LSBReader(stream),
+            ResourceFormat.LSF => new LSFReader(stream),
+            ResourceFormat.LSJ => new LSJReader(stream),
+            _                  => throw new ArgumentException("Invalid resource format")
+        };
 
-            case ResourceFormat.LSB:
-            {
-                using (var reader = new LSBReader(stream))
-                {
-                    return reader.Read();
-                }
-            }
-
-            case ResourceFormat.LSF:
-            {
-                using (var reader = new LSFReader(stream))
-                {
-                    return reader.Read();
-                }
-            }
-
-            case ResourceFormat.LSJ:
-            {
-                using (var reader = new LSJReader(stream))
-                {
-                    return reader.Read();
-                }
-            }
-
-            default:
-                throw new ArgumentException("Invalid resource format");
-        }
+        return reader.Read();
     }
 
     public static void SaveResource(Resource resource, string outputPath, ResourceConversionParameters conversionParams)
@@ -147,61 +120,27 @@ public class ResourceUtils
     {
         FileManager.TryToCreateDirectory(outputPath);
 
-        using (var file = File.Open(outputPath, FileMode.Create, FileAccess.Write))
+        using var file = File.Open(outputPath, FileMode.Create, FileAccess.Write);
+
+        ILSWriter writer = format switch
         {
-            switch (format)
+            ResourceFormat.LSX => new LSXWriter(file) { Version = conversionParams.LSX, PrettyPrint = conversionParams.PrettyPrint },
+            ResourceFormat.LSB => new LSBWriter(file),
+            ResourceFormat.LSF => new LSFWriter(file)
             {
-                case ResourceFormat.LSX:
-                {
-                    var writer = new LSXWriter(file)
-                    {
-                        Version = conversionParams.LSX,
-                        PrettyPrint = conversionParams.PrettyPrint
-                    };
+                Version = conversionParams.LSF,
+                EncodeSiblingData = conversionParams.LSFEncodeSiblingData,
+                Compression = conversionParams.Compression,
+                CompressionLevel = conversionParams.CompressionLevel
+            },
+            ResourceFormat.LSJ => new LSJWriter(file) { PrettyPrint = conversionParams.PrettyPrint },
+            _                  => throw new ArgumentException("Invalid resource format")
+        };
 
-                    writer.Write(resource);
-                    break;
-                }
-
-                case ResourceFormat.LSB:
-                {
-                    var writer = new LSBWriter(file);
-                    writer.Write(resource);
-                    break;
-                }
-
-                case ResourceFormat.LSF:
-                {
-                    var writer = new LSFWriter(file)
-                    {
-                        Version = conversionParams.LSF,
-                        EncodeSiblingData = conversionParams.LSFEncodeSiblingData,
-                        Compression = conversionParams.Compression,
-                        CompressionLevel = conversionParams.CompressionLevel
-                    };
-
-                    writer.Write(resource);
-                    break;
-                }
-
-                case ResourceFormat.LSJ:
-                {
-                    var writer = new LSJWriter(file)
-                    {
-                        PrettyPrint = conversionParams.PrettyPrint
-                    };
-
-                    writer.Write(resource);
-                    break;
-                }
-
-                default:
-                    throw new ArgumentException("Invalid resource format");
-            }
-        }
+        writer.Write(resource);
     }
 
-    private bool IsA(string path, ResourceFormat format)
+    private static bool IsA(string path, ResourceFormat format)
     {
         var extension = Path.GetExtension(path).ToLower();
         return format switch

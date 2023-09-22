@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace LSLib.LS;
 
-public class LSXWriter
+public class LSXWriter : ILSWriter
 {
     private Stream stream;
     private XmlWriter writer;

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace LSLib.LS;
 
-public class LSBReader : IDisposable
+public class LSBReader : ILSReader
 {
     private Stream stream;
     private BinaryReader reader;

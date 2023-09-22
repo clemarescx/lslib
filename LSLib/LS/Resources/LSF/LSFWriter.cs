@@ -6,7 +6,7 @@ using LSLib.LS.Enums;
 
 namespace LSLib.LS;
 
-public class LSFWriter
+public class LSFWriter :ILSWriter
 {
     private static int StringHashMapSize = 0x200;
 
