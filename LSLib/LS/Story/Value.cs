@@ -27,11 +27,11 @@ public class Value : OsirisSerializable
         String = 3
     }
 
-    public UInt32 TypeId;
-    public Int32 IntValue;
-    public Int64 Int64Value;
-    public Single FloatValue;
-    public String StringValue;
+    public uint TypeId;
+    public int IntValue;
+    public long Int64Value;
+    public float FloatValue;
+    public string StringValue;
 
     public override string ToString()
     {
@@ -197,7 +197,7 @@ public class Value : OsirisSerializable
         if (writer.Enums.ContainsKey(TypeId))
         {
             writer.Write((byte)'e');
-            writer.Write((UInt16)TypeId);
+            writer.Write((ushort)TypeId);
             writer.Write(StringValue);
             return;
         }
@@ -215,7 +215,7 @@ public class Value : OsirisSerializable
 
         if (writer.ShortTypeIds)
         {
-            writer.Write((UInt16)TypeId);
+            writer.Write((ushort)TypeId);
         }
         else
         {

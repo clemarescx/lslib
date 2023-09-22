@@ -15,7 +15,7 @@ public class RuleNode : RelNode
 {
     public List<Call> Calls;
     public List<Variable> Variables;
-    public UInt32 Line;
+    public uint Line;
     public GoalReference DerivedGoalRef;
     public bool IsQuery;
 
@@ -34,7 +34,7 @@ public class RuleNode : RelNode
             variable.Read(reader);
             if (variable.Adapted)
             {
-                variable.VariableName = String.Format("_Var{0}", Variables.Count + 1);
+                variable.VariableName = string.Format("_Var{0}", Variables.Count + 1);
             }
 
             Variables.Add(variable);

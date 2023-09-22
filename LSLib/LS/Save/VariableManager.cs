@@ -11,29 +11,29 @@ namespace LSLib.LS.Save;
 
 public class OsirisVariableHelper
 {
-    private Int32 NumericStringId;
-    private Dictionary<string, Int32> IdentifierToKey = new();
-    private Dictionary<Int32, string> KeyToIdentifier = new();
+    private int NumericStringId;
+    private Dictionary<string, int> IdentifierToKey = new();
+    private Dictionary<int, string> KeyToIdentifier = new();
 
     public void Load(Node helper)
     {
-        NumericStringId = (Int32)helper.Attributes["NumericStringId"].Value;
+        NumericStringId = (int)helper.Attributes["NumericStringId"].Value;
 
         foreach (var mapping in helper.Children["IdentifierTable"])
         {
             string name = (string)mapping.Attributes["MapKey"].Value;
-            Int32 index = (Int32)mapping.Attributes["MapValue"].Value;
+            int index = (int)mapping.Attributes["MapValue"].Value;
             IdentifierToKey.Add(name, index);
             KeyToIdentifier.Add(index, name);
         }
     }
 
-    public Int32 GetKey(string variableName)
+    public int GetKey(string variableName)
     {
         return IdentifierToKey[variableName];
     }
 
-    public string GetName(Int32 variableIndex)
+    public string GetName(int variableIndex)
     {
         return KeyToIdentifier[variableIndex];
     }
@@ -42,7 +42,7 @@ public class OsirisVariableHelper
 abstract public class VariableHolder<TValue>
 {
     protected readonly List<TValue> Values = new();
-    private List<UInt16> Remaps = new();
+    private List<ushort> Remaps = new();
         
     public TValue GetRaw(int index)
     {
@@ -75,9 +75,9 @@ abstract public class VariableHolder<TValue>
     abstract protected void LoadVariables(Node variableList);
 }
 
-public class IntVariableHolder : VariableHolder<Int32>
+public class IntVariableHolder : VariableHolder<int>
 {
-    public Int32? Get(int index)
+    public int? Get(int index)
     {
         var raw = GetRaw(index);
         if (raw == -1163005939) /* 0xbaadf00d */
@@ -107,9 +107,9 @@ public class IntVariableHolder : VariableHolder<Int32>
     }
 }
 
-public class Int64VariableHolder : VariableHolder<Int64>
+public class Int64VariableHolder : VariableHolder<long>
 {
-    public Int64? Get(int index)
+    public long? Get(int index)
     {
         var raw = GetRaw(index);
         if (raw == -4995072469926809587) /* 0xbaadf00dbaadf00d */

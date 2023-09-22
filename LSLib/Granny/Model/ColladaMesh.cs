@@ -9,7 +9,7 @@ namespace LSLib.Granny.Model;
 public class ColladaMesh
 {
     private mesh Mesh;
-    private Dictionary<String, ColladaSource> Sources;
+    private Dictionary<string, ColladaSource> Sources;
     private InputLocalOffset[] Inputs;
     private List<Vertex> Vertices;
     private List<Vector3> Normals;
@@ -121,7 +121,7 @@ public class ColladaMesh
 
             float r = 1.0F / (s1 * t2 - s2 * t1);
 
-            if ((Single.IsNaN(r) || Single.IsInfinity(r)) && !Options.IgnoreUVNaN)
+            if ((float.IsNaN(r) || float.IsInfinity(r)) && !Options.IgnoreUVNaN)
             {
                 throw new(
                     $"Couldn't calculate tangents; the mesh most likely contains non-manifold geometry.{Environment.NewLine}UV1: {w1}{Environment.NewLine}UV2: {w2}{Environment.NewLine}UV3: {w3}");
@@ -271,7 +271,7 @@ public class ColladaMesh
 
     private void ImportVertices()
     {
-        var vertexSemantics = new Dictionary<String, List<Vector3>>();
+        var vertexSemantics = new Dictionary<string, List<Vector3>>();
         foreach (var input in Mesh.vertices.input)
         {
             ColladaSource inputSource = FindSource(input.source);
@@ -514,7 +514,7 @@ public class ColladaMesh
         if (!HasNormals || Options.RecalculateNormals)
         {
             if (!HasNormals)
-                Utils.Info(String.Format("Channel 'NORMAL' not found, will rebuild vertex normals after import."));
+                Utils.Info(string.Format("Channel 'NORMAL' not found, will rebuild vertex normals after import."));
 
             HasNormals = true;
             OutputVertexType.NormalType = NormalType.Float3;
@@ -579,11 +579,11 @@ public class ColladaMesh
                 ConsolidatedIndices.Add(consolidatedIndex);
             }
 
-            Utils.Info(String.Format("Merged {0} vertices into {1} output vertices", Vertices.Count, ConsolidatedVertices.Count));
+            Utils.Info(string.Format("Merged {0} vertices into {1} output vertices", Vertices.Count, ConsolidatedVertices.Count));
         }
         else
         {
-            Utils.Info(String.Format("Mesh has no separate normals, colors or UV map, vertex consolidation step skipped."));
+            Utils.Info(string.Format("Mesh has no separate normals, colors or UV map, vertex consolidation step skipped."));
 
             ConsolidatedVertices = Vertices;
 
@@ -601,7 +601,7 @@ public class ColladaMesh
          && ((!HasTangents && UVs.Count > 0) || Options.RecalculateTangents))
         {
             if (!HasTangents)
-                Utils.Info(String.Format("Channel 'TANGENT'/'BINROMAL' not found, will rebuild vertex tangents after import."));
+                Utils.Info(string.Format("Channel 'TANGENT'/'BINROMAL' not found, will rebuild vertex tangents after import."));
 
             OutputVertexType.TangentType = NormalType.Float3;
             OutputVertexType.BinormalType = NormalType.Float3;

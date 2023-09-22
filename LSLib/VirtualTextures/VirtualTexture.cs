@@ -36,13 +36,13 @@ public struct FourCCElement
 
 public class VirtualTileSet : IDisposable
 {
-    public readonly String PagePath;
+    public readonly string PagePath;
     public GTSHeader Header;
     public GTSTileSetLayer[] TileSetLayers;
     public GTSTileSetLevel[] TileSetLevels;
-    public List<Int32[]> PerLevelFlatTileIndices;
+    public List<int[]> PerLevelFlatTileIndices;
     public GTSParameterBlockHeader[] ParameterBlockHeaders;
-    public Dictionary<UInt32, object> ParameterBlocks;
+    public Dictionary<uint, object> ParameterBlocks;
     public List<PageFileInfo> PageFileInfos;
     public FourCCElement FourCCMetadata;
     public GTSThumbnailInfo[] ThumbnailInfos;
@@ -102,7 +102,7 @@ public class VirtualTileSet : IDisposable
 
                 case 2:
                 {
-                    Int32 len;
+                    int len;
                     cc.Type = FourCCElementType.String;
                     if (header.Subformat == 1)
                     {
@@ -192,8 +192,8 @@ public class VirtualTileSet : IDisposable
             case FourCCElementType.Node:
             {
                 var headerOffset = fs.Position;
-                writer.Write((UInt32)0);
-                writer.Write((UInt16)0); // Padding
+                writer.Write((uint)0);
+                writer.Write((ushort)0); // Padding
 
                 var childrenOffset = fs.Position;
                 foreach (var child in element.Children)
@@ -201,39 +201,39 @@ public class VirtualTileSet : IDisposable
                     WriteFourCCMeta(fs, writer, child);
                 }
                 var endOffset = fs.Position;
-                var childrenSize = (UInt32)(endOffset - childrenOffset);
+                var childrenSize = (uint)(endOffset - childrenOffset);
 
                 // Re-write node header with final node size
                 fs.Position = headerOffset;
-                writer.Write((UInt32)childrenSize);
+                writer.Write((uint)childrenSize);
                 fs.Position = endOffset;
 
                 break;
             }
 
             case FourCCElementType.Int:
-                writer.Write((UInt16)4);
+                writer.Write((ushort)4);
                 writer.Write(element.UInt);
                 break;
 
             case FourCCElementType.String:
                 if (header.Subformat == 1)
                 {
-                    writer.Write((UInt32)(element.Str.Length * 2 + 2));
-                    writer.Write((UInt16)0); // Padding
+                    writer.Write((uint)(element.Str.Length * 2 + 2));
+                    writer.Write((ushort)0); // Padding
                 }
                 else
                 {
-                    writer.Write((UInt16)(element.Str.Length * 2 + 2));
+                    writer.Write((ushort)(element.Str.Length * 2 + 2));
                 }
 
                 writer.Write(Encoding.Unicode.GetBytes(element.Str));
-                writer.Write((UInt16)0); // null terminator
+                writer.Write((ushort)0); // null terminator
                 break;
 
             // TODO - 0x08 vs 0x0D type ID?
             case FourCCElementType.Binary:
-                writer.Write((UInt16)element.Blob.Length);
+                writer.Write((ushort)element.Blob.Length);
                 writer.Write(element.Blob);
                 break;
 
@@ -243,7 +243,7 @@ public class VirtualTileSet : IDisposable
 
         while (fs.Position % 4 != 0)
         {
-            writer.Write((Byte)0);
+            writer.Write((byte)0);
         }
     }
 
@@ -303,8 +303,8 @@ public class VirtualTileSet : IDisposable
         foreach (var level in TileSetLevels)
         {
             fs.Position = (uint)level.FlatTileIndicesOffset;
-            var tileIndices = new Int32[level.Height * level.Width * Header.NumLayers];
-            BinUtils.ReadStructs<Int32>(reader, tileIndices);
+            var tileIndices = new int[level.Height * level.Width * Header.NumLayers];
+            BinUtils.ReadStructs<int>(reader, tileIndices);
             PerLevelFlatTileIndices.Add(tileIndices);
         }
 
@@ -325,7 +325,7 @@ public class VirtualTileSet : IDisposable
                 Debug.Assert(bc.B == 0);
                 Debug.Assert(bc.C1 == 0);
                 Debug.Assert(bc.C2 == 0);
-                Debug.Assert(bc.DataType is (Byte)GTSDataType.R8G8B8A8_SRGB or (Byte)GTSDataType.X8Y8Z8W8);
+                Debug.Assert(bc.DataType is (byte)GTSDataType.R8G8B8A8_SRGB or (byte)GTSDataType.X8Y8Z8W8);
                 Debug.Assert(bc.BCField3 == 0);
                 Debug.Assert(bc.E1 == 0);
                 Debug.Assert(bc.E3 == 0);
@@ -402,7 +402,7 @@ public class VirtualTileSet : IDisposable
             var tileIndices = PerLevelFlatTileIndices[i];
             Debug.Assert(tileIndices.Length == level.Height * level.Width * Header.NumLayers);
 
-            BinUtils.WriteStructs<Int32>(writer, tileIndices);
+            BinUtils.WriteStructs<int>(writer, tileIndices);
         }
 
         Header.LevelsOffset = (ulong)fs.Position;
@@ -427,7 +427,7 @@ public class VirtualTileSet : IDisposable
                 Array.Copy(comp1, block.Compression1, comp1.Length);
                 var comp2 = Encoding.UTF8.GetBytes("fastlz0.1.0");
                 Array.Copy(comp2, block.Compression2, comp2.Length);
-                block.DataType = (Byte)GTSDataType.R8G8B8A8_SRGB; // X8Y8Z8W8 for normal/phys
+                block.DataType = (byte)GTSDataType.R8G8B8A8_SRGB; // X8Y8Z8W8 for normal/phys
                 block.SaveMip = 1;
                 block.FourCC = 0x20334342;
                 BinUtils.WriteStruct<GTSBCParameterBlock>(writer, ref block);

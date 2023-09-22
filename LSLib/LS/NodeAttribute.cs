@@ -5,7 +5,7 @@ namespace LSLib.LS;
 
 public class TranslatedString
 {
-    public UInt16 Version = 0;
+    public ushort Version = 0;
     public string Value;
     public string Handle;
 
@@ -93,12 +93,12 @@ public class NodeAttribute
             DataType.DT_ScratchBuffer =>
                 // ScratchBuffer is a special case, as its stored as byte[] and ToString() doesn't really do what we want
                 Convert.ToBase64String((byte[])value),
-            DataType.DT_IVec2 => String.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_IVec3 => String.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_IVec4 => String.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec2  => String.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec3  => String.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
-            DataType.DT_Vec4  => String.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec2 => string.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec3 => string.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec4 => string.Join(" ", new List<int>((int[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec2  => string.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec3  => string.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec4  => string.Join(" ", new List<float>((float[])value).ConvertAll(i => i.ToString()).ToArray()),
             _                 => value.ToString()
         };
     }
@@ -203,7 +203,7 @@ public class NodeAttribute
                 string[] nums = str.Split(' ');
                 int length = GetColumns();
                 if (length != nums.Length)
-                    throw new FormatException(String.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
+                    throw new FormatException(string.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
 
                 int[] vec = new int[length];
                 for (int i = 0; i < length; i++)
@@ -220,7 +220,7 @@ public class NodeAttribute
                 string[] nums = str.Split(' ');
                 int length = GetColumns();
                 if (length != nums.Length)
-                    throw new FormatException(String.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
+                    throw new FormatException(string.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
 
                 float[] vec = new float[length];
                 for (int i = 0; i < length; i++)
@@ -297,7 +297,7 @@ public class NodeAttribute
 
             default:
                 // This should not happen!
-                throw new NotImplementedException(String.Format("FromString() not implemented for type {0}", type));
+                throw new NotImplementedException(string.Format("FromString() not implemented for type {0}", type));
         }
     }
 }

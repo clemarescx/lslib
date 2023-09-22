@@ -173,7 +173,7 @@ class ColladaHelpers
         return transform;
     }
 
-    public static List<int> StringsToIntegers(String s)
+    public static List<int> StringsToIntegers(string s)
     {
         var floats = new List<int>(s.Length / 6);
         int startingPos = -1;

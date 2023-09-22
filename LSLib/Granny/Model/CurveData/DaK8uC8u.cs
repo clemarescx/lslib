@@ -10,11 +10,11 @@ public class DaK8uC8u : AnimationCurveData
 {
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_DaK8uC8u;
-    public UInt16 OneOverKnotScaleTrunc;
+    public ushort OneOverKnotScaleTrunc;
     [Serialization(Prototype = typeof(ControlReal32), Kind = SerializationKind.UserMember, Serializer = typeof(SingleListSerializer))]
-    public List<Single> ControlScaleOffsets;
+    public List<float> ControlScaleOffsets;
     [Serialization(Prototype = typeof(ControlUInt8), Kind = SerializationKind.UserMember, Serializer = typeof(UInt8ListSerializer))]
-    public List<Byte> KnotsControls;
+    public List<byte> KnotsControls;
 
     public int Components()
     {

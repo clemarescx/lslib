@@ -19,7 +19,7 @@ public class LSFReader : ILSReader
     /// <summary>
     /// Static string hash map
     /// </summary>
-    private List<List<String>> Names;
+    private List<List<string>> Names;
     /// <summary>
     /// Preprocessed list of nodes (structures)
     /// </summary>
@@ -76,7 +76,7 @@ public class LSFReader : ILSReader
         var numHashEntries = reader.ReadUInt32();
         while (numHashEntries-- > 0)
         {
-            var hash = new List<String>();
+            var hash = new List<string>();
             Names.Add(hash);
 
             var numStrings = reader.ReadUInt16();
@@ -105,7 +105,7 @@ public class LSFReader : ILSReader
 #endif
 
         using var reader = new BinaryReader(s);
-        Int32 index = 0;
+        int index = 0;
         while (s.Position < s.Length)
         {
             var resolved = new LSFNodeInfo();
@@ -154,9 +154,9 @@ public class LSFReader : ILSReader
                 var rawAttributes = new List<LSFAttributeEntryV2>();
 #endif
 
-        var prevAttributeRefs = new List<Int32>();
-        UInt32 dataOffset = 0;
-        Int32 index = 0;
+        var prevAttributeRefs = new List<int>();
+        uint dataOffset = 0;
+        int index = 0;
         while (s.Position < s.Length)
         {
             var attribute = BinUtils.ReadStruct<LSFAttributeEntryV2>(reader);
@@ -306,7 +306,7 @@ public class LSFReader : ILSReader
         var magic = BinUtils.ReadStruct<LSFMagic>(reader);
         if (magic.Magic != BitConverter.ToUInt32(LSFMagic.Signature, 0))
         {
-            var msg = String.Format(
+            var msg = string.Format(
                 "Invalid LSF signature; expected {0,8:X}, got {1,8:X}",
                 BitConverter.ToUInt32(LSFMagic.Signature, 0), magic.Magic
             );
@@ -315,7 +315,7 @@ public class LSFReader : ILSReader
 
         if (magic.Version < (ulong)LSFVersion.VerInitial || magic.Version > (ulong)LSFVersion.MaxReadVersion)
         {
-            var msg = String.Format("LSF version {0} is not supported", magic.Version);
+            var msg = string.Format("LSF version {0} is not supported", magic.Version);
             throw new InvalidDataException(msg);
         }
 

@@ -10,9 +10,9 @@ public class DaKeyframes32f : AnimationCurveData
 {
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_DaKeyframes32f;
-    public Int16 Dimension;
+    public short Dimension;
     [Serialization(Prototype = typeof(ControlReal32), Kind = SerializationKind.UserMember, Serializer = typeof(SingleListSerializer))]
-    public List<Single> Controls;
+    public List<float> Controls;
 
     public ExportType CurveType()
     {

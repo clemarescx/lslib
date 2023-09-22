@@ -5,20 +5,20 @@ namespace LSLib.Granny.Model;
 
 public class ArtToolInfo
 {
-    public String FromArtToolName;
-    public Int32 ArtToolMajorRevision;
-    public Int32 ArtToolMinorRevision;
+    public string FromArtToolName;
+    public int ArtToolMajorRevision;
+    public int ArtToolMinorRevision;
     [Serialization(MinVersion = 0x80000011)]
-    public Int32 ArtToolPointerSize;
-    public Single UnitsPerMeter;
+    public int ArtToolPointerSize;
+    public float UnitsPerMeter;
     [Serialization(ArraySize = 3)]
-    public Single[] Origin;
+    public float[] Origin;
     [Serialization(ArraySize = 3)]
-    public Single[] RightVector;
+    public float[] RightVector;
     [Serialization(ArraySize = 3)]
-    public Single[] UpVector;
+    public float[] UpVector;
     [Serialization(ArraySize = 3)]
-    public Single[] BackVector;
+    public float[] BackVector;
     [Serialization(Type = MemberType.VariantReference, MinVersion = 0x80000011)]
     public object ExtendedData;
 
@@ -39,11 +39,11 @@ public class ArtToolInfo
 
 public class ExporterInfo
 {
-    public String ExporterName;
-    public Int32 ExporterMajorRevision;
-    public Int32 ExporterMinorRevision;
-    public Int32 ExporterCustomization;
-    public Int32 ExporterBuildNumber;
+    public string ExporterName;
+    public int ExporterMajorRevision;
+    public int ExporterMinorRevision;
+    public int ExporterCustomization;
+    public int ExporterBuildNumber;
     [Serialization(Type = MemberType.VariantReference, MinVersion = 0x80000011)]
     public object ExtendedData;
 }

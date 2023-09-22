@@ -9,7 +9,7 @@ public class D4Constant32f : AnimationCurveData
 {
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_D4Constant32f;
-    public Int16 Padding;
+    public short Padding;
     [Serialization(ArraySize = 4)]
     public float[] Controls;
 

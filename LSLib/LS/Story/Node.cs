@@ -18,7 +18,7 @@ public abstract class Node : OsirisSerializable
         UserQuery = 9
     };
 
-    public UInt32 Index;
+    public uint Index;
     public DatabaseReference DatabaseRef;
     public string Name;
     public byte NumParams;

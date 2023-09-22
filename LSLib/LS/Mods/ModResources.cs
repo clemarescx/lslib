@@ -444,7 +444,7 @@ public class ModPathVisitor
         }
     }
 
-    public void Discover(String gameDataPath)
+    public void Discover(string gameDataPath)
     {
         if (LoadPackages)
         {

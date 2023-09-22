@@ -9,7 +9,7 @@ public class D3Constant32f : AnimationCurveData
 {
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_D3Constant32f;
-    public Int16 Padding;
+    public short Padding;
     [Serialization(ArraySize = 3)]
     public float[] Controls;
 

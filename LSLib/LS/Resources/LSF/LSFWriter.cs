@@ -43,7 +43,7 @@ public class LSFWriter :ILSWriter
     {
         if (Version > LSFVersion.MaxWriteVersion)
         {
-            var msg = String.Format("Writing LSF version {0} is not supported (highest is {1})", Version, LSFVersion.MaxWriteVersion);
+            var msg = string.Format("Writing LSF version {0} is not supported (highest is {1})", Version, LSFVersion.MaxWriteVersion);
             throw new InvalidDataException(msg);
         }
 
@@ -131,10 +131,10 @@ public class LSFWriter :ILSWriter
             {
                 var meta = new LSFMetadataV5
                 {
-                    StringsUncompressedSize = (UInt32)stringBuffer.Length,
-                    NodesUncompressedSize = (UInt32)nodeBuffer.Length,
-                    AttributesUncompressedSize = (UInt32)attributeBuffer.Length,
-                    ValuesUncompressedSize = (UInt32)valueBuffer.Length
+                    StringsUncompressedSize = (uint)stringBuffer.Length,
+                    NodesUncompressedSize = (uint)nodeBuffer.Length,
+                    AttributesUncompressedSize = (uint)attributeBuffer.Length,
+                    ValuesUncompressedSize = (uint)valueBuffer.Length
                 };
 
                 if (Compression == CompressionMethod.None)
@@ -146,10 +146,10 @@ public class LSFWriter :ILSWriter
                 }
                 else
                 {
-                    meta.StringsSizeOnDisk = (UInt32)stringsCompressed.Length;
-                    meta.NodesSizeOnDisk = (UInt32)nodesCompressed.Length;
-                    meta.AttributesSizeOnDisk = (UInt32)attributesCompressed.Length;
-                    meta.ValuesSizeOnDisk = (UInt32)valuesCompressed.Length;
+                    meta.StringsSizeOnDisk = (uint)stringsCompressed.Length;
+                    meta.NodesSizeOnDisk = (uint)nodesCompressed.Length;
+                    meta.AttributesSizeOnDisk = (uint)attributesCompressed.Length;
+                    meta.ValuesSizeOnDisk = (uint)valuesCompressed.Length;
                 }
 
                 meta.CompressionFlags = BinUtils.MakeCompressionFlags(Compression, CompressionLevel);
@@ -163,10 +163,10 @@ public class LSFWriter :ILSWriter
             {
                 var meta = new LSFMetadataV6
                 {
-                    StringsUncompressedSize = (UInt32)stringBuffer.Length,
-                    NodesUncompressedSize = (UInt32)nodeBuffer.Length,
-                    AttributesUncompressedSize = (UInt32)attributeBuffer.Length,
-                    ValuesUncompressedSize = (UInt32)valueBuffer.Length
+                    StringsUncompressedSize = (uint)stringBuffer.Length,
+                    NodesUncompressedSize = (uint)nodeBuffer.Length,
+                    AttributesUncompressedSize = (uint)attributeBuffer.Length,
+                    ValuesUncompressedSize = (uint)valueBuffer.Length
                 };
 
                 if (Compression == CompressionMethod.None)
@@ -178,10 +178,10 @@ public class LSFWriter :ILSWriter
                 }
                 else
                 {
-                    meta.StringsSizeOnDisk = (UInt32)stringsCompressed.Length;
-                    meta.NodesSizeOnDisk = (UInt32)nodesCompressed.Length;
-                    meta.AttributesSizeOnDisk = (UInt32)attributesCompressed.Length;
-                    meta.ValuesSizeOnDisk = (UInt32)valuesCompressed.Length;
+                    meta.StringsSizeOnDisk = (uint)stringsCompressed.Length;
+                    meta.NodesSizeOnDisk = (uint)nodesCompressed.Length;
+                    meta.AttributesSizeOnDisk = (uint)attributesCompressed.Length;
+                    meta.ValuesSizeOnDisk = (uint)valuesCompressed.Length;
                 }
 
                 meta.Unknown = 0;
@@ -261,26 +261,26 @@ public class LSFWriter :ILSWriter
 
     private void WriteNodeAttributesV2(Node node)
     {
-        UInt32 lastOffset = (UInt32)ValueStream.Position;
+        uint lastOffset = (uint)ValueStream.Position;
         foreach (KeyValuePair<string, NodeAttribute> entry in node.Attributes)
         {
             WriteAttributeValue(ValueWriter, entry.Value);
 
             var attributeInfo = new LSFAttributeEntryV2();
-            var length = (UInt32)ValueStream.Position - lastOffset;
-            attributeInfo.TypeAndLength = (UInt32)entry.Value.Type | (length << 6);
+            var length = (uint)ValueStream.Position - lastOffset;
+            attributeInfo.TypeAndLength = (uint)entry.Value.Type | (length << 6);
             attributeInfo.NameHashTableIndex = AddStaticString(entry.Key);
             attributeInfo.NodeIndex = NextNodeIndex;
             BinUtils.WriteStruct<LSFAttributeEntryV2>(AttributeWriter, ref attributeInfo);
             NextAttributeIndex++;
 
-            lastOffset = (UInt32)ValueStream.Position;
+            lastOffset = (uint)ValueStream.Position;
         }
     }
 
     private void WriteNodeAttributesV3(Node node)
     {
-        UInt32 lastOffset = (UInt32)ValueStream.Position;
+        uint lastOffset = (uint)ValueStream.Position;
         int numWritten = 0;
         foreach (KeyValuePair<string, NodeAttribute> entry in node.Attributes)
         {
@@ -288,8 +288,8 @@ public class LSFWriter :ILSWriter
             numWritten++;
 
             var attributeInfo = new LSFAttributeEntryV3();
-            var length = (UInt32)ValueStream.Position - lastOffset;
-            attributeInfo.TypeAndLength = (UInt32)entry.Value.Type | (length << 6);
+            var length = (uint)ValueStream.Position - lastOffset;
+            attributeInfo.TypeAndLength = (uint)entry.Value.Type | (length << 6);
             attributeInfo.NameHashTableIndex = AddStaticString(entry.Key);
             if (numWritten == node.Attributes.Count)
             {
@@ -304,7 +304,7 @@ public class LSFWriter :ILSWriter
 
             NextAttributeIndex++;
 
-            lastOffset = (UInt32)ValueStream.Position;
+            lastOffset = (uint)ValueStream.Position;
         }
     }
 
@@ -407,7 +407,7 @@ public class LSFWriter :ILSWriter
 
         WriteStringWithLength(writer, fs.Handle);
 
-        writer.Write((UInt32)fs.Arguments.Count);
+        writer.Write((uint)fs.Arguments.Count);
         foreach (var arg in fs.Arguments)
         {
             WriteStringWithLength(writer, arg.Key);
@@ -483,11 +483,11 @@ public class LSFWriter :ILSWriter
 
     private void WriteStaticStrings(BinaryWriter writer)
     {
-        writer.Write((UInt32)StringHashMap.Count);
+        writer.Write((uint)StringHashMap.Count);
         for (int i = 0; i < StringHashMap.Count; i++)
         {
             var entry = StringHashMap[i];
-            writer.Write((UInt16)entry.Count);
+            writer.Write((ushort)entry.Count);
             for (int j = 0; j < entry.Count; j++)
             {
                 WriteStaticString(writer, entry[j]);
@@ -498,22 +498,22 @@ public class LSFWriter :ILSWriter
     private void WriteStaticString(BinaryWriter writer, string s)
     {
         byte[] utf = Encoding.UTF8.GetBytes(s);
-        writer.Write((UInt16)utf.Length);
+        writer.Write((ushort)utf.Length);
         writer.Write(utf);
     }
 
     private void WriteStringWithLength(BinaryWriter writer, string s)
     {
         byte[] utf = Encoding.UTF8.GetBytes(s);
-        writer.Write((Int32)(utf.Length + 1));
+        writer.Write((int)(utf.Length + 1));
         writer.Write(utf);
-        writer.Write((Byte)0);
+        writer.Write((byte)0);
     }
 
     private void WriteString(BinaryWriter writer, string s)
     {
         byte[] utf = Encoding.UTF8.GetBytes(s);
         writer.Write(utf);
-        writer.Write((Byte)0);
+        writer.Write((byte)0);
     }
 }

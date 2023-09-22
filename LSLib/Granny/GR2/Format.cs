@@ -11,13 +11,13 @@ namespace LSLib.Granny.GR2;
 
 public class GrannyString
 {
-    public readonly String String;
+    public readonly string String;
 
     public GrannyString()
     {
     }
 
-    public GrannyString(String s)
+    public GrannyString(string s)
     {
         String = s;
     }
@@ -37,7 +37,7 @@ public class Transform
         HasScaleShear = 0x04
     }
 
-    public UInt32 Flags = 0;
+    public uint Flags = 0;
     public Vector3 Translation = Vector3.Zero;
     public Quaternion Rotation = Quaternion.Identity;
     public Matrix3 ScaleShear = Matrix3.Identity;
@@ -253,7 +253,7 @@ public class Magic
     /// <summary>
     /// Size of magic value structure, in bytes
     /// </summary>
-    public const UInt32 MagicSize = 0x20;
+    public const uint MagicSize = 0x20;
 
     /// <summary>
     /// Defines endianness and address size
@@ -288,19 +288,19 @@ public class Magic
     /// <summary>
     /// Size of file header; offset of the start of section data
     /// </summary>
-    public UInt32 headersSize;
+    public uint headersSize;
     /// <summary>
     /// Header format (0 = uncompressed, 1-2 = Oodle0/1 ?)
     /// </summary>
-    public UInt32 headerFormat;
+    public uint headerFormat;
     /// <summary>
     /// Reserved field
     /// </summary>
-    public UInt32 reserved1;
+    public uint reserved1;
     /// <summary>
     /// Reserved field
     /// </summary>
-    public UInt32 reserved2;
+    public uint reserved2;
 
     /// <summary>
     /// Endianness and address size of the file (derived from the signature)
@@ -370,60 +370,60 @@ public class Header
     /// <summary>
     /// Default GR2 tag used for serialization (D:OS)
     /// </summary>
-    public const UInt32 DefaultTag = 0x80000037;
+    public const uint DefaultTag = 0x80000037;
 
     /// <summary>
     /// D:OS vanilla version tag
     /// </summary>
-    public const UInt32 Tag_DOS = 0x80000037;
+    public const uint Tag_DOS = 0x80000037;
 
     /// <summary>
     /// D:OS EE version tag
     /// </summary>
-    public const UInt32 Tag_DOSEE = 0x80000039;
+    public const uint Tag_DOSEE = 0x80000039;
 
     /// <summary>
     /// D:OS:2 DE LSM version tag
     /// </summary>
-    public const UInt32 Tag_DOS2DE = 0xE57F0039;
+    public const uint Tag_DOS2DE = 0xE57F0039;
 
     /// <summary>
     /// Granny file format we support for writing (currently only version 7)
     /// </summary>
-    public const UInt32 Version = 7;
+    public const uint Version = 7;
     /// <summary>
     /// Size of header structure for V6 headers, in bytes
     /// </summary>
-    public const UInt32 HeaderSize_V6 = 0x38;
+    public const uint HeaderSize_V6 = 0x38;
     /// <summary>
     /// Size of header structure for V7 headers, in bytes
     /// </summary>
-    public const UInt32 HeaderSize_V7 = 0x48;
+    public const uint HeaderSize_V7 = 0x48;
     /// <summary>
     /// Number of user-defined tags in the header
     /// </summary>
-    public const UInt32 ExtraTagCount = 4;
+    public const uint ExtraTagCount = 4;
 
     /// <summary>
     /// File format version; should be Header.Version
     /// </summary>
-    public UInt32 version;
+    public uint version;
     /// <summary>
     /// Total size of .GR2 file, including headers
     /// </summary>
-    public UInt32 fileSize;
+    public uint fileSize;
     /// <summary>
     /// CRC-32 hash of the data starting after the header (offset = HeaderSize) to the end of the file (Header.fileSize - HeaderSize bytes)
     /// </summary>
-    public UInt32 crc;
+    public uint crc;
     /// <summary>
     /// Offset of the section list relative to the beginning of the file
     /// </summary>
-    public UInt32 sectionsOffset;
+    public uint sectionsOffset;
     /// <summary>
     /// Number of Sections in the .GR2 file
     /// </summary>
-    public UInt32 numSections;
+    public uint numSections;
     /// <summary>
     /// Reference to the type descriptor of the root element in the hierarchy
     /// </summary>
@@ -432,22 +432,22 @@ public class Header
     /// <summary>
     /// File format version tag
     /// </summary>
-    public UInt32 tag;
+    public uint tag;
     /// <summary>
     /// Extra application-defined tags
     /// </summary>
-    public UInt32[] extraTags;
+    public uint[] extraTags;
     /// <summary>
     /// CRC of string table; seems to be unused?
     /// </summary>
-    public UInt32 stringTableCrc;
-    public UInt32 reserved1;
-    public UInt32 reserved2;
-    public UInt32 reserved3;
+    public uint stringTableCrc;
+    public uint reserved1;
+    public uint reserved2;
+    public uint reserved3;
 
-    public UInt32 Size()
+    public uint Size()
     {
-        UInt32 headerSize = version switch
+        uint headerSize = version switch
         {
             6 => HeaderSize_V6,
             7 => HeaderSize_V7,
@@ -457,14 +457,14 @@ public class Header
         return headerSize;
     }
 
-    public UInt32 CalculateCRC(Stream stream)
+    public uint CalculateCRC(Stream stream)
     {
         var originalPos = stream.Position;
         var totalHeaderSize = Size() + Magic.MagicSize;
         stream.Seek(totalHeaderSize, SeekOrigin.Begin);
         byte[] body = new byte[fileSize - totalHeaderSize];
         stream.Read(body, 0, (int)(fileSize - totalHeaderSize));
-        UInt32 crc = Native.Crc32.Compute(body, 0);
+        uint crc = Native.Crc32.Compute(body, 0);
         stream.Seek(originalPos, SeekOrigin.Begin);
         return crc;
     }
@@ -486,41 +486,41 @@ public class SectionHeader
     /// <summary>
     /// Type of compression used; 0 = no compression; 1-2 = Oodle 1/2 compression
     /// </summary>
-    public UInt32 compression;
+    public uint compression;
     /// <summary>
     /// Absolute position of the section data in the GR2 file
     /// </summary>
-    public UInt32 offsetInFile;
+    public uint offsetInFile;
     /// <summary>
     /// Uncompressed size of section data
     /// </summary>
-    public UInt32 compressedSize;
+    public uint compressedSize;
     /// <summary>
     /// Compressed size of section data
     /// </summary>
-    public UInt32 uncompressedSize;
-    public UInt32 alignment;
+    public uint uncompressedSize;
+    public uint alignment;
     /// <summary>
     /// Oodle1 compressor stops
     /// </summary>
-    public UInt32 first16bit;
-    public UInt32 first8bit;
+    public uint first16bit;
+    public uint first8bit;
     /// <summary>
     /// Absolute position of the relocation data in the GR2 file
     /// </summary>
-    public UInt32 relocationsOffset;
+    public uint relocationsOffset;
     /// <summary>
     /// Number of relocations for this section
     /// </summary>
-    public UInt32 numRelocations;
+    public uint numRelocations;
     /// <summary>
     /// Absolute position of the mixed-endianness marshalling data in the GR2 file
     /// </summary>
-    public UInt32 mixedMarshallingDataOffset;
+    public uint mixedMarshallingDataOffset;
     /// <summary>
     /// Number of mixed-marshalling entries for this section
     /// </summary>
-    public UInt32 numMixedMarshallingData;
+    public uint numMixedMarshallingData;
 };
 
 public class Section
@@ -564,25 +564,25 @@ public class SectionReference
     /// <summary>
     /// Zero-based index of referenced section (0 .. Header.numSections - 1)
     /// </summary>
-    public UInt32 Section = (UInt32)SectionType.Invalid;
+    public uint Section = (uint)SectionType.Invalid;
 
     /// <summary>
     /// Offset in bytes from the beginning of the section
     /// </summary>
-    public UInt32 Offset = 0;
+    public uint Offset = 0;
 
     /// <summary>
     /// Returns if the reference points to a valid address within the file
     /// </summary>
-    public bool IsValid => Section != (UInt32)SectionType.Invalid;
+    public bool IsValid => Section != (uint)SectionType.Invalid;
 
     public SectionReference()
     {
     }
 
-    public SectionReference(SectionType section, UInt32 offset)
+    public SectionReference(SectionType section, uint offset)
     {
-        Section = (UInt32)section;
+        Section = (uint)section;
         Offset = offset;
     }
 
@@ -614,7 +614,7 @@ public class RelocatableReference
     /// <summary>
     /// Offset in bytes from the beginning of the section
     /// </summary>
-    public UInt64 Offset = 0;
+    public ulong Offset = 0;
 
     /// <summary>
     /// Returns if the reference points to a valid address within the file
@@ -717,7 +717,7 @@ public class ArrayReference : RelocatableReference
     /// <summary>
     /// Number of items in this array
     /// </summary>
-    public UInt32 Size;
+    public uint Size;
 }
 
 /// <summary>
@@ -755,18 +755,18 @@ public class ArrayIndicesReference : ArrayReference
 
 public class MemberDefinition
 {
-    public const UInt32 ExtraTagCount = 3;
+    public const uint ExtraTagCount = 3;
 
     public MemberType Type = MemberType.Invalid;
     public string Name;
     public string GrannyName;
     public StructReference Definition;
-    public UInt32 ArraySize;
+    public uint ArraySize;
     /// <summary>
     /// Extra application-defined data
     /// </summary>
-    public UInt32[] Extra;
-    public UInt32 Unknown;
+    public uint[] Extra;
+    public uint Unknown;
 
     // We need to keep a separate cached flag, as we can cache null fields as well
     public bool HasCachedField = false;
@@ -791,17 +791,17 @@ public class MemberDefinition
     /// <summary>
     /// Minimum GR2 file version this member should be exported to
     /// </summary>
-    public UInt32 MinVersion = 0;
+    public uint MinVersion = 0;
     /// <summary>
     /// Maximum GR2 file version this member should be exported to
     /// </summary>
-    public UInt32 MaxVersion = 0;
+    public uint MaxVersion = 0;
 
-    public bool IsValid => Type != (UInt32)MemberType.None;
+    public bool IsValid => Type != (uint)MemberType.None;
 
     public bool IsScalar => Type > MemberType.ReferenceToVariantArray;
 
-    public UInt32 Size(GR2Reader gr2)
+    public uint Size(GR2Reader gr2)
     {
         switch (Type)
         {
@@ -856,11 +856,11 @@ public class MemberDefinition
                 return 17 * 4;
 
             default:
-                throw new ParsingException(String.Format("Unhandled member type: {0}", Type.ToString()));
+                throw new ParsingException(string.Format("Unhandled member type: {0}", Type.ToString()));
         }
     }
 
-    public UInt32 MarshallingSize()
+    public uint MarshallingSize()
     {
         return Type switch
         {
@@ -885,11 +885,11 @@ public class MemberDefinition
             MemberType.ReferenceToArray        => 4,
             MemberType.ArrayOfReferences       => 4,
             MemberType.ReferenceToVariantArray => 4,
-            _                                  => throw new ParsingException(String.Format("Unhandled member type: {0}", Type.ToString()))
+            _                                  => throw new ParsingException(string.Format("Unhandled member type: {0}", Type.ToString()))
         };
     }
 
-    public bool ShouldSerialize(UInt32 version)
+    public bool ShouldSerialize(uint version)
     {
         return (MinVersion == 0 || MinVersion <= version) &&
                (MaxVersion == 0 || MaxVersion >= version);
@@ -959,7 +959,7 @@ public class MemberDefinition
         var type = info.FieldType;
         member.Name = info.Name;
         member.GrannyName = info.Name;
-        member.Extra = new UInt32[] { 0, 0, 0 };
+        member.Extra = new uint[] { 0, 0, 0 };
         member.CachedField = info;
         member.HasCachedField = true;
 
@@ -974,21 +974,21 @@ public class MemberDefinition
 
         if (member.Type == MemberType.Invalid)
         {
-            if (type == typeof(SByte))
+            if (type == typeof(sbyte))
                 member.Type = MemberType.Int8;
-            else if (type == typeof(Byte))
+            else if (type == typeof(byte))
                 member.Type = MemberType.UInt8;
-            else if (type == typeof(Int16))
+            else if (type == typeof(short))
                 member.Type = MemberType.Int16;
-            else if (type == typeof(UInt16))
+            else if (type == typeof(ushort))
                 member.Type = MemberType.UInt16;
-            else if (type == typeof(Int32))
+            else if (type == typeof(int))
                 member.Type = MemberType.Int32;
-            else if (type == typeof(UInt32))
+            else if (type == typeof(uint))
                 member.Type = MemberType.UInt32;
             else if (type == typeof(Half))
                 member.Type = MemberType.Real16;
-            else if (type == typeof(Single))
+            else if (type == typeof(float))
                 member.Type = MemberType.Real32;
             else if (type == typeof(string))
                 member.Type = MemberType.String;
@@ -1030,9 +1030,9 @@ public class StructDefinition
     /// </summary>
     public bool MixedMarshal = false;
 
-    public UInt32 Size(GR2Reader gr2)
+    public uint Size(GR2Reader gr2)
     {
-        UInt32 size = 0;
+        uint size = 0;
         foreach (var member in Members)
             size += member.Size(gr2);
         return size;
@@ -1172,7 +1172,7 @@ public class SerializationAttribute : Attribute
     /// <summary>
     /// Size of static array - this *must* be set for array (ie. float[]) types!
     /// </summary>
-    public UInt32 ArraySize;
+    public uint ArraySize;
     /// <summary>
     /// The Granny type we should save when serializing this field
     /// (Mainly used to provide a type definition for user-defined serializers)
@@ -1197,15 +1197,15 @@ public class SerializationAttribute : Attribute
     /// <summary>
     /// Member name in the serialized file
     /// </summary>
-    public String Name;
+    public string Name;
     /// <summary>
     /// Minimum GR2 file version this member should be exported to
     /// </summary>
-    public UInt32 MinVersion = 0;
+    public uint MinVersion = 0;
     /// <summary>
     /// Maximum GR2 file version this member should be exported to
     /// </summary>
-    public UInt32 MaxVersion = 0;
+    public uint MaxVersion = 0;
     /// <summary>
     /// Should we do mixed marshalling on this struct?
     /// </summary>

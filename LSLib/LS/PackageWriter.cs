@@ -21,7 +21,7 @@ public class PackageWriter : IDisposable
     public CompressionLevel CompressionLevel = CompressionLevel.DefaultCompression;
 
     private readonly Package _package;
-    private readonly String _path;
+    private readonly string _path;
     private readonly List<Stream> _streams = new();
     public PackageVersion Version = Package.CurrentVersion;
     public WriteProgressDelegate WriteProgress = delegate { };
@@ -61,8 +61,8 @@ public class PackageWriter : IDisposable
             PackageStream = stream,
             Name = info.Name,
             UncompressedSize = (ulong)size,
-            ArchivePart = (UInt32) (_streams.Count - 1),
-            OffsetInFile = (UInt32) stream.Position,
+            ArchivePart = (uint) (_streams.Count - 1),
+            OffsetInFile = (uint) stream.Position,
             Flags = BinUtils.MakeCompressionFlags(Compression, CompressionLevel)
         };
 
@@ -80,7 +80,7 @@ public class PackageWriter : IDisposable
             info.ReleaseStream();
         }
 
-        packaged.SizeOnDisk = (UInt64) (stream.Position - (long)packaged.OffsetInFile);
+        packaged.SizeOnDisk = (ulong) (stream.Position - (long)packaged.OffsetInFile);
         packaged.Crc = Crc32.Compute(compressed, 0);
 
         if ((_package.Metadata.Flags & PackageFlags.Solid) == 0)
@@ -121,14 +121,14 @@ public class PackageWriter : IDisposable
         var header = new LSPKHeader7
         {
             Version = (uint) Version,
-            NumFiles = (UInt32) _package.Files.Count,
-            FileListSize = (UInt32) (Marshal.SizeOf(typeof(FileEntry7)) * _package.Files.Count)
+            NumFiles = (uint) _package.Files.Count,
+            FileListSize = (uint) (Marshal.SizeOf(typeof(FileEntry7)) * _package.Files.Count)
         };
-        header.DataOffset = (UInt32) Marshal.SizeOf(typeof(LSPKHeader7)) + header.FileListSize;
+        header.DataOffset = (uint) Marshal.SizeOf(typeof(LSPKHeader7)) + header.FileListSize;
         int paddingLength = PaddingLength();
         if (header.DataOffset % paddingLength > 0)
         {
-            header.DataOffset += (UInt32) (paddingLength - header.DataOffset % paddingLength);
+            header.DataOffset += (uint) (paddingLength - header.DataOffset % paddingLength);
         }
 
         // Write a placeholder instead of the actual headers; we'll write them after we
@@ -148,7 +148,7 @@ public class PackageWriter : IDisposable
 
         mainStream.Seek(0, SeekOrigin.Begin);
         header.LittleEndian = 0;
-        header.NumParts = (UInt16) _streams.Count;
+        header.NumParts = (ushort) _streams.Count;
         BinUtils.WriteStruct(writer, ref header);
 
         foreach (PackagedFileInfo file in writtenFiles)
@@ -169,14 +169,14 @@ public class PackageWriter : IDisposable
         var header = new LSPKHeader10
         {
             Version = (uint) Version,
-            NumFiles = (UInt32) _package.Files.Count,
-            FileListSize = (UInt32) (Marshal.SizeOf(typeof(FileEntry13)) * _package.Files.Count)
+            NumFiles = (uint) _package.Files.Count,
+            FileListSize = (uint) (Marshal.SizeOf(typeof(FileEntry13)) * _package.Files.Count)
         };
-        header.DataOffset = (UInt32) Marshal.SizeOf(typeof(LSPKHeader10)) + 4 + header.FileListSize;
+        header.DataOffset = (uint) Marshal.SizeOf(typeof(LSPKHeader10)) + 4 + header.FileListSize;
         int paddingLength = PaddingLength();
         if (header.DataOffset % paddingLength > 0)
         {
-            header.DataOffset += (UInt32) (paddingLength - header.DataOffset % paddingLength);
+            header.DataOffset += (uint) (paddingLength - header.DataOffset % paddingLength);
         }
 
         // Write a placeholder instead of the actual headers; we'll write them after we
@@ -196,7 +196,7 @@ public class PackageWriter : IDisposable
 
         mainStream.Seek(0, SeekOrigin.Begin);
         writer.Write(Package.Signature);
-        header.NumParts = (UInt16) _streams.Count;
+        header.NumParts = (ushort) _streams.Count;
         header.Priority = _package.Metadata.Priority;
         header.Flags = (byte)_package.Metadata.Flags;
         BinUtils.WriteStruct(writer, ref header);
@@ -232,10 +232,10 @@ public class PackageWriter : IDisposable
         var header = new LSPKHeader13
         {
             Version = (uint) Version,
-            FileListOffset = (UInt32) mainStream.Position
+            FileListOffset = (uint) mainStream.Position
         };
 
-        writer.Write((UInt32) writtenFiles.Count);
+        writer.Write((uint) writtenFiles.Count);
 
         var fileList = new MemoryStream();
         var fileListWriter = new BinaryWriter(fileList);
@@ -251,14 +251,14 @@ public class PackageWriter : IDisposable
 
         writer.Write(compressedFileList);
 
-        header.FileListSize = (UInt32) mainStream.Position - header.FileListOffset;
-        header.NumParts = (UInt16) _streams.Count;
+        header.FileListSize = (uint) mainStream.Position - header.FileListOffset;
+        header.NumParts = (ushort) _streams.Count;
         header.Priority = _package.Metadata.Priority;
         header.Flags = (byte)_package.Metadata.Flags;
         header.Md5 = ComputeArchiveHash();
         BinUtils.WriteStruct(writer, ref header);
 
-        writer.Write((UInt32) (8 + Marshal.SizeOf(typeof(LSPKHeader13))));
+        writer.Write((uint) (8 + Marshal.SizeOf(typeof(LSPKHeader13))));
         writer.Write(Package.Signature);
     }
 
@@ -295,8 +295,8 @@ public class PackageWriter : IDisposable
 
         byte[] compressedFileList = LZ4Codec.EncodeHC(fileListBuf, 0, fileListBuf.Length);
 
-        metadataWriter.Write((UInt32)files.Count);
-        metadataWriter.Write((UInt32)compressedFileList.Length);
+        metadataWriter.Write((uint)files.Count);
+        metadataWriter.Write((uint)compressedFileList.Length);
         metadataWriter.Write(compressedFileList);
     }
 
@@ -317,10 +317,10 @@ public class PackageWriter : IDisposable
 
         using (var writer = new BinaryWriter(mainStream, new UTF8Encoding(), true))
         {
-            header.FileListOffset = (UInt64)mainStream.Position;
+            header.FileListOffset = (ulong)mainStream.Position;
             WriteFileListV15(writer, writtenFiles);
 
-            header.FileListSize = (UInt32)(mainStream.Position - (long)header.FileListOffset);
+            header.FileListSize = (uint)(mainStream.Position - (long)header.FileListOffset);
             header.Priority = _package.Metadata.Priority;
             header.Flags = (byte)_package.Metadata.Flags;
             header.Md5 = ComputeArchiveHash();
@@ -346,14 +346,14 @@ public class PackageWriter : IDisposable
 
         using (var writer = new BinaryWriter(mainStream, new UTF8Encoding(), true))
         {
-            header.FileListOffset = (UInt64)mainStream.Position;
+            header.FileListOffset = (ulong)mainStream.Position;
             WriteFileListV15(writer, writtenFiles);
 
-            header.FileListSize = (UInt32)(mainStream.Position - (long)header.FileListOffset);
+            header.FileListSize = (uint)(mainStream.Position - (long)header.FileListOffset);
             header.Priority = _package.Metadata.Priority;
             header.Flags = (byte)_package.Metadata.Flags;
             header.Md5 = ComputeArchiveHash();
-            header.NumParts = (UInt16)_streams.Count;
+            header.NumParts = (ushort)_streams.Count;
             mainStream.Seek(4, SeekOrigin.Begin);
             BinUtils.WriteStruct(writer, ref header);
         }
@@ -376,8 +376,8 @@ public class PackageWriter : IDisposable
 
         byte[] compressedFileList = LZ4Codec.EncodeHC(fileListBuf, 0, fileListBuf.Length);
 
-        metadataWriter.Write((UInt32)files.Count);
-        metadataWriter.Write((UInt32)compressedFileList.Length);
+        metadataWriter.Write((uint)files.Count);
+        metadataWriter.Write((uint)compressedFileList.Length);
         metadataWriter.Write(compressedFileList);
     }
 
@@ -398,14 +398,14 @@ public class PackageWriter : IDisposable
 
         using (var writer = new BinaryWriter(mainStream, new UTF8Encoding(), true))
         {
-            header.FileListOffset = (UInt64)mainStream.Position;
+            header.FileListOffset = (ulong)mainStream.Position;
             WriteFileListV18(writer, writtenFiles);
 
-            header.FileListSize = (UInt32)(mainStream.Position - (long)header.FileListOffset);
+            header.FileListSize = (uint)(mainStream.Position - (long)header.FileListOffset);
             header.Priority = _package.Metadata.Priority;
             header.Flags = (byte)_package.Metadata.Flags;
             header.Md5 = ComputeArchiveHash();
-            header.NumParts = (UInt16)_streams.Count;
+            header.NumParts = (ushort)_streams.Count;
             mainStream.Seek(4, SeekOrigin.Begin);
             BinUtils.WriteStruct(writer, ref header);
         }
@@ -417,7 +417,7 @@ public class PackageWriter : IDisposable
         List<AbstractFileInfo> orderedFileList = _package.Files.Select(item => item).ToList();
         if (Version < PackageVersion.V15)
         {
-            orderedFileList.Sort((a, b) => String.CompareOrdinal(a.Name, b.Name));
+            orderedFileList.Sort((a, b) => string.CompareOrdinal(a.Name, b.Name));
         }
 
         using MD5 md5 = MD5.Create();

@@ -10,10 +10,10 @@ namespace LSLib.Granny.Model;
 
 internal class ColladaSource
 {
-    public String id;
-    public readonly Dictionary<String, List<Single>> FloatParams = new();
-    public readonly Dictionary<String, List<Matrix4>> MatrixParams = new();
-    public readonly Dictionary<String, List<String>> NameParams = new();
+    public string id;
+    public readonly Dictionary<string, List<float>> FloatParams = new();
+    public readonly Dictionary<string, List<Matrix4>> MatrixParams = new();
+    public readonly Dictionary<string, List<string>> NameParams = new();
 
     public static ColladaSource FromCollada(source src)
     {
@@ -57,7 +57,7 @@ internal class ColladaSource
                 param.name = "default";
             if (param.type is "float" or "double")
             {
-                var items = new List<Single>((int)accessor.count);
+                var items = new List<float>((int)accessor.count);
                 var offset = (int)accessor.offset;
                 for (var i = 0; i < (int)accessor.count; i++)
                 {
@@ -88,7 +88,7 @@ internal class ColladaSource
             }
             else if (param.type.ToLower() == "name")
             {
-                var items = new List<String>((int)accessor.count);
+                var items = new List<string>((int)accessor.count);
                 var offset = (int)accessor.offset;
                 for (var i = 0; i < (int)accessor.count; i++)
                 {
@@ -183,7 +183,7 @@ public class ColladaImporter
     {
         var exporterInfo = new ExporterInfo
         {
-            ExporterName = String.Format("LSLib GR2 Exporter v{0}", Common.LibraryVersion()),
+            ExporterName = string.Format("LSLib GR2 Exporter v{0}", Common.LibraryVersion()),
             ExporterMajorRevision = Common.MajorVersion,
             ExporterMinorRevision = Common.MinorVersion,
             ExporterBuildNumber = 0,
@@ -336,7 +336,7 @@ public class ColladaImporter
 
     private void LoadLSLibProfileExportOrder(Mesh mesh, string order)
     {
-        if (Int32.TryParse(order, out int parsedOrder))
+        if (int.TryParse(order, out int parsedOrder))
         {
             if (parsedOrder >= 0 && parsedOrder < 100)
             {
@@ -347,7 +347,7 @@ public class ColladaImporter
 
     private void LoadLSLibProfileLOD(DivinityMeshExtendedData props, string lod)
     {
-        if (Int32.TryParse(lod, out int parsedLod))
+        if (int.TryParse(lod, out int parsedLod))
         {
             if (parsedLod >= 0 && parsedLod < 100)
             {
@@ -366,7 +366,7 @@ public class ColladaImporter
 
     private void LoadLSLibProfileImpostor(DivinityMeshExtendedData props, string impostor)
     {
-        if (Int32.TryParse(impostor, out int isImpostor))
+        if (int.TryParse(impostor, out int isImpostor))
         {
             if (isImpostor == 1)
             {
@@ -377,7 +377,7 @@ public class ColladaImporter
 
     private void LoadLSLibProfileLODDistance(DivinityMeshProperties props, string lodDistance)
     {
-        if (Single.TryParse(lodDistance, out float parsedLodDistance))
+        if (float.TryParse(lodDistance, out float parsedLodDistance))
         {
             if (parsedLodDistance >= 0.0f)
             {
@@ -442,7 +442,7 @@ public class ColladaImporter
 
     private void ValidateLSLibProfileMetadataVersion(string ver)
     {
-        if (Int32.TryParse(ver, out int version))
+        if (int.TryParse(ver, out int version))
         {
             if (version > Common.ColladaMetadataVersion)
             {
@@ -527,7 +527,7 @@ public class ColladaImporter
 
         MakeExtendedData(mesh, m);
 
-        Utils.Info(String.Format("Imported {0} mesh ({1} tri groups, {2} tris)", 
+        Utils.Info(string.Format("Imported {0} mesh ({1} tri groups, {2} tris)", 
             m.VertexFormat.HasBoneWeights ? "skinned" : "rigid", 
             m.PrimaryTopology.Groups.Count, 
             collada.TriangleCount));
@@ -555,12 +555,12 @@ public class ColladaImporter
 
         if (!mesh.VertexFormat.HasBoneWeights)
         {
-            var msg = String.Format("Tried to apply skin to mesh ({0}) with non-skinned vertices", 
+            var msg = string.Format("Tried to apply skin to mesh ({0}) with non-skinned vertices", 
                 mesh.Name);
             throw new ParsingException(msg);
         }
 
-        var sources = new Dictionary<String, ColladaSource>();
+        var sources = new Dictionary<string, ColladaSource>();
         foreach (var source in skin.source)
         {
             var src = ColladaSource.FromCollada(source);
@@ -623,9 +623,9 @@ public class ColladaImporter
 
         // TODO
         if (influenceCounts.Count != mesh.OriginalToConsolidatedVertexIndexMap.Count)
-            Utils.Warn(String.Format("Vertex influence count ({0}) differs from vertex count ({1})", influenceCounts.Count, mesh.OriginalToConsolidatedVertexIndexMap.Count));
+            Utils.Warn(string.Format("Vertex influence count ({0}) differs from vertex count ({1})", influenceCounts.Count, mesh.OriginalToConsolidatedVertexIndexMap.Count));
 
-        List<Single> weights = null;
+        List<float> weights = null;
 
         int jointInputIndex = -1, weightInputIndex = -1;
         foreach (var input in skin.vertex_weights.input)
@@ -759,11 +759,11 @@ public class ColladaImporter
         }
 
         if (notInfluenced > 0)
-            Utils.Warn(String.Format("{0} vertices are not influenced by any bone", notInfluenced));
+            Utils.Warn(string.Format("{0} vertices are not influenced by any bone", notInfluenced));
 
         if (skin.bind_shape_matrix != null)
         {
-            var bindShapeFloats = skin.bind_shape_matrix.Trim().Split(new char[] { ' ' }).Select(s => Single.Parse(s)).ToArray();
+            var bindShapeFloats = skin.bind_shape_matrix.Trim().Split(new char[] { ' ' }).Select(s => float.Parse(s)).ToArray();
             var bindShapeMat = ColladaHelpers.FloatsToMatrix(bindShapeFloats);
             bindShapeMat.Transpose();
 
@@ -892,7 +892,7 @@ public class ColladaImporter
         {
             // Reorder transform tracks in lexicographic order
             // This is needed by Granny; otherwise it'll fail to find animation tracks
-            trackGroup.TransformTracks.Sort((t1, t2) => String.Compare(t1.Name, t2.Name, StringComparison.Ordinal));
+            trackGroup.TransformTracks.Sort((t1, t2) => string.Compare(t1.Name, t2.Name, StringComparison.Ordinal));
                 
             root.TrackGroups.Add(trackGroup);
             root.Animations.Add(animation);
@@ -980,7 +980,7 @@ public class ColladaImporter
                         }
                         else
                         {
-                            Utils.Warn(String.Format("Controller {0} is unsupported and will be ignored", controller.Item.GetType().Name));
+                            Utils.Warn(string.Format("Controller {0} is unsupported and will be ignored", controller.Item.GetType().Name));
                         }
                     }
                 }
@@ -1016,7 +1016,7 @@ public class ColladaImporter
                         }
                         else
                         {
-                            Utils.Warn(String.Format("Geometry type {0} is unsupported and will be ignored", geometry.Item.GetType().Name));
+                            Utils.Warn(string.Format("Geometry type {0} is unsupported and will be ignored", geometry.Item.GetType().Name));
                         }
                     }
                 }
@@ -1031,7 +1031,7 @@ public class ColladaImporter
             }
             else
             {
-                Utils.Warn(String.Format("Library {0} is unsupported and will be ignored", item.GetType().Name));
+                Utils.Warn(string.Format("Library {0} is unsupported and will be ignored", item.GetType().Name));
             }
         }
 

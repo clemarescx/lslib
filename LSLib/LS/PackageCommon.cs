@@ -112,7 +112,7 @@ public class PackageMetadata
     /// <summary>
     /// Load priority. Packages with higher priority are loaded later (i.e. they override earlier packages).
     /// </summary>
-    public Byte Priority = 0;
+    public byte Priority = 0;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
@@ -160,10 +160,10 @@ internal struct FileEntry18
 
 public abstract class AbstractFileInfo
 {
-    public String Name;
+    public string Name;
 
-    public abstract UInt64 Size();
-    public abstract UInt32 CRC();
+    public abstract ulong Size();
+    public abstract uint CRC();
     public abstract Stream MakeStream();
     public abstract void ReleaseStream();
     public abstract bool IsDeletion();
@@ -225,15 +225,15 @@ public class UncompressedPackagedFileStream : Stream
 
 public class PackagedFileInfo : AbstractFileInfo, IDisposable
 {
-    public UInt32 ArchivePart;
-    public UInt32 Crc;
-    public UInt32 Flags;
-    public UInt64 OffsetInFile;
+    public uint ArchivePart;
+    public uint Crc;
+    public uint Flags;
+    public ulong OffsetInFile;
     public Stream PackageStream;
-    public UInt64 SizeOnDisk;
-    public UInt64 UncompressedSize;
+    public ulong SizeOnDisk;
+    public ulong UncompressedSize;
     public bool Solid;
-    public UInt32 SolidOffset;
+    public uint SolidOffset;
     public Stream SolidStream;
     private Stream _uncompressedStream;
 
@@ -242,9 +242,9 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         ReleaseStream();
     }
 
-    public override UInt64 Size() => (Flags & 0x0F) == 0 ? SizeOnDisk : UncompressedSize;
+    public override ulong Size() => (Flags & 0x0F) == 0 ? SizeOnDisk : UncompressedSize;
 
-    public override UInt32 CRC() => Crc;
+    public override uint CRC() => Crc;
 
     public override Stream MakeStream()
     {
@@ -282,7 +282,7 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
 
         if (Crc != 0)
         {
-            UInt32 computedCrc = Crc32.Compute(compressed, 0);
+            uint computedCrc = Crc32.Compute(compressed, 0);
             if (computedCrc != Crc)
             {
                 string msg = $"CRC check failed on file '{Name}', archive is possibly corrupted. Expected {Crc,8:X}, got {computedCrc,8:X}";
@@ -528,9 +528,9 @@ public class FilesystemFileInfo : AbstractFileInfo, IDisposable
         ReleaseStream();
     }
 
-    public override UInt64 Size() => (UInt64) CachedSize;
+    public override ulong Size() => (ulong) CachedSize;
 
-    public override UInt32 CRC() => throw new NotImplementedException("!");
+    public override uint CRC() => throw new NotImplementedException("!");
 
     public override Stream MakeStream() => _stream ?? (_stream = File.Open(FilesystemPath, FileMode.Open, FileAccess.Read, FileShare.Read));
 
@@ -567,9 +567,9 @@ public class StreamFileInfo : AbstractFileInfo
 {
     public Stream Stream;
 
-    public override UInt64 Size() => (UInt64) Stream.Length;
+    public override ulong Size() => (ulong) Stream.Length;
 
-    public override UInt32 CRC() => throw new NotImplementedException("!");
+    public override uint CRC() => throw new NotImplementedException("!");
 
     public override Stream MakeStream() => Stream;
 

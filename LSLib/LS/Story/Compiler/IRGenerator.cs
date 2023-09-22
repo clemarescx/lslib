@@ -182,7 +182,7 @@ public class IRGenerator
                 if (type == null)
                 {
                     Context.Log.Error(astVar.Location, DiagnosticCode.UnresolvedType,
-                        String.Format("Type \"{0}\" does not exist", astVar.Type));
+                        string.Format("Type \"{0}\" does not exist", astVar.Type));
                 }
             }
             else
@@ -268,7 +268,7 @@ public class IRGenerator
             if (type == null)
             {
                 Context.Log.Error(astConstant.Location, DiagnosticCode.UnresolvedType,
-                    String.Format("Type \"{0}\" does not exist", astConstant.TypeName));
+                    string.Format("Type \"{0}\" does not exist", astConstant.TypeName));
             }
         }
         else
@@ -288,7 +288,7 @@ public class IRGenerator
         };
     }
 
-    public ASTGoal ParseGoal(String path, Stream stream)
+    public ASTGoal ParseGoal(string path, Stream stream)
     {
         var scanner = new GoalScanner(path);
         scanner.SetSource(stream);

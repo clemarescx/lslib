@@ -87,8 +87,8 @@ public static class OsiVersion
 public class OsiReader : BinaryReader
 {
     public byte Scramble = 0x00;
-    public UInt32 MinorVersion;
-    public UInt32 MajorVersion;
+    public uint MinorVersion;
+    public uint MajorVersion;
     // Use 16-bit instead of 32-bit type IDs, BG3 Patch8+
     public bool? ShortTypeIds = null;
     public readonly Dictionary<uint, uint> TypeAliases = new();
@@ -212,8 +212,8 @@ public class OsiReader : BinaryReader
 public class OsiWriter : BinaryWriter
 {
     public byte Scramble = 0x00;
-    public UInt32 MinorVersion;
-    public UInt32 MajorVersion;
+    public uint MinorVersion;
+    public uint MajorVersion;
     // Use 16-bit instead of 32-bit type IDs, BG3 Patch8+
     public bool ShortTypeIds;
     public readonly Dictionary<uint, uint> TypeAliases = new();
@@ -226,7 +226,7 @@ public class OsiWriter : BinaryWriter
     {
     }
 
-    public override void Write(String s)
+    public override void Write(string s)
     {
         var bytes = Encoding.UTF8.GetBytes(s);
         for (var i = 0; i < bytes.Length; i++)
@@ -250,7 +250,7 @@ public class OsiWriter : BinaryWriter
 
     public void WriteList<T>(List<T> list) where T : OsirisSerializable
     {
-        Write((UInt32)list.Count);
+        Write((uint)list.Count);
         foreach (var item in list)
         {
             item.Write(this);
@@ -265,7 +265,7 @@ public class SaveFileHeader : OsirisSerializable
     public byte MinorVersion;
     public bool BigEndian;
     public byte Unused;
-    public UInt32 DebugFlags;
+    public uint DebugFlags;
 
     public uint Ver => ((uint)MajorVersion << 8) | (uint)MinorVersion;
 
@@ -298,7 +298,7 @@ public class SaveFileHeader : OsirisSerializable
 
         if (Ver >= OsiVersion.VerAddVersionString)
         {
-            var versionString = String.Format("{0}.{1}", MajorVersion, MinorVersion);
+            var versionString = string.Format("{0}.{1}", MajorVersion, MinorVersion);
             var versionBytes = Encoding.UTF8.GetBytes(versionString);
             byte[] version = new byte[0x80];
             versionBytes.CopyTo(version, 0);
@@ -373,8 +373,8 @@ public class OsirisType : OsirisSerializable
 
 public class OsirisEnumElement : OsirisSerializable
 {
-    public String Name;
-    public UInt64 Value;
+    public string Name;
+    public ulong Value;
 
 
     public void Read(OsiReader reader)
@@ -397,7 +397,7 @@ public class OsirisEnumElement : OsirisSerializable
 
 public class OsirisEnum : OsirisSerializable
 {
-    public UInt16 UnderlyingType;
+    public ushort UnderlyingType;
     public List<OsirisEnumElement> Elements;
 
 
@@ -417,7 +417,7 @@ public class OsirisEnum : OsirisSerializable
     public void Write(OsiWriter writer)
     {
         writer.Write(UnderlyingType);
-        writer.Write((UInt32)Elements.Count);
+        writer.Write((uint)Elements.Count);
 
         foreach (var e in Elements)
         {
@@ -439,10 +439,10 @@ public class OsirisDivObject : OsirisSerializable
 {
     public string Name;
     public byte Type;
-    public UInt32 Key1;
-    public UInt32 Key2; // Some ref?
-    public UInt32 Key3; // Type again?
-    public UInt32 Key4;
+    public uint Key1;
+    public uint Key2; // Some ref?
+    public uint Key3; // Type again?
+    public uint Key4;
 
     public void Read(OsiReader reader)
     {
@@ -470,7 +470,7 @@ public class OsirisDivObject : OsirisSerializable
     }
 }
 
-public enum EntryPoint : UInt32
+public enum EntryPoint : uint
 {
     // The next node is not an AND/NOT AND expression
     None = 0,
@@ -496,7 +496,7 @@ public class NodeEntryItem : OsirisSerializable
     public void Write(OsiWriter writer)
     {
         NodeRef.Write(writer);
-        writer.Write((UInt32)EntryPoint);
+        writer.Write((uint)EntryPoint);
         GoalRef.Write(writer);
     }
 

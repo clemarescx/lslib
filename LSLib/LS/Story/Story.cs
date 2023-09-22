@@ -270,7 +270,7 @@ public class StoryReader
 
         if (reader.Ver > OsiVersion.VerLastSupported)
         {
-            var msg = String.Format(
+            var msg = string.Format(
                 "Osiris version v{0}.{1} unsupported; this tool supports loading up to version 1.12.",
                 reader.MajorVersion, reader.MinorVersion
             );
@@ -371,7 +371,7 @@ public class StoryWriter
 
     private void WriteStrings(List<string> stringTable)
     {
-        Writer.Write((UInt32)stringTable.Count);
+        Writer.Write((uint)stringTable.Count);
         foreach (var s in stringTable)
         {
             Writer.Write(s);
@@ -380,7 +380,7 @@ public class StoryWriter
 
     private void WriteTypes(IList<OsirisType> types, Story story)
     {
-        Writer.Write((UInt32)types.Count);
+        Writer.Write((uint)types.Count);
         foreach (var type in types)
         {
             type.Write(Writer);
@@ -393,7 +393,7 @@ public class StoryWriter
 
     private void WriteNodes(Dictionary<uint, Node> nodes)
     {
-        Writer.Write((UInt32)nodes.Count);
+        Writer.Write((uint)nodes.Count);
         foreach (var node in nodes)
         {
             Writer.Write((byte)node.Value.NodeType());
@@ -404,7 +404,7 @@ public class StoryWriter
 
     private void WriteAdapters(Dictionary<uint, Adapter> adapters)
     {
-        Writer.Write((UInt32)adapters.Count);
+        Writer.Write((uint)adapters.Count);
         foreach (var adapter in adapters)
         {
             Writer.Write(adapter.Key);
@@ -414,7 +414,7 @@ public class StoryWriter
 
     private void WriteDatabases(Dictionary<uint, Database> databases)
     {
-        Writer.Write((UInt32)databases.Count);
+        Writer.Write((uint)databases.Count);
         foreach (var database in databases)
         {
             Writer.Write(database.Key);
@@ -424,7 +424,7 @@ public class StoryWriter
 
     private void WriteGoals(Dictionary<uint, Goal> goals)
     {
-        Writer.Write((UInt32)goals.Count);
+        Writer.Write((uint)goals.Count);
         foreach (var goal in goals)
         {
             goal.Value.Write(Writer);
@@ -471,7 +471,7 @@ public class StoryWriter
 
             if (Writer.Ver > OsiVersion.VerLastSupported)
             {
-                var msg = String.Format(
+                var msg = string.Format(
                     "Osiris version v{0}.{1} unsupported; this tool supports saving up to version 1.11.",
                     Writer.MajorVersion, Writer.MinorVersion
                 );

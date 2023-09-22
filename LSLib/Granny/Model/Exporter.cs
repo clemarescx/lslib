@@ -58,7 +58,7 @@ public class ExporterOptions
     // which is a slow process. The advantage of a mismatched tag is that we don't
     // have to 1:1 match the GR2 structs for that version, as it won't just
     // memcpy the struct from the GR2 file directly.
-    public UInt32 VersionTag = Header.DefaultTag;
+    public uint VersionTag = Header.DefaultTag;
     // Export vertex normals to DAE/GR2 file
     public bool ExportNormals = true;
     // Export tangents/binormals to DAE/GR2 file

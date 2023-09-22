@@ -236,10 +236,10 @@ public static class VertexSerializationHelpers
 
     public static void WriteBinormalShortVector4(WritableSection section, Quaternion v)
     {
-        section.Writer.Write((Int16)(v.X * 32767.0f));
-        section.Writer.Write((Int16)(v.Y * 32767.0f));
-        section.Writer.Write((Int16)(v.Z * 32767.0f));
-        section.Writer.Write((Int16)(v.W * 32767.0f));
+        section.Writer.Write((short)(v.X * 32767.0f));
+        section.Writer.Write((short)(v.Y * 32767.0f));
+        section.Writer.Write((short)(v.Z * 32767.0f));
+        section.Writer.Write((short)(v.W * 32767.0f));
     }
 
     public static void WriteVector4(WritableSection section, Vector4 v)
@@ -267,9 +267,9 @@ public static class VertexSerializationHelpers
     }
     public static void WriteNormalSWordVector3As4(WritableSection section, Vector3 v)
     {
-        section.Writer.Write((Int16)(v.X * 32767));
-        section.Writer.Write((Int16)(v.Y * 32767));
-        section.Writer.Write((Int16)(v.Z * 32767));
+        section.Writer.Write((short)(v.X * 32767));
+        section.Writer.Write((short)(v.Y * 32767));
+        section.Writer.Write((short)(v.Z * 32767));
         section.Writer.Write(0);
     }
     public static void WriteNormalSByteVector3As4(WritableSection section, Vector3 v)
@@ -522,7 +522,7 @@ public static class VertexTypeBuilder
 
 class VertexDefinitionSelector : StructDefinitionSelector
 {
-    private void AddMember(StructDefinition defn, String name, MemberType type, UInt32 arraySize)
+    private void AddMember(StructDefinition defn, string name, MemberType type, uint arraySize)
     {
         var member = new MemberDefinition
         {
@@ -531,7 +531,7 @@ class VertexDefinitionSelector : StructDefinitionSelector
             GrannyName = name,
             Definition = null,
             ArraySize = arraySize,
-            Extra = new UInt32[] { 0, 0, 0 },
+            Extra = new uint[] { 0, 0, 0 },
             Unknown = 0
         };
         defn.Members.Add(member);
@@ -556,8 +556,8 @@ class VertexDefinitionSelector : StructDefinitionSelector
 
         if (desc.HasBoneWeights)
         {
-            AddMember(defn, "BoneWeights", MemberType.NormalUInt8, (UInt32)desc.NumBoneInfluences);
-            AddMember(defn, "BoneIndices", MemberType.UInt8, (UInt32)desc.NumBoneInfluences);
+            AddMember(defn, "BoneWeights", MemberType.NormalUInt8, (uint)desc.NumBoneInfluences);
+            AddMember(defn, "BoneIndices", MemberType.UInt8, (uint)desc.NumBoneInfluences);
         }
 
         switch (desc.NormalType)

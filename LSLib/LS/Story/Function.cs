@@ -28,7 +28,7 @@ public class FunctionSignature : OsirisSerializable
     {
         writer.Write(Name);
 
-        writer.Write((UInt32)OutParamMask.Count);
+        writer.Write((uint)OutParamMask.Count);
         foreach (var b in OutParamMask)
         {
             writer.Write(b);
@@ -55,7 +55,7 @@ public class FunctionSignature : OsirisSerializable
 
 public class ParameterList : OsirisSerializable
 {
-    public List<UInt32> Types;
+    public List<uint> Types;
 
     public void Read(OsiReader reader)
     {
@@ -90,7 +90,7 @@ public class ParameterList : OsirisSerializable
         {
             if (writer.ShortTypeIds)
             {
-                writer.Write((UInt16)type);
+                writer.Write((ushort)type);
             }
             else
             {
@@ -123,15 +123,15 @@ public enum FunctionType
 
 public class Function : OsirisSerializable
 {
-    public UInt32 Line;
-    public UInt32 ConditionReferences;
-    public UInt32 ActionReferences;
+    public uint Line;
+    public uint ConditionReferences;
+    public uint ActionReferences;
     public NodeReference NodeRef;
     public FunctionType Type;
-    public UInt32 Meta1;
-    public UInt32 Meta2;
-    public UInt32 Meta3;
-    public UInt32 Meta4;
+    public uint Meta1;
+    public uint Meta2;
+    public uint Meta3;
+    public uint Meta4;
     public FunctionSignature Name;
 
     public void Read(OsiReader reader)

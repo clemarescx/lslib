@@ -55,7 +55,7 @@ internal struct LocaEntry
 public class LocalizedText
 {
     public string Key;
-    public UInt16 Version;
+    public ushort Version;
     public string Text;
 }
 
@@ -152,7 +152,7 @@ public class LocaWriter
         {
             var bin = Encoding.UTF8.GetBytes(entry.Text);
             writer.Write(bin);
-            writer.Write((Byte)0);
+            writer.Write((byte)0);
         }
     }
 }
@@ -182,7 +182,7 @@ public class LocaXmlReader : IDisposable
 
             case "content":
                 var key = reader["contentuid"];
-                var version = reader["version"] != null ? UInt16.Parse(reader["version"]) : (UInt16)1;
+                var version = reader["version"] != null ? ushort.Parse(reader["version"]) : (ushort)1;
                 var text = reader.ReadString();
 
                 resource.Entries.Add(new()
@@ -194,7 +194,7 @@ public class LocaXmlReader : IDisposable
                 break;
 
             default:
-                throw new InvalidFormatException(String.Format("Unknown element encountered: {0}", reader.Name));
+                throw new InvalidFormatException(string.Format("Unknown element encountered: {0}", reader.Name));
         }
     }
 

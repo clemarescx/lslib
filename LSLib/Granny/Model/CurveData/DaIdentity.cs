@@ -9,7 +9,7 @@ public class DaIdentity : AnimationCurveData
 {
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_DaIdentity;
-    public Int16 Dimension;
+    public short Dimension;
 
     public override int NumKnots()
     {

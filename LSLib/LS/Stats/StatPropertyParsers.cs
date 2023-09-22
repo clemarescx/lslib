@@ -46,7 +46,7 @@ public class Int32Parser : IStatValueParser
 {
     public object Parse(string value, ref bool succeeded, ref string errorText)
     {
-        if (Int32.TryParse(value, out int intval))
+        if (int.TryParse(value, out int intval))
         {
             succeeded = true;
             return intval;
@@ -64,7 +64,7 @@ public class FloatParser : IStatValueParser
 {
     public object Parse(string value, ref bool succeeded, ref string errorText)
     {
-        if (Single.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatval))
+        if (float.TryParse(value, NumberStyles.Float, CultureInfo.InvariantCulture, out float floatval))
         {
             succeeded = true;
             return floatval;
@@ -102,7 +102,7 @@ public class EnumParser : IStatValueParser
         else
         {
             succeeded = false;
-            errorText = $"expected one of: {String.Join(", ", Enumeration.Values.Take(4))}, ...";
+            errorText = $"expected one of: {string.Join(", ", Enumeration.Values.Take(4))}, ...";
             return null;
         }
     }
@@ -184,7 +184,7 @@ public class StatReferenceParser : IStatValueParser
             }
         }
 
-        var refTypes = String.Join("/", Constraints.Select(c => c.StatType));
+        var refTypes = string.Join("/", Constraints.Select(c => c.StatType));
         errorText = $"'{value}' is not a valid {refTypes} reference";
         succeeded = false;
         return null;
@@ -223,11 +223,11 @@ public class MultiValueStatReferenceParser : IStatValueParser
 
 public class ExpressionParser : IStatValueParser
 {
-    private readonly String ExpressionType;
+    private readonly string ExpressionType;
     private readonly StatDefinitionRepository Definitions;
     private readonly StatValueParserFactory ParserFactory;
 
-    public ExpressionParser(String expressionType, StatDefinitionRepository definitions,
+    public ExpressionParser(string expressionType, StatDefinitionRepository definitions,
         StatValueParserFactory parserFactory)
     {
         ExpressionType = expressionType;
@@ -256,7 +256,7 @@ public class ExpressionParser : IStatValueParser
         else if (errorTexts.Count > 0)
         {
             succeeded = false;
-            errorText = String.Join("; ", errorTexts);
+            errorText = string.Join("; ", errorTexts);
             return null;
         }
         else

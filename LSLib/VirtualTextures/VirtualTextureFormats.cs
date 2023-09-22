@@ -34,7 +34,7 @@ public struct DDSHeader
     public UInt32 dwReserved2;
 };
 
-public enum GTSDataType : UInt32
+public enum GTSDataType : uint
 {
     R8G8B8_SRGB = 0,
     R8G8B8A8_SRGB = 1,
@@ -65,7 +65,7 @@ public enum GTSDataType : UInt32
     R16G16B16A16_FLOAT = 26
 };
 
-public enum GTSCodec : UInt32
+public enum GTSCodec : uint
 {
     Uniform = 0,
     Color420 = 1,
@@ -240,10 +240,10 @@ public struct GTSFourCCMetadata
     public string FourCCName
     {
         get =>
-            Char.ToString((char)(FourCC & 0xff))
-          + Char.ToString((char)((FourCC >> 8) & 0xff))
-          + Char.ToString((char)((FourCC >> 16) & 0xff))
-          + Char.ToString((char)((FourCC >> 24) & 0xff));
+            char.ToString((char)(FourCC & 0xff))
+          + char.ToString((char)((FourCC >> 8) & 0xff))
+          + char.ToString((char)((FourCC >> 16) & 0xff))
+          + char.ToString((char)((FourCC >> 24) & 0xff));
 
         set =>
             FourCC = (uint)value[0]
@@ -277,13 +277,13 @@ public struct GTSPackedTileID
 {
     public UInt32 Val;
 
-    public UInt32 Layer => Val & 0x0F;
+    public uint Layer => Val & 0x0F;
 
-    public UInt32 Level => (Val >> 4) & 0x0F;
+    public uint Level => (Val >> 4) & 0x0F;
 
-    public UInt32 Y => (Val >> 8) & 0x0FFF;
+    public uint Y => (Val >> 8) & 0x0FFF;
 
-    public UInt32 X => Val >> 20;
+    public uint X => Val >> 20;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]

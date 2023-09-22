@@ -114,28 +114,28 @@ public enum DivinityVertexAttributeFormat
 public class DivinityFormatDesc
 {
     [Serialization(ArraySize = 1)]
-    public SByte[] Stream;
+    public sbyte[] Stream;
     [Serialization(ArraySize = 1)]
-    public Byte[] Usage;
+    public byte[] Usage;
     [Serialization(ArraySize = 1)]
-    public Byte[] UsageIndex;
+    public byte[] UsageIndex;
     [Serialization(ArraySize = 1)]
-    public Byte[] RefType;
+    public byte[] RefType;
     [Serialization(ArraySize = 1)]
-    public Byte[] Format;
+    public byte[] Format;
     [Serialization(ArraySize = 1)]
-    public Byte[] Size;
+    public byte[] Size;
 
-    private static DivinityFormatDesc Make(DivinityVertexUsage usage, DivinityVertexAttributeFormat format, Byte size, Byte usageIndex = 0)
+    private static DivinityFormatDesc Make(DivinityVertexUsage usage, DivinityVertexAttributeFormat format, byte size, byte usageIndex = 0)
     {
         return new()
         {
-            Stream = new SByte[] { 0 },
-            Usage = new Byte[] { (byte)usage },
-            UsageIndex = new Byte[] { usageIndex },
-            RefType = new Byte[] { 0 },
-            Format = new Byte[] { (byte)format },
-            Size = new Byte[] { size }
+            Stream = new sbyte[] { 0 },
+            Usage = new byte[] { (byte)usage },
+            UsageIndex = new byte[] { usageIndex },
+            RefType = new byte[] { 0 },
+            Format = new byte[] { (byte)format },
+            Size = new byte[] { size }
         };
     }
 
@@ -228,43 +228,43 @@ public class DivinityFormatDesc
 public class DivinityMeshProperties
 {
     [Serialization(ArraySize = 4)]
-    public UInt32[] Flags;
+    public uint[] Flags;
     [Serialization(ArraySize = 1)]
-    public Int32[] Lod;
+    public int[] Lod;
     public List<DivinityFormatDesc> FormatDescs;
     [Serialization(Type = MemberType.VariantReference)]
     public object ExtendedData;
     [Serialization(ArraySize = 1)]
     public float[] LodDistance;
     [Serialization(ArraySize = 1)]
-    public Int32[] IsImpostor;
+    public int[] IsImpostor;
 
     public DivinityModelFlag MeshFlags
     {
         get => (DivinityModelFlag)Flags[0];
-        set => Flags[0] = (UInt32)value;
+        set => Flags[0] = (uint)value;
     }
 
     public DivinityClothFlag ClothFlags
     {
         get => (DivinityClothFlag)Flags[2];
-        set => Flags[2] = (UInt32)value;
+        set => Flags[2] = (uint)value;
     }
 }
 
 public class DivinityMeshExtendedData
 {
-    const Int32 CurrentLSMVersion = 3;
+    const int CurrentLSMVersion = 3;
 
-    public Int32 MeshProxy;
-    public Int32 Rigid;
-    public Int32 Cloth;
-    public Int32 Spring;
-    public Int32 Occluder;
-    public Int32 LOD;
+    public int MeshProxy;
+    public int Rigid;
+    public int Cloth;
+    public int Spring;
+    public int Occluder;
+    public int LOD;
     public string UserDefinedProperties;
     public DivinityMeshProperties UserMeshProperties;
-    public Int32 LSMVersion;
+    public int LSMVersion;
 
     public static DivinityMeshExtendedData Make()
     {
@@ -278,12 +278,12 @@ public class DivinityMeshExtendedData
             UserDefinedProperties = "",
             UserMeshProperties = new()
             {
-                Flags = new UInt32[] { 0, 0, 0, 0 },
-                Lod = new Int32[] { -1 },
+                Flags = new uint[] { 0, 0, 0, 0 },
+                Lod = new int[] { -1 },
                 FormatDescs = null,
                 ExtendedData = null,
                 LodDistance = new float[] { 3.40282347E+38f },
-                IsImpostor = new Int32[] { 0 }
+                IsImpostor = new int[] { 0 }
             },
             LSMVersion = CurrentLSMVersion
         };
@@ -373,7 +373,7 @@ public static class UserDefinedPropertiesHelpers
             properties.Add(UserDefinedProperties_MeshProxy);
         }
 
-        return String.Join("\n", properties);
+        return string.Join("\n", properties);
     }
 
     public static DivinityModelFlag UserDefinedPropertiesToMeshType(string userDefinedProperties)

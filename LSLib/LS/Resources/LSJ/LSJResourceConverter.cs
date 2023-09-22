@@ -151,7 +151,7 @@ public class LSJResourceConverter : JsonConverter
             {
                 if (key == "type")
                 {
-                    if (!UInt32.TryParse((string)reader.Value, out var type))
+                    if (!uint.TryParse((string)reader.Value, out var type))
                     {
                         type = (uint)AttributeTypeMaps.TypeToId[(string)reader.Value];
                     }
@@ -219,7 +219,7 @@ public class LSJResourceConverter : JsonConverter
                             break;
 
                         case NodeAttribute.DataType.DT_ULongLong:
-                            if (reader.Value.GetType() == typeof(Int64))
+                            if (reader.Value.GetType() == typeof(long))
                                 attribute.Value = Convert.ToUInt64((long)reader.Value);
                             else if (reader.Value.GetType() == typeof(BigInteger))
                                 attribute.Value = (ulong)(BigInteger)reader.Value;
@@ -280,7 +280,7 @@ public class LSJResourceConverter : JsonConverter
                             string[] nums = reader.Value.ToString().Split(' ');
                             int length = attribute.GetColumns();
                             if (length != nums.Length)
-                                throw new FormatException(String.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
+                                throw new FormatException(string.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
 
                             int[] vec = new int[length];
                             for (int i = 0; i < length; i++)
@@ -297,7 +297,7 @@ public class LSJResourceConverter : JsonConverter
                             string[] nums = reader.Value.ToString().Split(' ');
                             int length = attribute.GetColumns();
                             if (length != nums.Length)
-                                throw new FormatException(String.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
+                                throw new FormatException(string.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
 
                             float[] vec = new float[length];
                             for (int i = 0; i < length; i++)
@@ -359,7 +359,7 @@ public class LSJResourceConverter : JsonConverter
                     }
 
                     var ts = (TranslatedString)attribute.Value;
-                    ts.Version = UInt16.Parse(reader.Value.ToString());
+                    ts.Version = ushort.Parse(reader.Value.ToString());
                 }
                 else
                 {
@@ -746,7 +746,7 @@ public class LSJResourceConverter : JsonConverter
                 case NodeAttribute.DataType.DT_Vec4:
                 {
                     var vec = (float[])attribute.Value.Value;
-                    writer.WriteValue(String.Join(" ", vec));
+                    writer.WriteValue(string.Join(" ", vec));
                     break;
                 }
 
@@ -755,7 +755,7 @@ public class LSJResourceConverter : JsonConverter
                 case NodeAttribute.DataType.DT_IVec4:
                 {
                     var ivec = (int[])attribute.Value.Value;
-                    writer.WriteValue(String.Join(" ", ivec));
+                    writer.WriteValue(string.Join(" ", ivec));
                     break;
                 }
 

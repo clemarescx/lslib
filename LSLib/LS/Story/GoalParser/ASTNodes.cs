@@ -30,7 +30,7 @@ public class ASTParentTargetEdge
     // Location of node in source code
     public CodeLocation Location;
     // Parent goal name
-    public String Goal;
+    public string Goal;
 }
 
 /// <summary>
@@ -48,7 +48,7 @@ public class ASTBaseFact
 public class ASTFact : ASTBaseFact
 {
     // Name of database we're inserting into / deleting from
-    public String Database;
+    public string Database;
     // Fact negation ("DB_Something(1)" vs. "NOT DB_Something(1)").
     public bool Not;
     // List of values in the fact tuple
@@ -95,7 +95,7 @@ public class ASTFuncCondition : ASTCondition
     // Query/Database name
     // (We don't know yet whether this is a query or a database - this info will only be
     //  available during phase2 parsing)
-    public String Name;
+    public string Name;
     // Condition negation ("AND DB_Something(1)" vs. "AND NOT DB_Something(1)").
     public bool Not;
     // List of query parameters / database tuple columns
@@ -134,7 +134,7 @@ public class ASTStatement : ASTAction
     // Proc/Database name
     // (We don't know yet whether this is a PROC or a DB - this info will only be
     //  available during phase2 parsing)
-    public String Name;
+    public string Name;
     // Statement negation ("DB_Something(1)" vs. "NOT DB_Something(1)").
     public bool Not;
     // List of PROC parameters / database tuple columns
@@ -154,7 +154,7 @@ public class ASTConstantValue : ASTRValue
 {
     // Type of value, if specified in the code.
     // (e.g. "(INT64)123")
-    public String TypeName;
+    public string TypeName;
     // Internal type of the constant
     // This is not the same as the Osiris type; e.g. a value of type CHARACTERGUID
     // will be stored with a constant type of "Name". It also doesn't differentiate
@@ -162,11 +162,11 @@ public class ASTConstantValue : ASTRValue
     // type inference, which will happen in later stages.
     public IRConstantType Type;
     // Value of this constant if the type is Integer.
-    public Int64 IntegerValue;
+    public long IntegerValue;
     // Value of this constant if the type is Float.
-    public Single FloatValue;
+    public float FloatValue;
     // Value of this constant if the type is String or Name.
-    public String StringValue;
+    public string StringValue;
 }
 
 /// <summary>
@@ -177,7 +177,7 @@ public class ASTLocalVar : ASTRValue
 {
     // Type of variable, if specified in the code.
     // (e.g. "(ITEMGUID)_Var")
-    public String Type;
+    public string Type;
     // Name of variable.
-    public String Name;
+    public string Name;
 }

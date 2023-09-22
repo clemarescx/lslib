@@ -9,7 +9,7 @@ public class Call : OsirisSerializable
     public string Name;
     public List<TypedValue> Parameters;
     public bool Negate;
-    public Int32 GoalIdOrDebugHook;
+    public int GoalIdOrDebugHook;
 
     public void Read(OsiReader reader)
     {

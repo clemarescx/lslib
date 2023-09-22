@@ -51,7 +51,7 @@ class UInt8ListSerializer : NodeSerializer
 {
     public object Read(GR2Reader gr2, StructDefinition definition, MemberDefinition member, uint arraySize, object parent)
     {
-        var controls = new List<Byte>((int)arraySize);
+        var controls = new List<byte>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
             controls.Add(gr2.Reader.ReadByte());
         return controls;
@@ -59,7 +59,7 @@ class UInt8ListSerializer : NodeSerializer
 
     public void Write(GR2Writer writer, WritableSection section, MemberDefinition member, object obj)
     {
-        var items = obj as List<Byte>;
+        var items = obj as List<byte>;
         for (int i = 0; i < items.Count; i++)
             section.Writer.Write(items[i]);
     }
@@ -70,7 +70,7 @@ class UInt16ListSerializer : NodeSerializer
 {
     public object Read(GR2Reader gr2, StructDefinition definition, MemberDefinition member, uint arraySize, object parent)
     {
-        var controls = new List<UInt16>((int)arraySize);
+        var controls = new List<ushort>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
             controls.Add(gr2.Reader.ReadUInt16());
         return controls;
@@ -78,7 +78,7 @@ class UInt16ListSerializer : NodeSerializer
 
     public void Write(GR2Writer writer, WritableSection section, MemberDefinition member, object obj)
     {
-        var items = obj as List<UInt16>;
+        var items = obj as List<ushort>;
         for (int i = 0; i < items.Count; i++)
             section.Writer.Write(items[i]);
     }
@@ -89,7 +89,7 @@ class Int16ListSerializer : NodeSerializer
 {
     public object Read(GR2Reader gr2, StructDefinition definition, MemberDefinition member, uint arraySize, object parent)
     {
-        var controls = new List<Int16>((int)arraySize);
+        var controls = new List<short>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
             controls.Add(gr2.Reader.ReadInt16());
         return controls;
@@ -97,7 +97,7 @@ class Int16ListSerializer : NodeSerializer
 
     public void Write(GR2Writer writer, WritableSection section, MemberDefinition member, object obj)
     {
-        var items = obj as List<Int16>;
+        var items = obj as List<short>;
         for (int i = 0; i < items.Count; i++)
             section.Writer.Write(items[i]);
     }
@@ -108,7 +108,7 @@ class UInt32ListSerializer : NodeSerializer
 {
     public object Read(GR2Reader gr2, StructDefinition definition, MemberDefinition member, uint arraySize, object parent)
     {
-        var controls = new List<UInt32>((int)arraySize);
+        var controls = new List<uint>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
             controls.Add(gr2.Reader.ReadUInt32());
         return controls;
@@ -116,7 +116,7 @@ class UInt32ListSerializer : NodeSerializer
 
     public void Write(GR2Writer writer, WritableSection section, MemberDefinition member, object obj)
     {
-        var items = obj as List<UInt32>;
+        var items = obj as List<uint>;
         for (int i = 0; i < items.Count; i++)
             section.Writer.Write(items[i]);
     }
@@ -127,7 +127,7 @@ class Int32ListSerializer : NodeSerializer
 {
     public object Read(GR2Reader gr2, StructDefinition definition, MemberDefinition member, uint arraySize, object parent)
     {
-        var controls = new List<Int32>((int)arraySize);
+        var controls = new List<int>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
             controls.Add(gr2.Reader.ReadInt32());
         return controls;
@@ -135,7 +135,7 @@ class Int32ListSerializer : NodeSerializer
 
     public void Write(GR2Writer writer, WritableSection section, MemberDefinition member, object obj)
     {
-        var items = obj as List<Int32>;
+        var items = obj as List<int>;
         for (int i = 0; i < items.Count; i++)
             section.Writer.Write(items[i]);
     }
@@ -146,7 +146,7 @@ class SingleListSerializer : NodeSerializer
 {
     public object Read(GR2Reader gr2, StructDefinition definition, MemberDefinition member, uint arraySize, object parent)
     {
-        var controls = new List<Single>((int)arraySize);
+        var controls = new List<float>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
             controls.Add(gr2.Reader.ReadSingle());
         return controls;
@@ -154,7 +154,7 @@ class SingleListSerializer : NodeSerializer
 
     public void Write(GR2Writer writer, WritableSection section, MemberDefinition member, object obj)
     {
-        var items = obj as List<Single>;
+        var items = obj as List<float>;
         for (int i = 0; i < items.Count; i++)
             section.Writer.Write(items[i]);
     }

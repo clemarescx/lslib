@@ -8,7 +8,7 @@ public class LSBReader : ILSReader
 {
     private Stream stream;
     private BinaryReader reader;
-    private Dictionary<UInt32, string> staticStrings = new();
+    private Dictionary<uint, string> staticStrings = new();
     private bool IsBG3;
 
     public LSBReader(Stream stream)
@@ -28,10 +28,10 @@ public class LSBReader : ILSReader
             // Check for BG3 header
             var header = BinUtils.ReadStruct<LSBHeader>(reader);
             if (header.Signature != BitConverter.ToUInt32(LSBHeader.SignatureBG3, 0) && header.Signature != LSBHeader.SignatureFW3)
-                throw new InvalidFormatException(String.Format("Illegal signature in LSB header ({0})", header.Signature));
+                throw new InvalidFormatException(string.Format("Illegal signature in LSB header ({0})", header.Signature));
 
             if (stream.Length != header.TotalSize)
-                throw new InvalidFormatException(String.Format("Invalid LSB file size; expected {0}, got {1}", header.TotalSize, stream.Length));
+                throw new InvalidFormatException(string.Format("Invalid LSB file size; expected {0}, got {1}", header.TotalSize, stream.Length));
 
             // The game only uses little-endian files on all platforms currently and big-endian support isn't worth the hassle
             if (header.BigEndian != 0)
@@ -52,11 +52,11 @@ public class LSBReader : ILSReader
 
     private void ReadRegions(Resource rsrc)
     {
-        UInt32 regions = reader.ReadUInt32();
-        for (UInt32 i = 0; i < regions; i++)
+        uint regions = reader.ReadUInt32();
+        for (uint i = 0; i < regions; i++)
         {
-            UInt32 regionNameId = reader.ReadUInt32();
-            UInt32 regionOffset = reader.ReadUInt32();
+            uint regionNameId = reader.ReadUInt32();
+            uint regionOffset = reader.ReadUInt32();
 
             Region rgn = new()
             {
@@ -74,22 +74,22 @@ public class LSBReader : ILSReader
 
     private void ReadNode(Node node)
     {
-        UInt32 nodeNameId = reader.ReadUInt32();
-        UInt32 attributeCount = reader.ReadUInt32();
-        UInt32 childCount = reader.ReadUInt32();
+        uint nodeNameId = reader.ReadUInt32();
+        uint attributeCount = reader.ReadUInt32();
+        uint childCount = reader.ReadUInt32();
         node.Name = staticStrings[nodeNameId];
 
-        for (UInt32 i = 0; i < attributeCount; i++)
+        for (uint i = 0; i < attributeCount; i++)
         {
-            UInt32 attrNameId = reader.ReadUInt32();
-            UInt32 attrTypeId = reader.ReadUInt32();
+            uint attrNameId = reader.ReadUInt32();
+            uint attrTypeId = reader.ReadUInt32();
             if (attrTypeId > (int)NodeAttribute.DataType.DT_Max)
-                throw new InvalidFormatException(String.Format("Unsupported attribute data type: {0}", attrTypeId));
+                throw new InvalidFormatException(string.Format("Unsupported attribute data type: {0}", attrTypeId));
 
             node.Attributes[staticStrings[attrNameId]] = ReadAttribute((NodeAttribute.DataType)attrTypeId);
         }
 
-        for (UInt32 i = 0; i < childCount; i++)
+        for (uint i = 0; i < childCount; i++)
         {
             Node child = new()
             {
@@ -180,13 +180,13 @@ public class LSBReader : ILSReader
 
     private void ReadStaticStrings()
     {
-        UInt32 strings = reader.ReadUInt32();
-        for (UInt32 i = 0; i < strings; i++)
+        uint strings = reader.ReadUInt32();
+        for (uint i = 0; i < strings; i++)
         {
             string s = ReadString(false);
-            UInt32 index = reader.ReadUInt32();
+            uint index = reader.ReadUInt32();
             if (staticStrings.ContainsKey(index))
-                throw new InvalidFormatException(String.Format("String ID {0} duplicated in static string map", index));
+                throw new InvalidFormatException(string.Format("String ID {0} duplicated in static string map", index));
             staticStrings.Add(index, s);
         }
     }

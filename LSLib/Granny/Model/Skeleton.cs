@@ -11,8 +11,8 @@ namespace LSLib.Granny.Model;
 
 public class DivinityBoneExtendedData
 {
-    public String UserDefinedProperties;
-    public Int32 IsRigid;
+    public string UserDefinedProperties;
+    public int IsRigid;
 }
 
 public class Bone
@@ -69,7 +69,7 @@ public class Bone
                 switch (setting.LocalName)
                 {
                     case "BoneIndex":
-                        ExportIndex = Int32.Parse(setting.InnerText.Trim());
+                        ExportIndex = int.Parse(setting.InnerText.Trim());
                         break;
 
                     default:
@@ -276,7 +276,7 @@ public class Skeleton
         if (!hasSkinnedMeshes || Bones.Count == 1)
         {
             IsDummy = true;
-            Utils.Info(String.Format("Skeleton '{0}' marked as dummy", Name));
+            Utils.Info(string.Format("Skeleton '{0}' marked as dummy", Name));
         }
 
         for (var i = 0; i < Bones.Count; i++)

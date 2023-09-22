@@ -10,8 +10,8 @@ namespace LSLib.LS.Stats.StatParser;
 public class StatDeclaration
 {
     public CodeLocation Location;
-    public readonly Dictionary<String, object> Properties = new();
-    public readonly Dictionary<String, CodeLocation> PropertyLocations = new();
+    public readonly Dictionary<string, object> Properties = new();
+    public readonly Dictionary<string, CodeLocation> PropertyLocations = new();
 }
 
 /// <summary>
@@ -20,7 +20,7 @@ public class StatDeclaration
 public class StatProperty
 {
     public CodeLocation Location;
-    public String Key;
+    public string Key;
     public object Value;
 }
 
@@ -29,6 +29,6 @@ public class StatProperty
 /// </summary>
 public class StatElement
 {
-    public String Collection;
+    public string Collection;
     public object Value;
 }

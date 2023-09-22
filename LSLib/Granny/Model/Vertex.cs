@@ -93,9 +93,9 @@ public class VertexDescriptor
     public int TextureCoordinates = 0;
     private Type VertexType;
 
-    public List<String> ComponentNames()
+    public List<string> ComponentNames()
     {
-        var names = new List<String>();
+        var names = new List<string>();
         if (PositionType != PositionType.None)
         {
             names.Add("Position");
@@ -150,7 +150,7 @@ public class VertexDescriptor
         return names;
     }
 
-    public String Name()
+    public string Name()
     {
         string vertexFormat;
         vertexFormat = "";

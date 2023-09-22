@@ -30,11 +30,11 @@ public class AnimationCurve
     [Serialization(Section = SectionType.CurveAndDiscardable, TypeSelector = typeof(AnimationCurveDataTypeSelector), Type = MemberType.VariantReference, MinVersion = 0x80000011)]
     public AnimationCurveData CurveData;
     [Serialization(MaxVersion = 0x80000010)]
-    public Int32 Degree;
+    public int Degree;
     [Serialization(Prototype = typeof(ControlReal32), Kind = SerializationKind.UserMember, Serializer = typeof(SingleListSerializer), MaxVersion = 0x80000010)]
-    public List<Single> Knots;
+    public List<float> Knots;
     [Serialization(Prototype = typeof(ControlReal32), Kind = SerializationKind.UserMember, Serializer = typeof(SingleListSerializer), MaxVersion = 0x80000010)]
-    public List<Single> Controls;
+    public List<float> Controls;
 
     /// <summary>
     /// Upgrades old animations (GR2 files with header version v6) to the new CurveData format
@@ -115,22 +115,22 @@ public class Keyframe
 
 public class KeyframeTrack
 {
-    public SortedList<Single, Keyframe> Keyframes = new();
+    public SortedList<float, Keyframe> Keyframes = new();
 
-    private static Int32 FindFrame<T>(IList<T> list, T value, IComparer<T> comparer = null)
+    private static int FindFrame<T>(IList<T> list, T value, IComparer<T> comparer = null)
     {
         if (list == null)
             throw new ArgumentNullException("list");
 
         comparer = comparer ?? Comparer<T>.Default;
 
-        Int32 lower = 0;
-        Int32 upper = list.Count - 1;
+        int lower = 0;
+        int upper = list.Count - 1;
 
         while (lower <= upper)
         {
-            Int32 middle = lower + (upper - lower) / 2;
-            Int32 comparisonResult = comparer.Compare(value, list[middle]);
+            int middle = lower + (upper - lower) / 2;
+            int comparisonResult = comparer.Compare(value, list[middle]);
             if (comparisonResult == 0)
                 return middle;
             else if (comparisonResult < 0)
@@ -142,9 +142,9 @@ public class KeyframeTrack
         return ~lower;
     }
 
-    public Keyframe FindFrame(Single time, Single threshold = 0.01f)
+    public Keyframe FindFrame(float time, float threshold = 0.01f)
     {
-        Int32 lower = FindFrame(Keyframes.Keys, time);
+        int lower = FindFrame(Keyframes.Keys, time);
         if (lower >= 0)
         {
             return Keyframes.Values[lower];
@@ -162,7 +162,7 @@ public class KeyframeTrack
         return null;
     }
 
-    public Keyframe RequireFrame(Single time, Single threshold = 0.01f)
+    public Keyframe RequireFrame(float time, float threshold = 0.01f)
     {
         Keyframe frame = FindFrame(time, threshold);
         if (frame == null)
@@ -178,21 +178,21 @@ public class KeyframeTrack
         return frame;
     }
 
-    public void AddTranslation(Single time, Vector3 translation)
+    public void AddTranslation(float time, Vector3 translation)
     {
         Keyframe frame = RequireFrame(time);
         frame.Translation = translation;
         frame.HasTranslation = true;
     }
 
-    public void AddRotation(Single time, Quaternion rotation)
+    public void AddRotation(float time, Quaternion rotation)
     {
         Keyframe frame = RequireFrame(time);
         frame.Rotation = rotation;
         frame.HasRotation = true;
     }
 
-    public void AddScaleShear(Single time, Matrix3 scaleShear)
+    public void AddScaleShear(float time, Matrix3 scaleShear)
     {
         Keyframe frame = RequireFrame(time);
         frame.ScaleShear = scaleShear;
@@ -331,11 +331,11 @@ public class KeyframeTrack
                     v1 = transforms[i],
                     v2 = transforms[i + 1];
 
-            Single t0 = times[i - 1],
+            float t0 = times[i - 1],
                    t1 = times[i],
                    t2 = times[i + 1];
 
-            Single alpha = (t1 - t0) / (t2 - t0);
+            float alpha = (t1 - t0) / (t2 - t0);
             Vector3 v1l = Vector3.Lerp(v0, v2, alpha);
 
             if ((v1 - v1l).Length < 0.001f)
@@ -372,11 +372,11 @@ public class KeyframeTrack
                        v1 = transforms[i],
                        v2 = transforms[i + 1];
 
-            Single t0 = times[i - 1],
+            float t0 = times[i - 1],
                    t1 = times[i],
                    t2 = times[i + 1];
 
-            Single alpha = (t1 - t0) / (t2 - t0);
+            float alpha = (t1 - t0) / (t2 - t0);
             Quaternion v1l = Quaternion.Slerp(v0, v2, alpha);
 
             if ((v1 - v1l).Length < 0.001f)
@@ -464,7 +464,7 @@ public class KeyframeTrack
 
     public void RemoveTrivialFrames()
     {
-        var newFrames = new SortedList<Single, Keyframe>();
+        var newFrames = new SortedList<float, Keyframe>();
         foreach (var kv in Keyframes)
         {
             if (kv.Value.HasTranslation
@@ -488,7 +488,7 @@ public class KeyframeTrack
         }
     }
 
-    public static KeyframeTrack FromMatrices(IList<Single> times, IEnumerable<Matrix4> transforms)
+    public static KeyframeTrack FromMatrices(IList<float> times, IEnumerable<Matrix4> transforms)
     {
         var track = new KeyframeTrack();
 
@@ -648,20 +648,20 @@ public class TransformTrack
 public class VectorTrack
 {
     public string Name;
-    public UInt32 TrackKey;
-    public Int32 Dimension;
+    public uint TrackKey;
+    public int Dimension;
     [Serialization(Type = MemberType.Inline)]
     public AnimationCurve ValueCurve;
 }
 
 public class TransformLODError
 {
-    public Single Real32;
+    public float Real32;
 }
 
 public class TextTrackEntry
 {
-    public Single TimeStamp;
+    public float TimeStamp;
     public string Text;
 }
 
@@ -673,15 +673,15 @@ public class TextTrack
 
 public class PeriodicLoop
 {
-    public Single Radius;
-    public Single dAngle;
-    public Single dZ;
+    public float Radius;
+    public float dAngle;
+    public float dZ;
     [Serialization(ArraySize = 3)]
-    public Single[] BasisX;
+    public float[] BasisX;
     [Serialization(ArraySize = 3)]
-    public Single[] BasisY;
+    public float[] BasisY;
     [Serialization(ArraySize = 3)]
-    public Single[] Axis;
+    public float[] Axis;
 }
 
 public class TrackGroup
@@ -710,9 +710,9 @@ public class Animation
     [Serialization(Type = MemberType.ArrayOfReferences)]
     public List<TrackGroup> TrackGroups;
     [Serialization(MinVersion = 0x80000011)]
-    public Int32 DefaultLoopCount;
+    public int DefaultLoopCount;
     [Serialization(MinVersion = 0x80000011)]
-    public Int32 Flags;
+    public int Flags;
     [Serialization(Type = MemberType.VariantReference, MinVersion = 0x80000011)]
     public object ExtendedData;
 }

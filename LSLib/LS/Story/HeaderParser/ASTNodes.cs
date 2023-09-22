@@ -19,7 +19,7 @@ public class ASTNode
 public class ASTDeclarations : ASTNode
 {
     // Debug options
-    public readonly List<String> Options = new();
+    public readonly List<string> Options = new();
     // Declared type aliases
     public readonly List<ASTAlias> Aliases = new();
     // Declared functions
@@ -42,10 +42,10 @@ public class ASTFunctionTypeNode : ASTNode
 /// </summary>
 public class ASTFunctionMetadata : ASTNode
 {
-    public UInt32 Meta1;
-    public UInt32 Meta2;
-    public UInt32 Meta3;
-    public UInt32 Meta4;
+    public uint Meta1;
+    public uint Meta2;
+    public uint Meta3;
+    public uint Meta4;
 }
 
 /// <summary>
@@ -56,14 +56,14 @@ public class ASTFunction : ASTNode
     // Type of function (SysQuery, SysCall, Event, etc.)
     public Compiler.FunctionType Type;
     // Name of the function
-    public String Name;
+    public string Name;
     // Function parameters
     public List<ASTFunctionParam> Params;
     // Function metadata for Osiris internal use - mostly unknown.
-    public UInt32 Meta1;
-    public UInt32 Meta2;
-    public UInt32 Meta3;
-    public UInt32 Meta4;
+    public uint Meta1;
+    public uint Meta2;
+    public uint Meta3;
+    public uint Meta4;
 }
 
 /// <summary>
@@ -82,9 +82,9 @@ public class ASTFunctionParamList : ASTNode
 public class ASTFunctionParam : ASTNode
 {
     // Parameter name
-    public String Name;
+    public string Name;
     // Parameter type
-    public String Type;
+    public string Type;
     // Parameter direction (IN/OUT)
     // This is only meaningful for Query and SysQuery, for all other types direction is always "IN".
     public ParamDirection Direction;
@@ -96,7 +96,7 @@ public class ASTFunctionParam : ASTNode
 public class ASTAlias : ASTNode
 {
     // Name of the new type
-    public String TypeName;
+    public string TypeName;
     // ID of the new type (must be a new type ID)
     public uint TypeId;
     // ID of the type this type is mapped to (must be an existing type ID)
@@ -110,7 +110,7 @@ public class ASTAlias : ASTNode
 public class ASTOption : ASTNode
 {
     // Name of debug option
-    public String Name;
+    public string Name;
 }
 
 /// <summary>
@@ -119,5 +119,5 @@ public class ASTOption : ASTNode
 /// </summary>
 public class ASTLiteral : ASTNode
 {
-    public String Literal;
+    public string Literal;
 }

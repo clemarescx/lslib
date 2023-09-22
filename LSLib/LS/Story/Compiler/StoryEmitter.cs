@@ -160,7 +160,7 @@ public class StoryEmitter
         return osiSignature;
     }
 
-    private void AddNodeDebugInfo(Node node, CodeLocation location, Int32 numColumns, IRRule rule)
+    private void AddNodeDebugInfo(Node node, CodeLocation location, int numColumns, IRRule rule)
     {
         if (DebugInfo != null)
         {
@@ -249,14 +249,14 @@ public class StoryEmitter
             {
                 Name = osiFunc.Name.Name,
                 Params = new(),
-                TypeId = (UInt32)osiFunc.Type
+                TypeId = (uint)osiFunc.Type
             };
 
             foreach (var param in signature.Params)
             {
                 funcDebug.Params.Add(new()
                 {
-                    TypeId = (UInt32)param.Type.IntrinsicTypeId,
+                    TypeId = (uint)param.Type.IntrinsicTypeId,
                     Name = param.Name,
                     Out = param.Direction == ParamDirection.Out
                 });
@@ -1234,7 +1234,7 @@ public class StoryEmitter
             var ruleDebug = new RuleDebugInfo
             {
                 Id = osiRule.Index,
-                GoalId = (UInt32)Story.Goals.Count,
+                GoalId = (uint)Story.Goals.Count,
                 Name = (rule.Conditions.First() as IRFuncCondition).Func.Name.ToString(),
                 Variables = new(),
                 Actions = new(),
@@ -1248,9 +1248,9 @@ public class StoryEmitter
             {
                 var varDebug = new RuleVariableDebugInfo
                 {
-                    Index = (UInt32)variable.Index,
+                    Index = (uint)variable.Index,
                     Name = variable.Name,
-                    Type = (UInt32)variable.Type.IntrinsicTypeId,
+                    Type = (uint)variable.Type.IntrinsicTypeId,
                     Unused = variable.IsUnused()
                 };
                 ruleDebug.Variables.Add(varDebug);

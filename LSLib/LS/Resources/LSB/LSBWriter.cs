@@ -8,9 +8,9 @@ public class LSBWriter : ILSWriter
 {
     private Stream stream;
     private BinaryWriter writer;
-    private Dictionary<string, UInt32> staticStrings = new();
-    private UInt32 nextStaticStringId = 0;
-    private UInt32 Version;
+    private Dictionary<string, uint> staticStrings = new();
+    private uint nextStaticStringId = 0;
+    private uint Version;
 
     public LSBWriter(Stream stream)
     {
@@ -46,7 +46,7 @@ public class LSBWriter : ILSWriter
 
             WriteRegions(rsrc);
 
-            header.TotalSize = (UInt32)stream.Position;
+            header.TotalSize = (uint)stream.Position;
             stream.Seek(0, SeekOrigin.Begin);
             BinUtils.WriteStruct(writer, ref header);
         }
@@ -54,18 +54,18 @@ public class LSBWriter : ILSWriter
 
     private void WriteRegions(Resource rsrc)
     {
-        writer.Write((UInt32)rsrc.Regions.Count);
+        writer.Write((uint)rsrc.Regions.Count);
         var regionMapOffset = stream.Position;
         foreach (var rgn in rsrc.Regions)
         {
             writer.Write(staticStrings[rgn.Key]);
-            writer.Write((UInt32)0); // Offset of region, will be updater after we finished serializing
+            writer.Write((uint)0); // Offset of region, will be updater after we finished serializing
         }
 
-        List<UInt32> regionPositions = new();
+        List<uint> regionPositions = new();
         foreach (var rgn in rsrc.Regions)
         {
-            regionPositions.Add((UInt32)stream.Position);
+            regionPositions.Add((uint)stream.Position);
             WriteNode(rgn.Value);
         }
 
@@ -83,13 +83,13 @@ public class LSBWriter : ILSWriter
     private void WriteNode(Node node)
     {
         writer.Write(staticStrings[node.Name]);
-        writer.Write((UInt32)node.Attributes.Count);
-        writer.Write((UInt32)node.ChildCount);
+        writer.Write((uint)node.Attributes.Count);
+        writer.Write((uint)node.ChildCount);
 
         foreach (var attribute in node.Attributes)
         {
             writer.Write(staticStrings[attribute.Key]);
-            writer.Write((UInt32)attribute.Value.Type);
+            writer.Write((uint)attribute.Value.Type);
             WriteAttribute(attribute.Value);
         }
 
@@ -135,7 +135,7 @@ public class LSBWriter : ILSWriter
             case NodeAttribute.DataType.DT_ScratchBuffer:
             {
                 var buffer = (byte[])attr.Value;
-                writer.Write((UInt32)buffer.Length);
+                writer.Write((uint)buffer.Length);
                 writer.Write(buffer);
                 break;
             }
@@ -183,7 +183,7 @@ public class LSBWriter : ILSWriter
 
     private void WriteStaticStrings()
     {
-        writer.Write((UInt32)staticStrings.Count);
+        writer.Write((uint)staticStrings.Count);
         foreach (var s in staticStrings)
         {
             WriteString(s.Key, false);
@@ -198,7 +198,7 @@ public class LSBWriter : ILSWriter
         writer.Write(length);
         writer.Write(utf);
         if (nullTerminated)
-            writer.Write((Byte)0);
+            writer.Write((byte)0);
     }
 
     private void WriteWideString(string s, bool nullTerminated)
@@ -208,6 +208,6 @@ public class LSBWriter : ILSWriter
         writer.Write(length);
         writer.Write(unicode);
         if (nullTerminated)
-            writer.Write((UInt16)0);
+            writer.Write((ushort)0);
     }
 }

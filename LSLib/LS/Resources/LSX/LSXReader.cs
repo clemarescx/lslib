@@ -41,7 +41,7 @@ public class LSXReader : ILSReader
             while (reader.Read() && reader.NodeType != XmlNodeType.Element);
             if (reader.Name != "arguments")
             {
-                throw new InvalidFormatException(String.Format("Expected <arguments>: {0}", reader.Name));
+                throw new InvalidFormatException(string.Format("Expected <arguments>: {0}", reader.Name));
             }
 
             int processedArgs = 0;
@@ -51,7 +51,7 @@ public class LSXReader : ILSReader
                 {
                     if (reader.Name != "argument")
                     {
-                        throw new InvalidFormatException(String.Format("Expected <argument>: {0}", reader.Name));
+                        throw new InvalidFormatException(string.Format("Expected <argument>: {0}", reader.Name));
                     }
 
                     var arg = new TranslatedFSStringArgument
@@ -63,7 +63,7 @@ public class LSXReader : ILSReader
                     while (reader.Read() && reader.NodeType != XmlNodeType.Element);
                     if (reader.Name != "string")
                     {
-                        throw new InvalidFormatException(String.Format("Expected <string>: {0}", reader.Name));
+                        throw new InvalidFormatException(string.Format("Expected <string>: {0}", reader.Name));
                     }
 
                     arg.String = new();
@@ -151,14 +151,14 @@ public class LSXReader : ILSReader
                 break;
 
             case "attribute":
-                UInt32 attrTypeId;
+                uint attrTypeId;
                 if (Version >= LSXVersion.V4)
                 {
                     attrTypeId = (uint)AttributeTypeMaps.TypeToId[reader["type"]];
                 }
                 else
                 {
-                    if (!UInt32.TryParse(reader["type"], out attrTypeId))
+                    if (!uint.TryParse(reader["type"], out attrTypeId))
                     {
                         attrTypeId = (uint)AttributeTypeMaps.TypeToId[reader["type"]];
                     }
@@ -166,7 +166,7 @@ public class LSXReader : ILSReader
 
                 var attrName = reader["id"];
                 if (attrTypeId > (int)NodeAttribute.DataType.DT_Max)
-                    throw new InvalidFormatException(String.Format("Unsupported attribute data type: {0}", attrTypeId));
+                    throw new InvalidFormatException(string.Format("Unsupported attribute data type: {0}", attrTypeId));
 
                 Debug.Assert(attrName != null);
                 var attr = new NodeAttribute((NodeAttribute.DataType)attrTypeId);
@@ -190,7 +190,7 @@ public class LSXReader : ILSReader
 
                     if (attrValue == null)
                     {
-                        ts.Version = UInt16.Parse(reader["version"]);
+                        ts.Version = ushort.Parse(reader["version"]);
                     }
                 }
                 else if (attr.Type == NodeAttribute.DataType.DT_TranslatedFSString)
@@ -207,7 +207,7 @@ public class LSXReader : ILSReader
                 break;
 
             default:
-                throw new InvalidFormatException(String.Format("Unknown element encountered: {0}", reader.Name));
+                throw new InvalidFormatException(string.Format("Unknown element encountered: {0}", reader.Name));
         }
     }
 
@@ -235,7 +235,7 @@ public class LSXReader : ILSReader
                 break;
 
             default:
-                throw new InvalidFormatException(String.Format("Unknown element encountered: {0}", reader.Name));
+                throw new InvalidFormatException(string.Format("Unknown element encountered: {0}", reader.Name));
         }
     }
 

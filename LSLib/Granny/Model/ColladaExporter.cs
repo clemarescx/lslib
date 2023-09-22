@@ -115,7 +115,7 @@ public class ColladaMeshExporter
                 {
                     if (Options.ExportUVs)
                     {
-                        int uvIndex = Int32.Parse(component[^1..]);
+                        int uvIndex = int.Parse(component[^1..]);
                         var uvs = ExportedMesh.PrimaryVertexData.MakeColladaUVs(ExportedMesh.Name, uvIndex, Options.FlipUVs);
                         AddInput(uvs, null, "TEXCOORD", (ulong)uvIndex);
                     }
@@ -131,7 +131,7 @@ public class ColladaMeshExporter
                 {
                     if (Options.ExportUVs)
                     {
-                        int uvIndex = Int32.Parse(component[^1..]) - 1;
+                        int uvIndex = int.Parse(component[^1..]) - 1;
                         var uvs = ExportedMesh.PrimaryVertexData.MakeColladaUVs(ExportedMesh.Name, uvIndex, Options.FlipUVs);
                         AddInput(uvs, null, "TEXCOORD", (ulong)uvIndex);
                     }

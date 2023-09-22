@@ -9,25 +9,25 @@ namespace LSLib.LS.Story.Compiler;
 public class DatabaseDebugInfo
 {
     // ID of database in generated story file
-    public UInt32 Id;
-    public String Name;
-    public List<UInt32> ParamTypes;
+    public uint Id;
+    public string Name;
+    public List<uint> ParamTypes;
 }
 
 public class ActionDebugInfo
 {
     // Location of action in source file
-    public UInt32 Line;
+    public uint Line;
 }
 
 public class GoalDebugInfo
 {
     // ID of goal in generated story file
-    public UInt32 Id;
+    public uint Id;
     // Goal name
-    public String Name;
+    public string Name;
     // Absolute path of goal source file
-    public String Path;
+    public string Path;
     // Actions in INIT section
     public List<ActionDebugInfo> InitActions;
     // Actions in EXIT section
@@ -37,11 +37,11 @@ public class GoalDebugInfo
 public class RuleVariableDebugInfo
 {
     // Index of rule variable in local tuple
-    public UInt32 Index;
+    public uint Index;
     // Name of rule variable
-    public String Name;
+    public string Name;
     // Type ID of rule variable
-    public UInt32 Type;
+    public uint Type;
     // Is the variable slot unused? (i.e. not bound to a physical column)
     public bool Unused;
 }
@@ -50,43 +50,43 @@ public class RuleDebugInfo
 {
     // Local index of rule
     // (this is not stored in the story file and is only used by the debugger)
-    public UInt32 Id;
+    public uint Id;
     // ID of parent goal node
-    public UInt32 GoalId;
+    public uint GoalId;
     // Generated rule name (usually the name of the first condition)
-    public String Name;
+    public string Name;
     // Rule local variables
     public List<RuleVariableDebugInfo> Variables;
     // Actions in THEN-part
     public List<ActionDebugInfo> Actions;
     // Line number of the beginning of the "IF" section
-    public UInt32 ConditionsStartLine;
+    public uint ConditionsStartLine;
     // Line number of the end of the "IF" section
-    public UInt32 ConditionsEndLine;
+    public uint ConditionsEndLine;
     // Line number of the beginning of the "THEN" section
-    public UInt32 ActionsStartLine;
+    public uint ActionsStartLine;
     // Line number of the end of the "THEN" section
-    public UInt32 ActionsEndLine;
+    public uint ActionsEndLine;
 }
 
 public class NodeDebugInfo
 {
     // ID of node in generated story file
-    public UInt32 Id;
+    public uint Id;
     // Index of parent rule
-    public UInt32 RuleId;
+    public uint RuleId;
     // Location of action in source file
-    public Int32 Line;
+    public int Line;
     // Local tuple to rule variable index mappings
-    public Dictionary<Int32, Int32> ColumnToVariableMaps;
+    public Dictionary<int, int> ColumnToVariableMaps;
     // ID of associated database node
-    public UInt32 DatabaseId;
+    public uint DatabaseId;
     // Name of node
-    public String Name;
+    public string Name;
     // Type of node
     public Node.Type Type;
     // ID of left parent node
-    public UInt32 ParentNodeId;
+    public uint ParentNodeId;
     // Function (query, proc, etc.) attached to this node
     public FunctionNameAndArity FunctionName;
 }
@@ -94,9 +94,9 @@ public class NodeDebugInfo
 public class FunctionParamDebugInfo
 {
     // Intrinsic type ID
-    public UInt32 TypeId;
+    public uint TypeId;
     // Name of parameter
-    public String Name;
+    public string Name;
     // Is an out param (ie. return value)?
     public bool Out;
 }
@@ -104,11 +104,11 @@ public class FunctionParamDebugInfo
 public class FunctionDebugInfo
 {
     // Name of function
-    public String Name;
+    public string Name;
     // Type of node
     public List<FunctionParamDebugInfo> Params;
     // Function type ID
-    public UInt32 TypeId;
+    public uint TypeId;
 }
 
 public class StoryDebugInfo
@@ -116,12 +116,12 @@ public class StoryDebugInfo
     /// <summary>
     /// Story debug info format version. Increment each time the format changes.
     /// </summary>
-    public const UInt32 CurrentVersion = 2;
+    public const uint CurrentVersion = 2;
 
-    public UInt32 Version;
-    public readonly Dictionary<UInt32, DatabaseDebugInfo> Databases = new();
-    public readonly Dictionary<UInt32, GoalDebugInfo> Goals = new();
-    public readonly Dictionary<UInt32, RuleDebugInfo> Rules = new();
-    public readonly Dictionary<UInt32, NodeDebugInfo> Nodes = new();
+    public uint Version;
+    public readonly Dictionary<uint, DatabaseDebugInfo> Databases = new();
+    public readonly Dictionary<uint, GoalDebugInfo> Goals = new();
+    public readonly Dictionary<uint, RuleDebugInfo> Rules = new();
+    public readonly Dictionary<uint, NodeDebugInfo> Nodes = new();
     public readonly Dictionary<FunctionNameAndArity, FunctionDebugInfo> Functions = new();
 }

@@ -10,13 +10,13 @@ namespace LSLib.VirtualTextures;
 
 public class PageFile : IDisposable
 {
-    private const UInt32 PageSize = 0x100000;
+    private const uint PageSize = 0x100000;
 
     private VirtualTileSet TileSet;
     private FileStream Stream;
     private BinaryReader Reader;
     public GTPHeader Header;
-    private List<UInt32[]> ChunkOffsets;
+    private List<uint[]> ChunkOffsets;
 
     public PageFile(VirtualTileSet tileset, string path)
     {
@@ -32,8 +32,8 @@ public class PageFile : IDisposable
         for (var page = 0; page < numPages; page++)
         {
             var numOffsets = Reader.ReadUInt32();
-            var offsets = new UInt32[numOffsets];
-            BinUtils.ReadStructs<UInt32>(Reader, offsets);
+            var offsets = new uint[numOffsets];
+            BinUtils.ReadStructs<uint>(Reader, offsets);
             ChunkOffsets.Add(offsets);
 
             Stream.Position = (page + 1) * PageSize;

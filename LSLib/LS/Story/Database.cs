@@ -77,11 +77,11 @@ internal class FactPropertyDescriptor : PropertyDescriptor
         {
             return BaseType switch
             {
-                Value.Type.Integer    => typeof(Int32),
-                Value.Type.Integer64  => typeof(Int64),
-                Value.Type.Float      => typeof(Single),
-                Value.Type.String     => typeof(String),
-                Value.Type.GuidString => typeof(String),
+                Value.Type.Integer    => typeof(int),
+                Value.Type.Integer64  => typeof(long),
+                Value.Type.Float      => typeof(float),
+                Value.Type.String     => typeof(string),
+                Value.Type.GuidString => typeof(string),
                 Value.Type.None       => throw new InvalidOperationException("Cannot retrieve type of an unknown column"),
                 _                     => throw new InvalidOperationException("Cannot retrieve type of an unknown column")
             };
@@ -102,24 +102,24 @@ internal class FactPropertyDescriptor : PropertyDescriptor
         {
             case Value.Type.Integer:
             {
-                if (value is String) column.IntValue = Int32.Parse((String)value);
-                else if (value is Int32) column.IntValue = (Int32)value;
+                if (value is string) column.IntValue = int.Parse((string)value);
+                else if (value is int) column.IntValue = (int)value;
                 else throw new ArgumentException("Invalid Int32 value");
                 break;
             }
 
             case Value.Type.Integer64:
             {
-                if (value is String) column.Int64Value = Int64.Parse((String)value);
-                else if (value is Int64) column.Int64Value = (Int64)value;
+                if (value is string) column.Int64Value = long.Parse((string)value);
+                else if (value is long) column.Int64Value = (long)value;
                 else throw new ArgumentException("Invalid Int64 value");
                 break;
             }
 
             case Value.Type.Float:
             {
-                if (value is String) column.FloatValue = Single.Parse((String)value);
-                else if (value is Single) column.FloatValue = (Single)value;
+                if (value is string) column.FloatValue = float.Parse((string)value);
+                else if (value is float) column.FloatValue = (float)value;
                 else throw new ArgumentException("Invalid float value");
                 break;
             }
@@ -127,7 +127,7 @@ internal class FactPropertyDescriptor : PropertyDescriptor
             case Value.Type.String:
             case Value.Type.GuidString:
             {
-                column.StringValue = (String)value;
+                column.StringValue = (string)value;
                 break;
             }
 
@@ -188,7 +188,7 @@ public class FactCollection : List<Fact>, ITypedList
 
 public class Database : OsirisSerializable
 {
-    public UInt32 Index;
+    public uint Index;
     public ParameterList Parameters;
     public FactCollection Facts;
     public Node OwnerNode;

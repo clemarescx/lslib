@@ -10,11 +10,11 @@ public class DaK32fC32f : AnimationCurveData
 {
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_DaK32fC32f;
-    public Int16 Padding;
+    public short Padding;
     [Serialization(Prototype = typeof(ControlReal32), Kind = SerializationKind.UserMember, Serializer = typeof(SingleListSerializer))]
-    public List<Single> Knots;
+    public List<float> Knots;
     [Serialization(Prototype = typeof(ControlReal32), Kind = SerializationKind.UserMember, Serializer = typeof(SingleListSerializer))]
-    public List<Single> Controls;
+    public List<float> Controls;
 
     public ExportType CurveType()
     {

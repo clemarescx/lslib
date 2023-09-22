@@ -11,12 +11,12 @@ namespace LSLib.Granny;
 public class ColladaAnimation
 {
     private animation Animation;
-    private Dictionary<String, ColladaSource> Sources;
+    private Dictionary<string, ColladaSource> Sources;
     private List<Matrix4> Transforms;
-    private List<Single> Times;
+    private List<float> Times;
     private string BoneName;
 
-    public Single Duration => Times.Last();
+    public float Duration => Times.Last();
 
     private void ImportSources()
     {

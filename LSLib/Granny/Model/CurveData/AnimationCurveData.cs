@@ -8,7 +8,7 @@ namespace LSLib.Granny.Model.CurveData;
 public class CurveRegistry
 {
     private static Dictionary<Type, CurveFormat> TypeToFormatMap;
-    private static Dictionary<String, Type> NameToTypeMap;
+    private static Dictionary<string, Type> NameToTypeMap;
 
     private static void Register(Type type, CurveFormat format)
     {
@@ -47,14 +47,14 @@ public class CurveRegistry
         Register(typeof(D3I1K8uC8u), CurveFormat.D3I1K8uC8u);
     }
 
-    public static Dictionary<String, Type> GetAllTypes()
+    public static Dictionary<string, Type> GetAllTypes()
     {
         Init();
 
         return NameToTypeMap;
     }
 
-    public static Type Resolve(String name)
+    public static Type Resolve(string name)
     {
         Init();
 
@@ -145,17 +145,17 @@ public class CurveDataHeader
 
 class ControlUInt8
 {
-    public Byte UInt8 = 0;
+    public byte UInt8 = 0;
 }
 
 class ControlUInt16
 {
-    public UInt16 UInt16 = 0;
+    public ushort UInt16 = 0;
 }
 
 class ControlReal32
 {
-    public Single Real32 = 0;
+    public float Real32 = 0;
 }
 
 class AnimationCurveDataTypeSelector : VariantTypeSelector
@@ -189,9 +189,9 @@ public abstract class AnimationCurveData
     [Serialization(Kind = SerializationKind.None)]
     public Animation ParentAnimation;
 
-    protected float ConvertOneOverKnotScaleTrunc(UInt16 oneOverKnotScaleTrunc)
+    protected float ConvertOneOverKnotScaleTrunc(ushort oneOverKnotScaleTrunc)
     {
-        UInt32[] i = new UInt32[] { (UInt32)oneOverKnotScaleTrunc << 16 };
+        uint[] i = new uint[] { (uint)oneOverKnotScaleTrunc << 16 };
         float[] f = new float[1];
         Buffer.BlockCopy(i, 0, f, 0, i.Length * 4);
         return f[0];

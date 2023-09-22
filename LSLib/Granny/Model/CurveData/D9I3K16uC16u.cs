@@ -9,13 +9,13 @@ public class D9I3K16uC16u : AnimationCurveData
 {
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_D9I3K16uC16u;
-    public UInt16 OneOverKnotScaleTrunc;
+    public ushort OneOverKnotScaleTrunc;
     [Serialization(ArraySize = 3)]
     public float[] ControlScales;
     [Serialization(ArraySize = 3)]
     public float[] ControlOffsets;
     [Serialization(Prototype = typeof(ControlUInt16), Kind = SerializationKind.UserMember, Serializer = typeof(UInt16ListSerializer))]
-    public List<UInt16> KnotsControls;
+    public List<ushort> KnotsControls;
 
     public override int NumKnots()
     {

@@ -19,7 +19,7 @@ using StatDeclarations = List<StatDeclaration>;
 
 public abstract class StatScanBase : AbstractScanner<object, CodeLocation>
 {
-    protected String fileName;
+    protected string fileName;
 
     public override CodeLocation yylloc { get; set; }
         
@@ -52,7 +52,7 @@ public abstract class StatScanBase : AbstractScanner<object, CodeLocation>
 
 public partial class StatScanner
 {
-    public StatScanner(String fileName)
+    public StatScanner(string fileName)
     {
         this.fileName = fileName;
     }
@@ -174,13 +174,13 @@ public partial class StatParser
         Value = (string)value
     };
 
-    private StatProperty MakeProperty(String key, object value) => new()
+    private StatProperty MakeProperty(string key, object value) => new()
     {
         Key = key,
         Value = (string)value
     };
 
-    private StatProperty MakeProperty(String key, String value) => new()
+    private StatProperty MakeProperty(string key, string value) => new()
     {
         Key = key,
         Value = value
@@ -193,21 +193,21 @@ public partial class StatParser
         Location = location
     };
 
-    private StatProperty MakeProperty(CodeLocation location, String key, object value) => new()
+    private StatProperty MakeProperty(CodeLocation location, string key, object value) => new()
     {
         Key = key,
         Value = (string)value,
         Location = location
     };
 
-    private StatProperty MakeProperty(CodeLocation location, String key, String value) => new()
+    private StatProperty MakeProperty(CodeLocation location, string key, string value) => new()
     {
         Key = key,
         Value = value,
         Location = location
     };
 
-    private StatElement MakeElement(String key, object value)
+    private StatElement MakeElement(string key, object value)
     {
         if (value is string)
         {

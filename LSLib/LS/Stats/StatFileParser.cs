@@ -62,7 +62,7 @@ public class StatLoadingError
     public string Code;
     public string Message;
     public string Path;
-    public Int32 Line;
+    public int Line;
     public string StatObjectName;
 }
 

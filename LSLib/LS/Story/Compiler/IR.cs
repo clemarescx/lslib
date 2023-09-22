@@ -44,9 +44,9 @@ public abstract class IRReference<NameType, ReferencedType>
 /// <summary>
 /// Named reference to a story goal.
 /// </summary>
-public class IRGoalRef : IRReference<String, IRGoal>
+public class IRGoalRef : IRReference<string, IRGoal>
 {
-    public IRGoalRef(String name)
+    public IRGoalRef(string name)
         : base(name)
     {
     }
@@ -96,7 +96,7 @@ public class IRTargetEdge
 public class IRGoal
 {
     // Goal name (derived from filename)
-    public String Name;
+    public string Name;
     // Facts in the INITSECTION part
     public List<IRFact> InitSection;
     // List of all production rules (including procs and queries) from the KBSECTION part
@@ -141,11 +141,11 @@ public class IRRule
     // Rule-local variables
     public List<IRRuleVariable> Variables;
     // Rule-local variables by name
-    public Dictionary<String, IRRuleVariable> VariablesByName;
+    public Dictionary<string, IRRuleVariable> VariablesByName;
     // Location of node in source code
     public CodeLocation Location;
 
-    public IRRuleVariable FindOrAddVariable(String name, ValueType type)
+    public IRRuleVariable FindOrAddVariable(string name, ValueType type)
     {
         if (name.Length < 1 || name[0] != '_')
         {
@@ -191,15 +191,15 @@ public class IRRuleVariable
 {
     // Index of the variable within the rule.
     // Indices start from zero.
-    public Int32 Index;
+    public int Index;
     // Local name of the variable.
     // This is only used during compilation and is discarded
     // when emitting the final story file.
-    public String Name;
+    public string Name;
     // Type of the rule variable
     public ValueType Type;
     // Index of condition that first bound this variable
-    public Int32 FirstBindingIndex;
+    public int FirstBindingIndex;
     // TODO - add inferred type marker!
 
     public bool IsUnused()
@@ -214,7 +214,7 @@ public class IRRuleVariable
 public class IRCondition
 {
     // Number of columns in the output tuple of this condition.
-    public Int32 TupleSize;
+    public int TupleSize;
     // Location of node in source code
     public CodeLocation Location;
 }
@@ -307,11 +307,11 @@ public class IRConstant : IRValue
     // Was the type info retrieved from the AST or inferred?
     public bool InferredType;
     // Value of this constant if the type is Integer.
-    public Int64 IntegerValue;
+    public long IntegerValue;
     // Value of this constant if the type is Float.
-    public Single FloatValue;
+    public float FloatValue;
     // Value of this constant if the type is String or Name.
-    public String StringValue;
+    public string StringValue;
 
     public override string ToString()
     {
@@ -334,5 +334,5 @@ public class IRConstant : IRValue
 public class IRVariable : IRValue
 {
     // Index of variable in the rule variable list
-    public Int32 Index;
+    public int Index;
 }

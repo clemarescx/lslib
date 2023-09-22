@@ -11,7 +11,7 @@ namespace LSLib.Granny.GR2;
 public class MixedMarshallingData
 {
     public object Obj;
-    public UInt32 Count;
+    public uint Count;
     public StructDefinition Type;
 }
 
@@ -27,9 +27,9 @@ public class WritableSection : Section
     public BinaryWriter Writer;
     public readonly GR2Writer GR2;
 
-    public readonly Dictionary<UInt32, object> Fixups = new();
+    public readonly Dictionary<uint, object> Fixups = new();
     // Fixups for the data area that we'll need to update after serialization is finished
-    public readonly Dictionary<UInt32, object> DataFixups = new();
+    public readonly Dictionary<uint, object> DataFixups = new();
 
     public readonly List<MixedMarshallingData> MixedMarshalling = new();
 
@@ -49,7 +49,7 @@ public class WritableSection : Section
 
     public void Finish()
     {
-        var dataOffset = (UInt32)MainStream.Length;
+        var dataOffset = (uint)MainStream.Length;
 
         foreach (var dataFixup in DataFixups)
         {
@@ -83,15 +83,15 @@ public class WritableSection : Section
     {
         if (Writer == MainWriter)
         {
-            Fixups.Add((UInt32)MainStream.Position, o);
+            Fixups.Add((uint)MainStream.Position, o);
         }
         else
         {
-            DataFixups.Add((UInt32)DataStream.Position, o);
+            DataFixups.Add((uint)DataStream.Position, o);
         }
     }
 
-    internal void AddMixedMarshalling(object o, UInt32 count, StructDefinition type)
+    internal void AddMixedMarshalling(object o, uint count, StructDefinition type)
     {
         var marshal = new MixedMarshallingData
         {
@@ -103,7 +103,7 @@ public class WritableSection : Section
         MixedMarshalling.Add(marshal);
     }
 
-    internal void CheckMixedMarshalling(object o, Type type, UInt32 count)
+    internal void CheckMixedMarshalling(object o, Type type, uint count)
     {
         if (type.IsClass)
         {
@@ -115,7 +115,7 @@ public class WritableSection : Section
         }
     }
 
-    internal void CheckMixedMarshalling(object o, UInt32 count)
+    internal void CheckMixedMarshalling(object o, uint count)
     {
         CheckMixedMarshalling(o, o.GetType(), count);
     }
@@ -128,9 +128,9 @@ public class WritableSection : Section
         }
 
         if (GR2.Magic.Is32Bit)
-            Writer.Write((UInt32)0);
+            Writer.Write((uint)0);
         else
-            Writer.Write((UInt64)0);
+            Writer.Write((ulong)0);
     }
 
     public void WriteStructReference(StructDefinition defn)
@@ -146,9 +146,9 @@ public class WritableSection : Section
         }
 
         if (GR2.Magic.Is32Bit)
-            Writer.Write((UInt32)0);
+            Writer.Write((uint)0);
         else
-            Writer.Write((UInt64)0);
+            Writer.Write((ulong)0);
     }
 
     public void WriteStringReference(string s)
@@ -165,27 +165,27 @@ public class WritableSection : Section
         }
 
         if (GR2.Magic.Is32Bit)
-            Writer.Write((UInt32)0);
+            Writer.Write((uint)0);
         else
-            Writer.Write((UInt64)0);
+            Writer.Write((ulong)0);
     }
 
     public void WriteArrayReference(System.Collections.IList list)
     {
         if (list != null && list.Count > 0)
         {
-            Writer.Write((UInt32)list.Count);
+            Writer.Write((uint)list.Count);
             AddFixup(list);
         }
         else
         {
-            Writer.Write((UInt32)0);
+            Writer.Write((uint)0);
         }
 
         if (GR2.Magic.Is32Bit)
-            Writer.Write((UInt32)0);
+            Writer.Write((uint)0);
         else
-            Writer.Write((UInt64)0);
+            Writer.Write((ulong)0);
     }
 
     public void WriteArrayIndicesReference(System.Collections.IList list)
@@ -195,7 +195,7 @@ public class WritableSection : Section
 
     public void WriteMemberDefinition(MemberDefinition defn)
     {
-        Writer.Write((UInt32)defn.Type);
+        Writer.Write((uint)defn.Type);
         WriteStringReference(defn.GrannyName);
         WriteStructReference(defn.WriteDefinition);
         Writer.Write(defn.ArraySize);
@@ -204,13 +204,13 @@ public class WritableSection : Section
         if (GR2.Magic.Is32Bit)
             Writer.Write(defn.Unknown);
         else
-            Writer.Write((UInt64)defn.Unknown);
+            Writer.Write((ulong)defn.Unknown);
     }
 
     public void WriteStructDefinition(StructDefinition defn)
     {
         Debug.Assert(Writer == MainWriter);
-        GR2.ObjectOffsets[defn] = new(Type, (UInt32)MainStream.Position);
+        GR2.ObjectOffsets[defn] = new(Type, (uint)MainStream.Position);
 
         var tag = GR2.Header.tag;
         foreach (var member in defn.Members)
@@ -224,7 +224,7 @@ public class WritableSection : Section
         var end = new MemberDefinition
         {
             Type = MemberType.None,
-            Extra = new UInt32[] { 0, 0, 0 }
+            Extra = new uint[] { 0, 0, 0 }
         };
 
         WriteMemberDefinition(end);
@@ -244,11 +244,11 @@ public class WritableSection : Section
     {
         if (Writer == MainWriter)
         {
-            GR2.ObjectOffsets[o] = new(Type, (UInt32)MainStream.Position);
+            GR2.ObjectOffsets[o] = new(Type, (uint)MainStream.Position);
         }
         else
         {
-            GR2.DataObjectOffsets[o] = new(Type, (UInt32)DataStream.Position);
+            GR2.DataObjectOffsets[o] = new(Type, (uint)DataStream.Position);
         }
     }
 
@@ -259,7 +259,7 @@ public class WritableSection : Section
             // Align the struct so its size (and the address of the subsequent struct) is a multiple of 4
             while (MainStream.Position % Header.alignment != 0)
             {
-                Writer.Write((Byte)0);
+                Writer.Write((byte)0);
             }
         }
         else
@@ -267,7 +267,7 @@ public class WritableSection : Section
             // Align the struct so its size (and the address of the subsequent struct) is a multiple of 4
             while (DataStream.Position % Header.alignment != 0)
             {
-                Writer.Write((Byte)0);
+                Writer.Write((byte)0);
             }
         }
     }
@@ -300,7 +300,7 @@ public class WritableSection : Section
         // struct won't have the same address.
         if (definition.Members.Count == 0)
         {
-            Writer.Write((Byte)0);
+            Writer.Write((byte)0);
         }
 
         if (Writer == MainWriter && allowRecursion)
@@ -369,7 +369,7 @@ public class WritableSection : Section
             }
 
             default:
-                throw new ParsingException(String.Format("Unhandled array member type: {0}", arrayDefn.Type.ToString()));
+                throw new ParsingException(string.Format("Unhandled array member type: {0}", arrayDefn.Type.ToString()));
         }
     }
 
@@ -535,54 +535,54 @@ public class WritableSection : Section
                 break;
 
             case MemberType.Real32:
-                Writer.Write((Single)node);
+                Writer.Write((float)node);
                 break;
 
             case MemberType.Int8:
             case MemberType.BinormalInt8:
-                Writer.Write((SByte)node);
+                Writer.Write((sbyte)node);
                 break;
 
             case MemberType.UInt8:
             case MemberType.NormalUInt8:
-                Writer.Write((Byte)node);
+                Writer.Write((byte)node);
                 break;
 
             case MemberType.Int16:
             case MemberType.BinormalInt16:
-                Writer.Write((Int16)node);
+                Writer.Write((short)node);
                 break;
 
             case MemberType.UInt16:
             case MemberType.NormalUInt16:
-                Writer.Write((UInt16)node);
+                Writer.Write((ushort)node);
                 break;
 
             case MemberType.Int32:
-                Writer.Write((Int32)node);
+                Writer.Write((int)node);
                 break;
 
             case MemberType.UInt32:
-                Writer.Write((UInt32)node);
+                Writer.Write((uint)node);
                 break;
 
             default:
-                throw new ParsingException(String.Format("Unhandled member type: {0}", definition.Type.ToString()));
+                throw new ParsingException(string.Format("Unhandled member type: {0}", definition.Type.ToString()));
         }
     }
 
     internal void WriteString(string s)
     {
-        GR2.DataObjectOffsets[s] = new(Type, (UInt32)DataStream.Position);
+        GR2.DataObjectOffsets[s] = new(Type, (uint)DataStream.Position);
         var bytes = Encoding.UTF8.GetBytes(s);
         DataWriter.Write(bytes);
-        DataWriter.Write((Byte)0);
+        DataWriter.Write((byte)0);
     }
 
     internal void WriteSectionRelocations(WritableSection section)
     {
-        section.Header.numRelocations = (UInt32)section.Fixups.Count;
-        section.Header.relocationsOffset = (UInt32)MainStream.Position;
+        section.Header.numRelocations = (uint)section.Fixups.Count;
+        section.Header.relocationsOffset = (uint)MainStream.Position;
 
         foreach (var fixup in section.Fixups)
         {
@@ -593,8 +593,8 @@ public class WritableSection : Section
 
     internal void WriteSectionMixedMarshallingRelocations(WritableSection section)
     {
-        section.Header.numMixedMarshallingData = (UInt32)section.MixedMarshalling.Count;
-        section.Header.mixedMarshallingDataOffset = (UInt32)MainStream.Position;
+        section.Header.numMixedMarshallingData = (uint)section.MixedMarshalling.Count;
+        section.Header.mixedMarshallingDataOffset = (uint)MainStream.Position;
 
         foreach (var marshal in section.MixedMarshalling)
         {
@@ -606,7 +606,7 @@ public class WritableSection : Section
 
     internal void WriteSectionReference(SectionReference r)
     {
-        Writer.Write((UInt32)r.Section);
+        Writer.Write((uint)r.Section);
         Writer.Write(r.Offset);
     }
 };
@@ -626,8 +626,8 @@ public class RelocationArea
 
     internal void WriteSectionRelocations(WritableSection section)
     {
-        section.Header.numRelocations = (UInt32)section.Fixups.Count;
-        section.Header.relocationsOffset = (UInt32)Stream.Position;
+        section.Header.numRelocations = (uint)section.Fixups.Count;
+        section.Header.relocationsOffset = (uint)Stream.Position;
 
         foreach (var fixup in section.Fixups)
         {
@@ -638,8 +638,8 @@ public class RelocationArea
 
     internal void WriteSectionMixedMarshallingRelocations(WritableSection section)
     {
-        section.Header.numMixedMarshallingData = (UInt32)section.MixedMarshalling.Count;
-        section.Header.mixedMarshallingDataOffset = (UInt32)Stream.Position;
+        section.Header.numMixedMarshallingData = (uint)section.MixedMarshalling.Count;
+        section.Header.mixedMarshallingDataOffset = (uint)Stream.Position;
 
         foreach (var marshal in section.MixedMarshalling)
         {
@@ -651,7 +651,7 @@ public class RelocationArea
 
     internal void WriteSectionReference(SectionReference r)
     {
-        Writer.Write((UInt32)r.Section);
+        Writer.Write((uint)r.Section);
         Writer.Write(r.Offset);
     }
 };
@@ -679,7 +679,7 @@ public class GR2Writer
     struct QueuedStringSerialization
     {
         public SectionType section;
-        public String str;
+        public string str;
     }
 
     internal readonly MemoryStream Stream;
@@ -700,7 +700,7 @@ public class GR2Writer
     internal readonly HashSet<string> Strings = new();
 
     // Version tag that will be written to the GR2 file
-    public UInt32 VersionTag = Header.DefaultTag;
+    public uint VersionTag = Header.DefaultTag;
 
     // Format of the GR2 file
     public Magic.Format Format = Magic.Format.LittleEndian32;
@@ -774,7 +774,7 @@ public class GR2Writer
     {
         foreach (var offset in DataObjectOffsets)
         {
-            offset.Value.Offset += (UInt32)Sections[(int)offset.Value.Section].MainStream.Length;
+            offset.Value.Offset += (uint)Sections[(int)offset.Value.Section].MainStream.Length;
             ObjectOffsets.Add(offset.Key, offset.Value);
         }
     }
@@ -798,7 +798,7 @@ public class GR2Writer
                 Sections.Add(section);
             }
 
-            Magic.headersSize = (UInt32)Stream.Position;
+            Magic.headersSize = (uint)Stream.Position;
 
             CurrentSection = Sections[(int)SectionType.Main];
             CurrentSection.WriteStruct(root);
@@ -820,8 +820,8 @@ public class GR2Writer
 
             foreach (var section in Sections)
             {
-                section.Header.first16bit = (UInt32)section.MainStream.Length;
-                section.Header.first8bit = (UInt32)section.MainStream.Length;
+                section.Header.first16bit = (uint)section.MainStream.Length;
+                section.Header.first8bit = (uint)section.MainStream.Length;
                 section.Finish();
             }
 
@@ -839,16 +839,16 @@ public class GR2Writer
             {
                 // Pad section size to a multiple of the section alignment
                 while (section.MainStream.Position % section.Header.alignment > 0)
-                    section.Writer.Write((Byte)0);
+                    section.Writer.Write((byte)0);
 
                 section.MainStream.Flush();
-                section.Header.offsetInFile = (UInt32)Stream.Position;
-                section.Header.uncompressedSize = (UInt32)section.MainStream.Length;
-                section.Header.compressedSize = (UInt32)section.MainStream.Length;
+                section.Header.offsetInFile = (uint)Stream.Position;
+                section.Header.uncompressedSize = (uint)section.MainStream.Length;
+                section.Header.compressedSize = (uint)section.MainStream.Length;
                 Writer.Write(section.MainStream.ToArray());
             }
 
-            var relocationsOffset = (UInt32)Stream.Position;
+            var relocationsOffset = (uint)Stream.Position;
             Writer.Write(Relocations.Stream.ToArray());
 
             foreach (var section in Sections)
@@ -860,7 +860,7 @@ public class GR2Writer
             var rootStruct = LookupStructDefinition(root.GetType(), root);
             Header.rootType = ObjectOffsets[rootStruct];
             Header.rootNode = new(SectionType.Main, 0);
-            Header.fileSize = (UInt32)Stream.Length;
+            Header.fileSize = (uint)Stream.Length;
 
             Stream.Seek(Magic.MagicSize + Header.Size(), SeekOrigin.Begin);
 
@@ -917,9 +917,9 @@ public class GR2Writer
         header.sectionsOffset = header.Size();
         header.rootType = new(); // Updated after serialization is finished
         header.rootNode = new(); // Updated after serialization is finished
-        header.numSections = (UInt32)SectionType.FirstVertexData + numCustomSections;
+        header.numSections = (uint)SectionType.FirstVertexData + numCustomSections;
         header.tag = VersionTag;
-        header.extraTags = new UInt32[Header.ExtraTagCount];
+        header.extraTags = new uint[Header.ExtraTagCount];
         for (int i = 0; i < Header.ExtraTagCount; i++)
             header.extraTags[i] = 0;
         header.stringTableCrc = 0;
@@ -965,7 +965,7 @@ public class GR2Writer
 
     public void WriteSectionReference(SectionReference r)
     {
-        Writer.Write((UInt32)r.Section);
+        Writer.Write((uint)r.Section);
         Writer.Write(r.Offset);
     }
 
@@ -1048,11 +1048,11 @@ public class GR2Writer
         serialization.member = member;
         serialization.list = list;
 
-        Sections[(int)serialization.section].CheckMixedMarshalling(list[0], elementType, (UInt32)list.Count);
+        Sections[(int)serialization.section].CheckMixedMarshalling(list[0], elementType, (uint)list.Count);
         ArrayWrites.Add(serialization);
     }
 
-    internal void QueueStringWrite(SectionType section, String s)
+    internal void QueueStringWrite(SectionType section, string s)
     {
         QueuedStringSerialization serialization;
         serialization.section = section;

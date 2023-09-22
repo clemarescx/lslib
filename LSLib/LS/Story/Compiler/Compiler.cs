@@ -317,8 +317,8 @@ public class Compiler
         }
     }
 
-    private void VerifyIRVariableCall(IRRule rule, IRVariable variable, FunctionSignature signature, Int32 parameterIndex, 
-        Int32 conditionIndex, bool not)
+    private void VerifyIRVariableCall(IRRule rule, IRVariable variable, FunctionSignature signature, int parameterIndex, 
+        int conditionIndex, bool not)
     {
         var ruleVar = rule.Variables[variable.Index];
         var param = signature.Params[parameterIndex];
@@ -379,8 +379,8 @@ public class Compiler
         }
     }
 
-    private void VerifyIRValueCall(IRRule rule, IRValue value, FunctionSignature signature, Int32 parameterIndex, 
-        Int32 conditionIndex, bool not)
+    private void VerifyIRValueCall(IRRule rule, IRValue value, FunctionSignature signature, int parameterIndex, 
+        int conditionIndex, bool not)
     {
         if (value is IRVariable)
         {
@@ -532,7 +532,7 @@ public class Compiler
          && type1.TypeId != type2.TypeId;
     }
 
-    private void VerifyIRBinaryConditionValue(IRRule rule, IRValue value, Int32 conditionIndex)
+    private void VerifyIRBinaryConditionValue(IRRule rule, IRValue value, int conditionIndex)
     {
         VerifyIRValue(rule, value, null);
 
@@ -550,7 +550,7 @@ public class Compiler
         }
     }
 
-    private void VerifyIRBinaryCondition(IRRule rule, IRBinaryCondition condition, Int32 conditionIndex)
+    private void VerifyIRBinaryCondition(IRRule rule, IRBinaryCondition condition, int conditionIndex)
     {
         ValueType lhs = condition.LValue.Type, 
                   rhs = condition.RValue.Type;
@@ -1017,7 +1017,7 @@ public class Compiler
     private bool PropagateRuleTypesFromParamList(IRRule rule, List<IRValue> parameters, FunctionSignature signature)
     {
         bool updated = false;
-        Int32 index = 0;
+        int index = 0;
         foreach (var param in parameters)
         {
             if (param is IRVariable)
@@ -1077,9 +1077,9 @@ public class Compiler
         return updated;
     }
 
-    private Int32 ComputeTupleSize(IRRule rule, IRFuncCondition condition, Int32 lastTupleSize)
+    private int ComputeTupleSize(IRRule rule, IRFuncCondition condition, int lastTupleSize)
     {
-        Int32 tupleSize = lastTupleSize;
+        int tupleSize = lastTupleSize;
         foreach (var param in condition.Params)
         {
             if (param is IRVariable)
@@ -1095,9 +1095,9 @@ public class Compiler
         return tupleSize;
     }
 
-    private Int32 ComputeTupleSize(IRRule rule, IRBinaryCondition condition, Int32 lastTupleSize)
+    private int ComputeTupleSize(IRRule rule, IRBinaryCondition condition, int lastTupleSize)
     {
-        Int32 tupleSize = lastTupleSize;
+        int tupleSize = lastTupleSize;
         if (condition.LValue is IRVariable)
         {
             var variable = condition.LValue as IRVariable;
@@ -1123,7 +1123,7 @@ public class Compiler
     {
         bool updated = false;
 
-        Int32 lastTupleSize = 0;
+        int lastTupleSize = 0;
         foreach (var condition in rule.Conditions)
         {
             if (condition is IRFuncCondition)

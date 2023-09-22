@@ -35,7 +35,7 @@ public class Root
     [Serialization(Kind = SerializationKind.None)]
     public bool ZUp = false;
     [Serialization(Kind = SerializationKind.None)]
-    public UInt32 GR2Tag;
+    public uint GR2Tag;
 
 
     public void TransformVertices(Matrix4 transformation)
@@ -106,7 +106,7 @@ public class Root
         }
     }
 
-    public void PostLoad(UInt32 tag)
+    public void PostLoad(uint tag)
     {
         GR2Tag = tag;
 

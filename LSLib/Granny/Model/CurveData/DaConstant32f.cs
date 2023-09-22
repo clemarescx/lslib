@@ -10,9 +10,9 @@ public class DaConstant32f : AnimationCurveData
 {
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_DaConstant32f;
-    public Int16 Padding;
+    public short Padding;
     [Serialization(Prototype = typeof(ControlReal32), Kind = SerializationKind.UserMember, Serializer = typeof(SingleListSerializer))]
-    public List<Single> Controls;
+    public List<float> Controls;
 
     public override int NumKnots()
     {

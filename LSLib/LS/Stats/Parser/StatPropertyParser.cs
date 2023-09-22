@@ -121,7 +121,7 @@ public partial class StatPropertyParser
         {
             Not = false,
             RequirementName = reqmtName,
-            IntParam = Int32.Parse(intArg as string),
+            IntParam = int.Parse(intArg as string),
             TagParam = ""
         };
     }

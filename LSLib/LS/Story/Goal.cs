@@ -6,7 +6,7 @@ namespace LSLib.LS.Story;
 
 public class Goal : OsirisSerializable
 {
-    public UInt32 Index;
+    public uint Index;
     public string Name;
     public byte SubGoalCombination;
     public List<GoalReference> ParentGoals;

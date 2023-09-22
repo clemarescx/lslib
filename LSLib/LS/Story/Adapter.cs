@@ -9,7 +9,7 @@ public class Adapter : OsirisSerializable
     /// <summary>
     /// Unique identifier of this adapter
     /// </summary>
-    public UInt32 Index;
+    public uint Index;
     /// <summary>
     /// Constant output values
     /// </summary>

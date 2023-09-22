@@ -244,7 +244,7 @@ public class StatDefinitionRepository
 
         foreach (var item in items)
         {
-            var index = Int32.Parse(item.Attribute("index").Value);
+            var index = int.Parse(item.Attribute("index").Value);
             var value = item.Attribute("value").Value;
             enumType.AddItem(index, value);
         }

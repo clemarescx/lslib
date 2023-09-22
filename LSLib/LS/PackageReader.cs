@@ -25,7 +25,7 @@ public class NotAPackageException : Exception
 
 public class PackageReader : IDisposable
 {
-    private readonly String _path;
+    private readonly string _path;
     private readonly bool _metadataOnly;
     private Stream[] _streams;
 
@@ -348,7 +348,7 @@ public class PackageReader : IDisposable
         using var reader = new BinaryReader(mainStream, new UTF8Encoding(), true);
         // Check for v13 package headers
         mainStream.Seek(-8, SeekOrigin.End);
-        Int32 headerSize = reader.ReadInt32();
+        int headerSize = reader.ReadInt32();
         byte[] signature = reader.ReadBytes(4);
         if (Package.Signature.SequenceEqual(signature))
         {
@@ -359,7 +359,7 @@ public class PackageReader : IDisposable
         // Check for v10 package headers
         mainStream.Seek(0, SeekOrigin.Begin);
         signature = reader.ReadBytes(4);
-        Int32 version;
+        int version;
         if (Package.Signature.SequenceEqual(signature))
         {
             version = reader.ReadInt32();

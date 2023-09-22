@@ -23,10 +23,10 @@ public class D4nK16uC15u : AnimationCurveData
 
     [Serialization(Type = MemberType.Inline)]
     public CurveDataHeader CurveDataHeader_D4nK16uC15u;
-    public UInt16 ScaleOffsetTableEntries;
-    public Single OneOverKnotScale;
+    public ushort ScaleOffsetTableEntries;
+    public float OneOverKnotScale;
     [Serialization(Prototype = typeof(ControlUInt16), Kind = SerializationKind.UserMember, Serializer = typeof(UInt16ListSerializer))]
-    public List<UInt16> KnotsControls;
+    public List<ushort> KnotsControls;
 
 
     public override int NumKnots()
@@ -44,7 +44,7 @@ public class D4nK16uC15u : AnimationCurveData
         return knots;
     }
 
-    private Quaternion QuatFromControl(UInt16 a, UInt16 b, UInt16 c, float[] scales, float[] offsets)
+    private Quaternion QuatFromControl(ushort a, ushort b, ushort c, float[] scales, float[] offsets)
     {
         // Control data format:
         //   ----- A -----  ----- B -----  ----- C -----

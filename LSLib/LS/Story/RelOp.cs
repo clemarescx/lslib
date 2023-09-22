@@ -44,7 +44,7 @@ public class RelOpNode : RelNode
 
         LeftValue.Write(writer);
         RightValue.Write(writer);
-        writer.Write((UInt32)RelOp);
+        writer.Write((uint)RelOp);
     }
 
     public override Type NodeType()
@@ -54,7 +54,7 @@ public class RelOpNode : RelNode
 
     public override string TypeName()
     {
-        return String.Format("RelOp {0}", RelOp);
+        return string.Format("RelOp {0}", RelOp);
     }
 
     public override void DebugDump(TextWriter writer, Story story)

@@ -28,12 +28,12 @@ public class GR2Reader
     internal Header Header;
     internal readonly List<Section> Sections = new();
     internal readonly Dictionary<StructReference, StructDefinition> Types = new();
-    private Dictionary<UInt32, object> CachedStructs = new();
+    private Dictionary<uint, object> CachedStructs = new();
 #if DEBUG_GR2_SERIALIZATION
         private HashSet<StructReference> DebugPendingResolve = new HashSet<StructReference>();
 #endif
 
-    public UInt32 Tag => Header.tag;
+    public uint Tag => Header.tag;
 
     public GR2Reader(Stream stream)
     {
@@ -135,7 +135,7 @@ public class GR2Reader
             rootType = ReadSectionReferenceUnchecked(),
             rootNode = ReadSectionReferenceUnchecked(),
             tag = InputReader.ReadUInt32(),
-            extraTags = new UInt32[Header.ExtraTagCount]
+            extraTags = new uint[Header.ExtraTagCount]
         };
 
         for (int i = 0; i < Header.ExtraTagCount; i++)
@@ -150,7 +150,7 @@ public class GR2Reader
         }
 
         if (header.version is < 6 or > 7)
-            throw new ParsingException(String.Format("Unsupported GR2 version; file is version {0}, supported versions are 6 and 7", header.version));
+            throw new ParsingException(string.Format("Unsupported GR2 version; file is version {0}, supported versions are 6 and 7", header.version));
 
         // if (header.tag != Header.Tag)
         //    throw new ParsingException(String.Format("Incorrect header tag; expected {0:X8}, got {1:X8}", Header.Tag, header.tag));
@@ -284,7 +284,7 @@ public class GR2Reader
         using var relocationsReader = new BinaryReader(relocationsStream, Encoding.Default, true);
         for (int i = 0; i < section.Header.numRelocations; i++)
         {
-            UInt32 offsetInSection = relocationsReader.ReadUInt32();
+            uint offsetInSection = relocationsReader.ReadUInt32();
             Debug.Assert(offsetInSection <= section.Header.uncompressedSize);
             var reference = ReadSectionReference(relocationsReader);
 
@@ -309,7 +309,7 @@ public class GR2Reader
         if (section.Header.compression == 4)
         {
             using var reader = new BinaryReader(InputStream, Encoding.Default, true);
-            UInt32 compressedSize = reader.ReadUInt32();
+            uint compressedSize = reader.ReadUInt32();
             byte[] compressed = reader.ReadBytes((int)compressedSize);
             var uncompressed = Granny2Compressor.Decompress4(
                 compressed, (int)(section.Header.numRelocations * 12));
@@ -323,7 +323,7 @@ public class GR2Reader
         }
     }
 
-    private void MixedMarshal(UInt32 count, StructDefinition definition)
+    private void MixedMarshal(uint count, StructDefinition definition)
     {
         for (var arrayIdx = 0; arrayIdx < count; arrayIdx++)
         {
@@ -369,8 +369,8 @@ public class GR2Reader
         using var relocationsReader = new BinaryReader(relocationsStream, Encoding.Default, true);
         for (int i = 0; i < section.Header.numMixedMarshallingData; i++)
         {
-            UInt32 count = relocationsReader.ReadUInt32();
-            UInt32 offsetInSection = relocationsReader.ReadUInt32();
+            uint count = relocationsReader.ReadUInt32();
+            uint offsetInSection = relocationsReader.ReadUInt32();
             Debug.Assert(offsetInSection <= section.Header.uncompressedSize);
             var type = ReadSectionReference(relocationsReader);
             var typeDefn = new StructReference
@@ -395,7 +395,7 @@ public class GR2Reader
         if (section.Header.compression == 4)
         {
             using var reader = new BinaryReader(InputStream, Encoding.Default, true);
-            UInt32 compressedSize = reader.ReadUInt32();
+            uint compressedSize = reader.ReadUInt32();
             byte[] compressed = reader.ReadBytes((int)compressedSize);
             var uncompressed = Granny2Compressor.Decompress4(
                 compressed, (int)(section.Header.numMixedMarshallingData * 16));
@@ -505,7 +505,7 @@ public class GR2Reader
         var defn = new MemberDefinition();
         int typeId = Reader.ReadInt32();
         if (typeId > (uint)MemberType.Max)
-            throw new ParsingException(String.Format("Unsupported member type: {0}", typeId));
+            throw new ParsingException(string.Format("Unsupported member type: {0}", typeId));
 
         defn.Type = (MemberType)typeId;
         var name = ReadStringReference();
@@ -524,14 +524,14 @@ public class GR2Reader
         }
         defn.Definition = ReadStructReference();
         defn.ArraySize = Reader.ReadUInt32();
-        defn.Extra = new UInt32[MemberDefinition.ExtraTagCount];
+        defn.Extra = new uint[MemberDefinition.ExtraTagCount];
         for (var i = 0; i < MemberDefinition.ExtraTagCount; i++)
             defn.Extra[i] = Reader.ReadUInt32();
         // TODO 64-bit: ???
         if (Magic.Is32Bit)
             defn.Unknown = Reader.ReadUInt32();
         else
-            defn.Unknown = (UInt32)Reader.ReadUInt64();
+            defn.Unknown = (uint)Reader.ReadUInt64();
 
         Debug.Assert(!defn.IsValid || defn.Unknown == 0);
 
@@ -589,7 +589,7 @@ public class GR2Reader
 
     internal object ReadStruct(StructDefinition definition, MemberType memberType, object node, object parent)
     {
-        var offset = (UInt32)Stream.Position;
+        var offset = (uint)Stream.Position;
         if (memberType != MemberType.Inline && CachedStructs.TryGetValue(offset, out var cachedNode))
         {
 #if DEBUG_GR2_SERIALIZATION
@@ -601,7 +601,7 @@ public class GR2Reader
 
         // Work around serialization of UserData and ExtendedData fields
         // whose structure may differ depending on the game and GR2 version
-        if (node != null && node.GetType() == typeof(Object))
+        if (node != null && node.GetType() == typeof(object))
         {
             node = null;
         }
@@ -1043,7 +1043,7 @@ public class GR2Reader
                 break;
 
             default:
-                throw new ParsingException(String.Format("Unhandled member type: {0}", definition.Type.ToString()));
+                throw new ParsingException(string.Format("Unhandled member type: {0}", definition.Type.ToString()));
         }
 
 #if DEBUG_GR2_SERIALIZATION
@@ -1085,14 +1085,14 @@ public class GR2Reader
         Stream.Position = (long)reference.Offset;
     }
 
-    internal void Seek(UInt32 section, UInt32 offset)
+    internal void Seek(uint section, uint offset)
     {
         Debug.Assert(section < Sections.Count);
         Debug.Assert(offset <= Sections[(int)section].Header.uncompressedSize);
         Stream.Position = Sections[(int)section].Header.offsetInFile + offset;
     }
 
-    internal void Seek(Section section, UInt32 offset)
+    internal void Seek(Section section, uint offset)
     {
         Debug.Assert(offset <= section.Header.uncompressedSize);
         Stream.Position = section.Header.offsetInFile + offset;

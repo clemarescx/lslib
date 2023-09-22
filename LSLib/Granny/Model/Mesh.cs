@@ -167,7 +167,7 @@ public class VertexAnnotationSet
     public string Name;
     [Serialization(Type = MemberType.ReferenceToVariantArray)]
     public List<object> VertexAnnotations;
-    public Int32 IndicesMapFromVertexToAnnotation;
+    public int IndicesMapFromVertexToAnnotation;
     public List<TriIndex> VertexAnnotationIndices;
 }
 
@@ -405,12 +405,12 @@ public class TriTopologyGroup
 
 public class TriIndex
 {
-    public Int32 Int32;
+    public int Int32;
 }
 
 public class TriIndex16
 {
-    public Int16 Int16;
+    public short Int16;
 }
 
 public class TriAnnotationSet
@@ -418,9 +418,9 @@ public class TriAnnotationSet
     public string Name;
     [Serialization(Type = MemberType.ReferenceToVariantArray)]
     public object TriAnnotations;
-    public Int32 IndicesMapFromTriToAnnotation;
+    public int IndicesMapFromTriToAnnotation;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer))]
-    public List<Int32> TriAnnotationIndices;
+    public List<int> TriAnnotationIndices;
 }
 
 public class TriTopologySectionSelector : SectionSelector
@@ -442,23 +442,23 @@ public class TriTopology
 {
     public List<TriTopologyGroup> Groups;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer))]
-    public List<Int32> Indices;
+    public List<int> Indices;
     [Serialization(Prototype = typeof(TriIndex16), Kind = SerializationKind.UserMember, Serializer = typeof(UInt16ListSerializer))]
-    public List<UInt16> Indices16;
+    public List<ushort> Indices16;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer))]
-    public List<Int32> VertexToVertexMap;
+    public List<int> VertexToVertexMap;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer))]
-    public List<Int32> VertexToTriangleMap;
+    public List<int> VertexToTriangleMap;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer))]
-    public List<Int32> SideToNeighborMap;
+    public List<int> SideToNeighborMap;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer), MinVersion = 0x80000038)]
-    public List<Int32> PolygonIndexStarts;
+    public List<int> PolygonIndexStarts;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer), MinVersion = 0x80000038)]
-    public List<Int32> PolygonIndices;
+    public List<int> PolygonIndices;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer))]
-    public List<Int32> BonesForTriangle;
+    public List<int> BonesForTriangle;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer))]
-    public List<Int32> TriangleToBoneIndices;
+    public List<int> TriangleToBoneIndices;
     public List<TriAnnotationSet> TriAnnotationSets;
 
     [Serialization(Kind = SerializationKind.None)]
@@ -571,7 +571,7 @@ public class BoneBinding
     [Serialization(ArraySize = 3)]
     public float[] OBBMax;
     [Serialization(Prototype = typeof(TriIndex), Kind = SerializationKind.UserMember, Serializer = typeof(Int32ListSerializer))]
-    public List<Int32> TriangleIndices;
+    public List<int> TriangleIndices;
 }
 
 public class MaterialReference
@@ -582,21 +582,21 @@ public class MaterialReference
 
 public class TextureLayout
 {
-    public Int32 BytesPerPixel;
+    public int BytesPerPixel;
     [Serialization(ArraySize = 4)]
-    public Int32[] ShiftForComponent;
+    public int[] ShiftForComponent;
     [Serialization(ArraySize = 4)]
-    public Int32[] BitsForComponent;
+    public int[] BitsForComponent;
 }
 
 public class PixelByte
 {
-    public Byte UInt8;
+    public byte UInt8;
 }
 
 public class TextureMipLevel
 {
-    public Int32 Stride;
+    public int Stride;
     public List<PixelByte> PixelBytes;
 }
 
@@ -608,11 +608,11 @@ public class TextureImage
 public class Texture
 {
     public string FromFileName;
-    public Int32 TextureType;
-    public Int32 Width;
-    public Int32 Height;
-    public Int32 Encoding;
-    public Int32 SubFormat;
+    public int TextureType;
+    public int Width;
+    public int Height;
+    public int Encoding;
+    public int SubFormat;
     [Serialization(Type = MemberType.Inline)]
     public TextureLayout Layout;
     public List<TextureImage> Images;
@@ -637,7 +637,7 @@ public class MorphTarget
     public string ScalarName;
     [Serialization(SectionSelector = typeof(VertexDataSectionSelector))]
     public VertexData VertexData;
-    public Int32 DataIsDeltas;
+    public int DataIsDeltas;
 }
     
 public class Mesh

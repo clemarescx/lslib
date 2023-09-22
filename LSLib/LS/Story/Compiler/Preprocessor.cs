@@ -8,7 +8,7 @@ namespace LSLib.LS.Story.Compiler;
 
 public class Preprocessor
 {
-    public bool Preprocess(String script, ref String preprocessed)
+    public bool Preprocess(string script, ref string preprocessed)
     {
         if (script.IndexOf("/* [OSITOOLS_ONLY]", StringComparison.Ordinal) == -1 
          && script.IndexOf("// [BEGIN_NO_OSITOOLS]", StringComparison.Ordinal) == -1)

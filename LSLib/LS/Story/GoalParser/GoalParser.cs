@@ -129,9 +129,9 @@ public class CodeLocation : IMerge<CodeLocation>
     }
 }
 
-public abstract class GoalScanBase : AbstractScanner<Object, CodeLocation>
+public abstract class GoalScanBase : AbstractScanner<object, CodeLocation>
 {
-    protected String fileName;
+    protected string fileName;
 
     public override CodeLocation yylloc { get; set; }
 
@@ -147,7 +147,7 @@ public abstract class GoalScanBase : AbstractScanner<Object, CodeLocation>
 
 public sealed partial class GoalScanner : GoalScanBase
 {
-    public GoalScanner(String fileName)
+    public GoalScanner(string fileName)
     {
         this.fileName = fileName;
     }
@@ -442,13 +442,13 @@ public partial class GoalParser
     {
         Location = location,
         Type = IRConstantType.Integer,
-        IntegerValue = Int64.Parse((string)val, ParserConstants.ParserCulture.NumberFormat)
+        IntegerValue = long.Parse((string)val, ParserConstants.ParserCulture.NumberFormat)
     };
 
     private ASTConstantValue MakeConstFloat(CodeLocation location, object val) => new()
     {
         Location = location,
         Type = IRConstantType.Float,
-        FloatValue = Single.Parse((string)val, ParserConstants.ParserCulture.NumberFormat)
+        FloatValue = float.Parse((string)val, ParserConstants.ParserCulture.NumberFormat)
     };
 }

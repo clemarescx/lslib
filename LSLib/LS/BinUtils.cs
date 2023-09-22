@@ -167,7 +167,7 @@ public static class BinUtils
             default:
                 // Strings are serialized differently for each file format and should be
                 // handled by the format-specific ReadAttribute()
-                throw new InvalidFormatException(String.Format("ReadAttribute() not implemented for type {0}", type));
+                throw new InvalidFormatException(string.Format("ReadAttribute() not implemented for type {0}", type));
         }
 
         return attr;
@@ -181,23 +181,23 @@ public static class BinUtils
                 break;
 
             case NodeAttribute.DataType.DT_Byte:
-                writer.Write((Byte)attr.Value);
+                writer.Write((byte)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_Short:
-                writer.Write((Int16)attr.Value);
+                writer.Write((short)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_UShort:
-                writer.Write((UInt16)attr.Value);
+                writer.Write((ushort)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_Int:
-                writer.Write((Int32)attr.Value);
+                writer.Write((int)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_UInt:
-                writer.Write((UInt32)attr.Value);
+                writer.Write((uint)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_Float:
@@ -205,7 +205,7 @@ public static class BinUtils
                 break;
 
             case NodeAttribute.DataType.DT_Double:
-                writer.Write((Double)attr.Value);
+                writer.Write((double)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_IVec2:
@@ -244,20 +244,20 @@ public static class BinUtils
             }
 
             case NodeAttribute.DataType.DT_Bool:
-                writer.Write((Byte)((Boolean)attr.Value ? 1 : 0));
+                writer.Write((byte)((bool)attr.Value ? 1 : 0));
                 break;
 
             case NodeAttribute.DataType.DT_ULongLong:
-                writer.Write((UInt64)attr.Value);
+                writer.Write((ulong)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_Long:
             case NodeAttribute.DataType.DT_Int64:
-                writer.Write((Int64)attr.Value);
+                writer.Write((long)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_Int8:
-                writer.Write((SByte)attr.Value);
+                writer.Write((sbyte)attr.Value);
                 break;
 
             case NodeAttribute.DataType.DT_UUID:
@@ -265,7 +265,7 @@ public static class BinUtils
                 break;
 
             default:
-                throw new InvalidFormatException(String.Format("WriteAttribute() not implemented for type {0}", attr.Type));
+                throw new InvalidFormatException(string.Format("WriteAttribute() not implemented for type {0}", attr.Type));
         }
     }
 
@@ -353,7 +353,7 @@ public static class BinUtils
 
             default:
             {
-                var msg = String.Format("No decompressor found for this format: {0}", compressionFlags);
+                var msg = string.Format("No decompressor found for this format: {0}", compressionFlags);
                 throw new InvalidDataException(msg);
             }
         }
