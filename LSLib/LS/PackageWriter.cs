@@ -11,7 +11,7 @@ using LZ4;
 
 namespace LSLib.LS;
 
-public class PackageWriter : IDisposable
+public sealed class PackageWriter : IDisposable
 {
     public delegate void WriteProgressDelegate(AbstractFileInfo abstractFile, long numerator, long denominator);
 
@@ -285,7 +285,7 @@ public class PackageWriter : IDisposable
         return writtenFiles;
     }
 
-    private void WriteFileListV15(BinaryWriter metadataWriter, List<PackagedFileInfo> files)
+    private static void WriteFileListV15(BinaryWriter metadataWriter, List<PackagedFileInfo> files)
     {
         byte[] fileListBuf;
         using (var fileList = new MemoryStream())
@@ -366,7 +366,7 @@ public class PackageWriter : IDisposable
         }
     }
 
-    private void WriteFileListV18(BinaryWriter metadataWriter, List<PackagedFileInfo> files)
+    private static void WriteFileListV18(BinaryWriter metadataWriter, List<PackagedFileInfo> files)
     {
         byte[] fileListBuf;
         using (var fileList = new MemoryStream())
