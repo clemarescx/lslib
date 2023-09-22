@@ -382,7 +382,7 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         var info = new PackagedFileInfo
         {
             PackageStream = dataStream,
-            OffsetInFile = entry.OffsetInFile1 | ((ulong)entry.OffsetInFile2 << 32),
+            OffsetInFile = entry.OffsetInFile1 | (ulong)entry.OffsetInFile2 << 32,
             SizeOnDisk = entry.SizeOnDisk,
             UncompressedSize = entry.UncompressedSize,
             ArchivePart = entry.ArchivePart,
@@ -499,7 +499,7 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         {
             Name = new byte[256],
             OffsetInFile1 = (uint)(OffsetInFile & 0xffffffff),
-            OffsetInFile2 = (ushort)((OffsetInFile >> 32) & 0xffff),
+            OffsetInFile2 = (ushort)(OffsetInFile >> 32 & 0xffff),
             SizeOnDisk = (uint)SizeOnDisk,
             UncompressedSize = (Flags & 0x0F) == 0 ? 0 : (uint)UncompressedSize,
             Flags = (byte)Flags,

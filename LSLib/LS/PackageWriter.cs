@@ -34,20 +34,23 @@ public class PackageWriter : IDisposable
 
     public void Dispose()
     {
-        foreach (Stream stream in _streams)
+        foreach (var stream in _streams)
         {
             stream.Dispose();
         }
     }
 
-    public int PaddingLength() => Version <= PackageVersion.V9 ? 0x8000 : 0x40;
+    private int PaddingLength() =>
+        Version <= PackageVersion.V9
+            ? 0x8000
+            : 0x40;
 
-    public PackagedFileInfo WriteFile(AbstractFileInfo info)
+    private PackagedFileInfo WriteFile(AbstractFileInfo info)
     {
         // Assume that all files are written uncompressed (worst-case) when calculating package sizes
         long size = (long)info.Size();
-        if ((Version < PackageVersion.V15 && _streams.Last().Position + size > MaxPackageSizeDOS)
-         || (Version >= PackageVersion.V16 && _streams.Last().Position + size > MaxPackageSizeBG3))
+        if (Version < PackageVersion.V15 && _streams.Last().Position + size > MaxPackageSizeDOS
+         || Version >= PackageVersion.V16 && _streams.Last().Position + size > MaxPackageSizeBG3)
         {
             // Start a new package file if the current one is full.
             string partPath = Package.MakePartFilename(_path, _streams.Count);

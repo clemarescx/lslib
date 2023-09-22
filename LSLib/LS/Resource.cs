@@ -21,18 +21,18 @@ public struct PackedVersion
     public static PackedVersion FromInt64(long packed) =>
         new()
         {
-            Major = (uint)((packed >> 55) & 0x7f),
-            Minor = (uint)((packed >> 47) & 0xff),
-            Revision = (uint)((packed >> 31) & 0xffff),
+            Major = (uint)(packed >> 55 & 0x7f),
+            Minor = (uint)(packed >> 47 & 0xff),
+            Revision = (uint)(packed >> 31 & 0xffff),
             Build = (uint)(packed & 0x7fffffff),
         };
 
     public static PackedVersion FromInt32(int packed) =>
         new()
         {
-            Major = (uint)((packed >> 28) & 0x0f),
-            Minor = (uint)((packed >> 24) & 0x0f),
-            Revision = (uint)((packed >> 16) & 0xff),
+            Major = (uint)(packed >> 28 & 0x0f),
+            Minor = (uint)(packed >> 24 & 0x0f),
+            Revision = (uint)(packed >> 16 & 0xff),
             Build = (uint)(packed & 0xffff),
         };
 

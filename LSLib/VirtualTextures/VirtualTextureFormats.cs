@@ -241,15 +241,15 @@ public struct GTSFourCCMetadata
     {
         get =>
             char.ToString((char)(FourCC & 0xff))
-          + char.ToString((char)((FourCC >> 8) & 0xff))
-          + char.ToString((char)((FourCC >> 16) & 0xff))
-          + char.ToString((char)((FourCC >> 24) & 0xff));
+          + char.ToString((char)(FourCC >> 8 & 0xff))
+          + char.ToString((char)(FourCC >> 16 & 0xff))
+          + char.ToString((char)(FourCC >> 24 & 0xff));
 
         set =>
             FourCC = value[0]
-                   | ((uint)value[1] << 8)
-                   | ((uint)value[2] << 16)
-                   | ((uint)value[3] << 24);
+                   | (uint)value[1] << 8
+                   | (uint)value[2] << 16
+                   | (uint)value[3] << 24;
     }
 }
 
@@ -279,9 +279,9 @@ public struct GTSPackedTileID
 
     public uint Layer => Val & 0x0F;
 
-    public uint Level => (Val >> 4) & 0x0F;
+    public uint Level => Val >> 4 & 0x0F;
 
-    public uint Y => (Val >> 8) & 0x0FFF;
+    public uint Y => Val >> 8 & 0x0FFF;
 
     public uint X => Val >> 20;
 }

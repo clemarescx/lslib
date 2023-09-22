@@ -279,7 +279,7 @@ internal struct Key2TableEntry
     /// <summary>
     /// Index of value in the appropriate variable list
     /// </summary>
-    public int ValueIndex => (int)((ValueIndexAndType >> 3) & 0x3ff);
+    public int ValueIndex => (int)(ValueIndexAndType >> 3 & 0x3ff);
 
     /// <summary>
     /// Type of value

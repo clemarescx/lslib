@@ -268,7 +268,7 @@ public class LSFWriter :ILSWriter
 
             var attributeInfo = new LSFAttributeEntryV2();
             var length = (uint)ValueStream.Position - lastOffset;
-            attributeInfo.TypeAndLength = (uint)entry.Value.Type | (length << 6);
+            attributeInfo.TypeAndLength = (uint)entry.Value.Type | length << 6;
             attributeInfo.NameHashTableIndex = AddStaticString(entry.Key);
             attributeInfo.NodeIndex = NextNodeIndex;
             BinUtils.WriteStruct<LSFAttributeEntryV2>(AttributeWriter, ref attributeInfo);
@@ -289,7 +289,7 @@ public class LSFWriter :ILSWriter
 
             var attributeInfo = new LSFAttributeEntryV3();
             var length = (uint)ValueStream.Position - lastOffset;
-            attributeInfo.TypeAndLength = (uint)entry.Value.Type | (length << 6);
+            attributeInfo.TypeAndLength = (uint)entry.Value.Type | length << 6;
             attributeInfo.NameHashTableIndex = AddStaticString(entry.Key);
             if (numWritten == node.Attributes.Count)
             {
@@ -395,8 +395,8 @@ public class LSFWriter :ILSWriter
     {
         if (Version >= LSFVersion.VerBG3 ||
             Meta.MajorVersion > 4 ||
-            (Meta.MajorVersion == 4 && Meta.Revision > 0) ||
-            (Meta.MajorVersion == 4 && Meta.Revision == 0 && Meta.BuildNumber >= 0x1a))
+            Meta.MajorVersion == 4 && Meta.Revision > 0 ||
+            Meta.MajorVersion == 4 && Meta.Revision == 0 && Meta.BuildNumber >= 0x1a)
         {
             writer.Write(fs.Version);
         }
@@ -468,17 +468,17 @@ public class LSFWriter :ILSWriter
     private uint AddStaticString(string s)
     {
         var hashCode = (uint)s.GetHashCode();
-        var bucket = (int)((hashCode & 0x1ff) ^ ((hashCode >> 9) & 0x1ff) ^ ((hashCode >> 18) & 0x1ff) ^ ((hashCode >> 27) & 0x1ff));
+        var bucket = (int)(hashCode & 0x1ff ^ hashCode >> 9 & 0x1ff ^ hashCode >> 18 & 0x1ff ^ hashCode >> 27 & 0x1ff);
         for (int i = 0; i < StringHashMap[bucket].Count; i++)
         {
             if (StringHashMap[bucket][i].Equals(s))
             {
-                return (uint)((bucket << 16) | i);
+                return (uint)(bucket << 16 | i);
             }
         }
 
         StringHashMap[bucket].Add(s);
-        return (uint)((bucket << 16) | (StringHashMap[bucket].Count - 1));
+        return (uint)(bucket << 16 | StringHashMap[bucket].Count - 1);
     }
 
     private void WriteStaticStrings(BinaryWriter writer)
