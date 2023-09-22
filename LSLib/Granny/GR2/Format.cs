@@ -42,20 +42,11 @@ public class Transform
     public Quaternion Rotation = Quaternion.Identity;
     public Matrix3 ScaleShear = Matrix3.Identity;
 
-    public bool HasTranslation
-    {
-        get { return ((Flags & (uint)TransformFlags.HasTranslation) != 0); }
-    }
+    public bool HasTranslation => ((Flags & (uint)TransformFlags.HasTranslation) != 0);
 
-    public bool HasRotation
-    {
-        get { return ((Flags & (uint)TransformFlags.HasRotation) != 0); }
-    }
+    public bool HasRotation => ((Flags & (uint)TransformFlags.HasRotation) != 0);
 
-    public bool HasScaleShear
-    {
-        get { return ((Flags & (uint)TransformFlags.HasScaleShear) != 0); }
-    }
+    public bool HasScaleShear => ((Flags & (uint)TransformFlags.HasScaleShear) != 0);
 
     public void SetTranslation(Vector3 translation)
     {
@@ -278,26 +269,17 @@ public class Magic
     /// <summary>
     /// Indicates the 32-bitness of the GR2 file.
     /// </summary>
-    public bool Is32Bit
-    {
-        get { return format is Format.LittleEndian32 or Format.BigEndian32; }
-    }
+    public bool Is32Bit => format is Format.LittleEndian32 or Format.BigEndian32;
 
     /// <summary>
     /// Indicates the 64-bitness of the GR2 file.
     /// </summary>
-    public bool Is64Bit
-    {
-        get { return format is Format.LittleEndian64 or Format.BigEndian64; }
-    }
+    public bool Is64Bit => format is Format.LittleEndian64 or Format.BigEndian64;
 
     /// <summary>
     /// Indicates the endianness of the GR2 file.
     /// </summary>
-    public bool IsLittleEndian
-    {
-        get { return format is Format.LittleEndian32 or Format.LittleEndian64; }
-    }
+    public bool IsLittleEndian => format is Format.LittleEndian32 or Format.LittleEndian64;
 
     /// <summary>
     /// 16-byte long file signature, one of the *Magic constants.
@@ -592,10 +574,7 @@ public class SectionReference
     /// <summary>
     /// Returns if the reference points to a valid address within the file
     /// </summary>
-    public bool IsValid
-    {
-        get { return Section != (UInt32)SectionType.Invalid; }
-    }
+    public bool IsValid => Section != (UInt32)SectionType.Invalid;
 
     public SectionReference()
     {
@@ -640,10 +619,7 @@ public class RelocatableReference
     /// <summary>
     /// Returns if the reference points to a valid address within the file
     /// </summary>
-    public bool IsValid
-    {
-        get { return Offset != 0; }
-    }
+    public bool IsValid => Offset != 0;
 
     public override bool Equals(object o)
     {
@@ -821,15 +797,9 @@ public class MemberDefinition
     /// </summary>
     public UInt32 MaxVersion = 0;
 
-    public bool IsValid
-    {
-        get { return Type != (UInt32)MemberType.None; }
-    }
+    public bool IsValid => Type != (UInt32)MemberType.None;
 
-    public bool IsScalar
-    {
-        get { return Type > MemberType.ReferenceToVariantArray; }
-    }
+    public bool IsScalar => Type > MemberType.ReferenceToVariantArray;
 
     public UInt32 Size(GR2Reader gr2)
     {

@@ -61,10 +61,7 @@ internal class FactPropertyDescriptor : PropertyDescriptor
         return false;
     }
 
-    public override Type ComponentType
-    {
-        get { return typeof(Fact); }
-    }
+    public override Type ComponentType => typeof(Fact);
 
     public override object GetValue(object component)
     {
@@ -72,10 +69,7 @@ internal class FactPropertyDescriptor : PropertyDescriptor
         return fact.Columns[Index].ToString();
     }
 
-    public override bool IsReadOnly
-    {
-        get { return false; }
-    }
+    public override bool IsReadOnly => false;
 
     public override Type PropertyType
     {

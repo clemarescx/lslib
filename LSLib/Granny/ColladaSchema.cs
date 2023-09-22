@@ -51,8 +51,8 @@ public partial class COLLADA
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -73,31 +73,31 @@ public partial class COLLADA
     [XmlElement("library_visual_scenes", typeof (library_visual_scenes))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     public COLLADAScene scene
     {
-        get { return sceneField; }
-        set { sceneField = value; }
+        get => sceneField;
+        set => sceneField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public VersionType version
     {
-        get { return versionField; }
-        set { versionField = value; }
+        get => versionField;
+        set => versionField = value;
     }
 }
 
@@ -137,65 +137,65 @@ public class asset
     [XmlElement("contributor")]
     public assetContributor[] contributor
     {
-        get { return contributorField; }
-        set { contributorField = value; }
+        get => contributorField;
+        set => contributorField = value;
     }
 
     /// <remarks />
     public DateTime created
     {
-        get { return createdField; }
-        set { createdField = value; }
+        get => createdField;
+        set => createdField = value;
     }
 
     /// <remarks />
     public string keywords
     {
-        get { return keywordsField; }
-        set { keywordsField = value; }
+        get => keywordsField;
+        set => keywordsField = value;
     }
 
     /// <remarks />
     public DateTime modified
     {
-        get { return modifiedField; }
-        set { modifiedField = value; }
+        get => modifiedField;
+        set => modifiedField = value;
     }
 
     /// <remarks />
     public string revision
     {
-        get { return revisionField; }
-        set { revisionField = value; }
+        get => revisionField;
+        set => revisionField = value;
     }
 
     /// <remarks />
     public string subject
     {
-        get { return subjectField; }
-        set { subjectField = value; }
+        get => subjectField;
+        set => subjectField = value;
     }
 
     /// <remarks />
     public string title
     {
-        get { return titleField; }
-        set { titleField = value; }
+        get => titleField;
+        set => titleField = value;
     }
 
     /// <remarks />
     public assetUnit unit
     {
-        get { return unitField; }
-        set { unitField = value; }
+        get => unitField;
+        set => unitField = value;
     }
 
     /// <remarks />
     [DefaultValue(UpAxisType.Y_UP)]
     public UpAxisType up_axis
     {
-        get { return up_axisField; }
-        set { up_axisField = value; }
+        get => up_axisField;
+        set => up_axisField = value;
     }
 }
 
@@ -220,37 +220,37 @@ public class assetContributor
     /// <remarks />
     public string author
     {
-        get { return authorField; }
-        set { authorField = value; }
+        get => authorField;
+        set => authorField = value;
     }
 
     /// <remarks />
     public string authoring_tool
     {
-        get { return authoring_toolField; }
-        set { authoring_toolField = value; }
+        get => authoring_toolField;
+        set => authoring_toolField = value;
     }
 
     /// <remarks />
     public string comments
     {
-        get { return commentsField; }
-        set { commentsField = value; }
+        get => commentsField;
+        set => commentsField = value;
     }
 
     /// <remarks />
     public string copyright
     {
-        get { return copyrightField; }
-        set { copyrightField = value; }
+        get => copyrightField;
+        set => copyrightField = value;
     }
 
     /// <remarks />
     [XmlElement(DataType = "anyURI")]
     public string source_data
     {
-        get { return source_dataField; }
-        set { source_dataField = value; }
+        get => source_dataField;
+        set => source_dataField = value;
     }
 }
 
@@ -281,8 +281,8 @@ public class fx_surface_init_from_common
     [DefaultValue(typeof (uint), "0")]
     public uint mip
     {
-        get { return mipField; }
-        set { mipField = value; }
+        get => mipField;
+        set => mipField = value;
     }
 
     /// <remarks />
@@ -290,8 +290,8 @@ public class fx_surface_init_from_common
     [DefaultValue(typeof (uint), "0")]
     public uint slice
     {
-        get { return sliceField; }
-        set { sliceField = value; }
+        get => sliceField;
+        set => sliceField = value;
     }
 
     /// <remarks />
@@ -299,16 +299,16 @@ public class fx_surface_init_from_common
     [DefaultValue(fx_surface_face_enum.POSITIVE_X)]
     public fx_surface_face_enum face
     {
-        get { return faceField; }
-        set { faceField = value; }
+        get => faceField;
+        set => faceField = value;
     }
 
     /// <remarks />
     [XmlText(DataType = "IDREF")]
     public string Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -355,8 +355,8 @@ public class common_newparam_type
     [XmlElement(DataType = "NCName")]
     public string semantic
     {
-        get { return semanticField; }
-        set { semanticField = value; }
+        get => semanticField;
+        set => semanticField = value;
     }
 
     /// <remarks />
@@ -369,24 +369,24 @@ public class common_newparam_type
     [XmlChoiceIdentifier("ItemElementName")]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public ItemChoiceType ItemElementName
     {
-        get { return itemElementNameField; }
-        set { itemElementNameField = value; }
+        get => itemElementNameField;
+        set => itemElementNameField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 }
 
@@ -428,79 +428,79 @@ public class fx_sampler2D_common
     [XmlElement(DataType = "NCName")]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_s
     {
-        get { return wrap_sField; }
-        set { wrap_sField = value; }
+        get => wrap_sField;
+        set => wrap_sField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_t
     {
-        get { return wrap_tField; }
-        set { wrap_tField = value; }
+        get => wrap_tField;
+        set => wrap_tField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common minfilter
     {
-        get { return minfilterField; }
-        set { minfilterField = value; }
+        get => minfilterField;
+        set => minfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common magfilter
     {
-        get { return magfilterField; }
-        set { magfilterField = value; }
+        get => magfilterField;
+        set => magfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common mipfilter
     {
-        get { return mipfilterField; }
-        set { mipfilterField = value; }
+        get => mipfilterField;
+        set => mipfilterField = value;
     }
 
     /// <remarks />
     public string border_color
     {
-        get { return border_colorField; }
-        set { border_colorField = value; }
+        get => border_colorField;
+        set => border_colorField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (byte), "255")]
     public byte mipmap_maxlevel
     {
-        get { return mipmap_maxlevelField; }
-        set { mipmap_maxlevelField = value; }
+        get => mipmap_maxlevelField;
+        set => mipmap_maxlevelField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (float), "0")]
     public float mipmap_bias
     {
-        get { return mipmap_biasField; }
-        set { mipmap_biasField = value; }
+        get => mipmap_biasField;
+        set => mipmap_biasField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -575,40 +575,40 @@ public class extra
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NMTOKEN")]
     public string type
     {
-        get { return typeField; }
-        set { typeField = value; }
+        get => typeField;
+        set => typeField = value;
     }
 }
 
@@ -629,16 +629,16 @@ public class technique
     [XmlAnyElement]
     public XmlElement[] Any
     {
-        get { return anyField; }
-        set { anyField = value; }
+        get => anyField;
+        set => anyField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NMTOKEN")]
     public string profile
     {
-        get { return profileField; }
-        set { profileField = value; }
+        get => profileField;
+        set => profileField = value;
     }
 }
 
@@ -682,59 +682,59 @@ public class fx_surface_common
     /// <remarks />
     public object init_as_null
     {
-        get { return init_as_nullField; }
-        set { init_as_nullField = value; }
+        get => init_as_nullField;
+        set => init_as_nullField = value;
     }
 
     /// <remarks />
     public object init_as_target
     {
-        get { return init_as_targetField; }
-        set { init_as_targetField = value; }
+        get => init_as_targetField;
+        set => init_as_targetField = value;
     }
 
     /// <remarks />
     public fx_surface_init_cube_common init_cube
     {
-        get { return init_cubeField; }
-        set { init_cubeField = value; }
+        get => init_cubeField;
+        set => init_cubeField = value;
     }
 
     /// <remarks />
     public fx_surface_init_volume_common init_volume
     {
-        get { return init_volumeField; }
-        set { init_volumeField = value; }
+        get => init_volumeField;
+        set => init_volumeField = value;
     }
 
     /// <remarks />
     public fx_surface_init_planar_common init_planar
     {
-        get { return init_planarField; }
-        set { init_planarField = value; }
+        get => init_planarField;
+        set => init_planarField = value;
     }
 
     /// <remarks />
     [XmlElement("init_from")]
     public fx_surface_init_from_common[] init_from
     {
-        get { return init_fromField; }
-        set { init_fromField = value; }
+        get => init_fromField;
+        set => init_fromField = value;
     }
 
     /// <remarks />
     [XmlElement(DataType = "token")]
     public string format
     {
-        get { return formatField; }
-        set { formatField = value; }
+        get => formatField;
+        set => formatField = value;
     }
 
     /// <remarks />
     public fx_surface_format_hint_common format_hint
     {
-        get { return format_hintField; }
-        set { format_hintField = value; }
+        get => format_hintField;
+        set => format_hintField = value;
     }
 
     /// <remarks />
@@ -742,47 +742,47 @@ public class fx_surface_common
     [XmlElement("viewport_ratio", typeof (double))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (uint), "0")]
     public uint mip_levels
     {
-        get { return mip_levelsField; }
-        set { mip_levelsField = value; }
+        get => mip_levelsField;
+        set => mip_levelsField = value;
     }
 
     /// <remarks />
     public bool mipmap_generate
     {
-        get { return mipmap_generateField; }
-        set { mipmap_generateField = value; }
+        get => mipmap_generateField;
+        set => mipmap_generateField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public bool mipmap_generateSpecified
     {
-        get { return mipmap_generateFieldSpecified; }
-        set { mipmap_generateFieldSpecified = value; }
+        get => mipmap_generateFieldSpecified;
+        set => mipmap_generateFieldSpecified = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public fx_surface_type_enum type
     {
-        get { return typeField; }
-        set { typeField = value; }
+        get => typeField;
+        set => typeField = value;
     }
 }
 
@@ -802,8 +802,8 @@ public class fx_surface_init_cube_common
     [XmlElement("primary", typeof (fx_surface_init_cube_commonPrimary))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 }
 
@@ -821,8 +821,8 @@ public class fx_surface_init_cube_commonAll
     [XmlAttribute(DataType = "IDREF")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -840,8 +840,8 @@ public class fx_surface_init_cube_commonFace
     [XmlAttribute(DataType = "IDREF")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -861,16 +861,16 @@ public class fx_surface_init_cube_commonPrimary
     [XmlElement("order")]
     public fx_surface_face_enum[] order
     {
-        get { return orderField; }
-        set { orderField = value; }
+        get => orderField;
+        set => orderField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "IDREF")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -889,8 +889,8 @@ public class fx_surface_init_volume_common
     [XmlElement("primary", typeof (fx_surface_init_volume_commonPrimary))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 }
 
@@ -908,8 +908,8 @@ public class fx_surface_init_volume_commonAll
     [XmlAttribute(DataType = "IDREF")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -927,8 +927,8 @@ public class fx_surface_init_volume_commonPrimary
     [XmlAttribute(DataType = "IDREF")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -946,8 +946,8 @@ public class fx_surface_init_planar_common
     [XmlElement("all")]
     public fx_surface_init_planar_commonAll Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 }
 
@@ -965,8 +965,8 @@ public class fx_surface_init_planar_commonAll
     [XmlAttribute(DataType = "IDREF")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -990,46 +990,46 @@ public class fx_surface_format_hint_common
     /// <remarks />
     public fx_surface_format_hint_channels_enum channels
     {
-        get { return channelsField; }
-        set { channelsField = value; }
+        get => channelsField;
+        set => channelsField = value;
     }
 
     /// <remarks />
     public fx_surface_format_hint_range_enum range
     {
-        get { return rangeField; }
-        set { rangeField = value; }
+        get => rangeField;
+        set => rangeField = value;
     }
 
     /// <remarks />
     public fx_surface_format_hint_precision_enum precision
     {
-        get { return precisionField; }
-        set { precisionField = value; }
+        get => precisionField;
+        set => precisionField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public bool precisionSpecified
     {
-        get { return precisionFieldSpecified; }
-        set { precisionFieldSpecified = value; }
+        get => precisionFieldSpecified;
+        set => precisionFieldSpecified = value;
     }
 
     /// <remarks />
     [XmlElement("option")]
     public fx_surface_format_hint_option_enum[] option
     {
-        get { return optionField; }
-        set { optionField = value; }
+        get => optionField;
+        set => optionField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -1188,8 +1188,8 @@ public class common_color_or_texture_type
     [XmlElement("texture", typeof (common_color_or_texture_typeTexture))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 }
 
@@ -1209,25 +1209,25 @@ public class common_color_or_texture_typeColor
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertDoubleArray(value); }
+        set => Values = COLLADA.ConvertDoubleArray(value);
     }
 
     /// <remarks />
     [XmlIgnore]
     public double[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -1245,8 +1245,8 @@ public class common_color_or_texture_typeParam
     [XmlAttribute(DataType = "NCName")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -1266,24 +1266,24 @@ public class common_color_or_texture_typeTexture
     /// <remarks />
     public extra extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string texture
     {
-        get { return textureField; }
-        set { textureField = value; }
+        get => textureField;
+        set => textureField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string texcoord
     {
-        get { return texcoordField; }
-        set { texcoordField = value; }
+        get => texcoordField;
+        set => texcoordField = value;
     }
 }
 
@@ -1307,8 +1307,8 @@ public class common_transparent_type : common_color_or_texture_type
     [DefaultValue(fx_opaque_enum.A_ONE)]
     public fx_opaque_enum opaque
     {
-        get { return opaqueField; }
-        set { opaqueField = value; }
+        get => opaqueField;
+        set => opaqueField = value;
     }
 }
 
@@ -1340,8 +1340,8 @@ public class common_float_or_param_type
     [XmlElement("param", typeof (common_float_or_param_typeParam))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 }
 
@@ -1361,16 +1361,16 @@ public class common_float_or_param_typeFloat
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public double Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -1388,8 +1388,8 @@ public class common_float_or_param_typeParam
     [XmlAttribute(DataType = "NCName")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -1409,16 +1409,16 @@ public class fx_include_common
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string url
     {
-        get { return urlField; }
-        set { urlField = value; }
+        get => urlField;
+        set => urlField = value;
     }
 }
 
@@ -1451,48 +1451,48 @@ public class fx_samplerDEPTH_common
     [XmlElement(DataType = "NCName")]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_s
     {
-        get { return wrap_sField; }
-        set { wrap_sField = value; }
+        get => wrap_sField;
+        set => wrap_sField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_t
     {
-        get { return wrap_tField; }
-        set { wrap_tField = value; }
+        get => wrap_tField;
+        set => wrap_tField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common minfilter
     {
-        get { return minfilterField; }
-        set { minfilterField = value; }
+        get => minfilterField;
+        set => minfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common magfilter
     {
-        get { return magfilterField; }
-        set { magfilterField = value; }
+        get => magfilterField;
+        set => magfilterField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -1534,79 +1534,79 @@ public class fx_samplerRECT_common
     [XmlElement(DataType = "NCName")]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_s
     {
-        get { return wrap_sField; }
-        set { wrap_sField = value; }
+        get => wrap_sField;
+        set => wrap_sField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_t
     {
-        get { return wrap_tField; }
-        set { wrap_tField = value; }
+        get => wrap_tField;
+        set => wrap_tField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common minfilter
     {
-        get { return minfilterField; }
-        set { minfilterField = value; }
+        get => minfilterField;
+        set => minfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common magfilter
     {
-        get { return magfilterField; }
-        set { magfilterField = value; }
+        get => magfilterField;
+        set => magfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common mipfilter
     {
-        get { return mipfilterField; }
-        set { mipfilterField = value; }
+        get => mipfilterField;
+        set => mipfilterField = value;
     }
 
     /// <remarks />
     public string border_color
     {
-        get { return border_colorField; }
-        set { border_colorField = value; }
+        get => border_colorField;
+        set => border_colorField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (byte), "255")]
     public byte mipmap_maxlevel
     {
-        get { return mipmap_maxlevelField; }
-        set { mipmap_maxlevelField = value; }
+        get => mipmap_maxlevelField;
+        set => mipmap_maxlevelField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (float), "0")]
     public float mipmap_bias
     {
-        get { return mipmap_biasField; }
-        set { mipmap_biasField = value; }
+        get => mipmap_biasField;
+        set => mipmap_biasField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -1649,87 +1649,87 @@ public class fx_samplerCUBE_common
     [XmlElement(DataType = "NCName")]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_s
     {
-        get { return wrap_sField; }
-        set { wrap_sField = value; }
+        get => wrap_sField;
+        set => wrap_sField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_t
     {
-        get { return wrap_tField; }
-        set { wrap_tField = value; }
+        get => wrap_tField;
+        set => wrap_tField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_p
     {
-        get { return wrap_pField; }
-        set { wrap_pField = value; }
+        get => wrap_pField;
+        set => wrap_pField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common minfilter
     {
-        get { return minfilterField; }
-        set { minfilterField = value; }
+        get => minfilterField;
+        set => minfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common magfilter
     {
-        get { return magfilterField; }
-        set { magfilterField = value; }
+        get => magfilterField;
+        set => magfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common mipfilter
     {
-        get { return mipfilterField; }
-        set { mipfilterField = value; }
+        get => mipfilterField;
+        set => mipfilterField = value;
     }
 
     /// <remarks />
     public string border_color
     {
-        get { return border_colorField; }
-        set { border_colorField = value; }
+        get => border_colorField;
+        set => border_colorField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (byte), "255")]
     public byte mipmap_maxlevel
     {
-        get { return mipmap_maxlevelField; }
-        set { mipmap_maxlevelField = value; }
+        get => mipmap_maxlevelField;
+        set => mipmap_maxlevelField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (float), "0")]
     public float mipmap_bias
     {
-        get { return mipmap_biasField; }
-        set { mipmap_biasField = value; }
+        get => mipmap_biasField;
+        set => mipmap_biasField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -1772,87 +1772,87 @@ public class fx_sampler3D_common
     [XmlElement(DataType = "NCName")]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_s
     {
-        get { return wrap_sField; }
-        set { wrap_sField = value; }
+        get => wrap_sField;
+        set => wrap_sField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_t
     {
-        get { return wrap_tField; }
-        set { wrap_tField = value; }
+        get => wrap_tField;
+        set => wrap_tField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_p
     {
-        get { return wrap_pField; }
-        set { wrap_pField = value; }
+        get => wrap_pField;
+        set => wrap_pField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common minfilter
     {
-        get { return minfilterField; }
-        set { minfilterField = value; }
+        get => minfilterField;
+        set => minfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common magfilter
     {
-        get { return magfilterField; }
-        set { magfilterField = value; }
+        get => magfilterField;
+        set => magfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common mipfilter
     {
-        get { return mipfilterField; }
-        set { mipfilterField = value; }
+        get => mipfilterField;
+        set => mipfilterField = value;
     }
 
     /// <remarks />
     public string border_color
     {
-        get { return border_colorField; }
-        set { border_colorField = value; }
+        get => border_colorField;
+        set => border_colorField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (byte), "255")]
     public byte mipmap_maxlevel
     {
-        get { return mipmap_maxlevelField; }
-        set { mipmap_maxlevelField = value; }
+        get => mipmap_maxlevelField;
+        set => mipmap_maxlevelField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (float), "0")]
     public float mipmap_bias
     {
-        get { return mipmap_biasField; }
-        set { mipmap_biasField = value; }
+        get => mipmap_biasField;
+        set => mipmap_biasField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -1891,71 +1891,71 @@ public class fx_sampler1D_common
     [XmlElement(DataType = "NCName")]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_wrap_common.WRAP)]
     public fx_sampler_wrap_common wrap_s
     {
-        get { return wrap_sField; }
-        set { wrap_sField = value; }
+        get => wrap_sField;
+        set => wrap_sField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common minfilter
     {
-        get { return minfilterField; }
-        set { minfilterField = value; }
+        get => minfilterField;
+        set => minfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common magfilter
     {
-        get { return magfilterField; }
-        set { magfilterField = value; }
+        get => magfilterField;
+        set => magfilterField = value;
     }
 
     /// <remarks />
     [DefaultValue(fx_sampler_filter_common.NONE)]
     public fx_sampler_filter_common mipfilter
     {
-        get { return mipfilterField; }
-        set { mipfilterField = value; }
+        get => mipfilterField;
+        set => mipfilterField = value;
     }
 
     /// <remarks />
     public string border_color
     {
-        get { return border_colorField; }
-        set { border_colorField = value; }
+        get => border_colorField;
+        set => border_colorField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (byte), "0")]
     public byte mipmap_maxlevel
     {
-        get { return mipmap_maxlevelField; }
-        set { mipmap_maxlevelField = value; }
+        get => mipmap_maxlevelField;
+        set => mipmap_maxlevelField = value;
     }
 
     /// <remarks />
     [DefaultValue(typeof (float), "0")]
     public float mipmap_bias
     {
-        get { return mipmap_biasField; }
-        set { mipmap_biasField = value; }
+        get => mipmap_biasField;
+        set => mipmap_biasField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -1975,16 +1975,16 @@ public class InputGlobal
     [XmlAttribute(DataType = "NMTOKEN")]
     public string semantic
     {
-        get { return semanticField; }
-        set { semanticField = value; }
+        get => semanticField;
+        set => semanticField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 }
 
@@ -2070,291 +2070,291 @@ public class fx_newparam_common
     [XmlElement("annotate")]
     public fx_annotate_common[] annotate
     {
-        get { return annotateField; }
-        set { annotateField = value; }
+        get => annotateField;
+        set => annotateField = value;
     }
 
     /// <remarks />
     [XmlElement(DataType = "NCName")]
     public string semantic
     {
-        get { return semanticField; }
-        set { semanticField = value; }
+        get => semanticField;
+        set => semanticField = value;
     }
 
     /// <remarks />
     public fx_modifier_enum_common modifier
     {
-        get { return modifierField; }
-        set { modifierField = value; }
+        get => modifierField;
+        set => modifierField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public bool modifierSpecified
     {
-        get { return modifierFieldSpecified; }
-        set { modifierFieldSpecified = value; }
+        get => modifierFieldSpecified;
+        set => modifierFieldSpecified = value;
     }
 
     /// <remarks />
     public bool @bool
     {
-        get { return boolField; }
-        set { boolField = value; }
+        get => boolField;
+        set => boolField = value;
     }
 
     /// <remarks />
     public string bool2
     {
-        get { return bool2Field; }
-        set { bool2Field = value; }
+        get => bool2Field;
+        set => bool2Field = value;
     }
 
     /// <remarks />
     public string bool3
     {
-        get { return bool3Field; }
-        set { bool3Field = value; }
+        get => bool3Field;
+        set => bool3Field = value;
     }
 
     /// <remarks />
     public string bool4
     {
-        get { return bool4Field; }
-        set { bool4Field = value; }
+        get => bool4Field;
+        set => bool4Field = value;
     }
 
     /// <remarks />
     public long @int
     {
-        get { return intField; }
-        set { intField = value; }
+        get => intField;
+        set => intField = value;
     }
 
     /// <remarks />
     public string int2
     {
-        get { return int2Field; }
-        set { int2Field = value; }
+        get => int2Field;
+        set => int2Field = value;
     }
 
     /// <remarks />
     public string int3
     {
-        get { return int3Field; }
-        set { int3Field = value; }
+        get => int3Field;
+        set => int3Field = value;
     }
 
     /// <remarks />
     public string int4
     {
-        get { return int4Field; }
-        set { int4Field = value; }
+        get => int4Field;
+        set => int4Field = value;
     }
 
     /// <remarks />
     public double @float
     {
-        get { return floatField; }
-        set { floatField = value; }
+        get => floatField;
+        set => floatField = value;
     }
 
     /// <remarks />
     public string float2
     {
-        get { return float2Field; }
-        set { float2Field = value; }
+        get => float2Field;
+        set => float2Field = value;
     }
 
     /// <remarks />
     public string float3
     {
-        get { return float3Field; }
-        set { float3Field = value; }
+        get => float3Field;
+        set => float3Field = value;
     }
 
     /// <remarks />
     public string float4
     {
-        get { return float4Field; }
-        set { float4Field = value; }
+        get => float4Field;
+        set => float4Field = value;
     }
 
     /// <remarks />
     public double float1x1
     {
-        get { return float1x1Field; }
-        set { float1x1Field = value; }
+        get => float1x1Field;
+        set => float1x1Field = value;
     }
 
     /// <remarks />
     public string float1x2
     {
-        get { return float1x2Field; }
-        set { float1x2Field = value; }
+        get => float1x2Field;
+        set => float1x2Field = value;
     }
 
     /// <remarks />
     public string float1x3
     {
-        get { return float1x3Field; }
-        set { float1x3Field = value; }
+        get => float1x3Field;
+        set => float1x3Field = value;
     }
 
     /// <remarks />
     public string float1x4
     {
-        get { return float1x4Field; }
-        set { float1x4Field = value; }
+        get => float1x4Field;
+        set => float1x4Field = value;
     }
 
     /// <remarks />
     public string float2x1
     {
-        get { return float2x1Field; }
-        set { float2x1Field = value; }
+        get => float2x1Field;
+        set => float2x1Field = value;
     }
 
     /// <remarks />
     public string float2x2
     {
-        get { return float2x2Field; }
-        set { float2x2Field = value; }
+        get => float2x2Field;
+        set => float2x2Field = value;
     }
 
     /// <remarks />
     public string float2x3
     {
-        get { return float2x3Field; }
-        set { float2x3Field = value; }
+        get => float2x3Field;
+        set => float2x3Field = value;
     }
 
     /// <remarks />
     public string float2x4
     {
-        get { return float2x4Field; }
-        set { float2x4Field = value; }
+        get => float2x4Field;
+        set => float2x4Field = value;
     }
 
     /// <remarks />
     public string float3x1
     {
-        get { return float3x1Field; }
-        set { float3x1Field = value; }
+        get => float3x1Field;
+        set => float3x1Field = value;
     }
 
     /// <remarks />
     public string float3x2
     {
-        get { return float3x2Field; }
-        set { float3x2Field = value; }
+        get => float3x2Field;
+        set => float3x2Field = value;
     }
 
     /// <remarks />
     public string float3x3
     {
-        get { return float3x3Field; }
-        set { float3x3Field = value; }
+        get => float3x3Field;
+        set => float3x3Field = value;
     }
 
     /// <remarks />
     public string float3x4
     {
-        get { return float3x4Field; }
-        set { float3x4Field = value; }
+        get => float3x4Field;
+        set => float3x4Field = value;
     }
 
     /// <remarks />
     public string float4x1
     {
-        get { return float4x1Field; }
-        set { float4x1Field = value; }
+        get => float4x1Field;
+        set => float4x1Field = value;
     }
 
     /// <remarks />
     public string float4x2
     {
-        get { return float4x2Field; }
-        set { float4x2Field = value; }
+        get => float4x2Field;
+        set => float4x2Field = value;
     }
 
     /// <remarks />
     public string float4x3
     {
-        get { return float4x3Field; }
-        set { float4x3Field = value; }
+        get => float4x3Field;
+        set => float4x3Field = value;
     }
 
     /// <remarks />
     public string float4x4
     {
-        get { return float4x4Field; }
-        set { float4x4Field = value; }
+        get => float4x4Field;
+        set => float4x4Field = value;
     }
 
     /// <remarks />
     public fx_surface_common surface
     {
-        get { return surfaceField; }
-        set { surfaceField = value; }
+        get => surfaceField;
+        set => surfaceField = value;
     }
 
     /// <remarks />
     public fx_sampler1D_common sampler1D
     {
-        get { return sampler1DField; }
-        set { sampler1DField = value; }
+        get => sampler1DField;
+        set => sampler1DField = value;
     }
 
     /// <remarks />
     public fx_sampler2D_common sampler2D
     {
-        get { return sampler2DField; }
-        set { sampler2DField = value; }
+        get => sampler2DField;
+        set => sampler2DField = value;
     }
 
     /// <remarks />
     public fx_sampler3D_common sampler3D
     {
-        get { return sampler3DField; }
-        set { sampler3DField = value; }
+        get => sampler3DField;
+        set => sampler3DField = value;
     }
 
     /// <remarks />
     public fx_samplerCUBE_common samplerCUBE
     {
-        get { return samplerCUBEField; }
-        set { samplerCUBEField = value; }
+        get => samplerCUBEField;
+        set => samplerCUBEField = value;
     }
 
     /// <remarks />
     public fx_samplerRECT_common samplerRECT
     {
-        get { return samplerRECTField; }
-        set { samplerRECTField = value; }
+        get => samplerRECTField;
+        set => samplerRECTField = value;
     }
 
     /// <remarks />
     public fx_samplerDEPTH_common samplerDEPTH
     {
-        get { return samplerDEPTHField; }
-        set { samplerDEPTHField = value; }
+        get => samplerDEPTHField;
+        set => samplerDEPTHField = value;
     }
 
     /// <remarks />
     public string @enum
     {
-        get { return enumField; }
-        set { enumField = value; }
+        get => enumField;
+        set => enumField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 }
 
@@ -2396,121 +2396,121 @@ public class fx_annotate_common
     /// <remarks />
     public bool @bool
     {
-        get { return boolField; }
-        set { boolField = value; }
+        get => boolField;
+        set => boolField = value;
     }
 
     /// <remarks />
     public string bool2
     {
-        get { return bool2Field; }
-        set { bool2Field = value; }
+        get => bool2Field;
+        set => bool2Field = value;
     }
 
     /// <remarks />
     public string bool3
     {
-        get { return bool3Field; }
-        set { bool3Field = value; }
+        get => bool3Field;
+        set => bool3Field = value;
     }
 
     /// <remarks />
     public string bool4
     {
-        get { return bool4Field; }
-        set { bool4Field = value; }
+        get => bool4Field;
+        set => bool4Field = value;
     }
 
     /// <remarks />
     public long @int
     {
-        get { return intField; }
-        set { intField = value; }
+        get => intField;
+        set => intField = value;
     }
 
     /// <remarks />
     public string int2
     {
-        get { return int2Field; }
-        set { int2Field = value; }
+        get => int2Field;
+        set => int2Field = value;
     }
 
     /// <remarks />
     public string int3
     {
-        get { return int3Field; }
-        set { int3Field = value; }
+        get => int3Field;
+        set => int3Field = value;
     }
 
     /// <remarks />
     public string int4
     {
-        get { return int4Field; }
-        set { int4Field = value; }
+        get => int4Field;
+        set => int4Field = value;
     }
 
     /// <remarks />
     public double @float
     {
-        get { return floatField; }
-        set { floatField = value; }
+        get => floatField;
+        set => floatField = value;
     }
 
     /// <remarks />
     public string float2
     {
-        get { return float2Field; }
-        set { float2Field = value; }
+        get => float2Field;
+        set => float2Field = value;
     }
 
     /// <remarks />
     public string float3
     {
-        get { return float3Field; }
-        set { float3Field = value; }
+        get => float3Field;
+        set => float3Field = value;
     }
 
     /// <remarks />
     public string float4
     {
-        get { return float4Field; }
-        set { float4Field = value; }
+        get => float4Field;
+        set => float4Field = value;
     }
 
     /// <remarks />
     public string float2x2
     {
-        get { return float2x2Field; }
-        set { float2x2Field = value; }
+        get => float2x2Field;
+        set => float2x2Field = value;
     }
 
     /// <remarks />
     public string float3x3
     {
-        get { return float3x3Field; }
-        set { float3x3Field = value; }
+        get => float3x3Field;
+        set => float3x3Field = value;
     }
 
     /// <remarks />
     public string float4x4
     {
-        get { return float4x4Field; }
-        set { float4x4Field = value; }
+        get => float4x4Field;
+        set => float4x4Field = value;
     }
 
     /// <remarks />
     public string @string
     {
-        get { return stringField; }
-        set { stringField = value; }
+        get => stringField;
+        set => stringField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -2563,40 +2563,40 @@ public class InputLocalOffset
     [XmlAttribute]
     public ulong offset
     {
-        get { return offsetField; }
-        set { offsetField = value; }
+        get => offsetField;
+        set => offsetField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NMTOKEN")]
     public string semantic
     {
-        get { return semanticField; }
-        set { semanticField = value; }
+        get => semanticField;
+        set => semanticField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong set
     {
-        get { return setField; }
-        set { setField = value; }
+        get => setField;
+        set => setField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public bool setSpecified
     {
-        get { return setFieldSpecified; }
-        set { setFieldSpecified = value; }
+        get => setFieldSpecified;
+        set => setFieldSpecified = value;
     }
 }
 
@@ -2616,16 +2616,16 @@ public class TargetableFloat
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public double Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -2645,16 +2645,16 @@ public class InputLocal
     [XmlAttribute(DataType = "NMTOKEN")]
     public string semantic
     {
-        get { return semanticField; }
-        set { semanticField = value; }
+        get => semanticField;
+        set => semanticField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 }
 
@@ -2683,56 +2683,56 @@ public class instance_material
     [XmlElement("bind")]
     public instance_materialBind[] bind
     {
-        get { return bindField; }
-        set { bindField = value; }
+        get => bindField;
+        set => bindField = value;
     }
 
     /// <remarks />
     [XmlElement("bind_vertex_input")]
     public instance_materialBind_vertex_input[] bind_vertex_input
     {
-        get { return bind_vertex_inputField; }
-        set { bind_vertex_inputField = value; }
+        get => bind_vertex_inputField;
+        set => bind_vertex_inputField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string symbol
     {
-        get { return symbolField; }
-        set { symbolField = value; }
+        get => symbolField;
+        set => symbolField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string target
     {
-        get { return targetField; }
-        set { targetField = value; }
+        get => targetField;
+        set => targetField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -2752,16 +2752,16 @@ public class instance_materialBind
     [XmlAttribute(DataType = "NCName")]
     public string semantic
     {
-        get { return semanticField; }
-        set { semanticField = value; }
+        get => semanticField;
+        set => semanticField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "token")]
     public string target
     {
-        get { return targetField; }
-        set { targetField = value; }
+        get => targetField;
+        set => targetField = value;
     }
 }
 
@@ -2784,32 +2784,32 @@ public class instance_materialBind_vertex_input
     [XmlAttribute(DataType = "NCName")]
     public string semantic
     {
-        get { return semanticField; }
-        set { semanticField = value; }
+        get => semanticField;
+        set => semanticField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string input_semantic
     {
-        get { return input_semanticField; }
-        set { input_semanticField = value; }
+        get => input_semanticField;
+        set => input_semanticField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong input_set
     {
-        get { return input_setField; }
-        set { input_setField = value; }
+        get => input_setField;
+        set => input_setField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public bool input_setSpecified
     {
-        get { return input_setFieldSpecified; }
-        set { input_setFieldSpecified = value; }
+        get => input_setFieldSpecified;
+        set => input_setFieldSpecified = value;
     }
 }
 
@@ -2836,8 +2836,8 @@ public class assetUnit
     [DefaultValue(1D)]
     public double meter
     {
-        get { return meterField; }
-        set { meterField = value; }
+        get => meterField;
+        set => meterField = value;
     }
 
     /// <remarks />
@@ -2845,8 +2845,8 @@ public class assetUnit
     [DefaultValue("meter")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -2887,40 +2887,40 @@ public class library_animation_clips
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("animation_clip")]
     public animation_clip[] animation_clip
     {
-        get { return animation_clipField; }
-        set { animation_clipField = value; }
+        get => animation_clipField;
+        set => animation_clipField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -2955,40 +2955,40 @@ public class animation_clip
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_animation")]
     public InstanceWithExtra[] instance_animation
     {
-        get { return instance_animationField; }
-        set { instance_animationField = value; }
+        get => instance_animationField;
+        set => instance_animationField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
@@ -2996,24 +2996,24 @@ public class animation_clip
     [DefaultValue(0D)]
     public double start
     {
-        get { return startField; }
-        set { startField = value; }
+        get => startField;
+        set => startField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public double end
     {
-        get { return endField; }
-        set { endField = value; }
+        get => endField;
+        set => endField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public bool endSpecified
     {
-        get { return endFieldSpecified; }
-        set { endFieldSpecified = value; }
+        get => endFieldSpecified;
+        set => endFieldSpecified = value;
     }
 }
 
@@ -3036,32 +3036,32 @@ public class InstanceWithExtra
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string url
     {
-        get { return urlField; }
-        set { urlField = value; }
+        get => urlField;
+        set => urlField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -3086,40 +3086,40 @@ public class library_animations
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("animation")]
     public animation[] animation
     {
-        get { return animationField; }
-        set { animationField = value; }
+        get => animationField;
+        set => animationField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -3144,8 +3144,8 @@ public class animation
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -3155,32 +3155,32 @@ public class animation
     [XmlElement("source", typeof (source))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -3201,16 +3201,16 @@ public class channel
     [XmlAttribute]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "token")]
     public string target
     {
-        get { return targetField; }
-        set { targetField = value; }
+        get => targetField;
+        set => targetField = value;
     }
 }
 
@@ -3230,16 +3230,16 @@ public class sampler
     [XmlElement("input")]
     public InputLocal[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 }
 
@@ -3264,8 +3264,8 @@ public class source
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -3276,39 +3276,39 @@ public class source
     [XmlElement("int_array", typeof (int_array))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     public sourceTechnique_common technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -3332,32 +3332,32 @@ public class IDREF_array
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlText(DataType = "IDREFS")]
     public string Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -3381,40 +3381,40 @@ public class Name_array
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertStringArray(value); }
+        set => Values = COLLADA.ConvertStringArray(value);
     }
 
     [XmlIgnore]
     public string[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -3438,40 +3438,40 @@ public class bool_array
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertBoolArray(value); }
+        set => Values = COLLADA.ConvertBoolArray(value);
     }
 
     [XmlIgnore]
     public bool[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -3504,24 +3504,24 @@ public class float_array
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
@@ -3529,8 +3529,8 @@ public class float_array
     [DefaultValue(typeof (short), "6")]
     public short digits
     {
-        get { return digitsField; }
-        set { digitsField = value; }
+        get => digitsField;
+        set => digitsField = value;
     }
 
     /// <remarks />
@@ -3538,24 +3538,24 @@ public class float_array
     [DefaultValue(typeof (short), "38")]
     public short magnitude
     {
-        get { return magnitudeField; }
-        set { magnitudeField = value; }
+        get => magnitudeField;
+        set => magnitudeField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertDoubleArray(value); }
+        set => Values = COLLADA.ConvertDoubleArray(value);
     }
 
     [XmlIgnore]
     public double[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -3587,24 +3587,24 @@ public class int_array
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
@@ -3612,8 +3612,8 @@ public class int_array
     [DefaultValue("-2147483648")]
     public string minInclusive
     {
-        get { return minInclusiveField; }
-        set { minInclusiveField = value; }
+        get => minInclusiveField;
+        set => minInclusiveField = value;
     }
 
     /// <remarks />
@@ -3621,24 +3621,24 @@ public class int_array
     [DefaultValue("2147483647")]
     public string maxInclusive
     {
-        get { return maxInclusiveField; }
-        set { maxInclusiveField = value; }
+        get => maxInclusiveField;
+        set => maxInclusiveField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertIntArray(value); }
+        set => Values = COLLADA.ConvertIntArray(value);
     }
 
     [XmlIgnore]
     public int[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -3655,8 +3655,8 @@ public class sourceTechnique_common
     /// <remarks />
     public accessor accessor
     {
-        get { return accessorField; }
-        set { accessorField = value; }
+        get => accessorField;
+        set => accessorField = value;
     }
 }
 
@@ -3688,16 +3688,16 @@ public class accessor
     [XmlElement("param")]
     public param[] param
     {
-        get { return paramField; }
-        set { paramField = value; }
+        get => paramField;
+        set => paramField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
@@ -3705,16 +3705,16 @@ public class accessor
     [DefaultValue(typeof (ulong), "0")]
     public ulong offset
     {
-        get { return offsetField; }
-        set { offsetField = value; }
+        get => offsetField;
+        set => offsetField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
@@ -3722,8 +3722,8 @@ public class accessor
     [DefaultValue(typeof (ulong), "1")]
     public ulong stride
     {
-        get { return strideField; }
-        set { strideField = value; }
+        get => strideField;
+        set => strideField = value;
     }
 }
 
@@ -3749,40 +3749,40 @@ public class param
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NMTOKEN")]
     public string semantic
     {
-        get { return semanticField; }
-        set { semanticField = value; }
+        get => semanticField;
+        set => semanticField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NMTOKEN")]
     public string type
     {
-        get { return typeField; }
-        set { typeField = value; }
+        get => typeField;
+        set => typeField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -3808,40 +3808,40 @@ public class library_cameras
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("camera")]
     public camera[] camera
     {
-        get { return cameraField; }
-        set { cameraField = value; }
+        get => cameraField;
+        set => cameraField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -3867,46 +3867,46 @@ public class camera
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     public cameraOptics optics
     {
-        get { return opticsField; }
-        set { opticsField = value; }
+        get => opticsField;
+        set => opticsField = value;
     }
 
     /// <remarks />
     public cameraImager imager
     {
-        get { return imagerField; }
-        set { imagerField = value; }
+        get => imagerField;
+        set => imagerField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -3925,24 +3925,24 @@ public class cameraOptics
     /// <remarks />
     public cameraOpticsTechnique_common technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -3961,8 +3961,8 @@ public class cameraOpticsTechnique_common
     [XmlElement("perspective", typeof (cameraOpticsTechnique_commonPerspective))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 }
 
@@ -3987,8 +3987,8 @@ public class cameraOpticsTechnique_commonOrthographic
     [XmlChoiceIdentifier("ItemsElementName")]
     public TargetableFloat[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
@@ -3996,22 +3996,22 @@ public class cameraOpticsTechnique_commonOrthographic
     [XmlIgnore]
     public ItemsChoiceType[] ItemsElementName
     {
-        get { return itemsElementNameField; }
-        set { itemsElementNameField = value; }
+        get => itemsElementNameField;
+        set => itemsElementNameField = value;
     }
 
     /// <remarks />
     public TargetableFloat znear
     {
-        get { return znearField; }
-        set { znearField = value; }
+        get => znearField;
+        set => znearField = value;
     }
 
     /// <remarks />
     public TargetableFloat zfar
     {
-        get { return zfarField; }
-        set { zfarField = value; }
+        get => zfarField;
+        set => zfarField = value;
     }
 }
 
@@ -4052,8 +4052,8 @@ public class cameraOpticsTechnique_commonPerspective
     [XmlChoiceIdentifier("ItemsElementName")]
     public TargetableFloat[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
@@ -4061,22 +4061,22 @@ public class cameraOpticsTechnique_commonPerspective
     [XmlIgnore]
     public ItemsChoiceType1[] ItemsElementName
     {
-        get { return itemsElementNameField; }
-        set { itemsElementNameField = value; }
+        get => itemsElementNameField;
+        set => itemsElementNameField = value;
     }
 
     /// <remarks />
     public TargetableFloat znear
     {
-        get { return znearField; }
-        set { znearField = value; }
+        get => znearField;
+        set => znearField = value;
     }
 
     /// <remarks />
     public TargetableFloat zfar
     {
-        get { return zfarField; }
-        set { zfarField = value; }
+        get => zfarField;
+        set => zfarField = value;
     }
 }
 
@@ -4111,16 +4111,16 @@ public class cameraImager
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -4146,40 +4146,40 @@ public class library_controllers
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("controller")]
     public controller[] controller
     {
-        get { return controllerField; }
-        set { controllerField = value; }
+        get => controllerField;
+        set => controllerField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -4204,8 +4204,8 @@ public class controller
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -4213,32 +4213,32 @@ public class controller
     [XmlElement("skin", typeof (skin))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -4269,23 +4269,23 @@ public class morph
     [XmlElement("source")]
     public source[] source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     public morphTargets targets
     {
-        get { return targetsField; }
-        set { targetsField = value; }
+        get => targetsField;
+        set => targetsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
@@ -4293,16 +4293,16 @@ public class morph
     [DefaultValue(MorphMethodType.NORMALIZED)]
     public MorphMethodType method
     {
-        get { return methodField; }
-        set { methodField = value; }
+        get => methodField;
+        set => methodField = value;
     }
 
     /// <remarks />
     [XmlAttribute("source", DataType = "anyURI")]
     public string source1
     {
-        get { return source1Field; }
-        set { source1Field = value; }
+        get => source1Field;
+        set => source1Field = value;
     }
 }
 
@@ -4321,16 +4321,16 @@ public class morphTargets
     [XmlElement("input")]
     public InputLocal[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -4368,46 +4368,46 @@ public class skin
     /// <remarks />
     public string bind_shape_matrix
     {
-        get { return bind_shape_matrixField; }
-        set { bind_shape_matrixField = value; }
+        get => bind_shape_matrixField;
+        set => bind_shape_matrixField = value;
     }
 
     /// <remarks />
     [XmlElement("source")]
     public source[] source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     public skinJoints joints
     {
-        get { return jointsField; }
-        set { jointsField = value; }
+        get => jointsField;
+        set => jointsField = value;
     }
 
     /// <remarks />
     public skinVertex_weights vertex_weights
     {
-        get { return vertex_weightsField; }
-        set { vertex_weightsField = value; }
+        get => vertex_weightsField;
+        set => vertex_weightsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute("source", DataType = "anyURI")]
     public string source1
     {
-        get { return source1Field; }
-        set { source1Field = value; }
+        get => source1Field;
+        set => source1Field = value;
     }
 }
 
@@ -4426,16 +4426,16 @@ public class skinJoints
     [XmlElement("input")]
     public InputLocal[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -4458,38 +4458,38 @@ public class skinVertex_weights
     [XmlElement("input")]
     public InputLocalOffset[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     public string vcount
     {
-        get { return vcountField; }
-        set { vcountField = value; }
+        get => vcountField;
+        set => vcountField = value;
     }
 
     /// <remarks />
     public string v
     {
-        get { return vField; }
-        set { vField = value; }
+        get => vField;
+        set => vField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 }
 
@@ -4515,40 +4515,40 @@ public class library_effects
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("effect")]
     public effect[] effect
     {
-        get { return effectField; }
-        set { effectField = value; }
+        get => effectField;
+        set => effectField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -4576,64 +4576,64 @@ public class effect
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("annotate")]
     public fx_annotate_common[] annotate
     {
-        get { return annotateField; }
-        set { annotateField = value; }
+        get => annotateField;
+        set => annotateField = value;
     }
 
     /// <remarks />
     [XmlElement("image")]
     public image[] image
     {
-        get { return imageField; }
-        set { imageField = value; }
+        get => imageField;
+        set => imageField = value;
     }
 
     /// <remarks />
     [XmlElement("newparam")]
     public fx_newparam_common[] newparam
     {
-        get { return newparamField; }
-        set { newparamField = value; }
+        get => newparamField;
+        set => newparamField = value;
     }
 
     /// <remarks />
     [XmlElement("profile_COMMON")]
     public effectFx_profile_abstractProfile_COMMON[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -4672,8 +4672,8 @@ public class image
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -4681,72 +4681,72 @@ public class image
     [XmlElement("init_from", typeof (string), DataType = "anyURI")]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "token")]
     public string format
     {
-        get { return formatField; }
-        set { formatField = value; }
+        get => formatField;
+        set => formatField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong height
     {
-        get { return heightField; }
-        set { heightField = value; }
+        get => heightField;
+        set => heightField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public bool heightSpecified
     {
-        get { return heightFieldSpecified; }
-        set { heightFieldSpecified = value; }
+        get => heightFieldSpecified;
+        set => heightFieldSpecified = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong width
     {
-        get { return widthField; }
-        set { widthField = value; }
+        get => widthField;
+        set => widthField = value;
     }
 
     /// <remarks />
     [XmlIgnore]
     public bool widthSpecified
     {
-        get { return widthFieldSpecified; }
-        set { widthFieldSpecified = value; }
+        get => widthFieldSpecified;
+        set => widthFieldSpecified = value;
     }
 
     /// <remarks />
@@ -4754,8 +4754,8 @@ public class image
     [DefaultValue(typeof (ulong), "1")]
     public ulong depth
     {
-        get { return depthField; }
-        set { depthField = value; }
+        get => depthField;
+        set => depthField = value;
     }
 }
 
@@ -4780,8 +4780,8 @@ public class effectFx_profile_abstractProfile_COMMON
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -4789,31 +4789,31 @@ public class effectFx_profile_abstractProfile_COMMON
     [XmlElement("newparam", typeof (common_newparam_type))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     public effectFx_profile_abstractProfile_COMMONTechnique technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 }
 
@@ -4838,8 +4838,8 @@ public class effectFx_profile_abstractProfile_COMMONTechnique
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -4847,8 +4847,8 @@ public class effectFx_profile_abstractProfile_COMMONTechnique
     [XmlElement("newparam", typeof (common_newparam_type))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
@@ -4858,32 +4858,32 @@ public class effectFx_profile_abstractProfile_COMMONTechnique
     [XmlElement("phong", typeof (effectFx_profile_abstractProfile_COMMONTechniquePhong))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 }
 
@@ -4913,71 +4913,71 @@ public class effectFx_profile_abstractProfile_COMMONTechniqueBlinn
     /// <remarks />
     public common_color_or_texture_type emission
     {
-        get { return emissionField; }
-        set { emissionField = value; }
+        get => emissionField;
+        set => emissionField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type ambient
     {
-        get { return ambientField; }
-        set { ambientField = value; }
+        get => ambientField;
+        set => ambientField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type diffuse
     {
-        get { return diffuseField; }
-        set { diffuseField = value; }
+        get => diffuseField;
+        set => diffuseField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type specular
     {
-        get { return specularField; }
-        set { specularField = value; }
+        get => specularField;
+        set => specularField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type shininess
     {
-        get { return shininessField; }
-        set { shininessField = value; }
+        get => shininessField;
+        set => shininessField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type reflective
     {
-        get { return reflectiveField; }
-        set { reflectiveField = value; }
+        get => reflectiveField;
+        set => reflectiveField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type reflectivity
     {
-        get { return reflectivityField; }
-        set { reflectivityField = value; }
+        get => reflectivityField;
+        set => reflectivityField = value;
     }
 
     /// <remarks />
     public common_transparent_type transparent
     {
-        get { return transparentField; }
-        set { transparentField = value; }
+        get => transparentField;
+        set => transparentField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type transparency
     {
-        get { return transparencyField; }
-        set { transparencyField = value; }
+        get => transparencyField;
+        set => transparencyField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type index_of_refraction
     {
-        get { return index_of_refractionField; }
-        set { index_of_refractionField = value; }
+        get => index_of_refractionField;
+        set => index_of_refractionField = value;
     }
 }
 
@@ -5002,43 +5002,43 @@ public class effectFx_profile_abstractProfile_COMMONTechniqueConstant
     /// <remarks />
     public common_color_or_texture_type emission
     {
-        get { return emissionField; }
-        set { emissionField = value; }
+        get => emissionField;
+        set => emissionField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type reflective
     {
-        get { return reflectiveField; }
-        set { reflectiveField = value; }
+        get => reflectiveField;
+        set => reflectiveField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type reflectivity
     {
-        get { return reflectivityField; }
-        set { reflectivityField = value; }
+        get => reflectivityField;
+        set => reflectivityField = value;
     }
 
     /// <remarks />
     public common_transparent_type transparent
     {
-        get { return transparentField; }
-        set { transparentField = value; }
+        get => transparentField;
+        set => transparentField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type transparency
     {
-        get { return transparencyField; }
-        set { transparencyField = value; }
+        get => transparencyField;
+        set => transparencyField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type index_of_refraction
     {
-        get { return index_of_refractionField; }
-        set { index_of_refractionField = value; }
+        get => index_of_refractionField;
+        set => index_of_refractionField = value;
     }
 }
 
@@ -5066,57 +5066,57 @@ public class effectFx_profile_abstractProfile_COMMONTechniqueLambert
     /// <remarks />
     public common_color_or_texture_type emission
     {
-        get { return emissionField; }
-        set { emissionField = value; }
+        get => emissionField;
+        set => emissionField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type ambient
     {
-        get { return ambientField; }
-        set { ambientField = value; }
+        get => ambientField;
+        set => ambientField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type diffuse
     {
-        get { return diffuseField; }
-        set { diffuseField = value; }
+        get => diffuseField;
+        set => diffuseField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type reflective
     {
-        get { return reflectiveField; }
-        set { reflectiveField = value; }
+        get => reflectiveField;
+        set => reflectiveField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type reflectivity
     {
-        get { return reflectivityField; }
-        set { reflectivityField = value; }
+        get => reflectivityField;
+        set => reflectivityField = value;
     }
 
     /// <remarks />
     public common_transparent_type transparent
     {
-        get { return transparentField; }
-        set { transparentField = value; }
+        get => transparentField;
+        set => transparentField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type transparency
     {
-        get { return transparencyField; }
-        set { transparencyField = value; }
+        get => transparencyField;
+        set => transparencyField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type index_of_refraction
     {
-        get { return index_of_refractionField; }
-        set { index_of_refractionField = value; }
+        get => index_of_refractionField;
+        set => index_of_refractionField = value;
     }
 }
 
@@ -5146,71 +5146,71 @@ public class effectFx_profile_abstractProfile_COMMONTechniquePhong
     /// <remarks />
     public common_color_or_texture_type emission
     {
-        get { return emissionField; }
-        set { emissionField = value; }
+        get => emissionField;
+        set => emissionField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type ambient
     {
-        get { return ambientField; }
-        set { ambientField = value; }
+        get => ambientField;
+        set => ambientField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type diffuse
     {
-        get { return diffuseField; }
-        set { diffuseField = value; }
+        get => diffuseField;
+        set => diffuseField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type specular
     {
-        get { return specularField; }
-        set { specularField = value; }
+        get => specularField;
+        set => specularField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type shininess
     {
-        get { return shininessField; }
-        set { shininessField = value; }
+        get => shininessField;
+        set => shininessField = value;
     }
 
     /// <remarks />
     public common_color_or_texture_type reflective
     {
-        get { return reflectiveField; }
-        set { reflectiveField = value; }
+        get => reflectiveField;
+        set => reflectiveField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type reflectivity
     {
-        get { return reflectivityField; }
-        set { reflectivityField = value; }
+        get => reflectivityField;
+        set => reflectivityField = value;
     }
 
     /// <remarks />
     public common_transparent_type transparent
     {
-        get { return transparentField; }
-        set { transparentField = value; }
+        get => transparentField;
+        set => transparentField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type transparency
     {
-        get { return transparencyField; }
-        set { transparencyField = value; }
+        get => transparencyField;
+        set => transparencyField = value;
     }
 
     /// <remarks />
     public common_float_or_param_type index_of_refraction
     {
-        get { return index_of_refractionField; }
-        set { index_of_refractionField = value; }
+        get => index_of_refractionField;
+        set => index_of_refractionField = value;
     }
 }
 
@@ -5235,40 +5235,40 @@ public class library_force_fields
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("force_field")]
     public force_field[] force_field
     {
-        get { return force_fieldField; }
-        set { force_fieldField = value; }
+        get => force_fieldField;
+        set => force_fieldField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -5293,40 +5293,40 @@ public class force_field
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -5351,40 +5351,40 @@ public class library_geometries
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("geometry")]
     public geometry[] geometry
     {
-        get { return geometryField; }
-        set { geometryField = value; }
+        get => geometryField;
+        set => geometryField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -5409,8 +5409,8 @@ public class geometry
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -5419,32 +5419,32 @@ public class geometry
     [XmlElement("spline", typeof (spline))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -5468,15 +5468,15 @@ public class convex_mesh
     [XmlElement("source")]
     public source[] source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     public vertices vertices
     {
-        get { return verticesField; }
-        set { verticesField = value; }
+        get => verticesField;
+        set => verticesField = value;
     }
 
     /// <remarks />
@@ -5489,24 +5489,24 @@ public class convex_mesh
     [XmlElement("tristrips", typeof (tristrips))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string convex_hull_of
     {
-        get { return convex_hull_ofField; }
-        set { convex_hull_ofField = value; }
+        get => convex_hull_ofField;
+        set => convex_hull_ofField = value;
     }
 }
 
@@ -5530,32 +5530,32 @@ public class vertices
     [XmlElement("input")]
     public InputLocal[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -5580,47 +5580,47 @@ public class lines
     [XmlElement("input")]
     public InputLocalOffset[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     public string p
     {
-        get { return pField; }
-        set { pField = value; }
+        get => pField;
+        set => pField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string material
     {
-        get { return materialField; }
-        set { materialField = value; }
+        get => materialField;
+        set => materialField = value;
     }
 }
 
@@ -5645,48 +5645,48 @@ public class linestrips
     [XmlElement("input")]
     public InputLocalOffset[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     [XmlElement("p")]
     public string[] p
     {
-        get { return pField; }
-        set { pField = value; }
+        get => pField;
+        set => pField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string material
     {
-        get { return materialField; }
-        set { materialField = value; }
+        get => materialField;
+        set => materialField = value;
     }
 }
 
@@ -5712,8 +5712,8 @@ public class polygons
     [XmlElement("input")]
     public InputLocalOffset[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
@@ -5721,40 +5721,40 @@ public class polygons
     [XmlElement("ph", typeof (polygonsPH))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string material
     {
-        get { return materialField; }
-        set { materialField = value; }
+        get => materialField;
+        set => materialField = value;
     }
 }
 
@@ -5772,16 +5772,16 @@ public class polygonsPH
     /// <remarks />
     public string p
     {
-        get { return pField; }
-        set { pField = value; }
+        get => pField;
+        set => pField = value;
     }
 
     /// <remarks />
     [XmlElement("h")]
     public string[] h
     {
-        get { return hField; }
-        set { hField = value; }
+        get => hField;
+        set => hField = value;
     }
 }
 
@@ -5807,54 +5807,54 @@ public class polylist
     [XmlElement("input")]
     public InputLocalOffset[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     public string vcount
     {
-        get { return vcountField; }
-        set { vcountField = value; }
+        get => vcountField;
+        set => vcountField = value;
     }
 
     /// <remarks />
     public string p
     {
-        get { return pField; }
-        set { pField = value; }
+        get => pField;
+        set => pField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string material
     {
-        get { return materialField; }
-        set { materialField = value; }
+        get => materialField;
+        set => materialField = value;
     }
 }
 
@@ -5879,47 +5879,47 @@ public class triangles
     [XmlElement("input")]
     public InputLocalOffset[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     public string p
     {
-        get { return pField; }
-        set { pField = value; }
+        get => pField;
+        set => pField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string material
     {
-        get { return materialField; }
-        set { materialField = value; }
+        get => materialField;
+        set => materialField = value;
     }
 }
 
@@ -5944,48 +5944,48 @@ public class trifans
     [XmlElement("input")]
     public InputLocalOffset[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     [XmlElement("p")]
     public string[] p
     {
-        get { return pField; }
-        set { pField = value; }
+        get => pField;
+        set => pField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string material
     {
-        get { return materialField; }
-        set { materialField = value; }
+        get => materialField;
+        set => materialField = value;
     }
 }
 
@@ -6010,48 +6010,48 @@ public class tristrips
     [XmlElement("input")]
     public InputLocalOffset[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     [XmlElement("p")]
     public string[] p
     {
-        get { return pField; }
-        set { pField = value; }
+        get => pField;
+        set => pField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute]
     public ulong count
     {
-        get { return countField; }
-        set { countField = value; }
+        get => countField;
+        set => countField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string material
     {
-        get { return materialField; }
-        set { materialField = value; }
+        get => materialField;
+        set => materialField = value;
     }
 }
 
@@ -6074,15 +6074,15 @@ public class mesh
     [XmlElement("source")]
     public source[] source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     public vertices vertices
     {
-        get { return verticesField; }
-        set { verticesField = value; }
+        get => verticesField;
+        set => verticesField = value;
     }
 
     /// <remarks />
@@ -6095,16 +6095,16 @@ public class mesh
     [XmlElement("tristrips", typeof (tristrips))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -6132,23 +6132,23 @@ public class spline
     [XmlElement("source")]
     public source[] source
     {
-        get { return sourceField; }
-        set { sourceField = value; }
+        get => sourceField;
+        set => sourceField = value;
     }
 
     /// <remarks />
     public splineControl_vertices control_vertices
     {
-        get { return control_verticesField; }
-        set { control_verticesField = value; }
+        get => control_verticesField;
+        set => control_verticesField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
@@ -6156,8 +6156,8 @@ public class spline
     [DefaultValue(false)]
     public bool closed
     {
-        get { return closedField; }
-        set { closedField = value; }
+        get => closedField;
+        set => closedField = value;
     }
 }
 
@@ -6176,16 +6176,16 @@ public class splineControl_vertices
     [XmlElement("input")]
     public InputLocal[] input
     {
-        get { return inputField; }
-        set { inputField = value; }
+        get => inputField;
+        set => inputField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -6210,40 +6210,40 @@ public class library_images
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("image")]
     public image[] image
     {
-        get { return imageField; }
-        set { imageField = value; }
+        get => imageField;
+        set => imageField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -6268,40 +6268,40 @@ public class library_lights
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("light")]
     public light[] light
     {
-        get { return lightField; }
-        set { lightField = value; }
+        get => lightField;
+        set => lightField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -6327,47 +6327,47 @@ public class light
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     public lightTechnique_common technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -6388,8 +6388,8 @@ public class lightTechnique_common
     [XmlElement("spot", typeof (lightTechnique_commonSpot))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 }
 
@@ -6406,8 +6406,8 @@ public class lightTechnique_commonAmbient
     /// <remarks />
     public TargetableFloat3 color
     {
-        get { return colorField; }
-        set { colorField = value; }
+        get => colorField;
+        set => colorField = value;
     }
 }
 
@@ -6428,24 +6428,24 @@ public class TargetableFloat3
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertDoubleArray(value); }
+        set => Values = COLLADA.ConvertDoubleArray(value);
     }
 
     [XmlIgnore]
     public double[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -6462,8 +6462,8 @@ public class lightTechnique_commonDirectional
     /// <remarks />
     public TargetableFloat3 color
     {
-        get { return colorField; }
-        set { colorField = value; }
+        get => colorField;
+        set => colorField = value;
     }
 }
 
@@ -6486,8 +6486,8 @@ public class lightTechnique_commonPoint
     /// <remarks />
     public TargetableFloat3 color
     {
-        get { return colorField; }
-        set { colorField = value; }
+        get => colorField;
+        set => colorField = value;
     }
 
     /// <remarks />
@@ -6495,8 +6495,8 @@ public class lightTechnique_commonPoint
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='1.0' attribute.
     public TargetableFloat constant_attenuation
     {
-        get { return constant_attenuationField; }
-        set { constant_attenuationField = value; }
+        get => constant_attenuationField;
+        set => constant_attenuationField = value;
     }
 
     /// <remarks />
@@ -6504,8 +6504,8 @@ public class lightTechnique_commonPoint
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat linear_attenuation
     {
-        get { return linear_attenuationField; }
-        set { linear_attenuationField = value; }
+        get => linear_attenuationField;
+        set => linear_attenuationField = value;
     }
 
     /// <remarks />
@@ -6513,8 +6513,8 @@ public class lightTechnique_commonPoint
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat quadratic_attenuation
     {
-        get { return quadratic_attenuationField; }
-        set { quadratic_attenuationField = value; }
+        get => quadratic_attenuationField;
+        set => quadratic_attenuationField = value;
     }
 }
 
@@ -6540,8 +6540,8 @@ public class lightTechnique_commonSpot
     /// <remarks />
     public TargetableFloat3 color
     {
-        get { return colorField; }
-        set { colorField = value; }
+        get => colorField;
+        set => colorField = value;
     }
 
     /// <remarks />
@@ -6549,8 +6549,8 @@ public class lightTechnique_commonSpot
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='1.0' attribute.
     public TargetableFloat constant_attenuation
     {
-        get { return constant_attenuationField; }
-        set { constant_attenuationField = value; }
+        get => constant_attenuationField;
+        set => constant_attenuationField = value;
     }
 
     /// <remarks />
@@ -6558,8 +6558,8 @@ public class lightTechnique_commonSpot
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat linear_attenuation
     {
-        get { return linear_attenuationField; }
-        set { linear_attenuationField = value; }
+        get => linear_attenuationField;
+        set => linear_attenuationField = value;
     }
 
     /// <remarks />
@@ -6567,8 +6567,8 @@ public class lightTechnique_commonSpot
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat quadratic_attenuation
     {
-        get { return quadratic_attenuationField; }
-        set { quadratic_attenuationField = value; }
+        get => quadratic_attenuationField;
+        set => quadratic_attenuationField = value;
     }
 
     /// <remarks />
@@ -6576,8 +6576,8 @@ public class lightTechnique_commonSpot
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='180.0' attribute.
     public TargetableFloat falloff_angle
     {
-        get { return falloff_angleField; }
-        set { falloff_angleField = value; }
+        get => falloff_angleField;
+        set => falloff_angleField = value;
     }
 
     /// <remarks />
@@ -6585,8 +6585,8 @@ public class lightTechnique_commonSpot
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat falloff_exponent
     {
-        get { return falloff_exponentField; }
-        set { falloff_exponentField = value; }
+        get => falloff_exponentField;
+        set => falloff_exponentField = value;
     }
 }
 
@@ -6611,40 +6611,40 @@ public class library_materials
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("material")]
     public material[] material
     {
-        get { return materialField; }
-        set { materialField = value; }
+        get => materialField;
+        set => materialField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -6669,39 +6669,39 @@ public class material
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     public instance_effect instance_effect
     {
-        get { return instance_effectField; }
-        set { instance_effectField = value; }
+        get => instance_effectField;
+        set => instance_effectField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -6726,48 +6726,48 @@ public class instance_effect
     [XmlElement("technique_hint")]
     public instance_effectTechnique_hint[] technique_hint
     {
-        get { return technique_hintField; }
-        set { technique_hintField = value; }
+        get => technique_hintField;
+        set => technique_hintField = value;
     }
 
     /// <remarks />
     [XmlElement("setparam")]
     public instance_effectSetparam[] setparam
     {
-        get { return setparamField; }
-        set { setparamField = value; }
+        get => setparamField;
+        set => setparamField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string url
     {
-        get { return urlField; }
-        set { urlField = value; }
+        get => urlField;
+        set => urlField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -6789,24 +6789,24 @@ public class instance_effectTechnique_hint
     [XmlAttribute(DataType = "NCName")]
     public string platform
     {
-        get { return platformField; }
-        set { platformField = value; }
+        get => platformField;
+        set => platformField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string profile
     {
-        get { return profileField; }
-        set { profileField = value; }
+        get => profileField;
+        set => profileField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -6884,261 +6884,261 @@ public class instance_effectSetparam
     /// <remarks />
     public bool @bool
     {
-        get { return boolField; }
-        set { boolField = value; }
+        get => boolField;
+        set => boolField = value;
     }
 
     /// <remarks />
     public string bool2
     {
-        get { return bool2Field; }
-        set { bool2Field = value; }
+        get => bool2Field;
+        set => bool2Field = value;
     }
 
     /// <remarks />
     public string bool3
     {
-        get { return bool3Field; }
-        set { bool3Field = value; }
+        get => bool3Field;
+        set => bool3Field = value;
     }
 
     /// <remarks />
     public string bool4
     {
-        get { return bool4Field; }
-        set { bool4Field = value; }
+        get => bool4Field;
+        set => bool4Field = value;
     }
 
     /// <remarks />
     public long @int
     {
-        get { return intField; }
-        set { intField = value; }
+        get => intField;
+        set => intField = value;
     }
 
     /// <remarks />
     public string int2
     {
-        get { return int2Field; }
-        set { int2Field = value; }
+        get => int2Field;
+        set => int2Field = value;
     }
 
     /// <remarks />
     public string int3
     {
-        get { return int3Field; }
-        set { int3Field = value; }
+        get => int3Field;
+        set => int3Field = value;
     }
 
     /// <remarks />
     public string int4
     {
-        get { return int4Field; }
-        set { int4Field = value; }
+        get => int4Field;
+        set => int4Field = value;
     }
 
     /// <remarks />
     public double @float
     {
-        get { return floatField; }
-        set { floatField = value; }
+        get => floatField;
+        set => floatField = value;
     }
 
     /// <remarks />
     public string float2
     {
-        get { return float2Field; }
-        set { float2Field = value; }
+        get => float2Field;
+        set => float2Field = value;
     }
 
     /// <remarks />
     public string float3
     {
-        get { return float3Field; }
-        set { float3Field = value; }
+        get => float3Field;
+        set => float3Field = value;
     }
 
     /// <remarks />
     public string float4
     {
-        get { return float4Field; }
-        set { float4Field = value; }
+        get => float4Field;
+        set => float4Field = value;
     }
 
     /// <remarks />
     public double float1x1
     {
-        get { return float1x1Field; }
-        set { float1x1Field = value; }
+        get => float1x1Field;
+        set => float1x1Field = value;
     }
 
     /// <remarks />
     public string float1x2
     {
-        get { return float1x2Field; }
-        set { float1x2Field = value; }
+        get => float1x2Field;
+        set => float1x2Field = value;
     }
 
     /// <remarks />
     public string float1x3
     {
-        get { return float1x3Field; }
-        set { float1x3Field = value; }
+        get => float1x3Field;
+        set => float1x3Field = value;
     }
 
     /// <remarks />
     public string float1x4
     {
-        get { return float1x4Field; }
-        set { float1x4Field = value; }
+        get => float1x4Field;
+        set => float1x4Field = value;
     }
 
     /// <remarks />
     public string float2x1
     {
-        get { return float2x1Field; }
-        set { float2x1Field = value; }
+        get => float2x1Field;
+        set => float2x1Field = value;
     }
 
     /// <remarks />
     public string float2x2
     {
-        get { return float2x2Field; }
-        set { float2x2Field = value; }
+        get => float2x2Field;
+        set => float2x2Field = value;
     }
 
     /// <remarks />
     public string float2x3
     {
-        get { return float2x3Field; }
-        set { float2x3Field = value; }
+        get => float2x3Field;
+        set => float2x3Field = value;
     }
 
     /// <remarks />
     public string float2x4
     {
-        get { return float2x4Field; }
-        set { float2x4Field = value; }
+        get => float2x4Field;
+        set => float2x4Field = value;
     }
 
     /// <remarks />
     public string float3x1
     {
-        get { return float3x1Field; }
-        set { float3x1Field = value; }
+        get => float3x1Field;
+        set => float3x1Field = value;
     }
 
     /// <remarks />
     public string float3x2
     {
-        get { return float3x2Field; }
-        set { float3x2Field = value; }
+        get => float3x2Field;
+        set => float3x2Field = value;
     }
 
     /// <remarks />
     public string float3x3
     {
-        get { return float3x3Field; }
-        set { float3x3Field = value; }
+        get => float3x3Field;
+        set => float3x3Field = value;
     }
 
     /// <remarks />
     public string float3x4
     {
-        get { return float3x4Field; }
-        set { float3x4Field = value; }
+        get => float3x4Field;
+        set => float3x4Field = value;
     }
 
     /// <remarks />
     public string float4x1
     {
-        get { return float4x1Field; }
-        set { float4x1Field = value; }
+        get => float4x1Field;
+        set => float4x1Field = value;
     }
 
     /// <remarks />
     public string float4x2
     {
-        get { return float4x2Field; }
-        set { float4x2Field = value; }
+        get => float4x2Field;
+        set => float4x2Field = value;
     }
 
     /// <remarks />
     public string float4x3
     {
-        get { return float4x3Field; }
-        set { float4x3Field = value; }
+        get => float4x3Field;
+        set => float4x3Field = value;
     }
 
     /// <remarks />
     public string float4x4
     {
-        get { return float4x4Field; }
-        set { float4x4Field = value; }
+        get => float4x4Field;
+        set => float4x4Field = value;
     }
 
     /// <remarks />
     public fx_surface_common surface
     {
-        get { return surfaceField; }
-        set { surfaceField = value; }
+        get => surfaceField;
+        set => surfaceField = value;
     }
 
     /// <remarks />
     public fx_sampler1D_common sampler1D
     {
-        get { return sampler1DField; }
-        set { sampler1DField = value; }
+        get => sampler1DField;
+        set => sampler1DField = value;
     }
 
     /// <remarks />
     public fx_sampler2D_common sampler2D
     {
-        get { return sampler2DField; }
-        set { sampler2DField = value; }
+        get => sampler2DField;
+        set => sampler2DField = value;
     }
 
     /// <remarks />
     public fx_sampler3D_common sampler3D
     {
-        get { return sampler3DField; }
-        set { sampler3DField = value; }
+        get => sampler3DField;
+        set => sampler3DField = value;
     }
 
     /// <remarks />
     public fx_samplerCUBE_common samplerCUBE
     {
-        get { return samplerCUBEField; }
-        set { samplerCUBEField = value; }
+        get => samplerCUBEField;
+        set => samplerCUBEField = value;
     }
 
     /// <remarks />
     public fx_samplerRECT_common samplerRECT
     {
-        get { return samplerRECTField; }
-        set { samplerRECTField = value; }
+        get => samplerRECTField;
+        set => samplerRECTField = value;
     }
 
     /// <remarks />
     public fx_samplerDEPTH_common samplerDEPTH
     {
-        get { return samplerDEPTHField; }
-        set { samplerDEPTHField = value; }
+        get => samplerDEPTHField;
+        set => samplerDEPTHField = value;
     }
 
     /// <remarks />
     public string @enum
     {
-        get { return enumField; }
-        set { enumField = value; }
+        get => enumField;
+        set => enumField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "token")]
     public string @ref
     {
-        get { return refField; }
-        set { refField = value; }
+        get => refField;
+        set => refField = value;
     }
 }
 
@@ -7163,40 +7163,40 @@ public class library_nodes
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("node")]
     public node[] node
     {
-        get { return nodeField; }
-        set { nodeField = value; }
+        get => nodeField;
+        set => nodeField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -7242,8 +7242,8 @@ public class node
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
@@ -7256,8 +7256,8 @@ public class node
     [XmlChoiceIdentifier("ItemsElementName")]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
@@ -7265,88 +7265,88 @@ public class node
     [XmlIgnore]
     public ItemsChoiceType2[] ItemsElementName
     {
-        get { return itemsElementNameField; }
-        set { itemsElementNameField = value; }
+        get => itemsElementNameField;
+        set => itemsElementNameField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_camera")]
     public InstanceWithExtra[] instance_camera
     {
-        get { return instance_cameraField; }
-        set { instance_cameraField = value; }
+        get => instance_cameraField;
+        set => instance_cameraField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_controller")]
     public instance_controller[] instance_controller
     {
-        get { return instance_controllerField; }
-        set { instance_controllerField = value; }
+        get => instance_controllerField;
+        set => instance_controllerField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_geometry")]
     public instance_geometry[] instance_geometry
     {
-        get { return instance_geometryField; }
-        set { instance_geometryField = value; }
+        get => instance_geometryField;
+        set => instance_geometryField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_light")]
     public InstanceWithExtra[] instance_light
     {
-        get { return instance_lightField; }
-        set { instance_lightField = value; }
+        get => instance_lightField;
+        set => instance_lightField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_node")]
     public InstanceWithExtra[] instance_node
     {
-        get { return instance_nodeField; }
-        set { instance_nodeField = value; }
+        get => instance_nodeField;
+        set => instance_nodeField = value;
     }
 
     /// <remarks />
     [XmlElement("node")]
     public node[] node1
     {
-        get { return node1Field; }
-        set { node1Field = value; }
+        get => node1Field;
+        set => node1Field = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
@@ -7354,16 +7354,16 @@ public class node
     [DefaultValue(NodeType.NODE)]
     public NodeType type
     {
-        get { return typeField; }
-        set { typeField = value; }
+        get => typeField;
+        set => typeField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "Name")]
     public string[] layer
     {
-        get { return layerField; }
-        set { layerField = value; }
+        get => layerField;
+        set => layerField = value;
     }
 }
 
@@ -7384,24 +7384,24 @@ public class lookat
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertDoubleArray(value); }
+        set => Values = COLLADA.ConvertDoubleArray(value);
     }
 
     [XmlIgnore]
     public double[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -7422,24 +7422,24 @@ public class matrix
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertDoubleArray(value); }
+        set => Values = COLLADA.ConvertDoubleArray(value);
     }
 
     [XmlIgnore]
     public double[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -7460,24 +7460,24 @@ public class rotate
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertDoubleArray(value); }
+        set => Values = COLLADA.ConvertDoubleArray(value);
     }
 
     [XmlIgnore]
     public double[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -7498,24 +7498,24 @@ public class skew
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public string _Text_
     {
-        get { return COLLADA.ConvertFromArray(Values); }
+        get => COLLADA.ConvertFromArray(Values);
 
-        set { Values = COLLADA.ConvertDoubleArray(value); }
+        set => Values = COLLADA.ConvertDoubleArray(value);
     }
 
     [XmlIgnore]
     public double[] Values
     {
-        get { return textField; }
-        set { textField = value; }
+        get => textField;
+        set => textField = value;
     }
 }
 
@@ -7566,47 +7566,47 @@ public class instance_controller
     [XmlElement("skeleton", DataType = "anyURI")]
     public string[] skeleton
     {
-        get { return skeletonField; }
-        set { skeletonField = value; }
+        get => skeletonField;
+        set => skeletonField = value;
     }
 
     /// <remarks />
     public bind_material bind_material
     {
-        get { return bind_materialField; }
-        set { bind_materialField = value; }
+        get => bind_materialField;
+        set => bind_materialField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string url
     {
-        get { return urlField; }
-        set { urlField = value; }
+        get => urlField;
+        set => urlField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -7629,32 +7629,32 @@ public class bind_material
     [XmlElement("param")]
     public param[] param
     {
-        get { return paramField; }
-        set { paramField = value; }
+        get => paramField;
+        set => paramField = value;
     }
 
     /// <remarks />
     [XmlArrayItem("instance_material", IsNullable = false)]
     public instance_material[] technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -7678,40 +7678,40 @@ public class instance_geometry
     /// <remarks />
     public bind_material bind_material
     {
-        get { return bind_materialField; }
-        set { bind_materialField = value; }
+        get => bind_materialField;
+        set => bind_materialField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string url
     {
-        get { return urlField; }
-        set { urlField = value; }
+        get => urlField;
+        set => urlField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -7749,40 +7749,40 @@ public class library_physics_materials
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("physics_material")]
     public physics_material[] physics_material
     {
-        get { return physics_materialField; }
-        set { physics_materialField = value; }
+        get => physics_materialField;
+        set => physics_materialField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -7808,47 +7808,47 @@ public class physics_material
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     public physics_materialTechnique_common technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -7869,22 +7869,22 @@ public class physics_materialTechnique_common
     /// <remarks />
     public TargetableFloat dynamic_friction
     {
-        get { return dynamic_frictionField; }
-        set { dynamic_frictionField = value; }
+        get => dynamic_frictionField;
+        set => dynamic_frictionField = value;
     }
 
     /// <remarks />
     public TargetableFloat restitution
     {
-        get { return restitutionField; }
-        set { restitutionField = value; }
+        get => restitutionField;
+        set => restitutionField = value;
     }
 
     /// <remarks />
     public TargetableFloat static_friction
     {
-        get { return static_frictionField; }
-        set { static_frictionField = value; }
+        get => static_frictionField;
+        set => static_frictionField = value;
     }
 }
 
@@ -7909,40 +7909,40 @@ public class library_physics_models
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("physics_model")]
     public physics_model[] physics_model
     {
-        get { return physics_modelField; }
-        set { physics_modelField = value; }
+        get => physics_modelField;
+        set => physics_modelField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -7970,56 +7970,56 @@ public class physics_model
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("rigid_body")]
     public rigid_body[] rigid_body
     {
-        get { return rigid_bodyField; }
-        set { rigid_bodyField = value; }
+        get => rigid_bodyField;
+        set => rigid_bodyField = value;
     }
 
     /// <remarks />
     [XmlElement("rigid_constraint")]
     public rigid_constraint[] rigid_constraint
     {
-        get { return rigid_constraintField; }
-        set { rigid_constraintField = value; }
+        get => rigid_constraintField;
+        set => rigid_constraintField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_physics_model")]
     public instance_physics_model[] instance_physics_model
     {
-        get { return instance_physics_modelField; }
-        set { instance_physics_modelField = value; }
+        get => instance_physics_modelField;
+        set => instance_physics_modelField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -8042,40 +8042,40 @@ public class rigid_body
     /// <remarks />
     public rigid_bodyTechnique_common technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -8101,15 +8101,15 @@ public class rigid_bodyTechnique_common
     /// <remarks />
     public rigid_bodyTechnique_commonDynamic dynamic
     {
-        get { return dynamicField; }
-        set { dynamicField = value; }
+        get => dynamicField;
+        set => dynamicField = value;
     }
 
     /// <remarks />
     public TargetableFloat mass
     {
-        get { return massField; }
-        set { massField = value; }
+        get => massField;
+        set => massField = value;
     }
 
     /// <remarks />
@@ -8117,15 +8117,15 @@ public class rigid_bodyTechnique_common
     [XmlArrayItem("translate", typeof (TargetableFloat3), IsNullable = false)]
     public object[] mass_frame
     {
-        get { return mass_frameField; }
-        set { mass_frameField = value; }
+        get => mass_frameField;
+        set => mass_frameField = value;
     }
 
     /// <remarks />
     public TargetableFloat3 inertia
     {
-        get { return inertiaField; }
-        set { inertiaField = value; }
+        get => inertiaField;
+        set => inertiaField = value;
     }
 
     /// <remarks />
@@ -8133,16 +8133,16 @@ public class rigid_bodyTechnique_common
     [XmlElement("physics_material", typeof (physics_material))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     [XmlElement("shape")]
     public rigid_bodyTechnique_commonShape[] shape
     {
-        get { return shapeField; }
-        set { shapeField = value; }
+        get => shapeField;
+        set => shapeField = value;
     }
 }
 
@@ -8162,16 +8162,16 @@ public class rigid_bodyTechnique_commonDynamic
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public bool Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -8196,22 +8196,22 @@ public class rigid_bodyTechnique_commonShape
     /// <remarks />
     public rigid_bodyTechnique_commonShapeHollow hollow
     {
-        get { return hollowField; }
-        set { hollowField = value; }
+        get => hollowField;
+        set => hollowField = value;
     }
 
     /// <remarks />
     public TargetableFloat mass
     {
-        get { return massField; }
-        set { massField = value; }
+        get => massField;
+        set => massField = value;
     }
 
     /// <remarks />
     public TargetableFloat density
     {
-        get { return densityField; }
-        set { densityField = value; }
+        get => densityField;
+        set => densityField = value;
     }
 
     /// <remarks />
@@ -8219,8 +8219,8 @@ public class rigid_bodyTechnique_commonShape
     [XmlElement("physics_material", typeof (physics_material))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
@@ -8234,8 +8234,8 @@ public class rigid_bodyTechnique_commonShape
     [XmlElement("tapered_cylinder", typeof (tapered_cylinder))]
     public object Item1
     {
-        get { return item1Field; }
-        set { item1Field = value; }
+        get => item1Field;
+        set => item1Field = value;
     }
 
     /// <remarks />
@@ -8243,16 +8243,16 @@ public class rigid_bodyTechnique_commonShape
     [XmlElement("translate", typeof (TargetableFloat3))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -8272,16 +8272,16 @@ public class rigid_bodyTechnique_commonShapeHollow
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public bool Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -8300,16 +8300,16 @@ public class box
     /// <remarks />
     public string half_extents
     {
-        get { return half_extentsField; }
-        set { half_extentsField = value; }
+        get => half_extentsField;
+        set => half_extentsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -8330,23 +8330,23 @@ public class capsule
     /// <remarks />
     public double height
     {
-        get { return heightField; }
-        set { heightField = value; }
+        get => heightField;
+        set => heightField = value;
     }
 
     /// <remarks />
     public string radius
     {
-        get { return radiusField; }
-        set { radiusField = value; }
+        get => radiusField;
+        set => radiusField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -8367,23 +8367,23 @@ public class cylinder
     /// <remarks />
     public double height
     {
-        get { return heightField; }
-        set { heightField = value; }
+        get => heightField;
+        set => heightField = value;
     }
 
     /// <remarks />
     public string radius
     {
-        get { return radiusField; }
-        set { radiusField = value; }
+        get => radiusField;
+        set => radiusField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -8403,16 +8403,16 @@ public class plane
     /// <remarks />
     public string equation
     {
-        get { return equationField; }
-        set { equationField = value; }
+        get => equationField;
+        set => equationField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -8431,16 +8431,16 @@ public class sphere
     /// <remarks />
     public double radius
     {
-        get { return radiusField; }
-        set { radiusField = value; }
+        get => radiusField;
+        set => radiusField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -8463,30 +8463,30 @@ public class tapered_capsule
     /// <remarks />
     public double height
     {
-        get { return heightField; }
-        set { heightField = value; }
+        get => heightField;
+        set => heightField = value;
     }
 
     /// <remarks />
     public string radius1
     {
-        get { return radius1Field; }
-        set { radius1Field = value; }
+        get => radius1Field;
+        set => radius1Field = value;
     }
 
     /// <remarks />
     public string radius2
     {
-        get { return radius2Field; }
-        set { radius2Field = value; }
+        get => radius2Field;
+        set => radius2Field = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -8509,30 +8509,30 @@ public class tapered_cylinder
     /// <remarks />
     public double height
     {
-        get { return heightField; }
-        set { heightField = value; }
+        get => heightField;
+        set => heightField = value;
     }
 
     /// <remarks />
     public string radius1
     {
-        get { return radius1Field; }
-        set { radius1Field = value; }
+        get => radius1Field;
+        set => radius1Field = value;
     }
 
     /// <remarks />
     public string radius2
     {
-        get { return radius2Field; }
-        set { radius2Field = value; }
+        get => radius2Field;
+        set => radius2Field = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -8558,54 +8558,54 @@ public class rigid_constraint
     /// <remarks />
     public rigid_constraintRef_attachment ref_attachment
     {
-        get { return ref_attachmentField; }
-        set { ref_attachmentField = value; }
+        get => ref_attachmentField;
+        set => ref_attachmentField = value;
     }
 
     /// <remarks />
     public rigid_constraintAttachment attachment
     {
-        get { return attachmentField; }
-        set { attachmentField = value; }
+        get => attachmentField;
+        set => attachmentField = value;
     }
 
     /// <remarks />
     public rigid_constraintTechnique_common technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -8627,16 +8627,16 @@ public class rigid_constraintRef_attachment
     [XmlElement("translate", typeof (TargetableFloat3))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string rigid_body
     {
-        get { return rigid_bodyField; }
-        set { rigid_bodyField = value; }
+        get => rigid_bodyField;
+        set => rigid_bodyField = value;
     }
 }
 
@@ -8658,16 +8658,16 @@ public class rigid_constraintAttachment
     [XmlElement("translate", typeof (TargetableFloat3))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string rigid_body
     {
-        get { return rigid_bodyField; }
-        set { rigid_bodyField = value; }
+        get => rigid_bodyField;
+        set => rigid_bodyField = value;
     }
 }
 
@@ -8692,8 +8692,8 @@ public class rigid_constraintTechnique_common
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='true' attribute.
     public rigid_constraintTechnique_commonEnabled enabled
     {
-        get { return enabledField; }
-        set { enabledField = value; }
+        get => enabledField;
+        set => enabledField = value;
     }
 
     /// <remarks />
@@ -8701,22 +8701,22 @@ public class rigid_constraintTechnique_common
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='false' attribute.
     public rigid_constraintTechnique_commonInterpenetrate interpenetrate
     {
-        get { return interpenetrateField; }
-        set { interpenetrateField = value; }
+        get => interpenetrateField;
+        set => interpenetrateField = value;
     }
 
     /// <remarks />
     public rigid_constraintTechnique_commonLimits limits
     {
-        get { return limitsField; }
-        set { limitsField = value; }
+        get => limitsField;
+        set => limitsField = value;
     }
 
     /// <remarks />
     public rigid_constraintTechnique_commonSpring spring
     {
-        get { return springField; }
-        set { springField = value; }
+        get => springField;
+        set => springField = value;
     }
 }
 
@@ -8736,16 +8736,16 @@ public class rigid_constraintTechnique_commonEnabled
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public bool Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -8765,16 +8765,16 @@ public class rigid_constraintTechnique_commonInterpenetrate
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public bool Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -8792,15 +8792,15 @@ public class rigid_constraintTechnique_commonLimits
     /// <remarks />
     public rigid_constraintTechnique_commonLimitsSwing_cone_and_twist swing_cone_and_twist
     {
-        get { return swing_cone_and_twistField; }
-        set { swing_cone_and_twistField = value; }
+        get => swing_cone_and_twistField;
+        set => swing_cone_and_twistField = value;
     }
 
     /// <remarks />
     public rigid_constraintTechnique_commonLimitsLinear linear
     {
-        get { return linearField; }
-        set { linearField = value; }
+        get => linearField;
+        set => linearField = value;
     }
 }
 
@@ -8820,8 +8820,8 @@ public class rigid_constraintTechnique_commonLimitsSwing_cone_and_twist
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0 0.0 0.0' attribute.
     public TargetableFloat3 min
     {
-        get { return minField; }
-        set { minField = value; }
+        get => minField;
+        set => minField = value;
     }
 
     /// <remarks />
@@ -8829,8 +8829,8 @@ public class rigid_constraintTechnique_commonLimitsSwing_cone_and_twist
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0 0.0 0.0' attribute.
     public TargetableFloat3 max
     {
-        get { return maxField; }
-        set { maxField = value; }
+        get => maxField;
+        set => maxField = value;
     }
 }
 
@@ -8850,8 +8850,8 @@ public class rigid_constraintTechnique_commonLimitsLinear
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0 0.0 0.0' attribute.
     public TargetableFloat3 min
     {
-        get { return minField; }
-        set { minField = value; }
+        get => minField;
+        set => minField = value;
     }
 
     /// <remarks />
@@ -8859,8 +8859,8 @@ public class rigid_constraintTechnique_commonLimitsLinear
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0 0.0 0.0' attribute.
     public TargetableFloat3 max
     {
-        get { return maxField; }
-        set { maxField = value; }
+        get => maxField;
+        set => maxField = value;
     }
 }
 
@@ -8879,15 +8879,15 @@ public class rigid_constraintTechnique_commonSpring
     /// <remarks />
     public rigid_constraintTechnique_commonSpringAngular angular
     {
-        get { return angularField; }
-        set { angularField = value; }
+        get => angularField;
+        set => angularField = value;
     }
 
     /// <remarks />
     public rigid_constraintTechnique_commonSpringLinear linear
     {
-        get { return linearField; }
-        set { linearField = value; }
+        get => linearField;
+        set => linearField = value;
     }
 }
 
@@ -8909,8 +8909,8 @@ public class rigid_constraintTechnique_commonSpringAngular
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='1.0' attribute.
     public TargetableFloat stiffness
     {
-        get { return stiffnessField; }
-        set { stiffnessField = value; }
+        get => stiffnessField;
+        set => stiffnessField = value;
     }
 
     /// <remarks />
@@ -8918,8 +8918,8 @@ public class rigid_constraintTechnique_commonSpringAngular
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat damping
     {
-        get { return dampingField; }
-        set { dampingField = value; }
+        get => dampingField;
+        set => dampingField = value;
     }
 
     /// <remarks />
@@ -8927,8 +8927,8 @@ public class rigid_constraintTechnique_commonSpringAngular
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat target_value
     {
-        get { return target_valueField; }
-        set { target_valueField = value; }
+        get => target_valueField;
+        set => target_valueField = value;
     }
 }
 
@@ -8950,8 +8950,8 @@ public class rigid_constraintTechnique_commonSpringLinear
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='1.0' attribute.
     public TargetableFloat stiffness
     {
-        get { return stiffnessField; }
-        set { stiffnessField = value; }
+        get => stiffnessField;
+        set => stiffnessField = value;
     }
 
     /// <remarks />
@@ -8959,8 +8959,8 @@ public class rigid_constraintTechnique_commonSpringLinear
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat damping
     {
-        get { return dampingField; }
-        set { dampingField = value; }
+        get => dampingField;
+        set => dampingField = value;
     }
 
     /// <remarks />
@@ -8968,8 +8968,8 @@ public class rigid_constraintTechnique_commonSpringLinear
     // CODEGEN Warning: 'default' attribute supported only for primitive types.  Ignoring default='0.0' attribute.
     public TargetableFloat target_value
     {
-        get { return target_valueField; }
-        set { target_valueField = value; }
+        get => target_valueField;
+        set => target_valueField = value;
     }
 }
 
@@ -8999,64 +8999,64 @@ public class instance_physics_model
     [XmlElement("instance_force_field")]
     public InstanceWithExtra[] instance_force_field
     {
-        get { return instance_force_fieldField; }
-        set { instance_force_fieldField = value; }
+        get => instance_force_fieldField;
+        set => instance_force_fieldField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_rigid_body")]
     public instance_rigid_body[] instance_rigid_body
     {
-        get { return instance_rigid_bodyField; }
-        set { instance_rigid_bodyField = value; }
+        get => instance_rigid_bodyField;
+        set => instance_rigid_bodyField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_rigid_constraint")]
     public instance_rigid_constraint[] instance_rigid_constraint
     {
-        get { return instance_rigid_constraintField; }
-        set { instance_rigid_constraintField = value; }
+        get => instance_rigid_constraintField;
+        set => instance_rigid_constraintField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string url
     {
-        get { return urlField; }
-        set { urlField = value; }
+        get => urlField;
+        set => urlField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string parent
     {
-        get { return parentField; }
-        set { parentField = value; }
+        get => parentField;
+        set => parentField = value;
     }
 }
 
@@ -9082,56 +9082,56 @@ public class instance_rigid_body
     /// <remarks />
     public instance_rigid_bodyTechnique_common technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string body
     {
-        get { return bodyField; }
-        set { bodyField = value; }
+        get => bodyField;
+        set => bodyField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string target
     {
-        get { return targetField; }
-        set { targetField = value; }
+        get => targetField;
+        set => targetField = value;
     }
 }
 
@@ -9167,30 +9167,30 @@ public class instance_rigid_bodyTechnique_common
     [DefaultValue("0.0 0.0 0.0")]
     public string angular_velocity
     {
-        get { return angular_velocityField; }
-        set { angular_velocityField = value; }
+        get => angular_velocityField;
+        set => angular_velocityField = value;
     }
 
     /// <remarks />
     [DefaultValue("0.0 0.0 0.0")]
     public string velocity
     {
-        get { return velocityField; }
-        set { velocityField = value; }
+        get => velocityField;
+        set => velocityField = value;
     }
 
     /// <remarks />
     public instance_rigid_bodyTechnique_commonDynamic dynamic
     {
-        get { return dynamicField; }
-        set { dynamicField = value; }
+        get => dynamicField;
+        set => dynamicField = value;
     }
 
     /// <remarks />
     public TargetableFloat mass
     {
-        get { return massField; }
-        set { massField = value; }
+        get => massField;
+        set => massField = value;
     }
 
     /// <remarks />
@@ -9198,15 +9198,15 @@ public class instance_rigid_bodyTechnique_common
     [XmlArrayItem("translate", typeof (TargetableFloat3), IsNullable = false)]
     public object[] mass_frame
     {
-        get { return mass_frameField; }
-        set { mass_frameField = value; }
+        get => mass_frameField;
+        set => mass_frameField = value;
     }
 
     /// <remarks />
     public TargetableFloat3 inertia
     {
-        get { return inertiaField; }
-        set { inertiaField = value; }
+        get => inertiaField;
+        set => inertiaField = value;
     }
 
     /// <remarks />
@@ -9214,16 +9214,16 @@ public class instance_rigid_bodyTechnique_common
     [XmlElement("physics_material", typeof (physics_material))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
     [XmlElement("shape")]
     public instance_rigid_bodyTechnique_commonShape[] shape
     {
-        get { return shapeField; }
-        set { shapeField = value; }
+        get => shapeField;
+        set => shapeField = value;
     }
 }
 
@@ -9243,16 +9243,16 @@ public class instance_rigid_bodyTechnique_commonDynamic
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public bool Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -9277,22 +9277,22 @@ public class instance_rigid_bodyTechnique_commonShape
     /// <remarks />
     public instance_rigid_bodyTechnique_commonShapeHollow hollow
     {
-        get { return hollowField; }
-        set { hollowField = value; }
+        get => hollowField;
+        set => hollowField = value;
     }
 
     /// <remarks />
     public TargetableFloat mass
     {
-        get { return massField; }
-        set { massField = value; }
+        get => massField;
+        set => massField = value;
     }
 
     /// <remarks />
     public TargetableFloat density
     {
-        get { return densityField; }
-        set { densityField = value; }
+        get => densityField;
+        set => densityField = value;
     }
 
     /// <remarks />
@@ -9300,8 +9300,8 @@ public class instance_rigid_bodyTechnique_commonShape
     [XmlElement("physics_material", typeof (physics_material))]
     public object Item
     {
-        get { return itemField; }
-        set { itemField = value; }
+        get => itemField;
+        set => itemField = value;
     }
 
     /// <remarks />
@@ -9315,8 +9315,8 @@ public class instance_rigid_bodyTechnique_commonShape
     [XmlElement("tapered_cylinder", typeof (tapered_cylinder))]
     public object Item1
     {
-        get { return item1Field; }
-        set { item1Field = value; }
+        get => item1Field;
+        set => item1Field = value;
     }
 
     /// <remarks />
@@ -9324,16 +9324,16 @@ public class instance_rigid_bodyTechnique_commonShape
     [XmlElement("translate", typeof (TargetableFloat3))]
     public object[] Items
     {
-        get { return itemsField; }
-        set { itemsField = value; }
+        get => itemsField;
+        set => itemsField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -9353,16 +9353,16 @@ public class instance_rigid_bodyTechnique_commonShapeHollow
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlText]
     public bool Value
     {
-        get { return valueField; }
-        set { valueField = value; }
+        get => valueField;
+        set => valueField = value;
     }
 }
 
@@ -9385,32 +9385,32 @@ public class instance_rigid_constraint
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string constraint
     {
-        get { return constraintField; }
-        set { constraintField = value; }
+        get => constraintField;
+        set => constraintField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string sid
     {
-        get { return sidField; }
-        set { sidField = value; }
+        get => sidField;
+        set => sidField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -9435,40 +9435,40 @@ public class library_physics_scenes
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("physics_scene")]
     public physics_scene[] physics_scene
     {
-        get { return physics_sceneField; }
-        set { physics_sceneField = value; }
+        get => physics_sceneField;
+        set => physics_sceneField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -9497,63 +9497,63 @@ public class physics_scene
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_force_field")]
     public InstanceWithExtra[] instance_force_field
     {
-        get { return instance_force_fieldField; }
-        set { instance_force_fieldField = value; }
+        get => instance_force_fieldField;
+        set => instance_force_fieldField = value;
     }
 
     /// <remarks />
     [XmlElement("instance_physics_model")]
     public instance_physics_model[] instance_physics_model
     {
-        get { return instance_physics_modelField; }
-        set { instance_physics_modelField = value; }
+        get => instance_physics_modelField;
+        set => instance_physics_modelField = value;
     }
 
     /// <remarks />
     public physics_sceneTechnique_common technique_common
     {
-        get { return technique_commonField; }
-        set { technique_commonField = value; }
+        get => technique_commonField;
+        set => technique_commonField = value;
     }
 
     /// <remarks />
     [XmlElement("technique")]
     public technique[] technique
     {
-        get { return techniqueField; }
-        set { techniqueField = value; }
+        get => techniqueField;
+        set => techniqueField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -9572,15 +9572,15 @@ public class physics_sceneTechnique_common
     /// <remarks />
     public TargetableFloat3 gravity
     {
-        get { return gravityField; }
-        set { gravityField = value; }
+        get => gravityField;
+        set => gravityField = value;
     }
 
     /// <remarks />
     public TargetableFloat time_step
     {
-        get { return time_stepField; }
-        set { time_stepField = value; }
+        get => time_stepField;
+        set => time_stepField = value;
     }
 }
 
@@ -9605,40 +9605,40 @@ public class library_visual_scenes
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("visual_scene")]
     public visual_scene[] visual_scene
     {
-        get { return visual_sceneField; }
-        set { visual_sceneField = value; }
+        get => visual_sceneField;
+        set => visual_sceneField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -9665,48 +9665,48 @@ public class visual_scene
     /// <remarks />
     public asset asset
     {
-        get { return assetField; }
-        set { assetField = value; }
+        get => assetField;
+        set => assetField = value;
     }
 
     /// <remarks />
     [XmlElement("node")]
     public node[] node
     {
-        get { return nodeField; }
-        set { nodeField = value; }
+        get => nodeField;
+        set => nodeField = value;
     }
 
     /// <remarks />
     [XmlElement("evaluate_scene")]
     public visual_sceneEvaluate_scene[] evaluate_scene
     {
-        get { return evaluate_sceneField; }
-        set { evaluate_sceneField = value; }
+        get => evaluate_sceneField;
+        set => evaluate_sceneField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "ID")]
     public string id
     {
-        get { return idField; }
-        set { idField = value; }
+        get => idField;
+        set => idField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -9725,16 +9725,16 @@ public class visual_sceneEvaluate_scene
     [XmlElement("render")]
     public visual_sceneEvaluate_sceneRender[] render
     {
-        get { return renderField; }
-        set { renderField = value; }
+        get => renderField;
+        set => renderField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "NCName")]
     public string name
     {
-        get { return nameField; }
-        set { nameField = value; }
+        get => nameField;
+        set => nameField = value;
     }
 }
 
@@ -9754,23 +9754,23 @@ public class visual_sceneEvaluate_sceneRender
     [XmlElement("layer", DataType = "NCName")]
     public string[] layer
     {
-        get { return layerField; }
-        set { layerField = value; }
+        get => layerField;
+        set => layerField = value;
     }
 
     /// <remarks />
     public instance_effect instance_effect
     {
-        get { return instance_effectField; }
-        set { instance_effectField = value; }
+        get => instance_effectField;
+        set => instance_effectField = value;
     }
 
     /// <remarks />
     [XmlAttribute(DataType = "anyURI")]
     public string camera_node
     {
-        get { return camera_nodeField; }
-        set { camera_nodeField = value; }
+        get => camera_nodeField;
+        set => camera_nodeField = value;
     }
 }
 
@@ -9791,23 +9791,23 @@ public class COLLADAScene
     [XmlElement("instance_physics_scene")]
     public InstanceWithExtra[] instance_physics_scene
     {
-        get { return instance_physics_sceneField; }
-        set { instance_physics_sceneField = value; }
+        get => instance_physics_sceneField;
+        set => instance_physics_sceneField = value;
     }
 
     /// <remarks />
     public InstanceWithExtra instance_visual_scene
     {
-        get { return instance_visual_sceneField; }
-        set { instance_visual_sceneField = value; }
+        get => instance_visual_sceneField;
+        set => instance_visual_sceneField = value;
     }
 
     /// <remarks />
     [XmlElement("extra")]
     public extra[] extra
     {
-        get { return extraField; }
-        set { extraField = value; }
+        get => extraField;
+        set => extraField = value;
     }
 }
 
@@ -9838,8 +9838,8 @@ public class ellipsoid
     /// <remarks />
     public string size
     {
-        get { return sizeField; }
-        set { sizeField = value; }
+        get => sizeField;
+        set => sizeField = value;
     }
 }
 

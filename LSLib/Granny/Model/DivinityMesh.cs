@@ -241,14 +241,14 @@ public class DivinityMeshProperties
 
     public DivinityModelFlag MeshFlags
     {
-        get { return (DivinityModelFlag)Flags[0]; }
-        set { Flags[0] = (UInt32)value; }
+        get => (DivinityModelFlag)Flags[0];
+        set => Flags[0] = (UInt32)value;
     }
 
     public DivinityClothFlag ClothFlags
     {
-        get { return (DivinityClothFlag)Flags[2]; }
-        set { Flags[2] = (UInt32)value; }
+        get => (DivinityClothFlag)Flags[2];
+        set => Flags[2] = (UInt32)value;
     }
 }
 

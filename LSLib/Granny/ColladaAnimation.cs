@@ -16,10 +16,7 @@ public class ColladaAnimation
     private List<Single> Times;
     private string BoneName;
 
-    public Single Duration
-    {
-        get { return Times.Last(); }
-    }
+    public Single Duration => Times.Last();
 
     private void ImportSources()
     {

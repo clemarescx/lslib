@@ -35,8 +35,8 @@ public class Bone
     [Serialization(Kind = SerializationKind.None)]
     public int ExportIndex = -1;
 
-    public bool IsRoot { get { return ParentIndex == -1; } }
-        
+    public bool IsRoot => ParentIndex == -1;
+
     public void UpdateWorldTransforms(List<Bone> bones)
     {
         var localTransform = Transform.ToMatrix4Composite();

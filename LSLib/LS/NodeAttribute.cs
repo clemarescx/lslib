@@ -73,15 +73,12 @@ public class NodeAttribute
     private DataType type;
     private object value;
 
-    public DataType Type
-    {
-        get { return type; }
-    }
+    public DataType Type => type;
 
     public object Value
     {
-        get { return value; }
-        set { this.value = value; }
+        get => value;
+        set => this.value = value;
     }
 
     public NodeAttribute(DataType type)

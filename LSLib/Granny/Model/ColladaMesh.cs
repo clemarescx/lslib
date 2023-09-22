@@ -37,10 +37,7 @@ public class ColladaMesh
     public Dictionary<int, List<int>> OriginalToConsolidatedVertexIndexMap;
     private ExporterOptions Options;
 
-    public VertexDescriptor InternalVertexType
-    {
-        get { return OutputVertexType; }
-    }
+    public VertexDescriptor InternalVertexType => OutputVertexType;
 
     private class VertexIndexComparer : IEqualityComparer<int[]>
     {

@@ -168,18 +168,12 @@ internal struct LSFNodeEntryV2
     /// <summary>
     /// Index into name hash table
     /// </summary>
-    public int NameIndex
-    {
-        get { return (int)(NameHashTableIndex >> 16); }
-    }
+    public int NameIndex => (int)(NameHashTableIndex >> 16);
 
     /// <summary>
     /// Offset in hash chain
     /// </summary>
-    public int NameOffset
-    {
-        get { return (int)(NameHashTableIndex & 0xffff); }
-    }
+    public int NameOffset => (int)(NameHashTableIndex & 0xffff);
 };
 
 /// <summary>
@@ -212,18 +206,12 @@ internal struct LSFNodeEntryV3
     /// <summary>
     /// Index into name hash table
     /// </summary>
-    public int NameIndex
-    {
-        get { return (int)(NameHashTableIndex >> 16); }
-    }
+    public int NameIndex => (int)(NameHashTableIndex >> 16);
 
     /// <summary>
     /// Offset in hash chain
     /// </summary>
-    public int NameOffset
-    {
-        get { return (int)(NameHashTableIndex & 0xffff); }
-    }
+    public int NameOffset => (int)(NameHashTableIndex & 0xffff);
 };
 
 /// <summary>
@@ -278,34 +266,22 @@ internal struct LSFAttributeEntryV2
     /// <summary>
     /// Index into name hash table
     /// </summary>
-    public int NameIndex
-    {
-        get { return (int)(NameHashTableIndex >> 16); }
-    }
+    public int NameIndex => (int)(NameHashTableIndex >> 16);
 
     /// <summary>
     /// Offset in hash chain
     /// </summary>
-    public int NameOffset
-    {
-        get { return (int)(NameHashTableIndex & 0xffff); }
-    }
+    public int NameOffset => (int)(NameHashTableIndex & 0xffff);
 
     /// <summary>
     /// Type of this attribute (see NodeAttribute.DataType)
     /// </summary>
-    public uint TypeId
-    {
-        get { return TypeAndLength & 0x3f; }
-    }
+    public uint TypeId => TypeAndLength & 0x3f;
 
     /// <summary>
     /// Length of this attribute
     /// </summary>
-    public uint Length
-    {
-        get { return TypeAndLength >> 6; }
-    }
+    public uint Length => TypeAndLength >> 6;
 };
 
 /// <summary>
@@ -340,34 +316,22 @@ internal struct LSFAttributeEntryV3
     /// <summary>
     /// Index into name hash table
     /// </summary>
-    public int NameIndex
-    {
-        get { return (int)(NameHashTableIndex >> 16); }
-    }
+    public int NameIndex => (int)(NameHashTableIndex >> 16);
 
     /// <summary>
     /// Offset in hash chain
     /// </summary>
-    public int NameOffset
-    {
-        get { return (int)(NameHashTableIndex & 0xffff); }
-    }
+    public int NameOffset => (int)(NameHashTableIndex & 0xffff);
 
     /// <summary>
     /// Type of this attribute (see NodeAttribute.DataType)
     /// </summary>
-    public uint TypeId
-    {
-        get { return TypeAndLength & 0x3f; }
-    }
+    public uint TypeId => TypeAndLength & 0x3f;
 
     /// <summary>
     /// Length of this attribute
     /// </summary>
-    public uint Length
-    {
-        get { return TypeAndLength >> 6; }
-    }
+    public uint Length => TypeAndLength >> 6;
 };
 
 internal class LSFAttributeInfo

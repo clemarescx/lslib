@@ -73,28 +73,28 @@ public class CodeLocation : IMerge<CodeLocation>
     /// <summary>
     /// The line at which the text span starts.
     /// </summary>
-    public string FileName { get { return fileName; } }
+    public string FileName => fileName;
 
     /// <summary>
     /// The line at which the text span starts.
     /// </summary>
-    public int StartLine { get { return startLine; } }
+    public int StartLine => startLine;
 
     /// <summary>
     /// The column at which the text span starts.
     /// </summary>
-    public int StartColumn { get { return startColumn; } }
+    public int StartColumn => startColumn;
 
     /// <summary>
     /// The line on which the text span ends.
     /// </summary>
-    public int EndLine { get { return endLine; } }
+    public int EndLine => endLine;
 
     /// <summary>
     /// The column of the first character
     /// beyond the end of the text span.
     /// </summary>
-    public int EndColumn { get { return endColumn; } }
+    public int EndColumn => endColumn;
 
     /// <summary>
     /// Default no-arg constructor.

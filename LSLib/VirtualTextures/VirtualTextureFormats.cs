@@ -239,21 +239,17 @@ public struct GTSFourCCMetadata
 
     public string FourCCName
     {
-        get
-        {
-            return Char.ToString((char)(FourCC & 0xff))
-                 + Char.ToString((char)((FourCC >> 8) & 0xff))
-                 + Char.ToString((char)((FourCC >> 16) & 0xff))
-                 + Char.ToString((char)((FourCC >> 24) & 0xff));
-        }
+        get =>
+            Char.ToString((char)(FourCC & 0xff))
+          + Char.ToString((char)((FourCC >> 8) & 0xff))
+          + Char.ToString((char)((FourCC >> 16) & 0xff))
+          + Char.ToString((char)((FourCC >> 24) & 0xff));
 
-        set
-        {
+        set =>
             FourCC = (uint)value[0]
                    | ((uint)value[1] << 8)
                    | ((uint)value[2] << 16)
                    | ((uint)value[3] << 24);
-        }
     }
 }
 
@@ -281,37 +277,13 @@ public struct GTSPackedTileID
 {
     public UInt32 Val;
 
-    public UInt32 Layer
-    {
-        get
-        {
-            return Val & 0x0F;
-        }
-    }
+    public UInt32 Layer => Val & 0x0F;
 
-    public UInt32 Level
-    {
-        get
-        {
-            return (Val >> 4) & 0x0F;
-        }
-    }
+    public UInt32 Level => (Val >> 4) & 0x0F;
 
-    public UInt32 Y
-    {
-        get
-        {
-            return (Val >> 8) & 0x0FFF;
-        }
-    }
+    public UInt32 Y => (Val >> 8) & 0x0FFF;
 
-    public UInt32 X
-    {
-        get
-        {
-            return Val >> 20;
-        }
-    }
+    public UInt32 X => Val >> 20;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]

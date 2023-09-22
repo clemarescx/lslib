@@ -33,10 +33,7 @@ public class GR2Reader
         private HashSet<StructReference> DebugPendingResolve = new HashSet<StructReference>();
 #endif
 
-    public UInt32 Tag
-    {
-        get { return Header.tag; }
-    }
+    public UInt32 Tag => Header.tag;
 
     public GR2Reader(Stream stream)
     {

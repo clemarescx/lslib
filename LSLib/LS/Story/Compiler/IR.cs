@@ -17,15 +17,9 @@ public abstract class IRReference<NameType, ReferencedType>
     public readonly NameType Name;
     protected CompilationContext Context;
 
-    public bool IsNull
-    {
-        get { return Name == null; }
-    }
+    public bool IsNull => Name == null;
 
-    public bool IsValid
-    {
-        get { return Name != null; }
-    }
+    public bool IsValid => Name != null;
 
     public IRReference()
     {

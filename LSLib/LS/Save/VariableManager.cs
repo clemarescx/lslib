@@ -279,18 +279,12 @@ internal struct Key2TableEntry
     /// <summary>
     /// Index of value in the appropriate variable list
     /// </summary>
-    public int ValueIndex
-    {
-        get { return (int)((ValueIndexAndType >> 3) & 0x3ff); }
-    }
+    public int ValueIndex => (int)((ValueIndexAndType >> 3) & 0x3ff);
 
     /// <summary>
     /// Type of value
     /// </summary>
-    public VariableType ValueType
-    {
-        get { return (VariableType)(ValueIndexAndType & 7); }
-    }
+    public VariableType ValueType => (VariableType)(ValueIndexAndType & 7);
 };
 
 public class VariableManager

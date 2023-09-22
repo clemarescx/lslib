@@ -73,13 +73,7 @@ public class StatTypeDefinition
     public string BaseClassProperty;
     public readonly Dictionary<string, StatSubtypeDefinition> Subtypes;
 
-    public bool CanInstantiate
-    {
-        get
-        {
-            return NameProperty != null;
-        }
-    }
+    public bool CanInstantiate => NameProperty != null;
 
     public StatTypeDefinition(string name, string subtypeProperty)
     {

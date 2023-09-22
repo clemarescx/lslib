@@ -187,8 +187,8 @@ public class UncompressedPackagedFileStream : Stream
         }
     }
 
-    public override bool CanRead { get { return true; } }
-    public override bool CanSeek { get { return false; } }
+    public override bool CanRead => true;
+    public override bool CanSeek => false;
 
     public override int Read(byte[] buffer, int offset, int count)
     {
@@ -211,13 +211,13 @@ public class UncompressedPackagedFileStream : Stream
 
     public override long Position
     {
-        get { return PackageStream.Position - (long)FileInfo.OffsetInFile; }
-        set { throw new NotSupportedException(); }
+        get => PackageStream.Position - (long)FileInfo.OffsetInFile;
+        set => throw new NotSupportedException();
     }
 
-    public override bool CanTimeout { get { return PackageStream.CanTimeout; } }
-    public override bool CanWrite { get { return false; } }
-    public override long Length { get { return (long)FileInfo.SizeOnDisk; } }
+    public override bool CanTimeout => PackageStream.CanTimeout;
+    public override bool CanWrite => false;
+    public override long Length => (long)FileInfo.SizeOnDisk;
     public override void SetLength(long value) { throw new NotSupportedException(); }
     public override void Write(byte[] buffer, int offset, int count) { throw new NotSupportedException(); }
     public override void Flush() { }
