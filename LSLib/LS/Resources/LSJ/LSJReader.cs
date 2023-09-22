@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace LSLib.LS;
 
-public class LSJReader : ILSReader
+public sealed class LSJReader : ILSReader
 {
     private Stream stream;
     private JsonTextReader reader;
@@ -25,7 +25,7 @@ public class LSJReader : ILSReader
         var serializer = JsonSerializer.Create(settings);
 
         using var streamReader = new StreamReader(stream);
-        using (reader = new(streamReader))
+        using (reader = new JsonTextReader(streamReader))
         {
             return serializer.Deserialize<Resource>(reader);
         }
