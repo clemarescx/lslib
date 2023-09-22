@@ -246,7 +246,7 @@ public struct GTSFourCCMetadata
           + char.ToString((char)((FourCC >> 24) & 0xff));
 
         set =>
-            FourCC = (uint)value[0]
+            FourCC = value[0]
                    | ((uint)value[1] << 8)
                    | ((uint)value[2] << 16)
                    | ((uint)value[3] << 24);

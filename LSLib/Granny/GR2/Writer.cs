@@ -606,7 +606,7 @@ public class WritableSection : Section
 
     internal void WriteSectionReference(SectionReference r)
     {
-        Writer.Write((uint)r.Section);
+        Writer.Write(r.Section);
         Writer.Write(r.Offset);
     }
 };
@@ -651,7 +651,7 @@ public class RelocationArea
 
     internal void WriteSectionReference(SectionReference r)
     {
-        Writer.Write((uint)r.Section);
+        Writer.Write(r.Section);
         Writer.Write(r.Offset);
     }
 };
@@ -965,7 +965,7 @@ public class GR2Writer
 
     public void WriteSectionReference(SectionReference r)
     {
-        Writer.Write((uint)r.Section);
+        Writer.Write(r.Section);
         Writer.Write(r.Offset);
     }
 

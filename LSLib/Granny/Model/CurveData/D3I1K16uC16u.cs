@@ -28,7 +28,7 @@ public class D3I1K16uC16u : AnimationCurveData
         var numKnots = NumKnots();
         var knots = new List<float>(numKnots);
         for (var i = 0; i < numKnots; i++)
-            knots.Add((float)KnotsControls[i] / scale);
+            knots.Add(KnotsControls[i] / scale);
 
         return knots;
     }
@@ -40,9 +40,9 @@ public class D3I1K16uC16u : AnimationCurveData
         for (var i = 0; i < numKnots; i++)
         {
             var vec = new Vector3(
-                (float)KnotsControls[numKnots + i] * ControlScales[0] + ControlOffsets[0],
-                (float)KnotsControls[numKnots + i] * ControlScales[1] + ControlOffsets[1],
-                (float)KnotsControls[numKnots + i] * ControlScales[2] + ControlOffsets[2]
+                KnotsControls[numKnots + i] * ControlScales[0] + ControlOffsets[0],
+                KnotsControls[numKnots + i] * ControlScales[1] + ControlOffsets[1],
+                KnotsControls[numKnots + i] * ControlScales[2] + ControlOffsets[2]
             );
             knots.Add(vec);
         }

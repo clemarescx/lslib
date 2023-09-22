@@ -42,7 +42,7 @@ public struct BoneWeight : IEquatable<BoneWeight>
 
     public override int GetHashCode()
     {
-        return (int)A ^ (int)(B << 8) ^ (int)(C << 16) ^ (int)(D << 24);
+        return A ^ B << 8 ^ C << 16 ^ D << 24;
     }
 }
 

@@ -36,7 +36,7 @@ public class Compiler
                 return;
             }
 
-            object paramName = param.Name != null ? (object)param.Name : paramIndex;
+            object paramName = param.Name != null ? param.Name : paramIndex;
             Context.Log.Error(value.Location,
                 DiagnosticCode.LocalTypeMismatch,
                 "Parameter {0} of {1} \"{2}\" expects {3}; {4} specified",
@@ -46,7 +46,7 @@ public class Compiler
 
         if (IsGuidAliasToAliasCast(param.Type, value.Type))
         {
-            object paramName = param.Name != null ? (object)param.Name : paramIndex;
+            object paramName = param.Name != null ? param.Name : paramIndex;
             Context.Log.Error(value.Location,
                 DiagnosticCode.GuidAliasMismatch,
                 "Parameter {0} of {1} \"{2}\" has GUID type {3}; {4} specified",
@@ -353,7 +353,7 @@ public class Compiler
                 // The variable was bound after this node (so it is still unbound here)
              || (conditionIndex != -1 && ruleVar.FirstBindingIndex >= conditionIndex)
             ) {
-                object paramName = param.Name != null ? (object)param.Name : parameterIndex + 1;
+                object paramName = param.Name != null ? param.Name : parameterIndex + 1;
                 if (!ruleVar.IsUnused())
                 {
                     Context.Log.Error(variable.Location,
@@ -494,7 +494,7 @@ public class Compiler
 
     private Value.Type IntrinsicTypeToCompatibilityType(Value.Type typeId)
     {
-        return (Value.Type)typeId switch
+        return typeId switch
         {
             Value.Type.Integer    => Value.Type.Integer,
             Value.Type.Integer64  => Value.Type.Integer,

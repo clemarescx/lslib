@@ -26,7 +26,7 @@ public class D9I1K8uC8u : AnimationCurveData
         var numKnots = NumKnots();
         var knots = new List<float>(numKnots);
         for (var i = 0; i < numKnots; i++)
-            knots.Add((float)KnotsControls[i] / scale);
+            knots.Add(KnotsControls[i] / scale);
 
         return knots;
     }
@@ -43,7 +43,7 @@ public class D9I1K8uC8u : AnimationCurveData
         for (var i = 0; i < numKnots; i++)
         {
             // TODO: Not sure if correct?
-            var scale = (float)KnotsControls[numKnots + i] * ControlScale + ControlOffset;
+            var scale = KnotsControls[numKnots + i] * ControlScale + ControlOffset;
             var mat = new Matrix3(
                 scale, 0, 0,
                 0, scale, 0,

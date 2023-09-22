@@ -95,7 +95,7 @@ public class OsiReader : BinaryReader
     // TODO: Make RO!
     public readonly Story Story;
 
-    public uint Ver => ((uint)MajorVersion << 8) | (uint)MinorVersion;
+    public uint Ver => (MajorVersion << 8) | MinorVersion;
 
     public OsiReader(Stream stream, Story story)
         : base(stream)
@@ -219,7 +219,7 @@ public class OsiWriter : BinaryWriter
     public readonly Dictionary<uint, uint> TypeAliases = new();
     public Dictionary<uint, OsirisEnum> Enums = new();
 
-    public uint Ver => ((uint)MajorVersion << 8) | (uint)MinorVersion;
+    public uint Ver => (MajorVersion << 8) | MinorVersion;
 
     public OsiWriter(Stream stream, bool leaveOpen)
         : base(stream, Encoding.UTF8, leaveOpen)
@@ -267,7 +267,7 @@ public class SaveFileHeader : OsirisSerializable
     public byte Unused;
     public uint DebugFlags;
 
-    public uint Ver => ((uint)MajorVersion << 8) | (uint)MinorVersion;
+    public uint Ver => ((uint)MajorVersion << 8) | MinorVersion;
 
     public void Read(OsiReader reader)
     {

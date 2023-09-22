@@ -505,7 +505,7 @@ public class LSFWriter :ILSWriter
     private void WriteStringWithLength(BinaryWriter writer, string s)
     {
         byte[] utf = Encoding.UTF8.GetBytes(s);
-        writer.Write((int)(utf.Length + 1));
+        writer.Write(utf.Length + 1);
         writer.Write(utf);
         writer.Write((byte)0);
     }

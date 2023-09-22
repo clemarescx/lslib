@@ -197,7 +197,7 @@ public class ColladaMesh
             {
                 if (VertexIndex(triVertIdx) == vertexIdx)
                 {
-                    int baseIdx = (int)(triVertIdx / 3) * 3;
+                    int baseIdx = triVertIdx / 3 * 3;
                     var indices = new int[] {
                         VertexIndex(baseIdx + 0),
                         VertexIndex(baseIdx + 1),

@@ -51,10 +51,10 @@ public struct PackedVersion
 
     public long ToVersion64()
     {
-        return (long)(((long)Major & 0x7f) << 55 |
-                       ((long)Minor & 0xff) << 47 |
-                       ((long)Revision & 0xffff) << 31 |
-                       ((long)Build & 0x7fffffff) << 0);
+        return ((long)Major & 0x7f) << 55 |
+               ((long)Minor & 0xff) << 47 |
+               ((long)Revision & 0xffff) << 31 |
+               ((long)Build & 0x7fffffff) << 0;
     }
 }
 

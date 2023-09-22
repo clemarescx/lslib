@@ -35,7 +35,7 @@ public class DaKeyframes32f : AnimationCurveData
     {
         var knots = new List<float>(NumKnots());
         for (var i = 0; i < NumKnots(); i++)
-            knots.Add((float)i);
+            knots.Add(i);
 
         return knots;
     }

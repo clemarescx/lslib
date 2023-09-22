@@ -205,7 +205,7 @@ public class VirtualTileSet : IDisposable
 
                 // Re-write node header with final node size
                 fs.Position = headerOffset;
-                writer.Write((uint)childrenSize);
+                writer.Write(childrenSize);
                 fs.Position = endOffset;
 
                 break;

@@ -32,7 +32,7 @@ public class DaK8uC8u : AnimationCurveData
         var numKnots = NumKnots();
         var knots = new List<float>(numKnots);
         for (var i = 0; i < numKnots; i++)
-            knots.Add((float)KnotsControls[i] / scale);
+            knots.Add(KnotsControls[i] / scale);
 
         return knots;
     }
@@ -45,15 +45,15 @@ public class DaK8uC8u : AnimationCurveData
         for (var i = 0; i < numKnots; i++)
         {
             var mat = new Matrix3(
-                (float)KnotsControls[numKnots + i * 9 + 0] * ControlScaleOffsets[0] + ControlScaleOffsets[9 + 0],
-                (float)KnotsControls[numKnots + i * 9 + 1] * ControlScaleOffsets[1] + ControlScaleOffsets[9 + 1],
-                (float)KnotsControls[numKnots + i * 9 + 2] * ControlScaleOffsets[2] + ControlScaleOffsets[9 + 2],
-                (float)KnotsControls[numKnots + i * 9 + 3] * ControlScaleOffsets[3] + ControlScaleOffsets[9 + 3],
-                (float)KnotsControls[numKnots + i * 9 + 4] * ControlScaleOffsets[4] + ControlScaleOffsets[9 + 4],
-                (float)KnotsControls[numKnots + i * 9 + 5] * ControlScaleOffsets[5] + ControlScaleOffsets[9 + 5],
-                (float)KnotsControls[numKnots + i * 9 + 6] * ControlScaleOffsets[6] + ControlScaleOffsets[9 + 6],
-                (float)KnotsControls[numKnots + i * 9 + 7] * ControlScaleOffsets[7] + ControlScaleOffsets[9 + 7],
-                (float)KnotsControls[numKnots + i * 9 + 8] * ControlScaleOffsets[8] + ControlScaleOffsets[9 + 8]
+                KnotsControls[numKnots + i * 9 + 0] * ControlScaleOffsets[0] + ControlScaleOffsets[9 + 0],
+                KnotsControls[numKnots + i * 9 + 1] * ControlScaleOffsets[1] + ControlScaleOffsets[9 + 1],
+                KnotsControls[numKnots + i * 9 + 2] * ControlScaleOffsets[2] + ControlScaleOffsets[9 + 2],
+                KnotsControls[numKnots + i * 9 + 3] * ControlScaleOffsets[3] + ControlScaleOffsets[9 + 3],
+                KnotsControls[numKnots + i * 9 + 4] * ControlScaleOffsets[4] + ControlScaleOffsets[9 + 4],
+                KnotsControls[numKnots + i * 9 + 5] * ControlScaleOffsets[5] + ControlScaleOffsets[9 + 5],
+                KnotsControls[numKnots + i * 9 + 6] * ControlScaleOffsets[6] + ControlScaleOffsets[9 + 6],
+                KnotsControls[numKnots + i * 9 + 7] * ControlScaleOffsets[7] + ControlScaleOffsets[9 + 7],
+                KnotsControls[numKnots + i * 9 + 8] * ControlScaleOffsets[8] + ControlScaleOffsets[9 + 8]
             );
             knots.Add(mat);
         }
@@ -69,10 +69,10 @@ public class DaK8uC8u : AnimationCurveData
         for (var i = 0; i < numKnots; i++)
         {
             var quat = new Quaternion(
-                (float)KnotsControls[numKnots + i * 4 + 0] * ControlScaleOffsets[0] + ControlScaleOffsets[4 + 0],
-                (float)KnotsControls[numKnots + i * 4 + 1] * ControlScaleOffsets[1] + ControlScaleOffsets[4 + 1],
-                (float)KnotsControls[numKnots + i * 4 + 2] * ControlScaleOffsets[2] + ControlScaleOffsets[4 + 2],
-                (float)KnotsControls[numKnots + i * 4 + 3] * ControlScaleOffsets[3] + ControlScaleOffsets[4 + 3]
+                KnotsControls[numKnots + i * 4 + 0] * ControlScaleOffsets[0] + ControlScaleOffsets[4 + 0],
+                KnotsControls[numKnots + i * 4 + 1] * ControlScaleOffsets[1] + ControlScaleOffsets[4 + 1],
+                KnotsControls[numKnots + i * 4 + 2] * ControlScaleOffsets[2] + ControlScaleOffsets[4 + 2],
+                KnotsControls[numKnots + i * 4 + 3] * ControlScaleOffsets[3] + ControlScaleOffsets[4 + 3]
             );
             quats.Add(quat);
         }
