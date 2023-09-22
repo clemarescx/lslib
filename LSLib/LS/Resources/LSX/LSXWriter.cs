@@ -137,7 +137,9 @@ public class LSXWriter : ILSWriter
             foreach (var children in node.Children)
             {
                 foreach (var child in children.Value)
+                {
                     WriteNode(child);
+                }
             }
             writer.WriteEndElement();
         }

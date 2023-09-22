@@ -45,9 +45,16 @@ public class FunctionSignature : OsirisSerializable
         {
             var type = story.Types[Parameters.Types[i]];
             var isOutParam = ((OutParamMask[i >> 3] << (i & 7)) & 0x80) == 0x80;
-            if (isOutParam) writer.Write("out ");
+            if (isOutParam)
+            {
+                writer.Write("out ");
+            }
+
             writer.Write(type.Name);
-            if (i < Parameters.Types.Count - 1) writer.Write(", ");
+            if (i < Parameters.Types.Count - 1)
+            {
+                writer.Write(", ");
+            }
         }
         writer.Write(")");
     }
@@ -104,7 +111,10 @@ public class ParameterList : OsirisSerializable
         for (var i = 0; i < Types.Count; i++)
         {
             writer.Write(story.Types[Types[i]].Name);
-            if (i < Types.Count - 1) writer.Write(", ");
+            if (i < Types.Count - 1)
+            {
+                writer.Write(", ");
+            }
         }
     }
 }

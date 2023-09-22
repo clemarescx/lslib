@@ -128,9 +128,13 @@ public class WritableSection : Section
         }
 
         if (GR2.Magic.Is32Bit)
+        {
             Writer.Write((uint)0);
+        }
         else
+        {
             Writer.Write((ulong)0);
+        }
     }
 
     public void WriteStructReference(StructDefinition defn)
@@ -146,9 +150,13 @@ public class WritableSection : Section
         }
 
         if (GR2.Magic.Is32Bit)
+        {
             Writer.Write((uint)0);
+        }
         else
+        {
             Writer.Write((ulong)0);
+        }
     }
 
     public void WriteStringReference(string s)
@@ -165,9 +173,13 @@ public class WritableSection : Section
         }
 
         if (GR2.Magic.Is32Bit)
+        {
             Writer.Write((uint)0);
+        }
         else
+        {
             Writer.Write((ulong)0);
+        }
     }
 
     public void WriteArrayReference(System.Collections.IList list)
@@ -183,9 +195,13 @@ public class WritableSection : Section
         }
 
         if (GR2.Magic.Is32Bit)
+        {
             Writer.Write((uint)0);
+        }
         else
+        {
             Writer.Write((ulong)0);
+        }
     }
 
     public void WriteArrayIndicesReference(System.Collections.IList list)
@@ -200,11 +216,18 @@ public class WritableSection : Section
         WriteStructReference(defn.WriteDefinition);
         Writer.Write(defn.ArraySize);
         for (var i = 0; i < MemberDefinition.ExtraTagCount; i++)
+        {
             Writer.Write(defn.Extra[i]);
+        }
+
         if (GR2.Magic.Is32Bit)
+        {
             Writer.Write(defn.Unknown);
+        }
         else
+        {
             Writer.Write((ulong)defn.Unknown);
+        }
     }
 
     public void WriteStructDefinition(StructDefinition defn)
@@ -274,7 +297,10 @@ public class WritableSection : Section
 
     internal void WriteStruct(StructDefinition definition, object node, bool allowRecursion = true, bool allowAlign = true)
     {
-        if (node == null) throw new ArgumentNullException();
+        if (node == null)
+        {
+            throw new ArgumentNullException();
+        }
 
         if (allowAlign)
         {
@@ -290,9 +316,13 @@ public class WritableSection : Section
             {
                 var value = member.CachedField.GetValue(node);
                 if (member.SerializationKind == SerializationKind.UserRaw)
+                {
                     member.Serializer.Write(GR2, this, member, value);
+                }
                 else
+                {
                     WriteInstance(member, member.CachedField.FieldType, value);
+                }
             }
         }
 
@@ -414,9 +444,14 @@ public class WritableSection : Section
         {
             case MemberType.Inline:
                 if (definition.SerializationKind == SerializationKind.UserMember)
+                {
                     definition.Serializer.Write(GR2, this, definition, node);
+                }
                 else
+                {
                     WriteStruct(type, node, false);
+                }
+
                 break;
 
             case MemberType.Reference:
@@ -438,7 +473,9 @@ public class WritableSection : Section
                     {
                         var variantType = definition.TypeSelector.SelectType(definition, node);
                         if (variantType != null)
+                        {
                             inferredType = variantType;
+                        }
                     }
 
                     WriteStructReference(GR2.LookupStructDefinition(inferredType, node));
@@ -492,7 +529,9 @@ public class WritableSection : Section
                     {
                         var variantType = definition.TypeSelector.SelectType(definition, node);
                         if (variantType != null)
+                        {
                             inferredType = variantType;
+                        }
                     }
 
                     WriteStructReference(GR2.LookupStructDefinition(inferredType, list[0]));
@@ -516,7 +555,9 @@ public class WritableSection : Section
                 Writer.Write(transform.Flags);
 
                 for (int i = 0; i < 3; i++)
+                {
                     Writer.Write(transform.Translation[i]);
+                }
 
                 Writer.Write(transform.Rotation.X);
                 Writer.Write(transform.Rotation.Y);
@@ -526,7 +567,9 @@ public class WritableSection : Section
                 for (int i = 0; i < 3; i++)
                 {
                     for (int j = 0; j < 3; j++)
+                    {
                         Writer.Write(transform.ScaleShear[i, j]);
+                    }
                 }
                 break;
 
@@ -839,7 +882,9 @@ public class GR2Writer
             {
                 // Pad section size to a multiple of the section alignment
                 while (section.MainStream.Position % section.Header.alignment > 0)
+                {
                     section.Writer.Write((byte)0);
+                }
 
                 section.MainStream.Flush();
                 section.Header.offsetInFile = (uint)Stream.Position;
@@ -921,7 +966,10 @@ public class GR2Writer
         header.tag = VersionTag;
         header.extraTags = new uint[Header.ExtraTagCount];
         for (int i = 0; i < Header.ExtraTagCount; i++)
+        {
             header.extraTags[i] = 0;
+        }
+
         header.stringTableCrc = 0;
         header.reserved1 = 0;
         header.reserved2 = 0;
@@ -941,7 +989,10 @@ public class GR2Writer
         WriteSectionReference(header.rootNode);
         Writer.Write(header.tag);
         for (int i = 0; i < Header.ExtraTagCount; i++)
+        {
             Writer.Write(header.extraTags[i]);
+        }
+
         Writer.Write(header.stringTableCrc);
         Writer.Write(header.reserved1);
         Writer.Write(header.reserved2);
@@ -978,7 +1029,9 @@ public class GR2Writer
         }
 
         if (type.GetInterfaces().Contains(typeof(System.Collections.IList)) || type.IsArray || type.IsPrimitive)
+        {
             throw new ArgumentException("Cannot create a struct definition for array or primitive types");
+        }
 
         var attrs = type.GetCustomAttributes(typeof(StructSerializationAttribute), true);
         if (attrs.Length > 0)

@@ -655,7 +655,10 @@ public class Packager
             ProgressUpdate(file.Name, currentSize, totalSize, file);
             currentSize += (long)file.Size();
 
-            if (file.IsDeletion()) continue;
+            if (file.IsDeletion())
+            {
+                continue;
+            }
 
             string outPath = outputPath + file.Name;
 

@@ -305,7 +305,10 @@ public class Exporter
 
     private void ConformAnimationBindPoses(Skeleton skeleton, Skeleton conformToSkeleton)
     {
-        if (Root.TrackGroups == null) return;
+        if (Root.TrackGroups == null)
+        {
+            return;
+        }
 
         foreach (var trackGroup in Root.TrackGroups)
         {
@@ -397,7 +400,10 @@ public class Exporter
 
     private void ConformSkeletonAnimations(Skeleton skeleton)
     {
-        if (Root.TrackGroups == null) return;
+        if (Root.TrackGroups == null)
+        {
+            return;
+        }
 
         foreach (var trackGroup in Root.TrackGroups)
         {
@@ -405,7 +411,11 @@ public class Exporter
             {
                 var bone = skeleton.GetBoneByName(track.Name);
                 //Dummy_Foot -> Dummy_Foot_01
-                if (bone == null) bone = skeleton.GetBoneByName($"{track.Name}_01");
+                if (bone == null)
+                {
+                    bone = skeleton.GetBoneByName($"{track.Name}_01");
+                }
+
                 if (bone == null)
                 {
                     throw new ExportException($"Animation track references bone '{track.Name}' that cannot be found in the skeleton '{skeleton.Name}'.");

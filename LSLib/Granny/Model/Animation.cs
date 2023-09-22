@@ -42,7 +42,10 @@ public class AnimationCurve
     public void UpgradeToGr7()
     {
         // Skip if we've already upgraded
-        if (CurveData != null) return;
+        if (CurveData != null)
+        {
+            return;
+        }
 
         if (Degree == 0)
         {
@@ -99,9 +102,21 @@ public class Keyframe
     public Transform ToTransform()
     {
         var transform = new Transform();
-        if (HasTranslation) transform.SetTranslation(Translation);
-        if (HasRotation) transform.SetRotation(Rotation);
-        if (HasScaleShear) transform.SetScaleShear(ScaleShear);
+        if (HasTranslation)
+        {
+            transform.SetTranslation(Translation);
+        }
+
+        if (HasRotation)
+        {
+            transform.SetRotation(Rotation);
+        }
+
+        if (HasScaleShear)
+        {
+            transform.SetScaleShear(ScaleShear);
+        }
+
         return transform;
     }
 
@@ -120,7 +135,9 @@ public class KeyframeTrack
     private static int FindFrame<T>(IList<T> list, T value, IComparer<T> comparer = null)
     {
         if (list == null)
+        {
             throw new ArgumentNullException("list");
+        }
 
         comparer = comparer ?? Comparer<T>.Default;
 
@@ -132,11 +149,17 @@ public class KeyframeTrack
             int middle = lower + (upper - lower) / 2;
             int comparisonResult = comparer.Compare(value, list[middle]);
             if (comparisonResult == 0)
+            {
                 return middle;
+            }
             else if (comparisonResult < 0)
+            {
                 upper = middle - 1;
+            }
             else
+            {
                 lower = middle + 1;
+            }
         }
 
         return ~lower;

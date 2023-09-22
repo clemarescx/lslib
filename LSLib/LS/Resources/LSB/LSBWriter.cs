@@ -96,7 +96,9 @@ public class LSBWriter : ILSWriter
         foreach (var children in node.Children)
         {
             foreach (var child in children.Value)
+            {
                 WriteNode(child);
+            }
         }
     }
 
@@ -169,7 +171,9 @@ public class LSBWriter : ILSWriter
         foreach (var children in node.Children)
         {
             foreach (var child in children.Value)
+            {
                 CollectStaticStrings(child);
+            }
         }
     }
 
@@ -198,7 +202,9 @@ public class LSBWriter : ILSWriter
         writer.Write(length);
         writer.Write(utf);
         if (nullTerminated)
+        {
             writer.Write((byte)0);
+        }
     }
 
     private void WriteWideString(string s, bool nullTerminated)
@@ -208,6 +214,8 @@ public class LSBWriter : ILSWriter
         writer.Write(length);
         writer.Write(unicode);
         if (nullTerminated)
+        {
             writer.Write((ushort)0);
+        }
     }
 }

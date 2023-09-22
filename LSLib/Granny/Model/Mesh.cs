@@ -90,7 +90,10 @@ public class VertexDeduplicator
 
     public void MakeIdentityMapping(List<Vertex> vertices)
     {
-        if (vertices.Count() == 0) return;
+        if (vertices.Count() == 0)
+        {
+            return;
+        }
 
         var format = vertices[0].Format;
 
@@ -126,7 +129,10 @@ public class VertexDeduplicator
 
     public void Deduplicate(List<Vertex> vertices)
     {
-        if (vertices.Count() == 0) return;
+        if (vertices.Count() == 0)
+        {
+            return;
+        }
 
         var format = vertices[0].Format;
 
@@ -313,9 +319,13 @@ public class VertexData
         {
             uvs[index++] = uv[0];
             if (flip)
+            {
                 uvs[index++] = 1.0f - uv[1];
+            }
             else
+            {
                 uvs[index++] = uv[1];
+            }
         }
 
         return ColladaUtils.MakeFloatSource(name, $"uvs{uvIndex}", new string[] { "S", "T" }, uvs);
@@ -348,7 +358,9 @@ public class VertexData
             for (int i = 0; i < 4; i++)
             {
                 if (boneWeights[i] > 0)
+                {
                     weights.Add(boneWeights[i] / 255.0f);
+                }
             }
         }
 
@@ -375,7 +387,10 @@ public class VertexData
             vertex.Binormal.X *= -1;
         }
 
-        if (Deduplicator == null) return;
+        if (Deduplicator == null)
+        {
+            return;
+        }
 
         // Implements CollectionsMarshal.AsSpan from .NET 5 by reflection
         Span<T> AsSpan<T>(List<T> list) => new(list.GetType()
@@ -744,9 +759,13 @@ public class Mesh
             foreach (var component in PrimaryVertexData.VertexComponentNames)
             {
                 if (component.String == "BoneWeights")
+                {
                     hasWeights = true;
+                }
                 else if (component.String == "BoneIndices")
+                {
                     hasIndices = true;
+                }
             }
         }
 

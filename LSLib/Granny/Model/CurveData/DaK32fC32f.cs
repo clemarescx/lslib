@@ -19,13 +19,21 @@ public class DaK32fC32f : AnimationCurveData
     public ExportType CurveType()
     {
         if (Knots.Count * 3 == Controls.Count)
+        {
             return ExportType.Position;
+        }
         else if (Knots.Count * 4 == Controls.Count)
+        {
             return ExportType.Rotation;
+        }
         else if (Knots.Count * 9 == Controls.Count)
+        {
             return ExportType.ScaleShear;
+        }
         else
+        {
             throw new NotSupportedException("Unsupported DaK32fC32f control data size");
+        }
     }
 
     public override int NumKnots()
@@ -38,7 +46,9 @@ public class DaK32fC32f : AnimationCurveData
         var numKnots = NumKnots();
         var knots = new List<float>(numKnots);
         for (var i = 0; i < numKnots; i++)
+        {
             knots.Add(Knots[i]);
+        }
 
         return knots;
     }
@@ -51,7 +61,9 @@ public class DaK32fC32f : AnimationCurveData
     public override List<Vector3> GetPoints()
     {
         if (CurveType() != ExportType.Position)
+        {
             throw new InvalidOperationException("DaK32fC32f: This curve is not a position curve!");
+        }
 
         var numKnots = NumKnots();
         var positions = new List<Vector3>(numKnots);
@@ -76,7 +88,9 @@ public class DaK32fC32f : AnimationCurveData
     public override List<Matrix3> GetMatrices()
     {
         if (CurveType() != ExportType.ScaleShear)
+        {
             throw new InvalidOperationException("DaK32fC32f: This curve is not a scale/shear curve!");
+        }
 
         var numKnots = NumKnots();
         var scaleShear = new List<Matrix3>(numKnots);
@@ -111,7 +125,9 @@ public class DaK32fC32f : AnimationCurveData
     public override List<Quaternion> GetQuaternions()
     {
         if (CurveType() != ExportType.Rotation)
+        {
             throw new InvalidOperationException("DaK32fC32f: This curve is not a rotation curve!");
+        }
 
         var numKnots = NumKnots();
         var rotations = new List<Quaternion>(numKnots);

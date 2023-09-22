@@ -220,11 +220,18 @@ public class LSJResourceConverter : JsonConverter
 
                         case NodeAttribute.DataType.DT_ULongLong:
                             if (reader.Value.GetType() == typeof(long))
+                            {
                                 attribute.Value = Convert.ToUInt64((long)reader.Value);
+                            }
                             else if (reader.Value.GetType() == typeof(BigInteger))
+                            {
                                 attribute.Value = (ulong)(BigInteger)reader.Value;
+                            }
                             else
+                            {
                                 attribute.Value = (ulong)reader.Value;
+                            }
+
                             break;
 
                         // TODO: Not sure if this is the correct format
@@ -280,11 +287,15 @@ public class LSJResourceConverter : JsonConverter
                             string[] nums = reader.Value.ToString().Split(' ');
                             int length = attribute.GetColumns();
                             if (length != nums.Length)
+                            {
                                 throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
+                            }
 
                             int[] vec = new int[length];
                             for (int i = 0; i < length; i++)
+                            {
                                 vec[i] = int.Parse(nums[i]);
+                            }
 
                             attribute.Value = vec;
                             break;
@@ -297,11 +308,15 @@ public class LSJResourceConverter : JsonConverter
                             string[] nums = reader.Value.ToString().Split(' ');
                             int length = attribute.GetColumns();
                             if (length != nums.Length)
+                            {
                                 throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
+                            }
 
                             float[] vec = new float[length];
                             for (int i = 0; i < length; i++)
+                            {
                                 vec[i] = float.Parse(nums[i]);
+                            }
 
                             attribute.Value = vec;
                             break;
@@ -314,7 +329,10 @@ public class LSJResourceConverter : JsonConverter
                         case NodeAttribute.DataType.DT_Mat4:
                             var mat = Matrix.Parse(reader.Value.ToString());
                             if (mat.cols != attribute.GetColumns() || mat.rows != attribute.GetRows())
+                            {
                                 throw new FormatException("Invalid column/row count for matrix");
+                            }
+
                             attribute.Value = mat;
                             break;
 
@@ -443,7 +461,10 @@ public class LSJResourceConverter : JsonConverter
 
     private Resource ReadResource(JsonReader reader, Resource resource)
     {
-        if (resource == null) resource = new();
+        if (resource == null)
+        {
+            resource = new();
+        }
 
         if (!reader.Read() || reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("save"))
         {
@@ -770,7 +791,10 @@ public class LSJResourceConverter : JsonConverter
                     for (var r = 0; r < mat.rows; r++)
                     {
                         for (var c = 0; c < mat.cols; c++)
+                        {
                             str += $"{mat[r, c]} ";
+                        }
+
                         str += Environment.NewLine;
                     }
 
@@ -791,7 +815,10 @@ public class LSJResourceConverter : JsonConverter
             writer.WritePropertyName(children.Key);
             writer.WriteStartArray();
             foreach (var child in children.Value)
+            {
                 WriteNode(writer, child, serializer);
+            }
+
             writer.WriteEndArray();
         }
 

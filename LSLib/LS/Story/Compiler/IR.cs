@@ -33,9 +33,13 @@ public abstract class IRReference<NameType, ReferencedType>
     public void Bind(CompilationContext context)
     {
         if (Context == null)
+        {
             Context = context;
+        }
         else
+        {
             throw new InvalidOperationException("Reference already bound to a compilation context!");
+        }
     }
         
     abstract public ReferencedType Resolve();
@@ -54,9 +58,13 @@ public class IRGoalRef : IRReference<string, IRGoal>
     public override IRGoal Resolve()
     {
         if (IsNull)
+        {
             return null;
+        }
         else
+        {
             return Context.LookupGoal(Name);
+        }
     }
 }
 
@@ -73,9 +81,13 @@ public class IRSymbolRef : IRReference<FunctionNameAndArity, FunctionSignature>
     public override FunctionSignature Resolve()
     {
         if (IsNull)
+        {
             return null;
+        }
         else
+        {
             return Context.LookupSignature(Name);
+        }
     }
 }
 

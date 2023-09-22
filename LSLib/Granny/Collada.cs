@@ -17,7 +17,10 @@ class ColladaUtils
         {
             var param = new param();
             if (component.Length > 0)
+            {
                 param.name = component;
+            }
+
             param.type = type;
             accessorParams.Add(param);
         }

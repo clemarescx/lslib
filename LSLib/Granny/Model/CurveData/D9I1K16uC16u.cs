@@ -26,7 +26,9 @@ public class D9I1K16uC16u : AnimationCurveData
         var numKnots = NumKnots();
         var knots = new List<float>(numKnots);
         for (var i = 0; i < numKnots; i++)
+        {
             knots.Add(KnotsControls[i] / scale);
+        }
 
         return knots;
     }

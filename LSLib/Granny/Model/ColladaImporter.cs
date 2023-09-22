@@ -32,29 +32,42 @@ internal class ColladaSource
             floats = src.Item as float_array;
             // Workaround for empty arrays being null
             if (floats.Values == null)
+            {
                 floats.Values = new double[] { };
+            }
 
             if ((int)floats.count != floats.Values.Length || floats.count < accessor.stride * accessor.count + accessor.offset)
+            {
                 throw new ParsingException("Float source data size mismatch. Check source and accessor item counts.");
+            }
         }
         else if (src.Item is Name_array)
         {
             names = src.Item as Name_array;
             // Workaround for empty arrays being null
             if (names.Values == null)
+            {
                 names.Values = new string[] { };
+            }
 
             if ((int)names.count != names.Values.Length || names.count < accessor.stride * accessor.count + accessor.offset)
+            {
                 throw new ParsingException("Name source data size mismatch. Check source and accessor item counts.");
+            }
         }
         else
+        {
             throw new ParsingException("Unsupported source data format.");
+        }
 
         var paramOffset = 0;
         foreach (var param in accessor.param)
         {
             if (param.name == null)
+            {
                 param.name = "default";
+            }
+
             if (param.type is "float" or "double")
             {
                 var items = new List<float>((int)accessor.count);
@@ -99,7 +112,9 @@ internal class ColladaSource
                 source.NameParams.Add(param.name, items);
             }
             else
+            {
                 throw new ParsingException($"Unsupported accessor param type: {param.type}");
+            }
 
             paramOffset++;
         }
@@ -146,18 +161,26 @@ public class ColladaImporter
             if (collada.asset.unit != null)
             {
                 if (collada.asset.unit.name == "meter")
+                {
                     toolInfo.UnitsPerMeter = (float)collada.asset.unit.meter;
+                }
                 else if (collada.asset.unit.name == "centimeter")
+                {
                     toolInfo.UnitsPerMeter = (float)collada.asset.unit.meter * 100;
+                }
                 else
+                {
                     throw new NotImplementedException($"Unsupported asset unit type: {collada.asset.unit.name}");
+                }
             }
 
             if (collada.asset.contributor != null && collada.asset.contributor.Length > 0)
             {
                 var contributor = collada.asset.contributor[0];
                 if (contributor.authoring_tool != null)
+                {
                     toolInfo.FromArtToolName = contributor.authoring_tool;
+                }
             }
 
             switch (collada.asset.up_axis)
@@ -405,7 +428,10 @@ public class ColladaImporter
     private void LoadColladaLSLibProfileData(mesh mesh, Mesh loaded)
     {
         var technique = FindExporterExtraData(mesh.extra);
-        if (technique == null || technique.Any == null) return;
+        if (technique == null || technique.Any == null)
+        {
+            return;
+        }
 
         var meshProps = loaded.ExtendedData.UserMeshProperties;
 
@@ -455,7 +481,10 @@ public class ColladaImporter
     private void LoadColladaLSLibProfileData(Root root, COLLADA collada)
     {
         var technique = FindExporterExtraData(collada.extra);
-        if (technique == null || technique.Any == null) return;
+        if (technique == null || technique.Any == null)
+        {
+            return;
+        }
 
         foreach (var setting in technique.Any)
         {
@@ -546,10 +575,14 @@ public class ColladaImporter
     private void ImportSkin(Root root, skin skin)
     {
         if (skin.source1[0] != '#')
+        {
             throw new ParsingException("Only ID references are supported for skin geometries");
+        }
 
         if (!ColladaGeometries.TryGetValue(skin.source1[1..], out var mesh))
+        {
             throw new ParsingException($"Skin references nonexistent mesh: {skin.source1}");
+        }
 
         if (!mesh.VertexFormat.HasBoneWeights)
         {
@@ -569,16 +602,22 @@ public class ColladaImporter
         foreach (var input in skin.joints.input)
         {
             if (input.source[0] != '#')
+            {
                 throw new ParsingException("Only ID references are supported for joint input sources");
+            }
 
             if (!sources.TryGetValue(input.source[1..], out var inputSource))
+            {
                 throw new ParsingException($"Joint input source does not exist: {input.source}");
+            }
 
             if (input.semantic == "JOINT")
             {
                 List<string> jointNames = inputSource.NameParams.Values.SingleOrDefault();
                 if (jointNames == null)
+                {
                     throw new ParsingException("Joint input source 'JOINT' must contain array of names.");
+                }
 
                 var skeleton = root.Skeletons[0];
                 joints = new();
@@ -586,7 +625,9 @@ public class ColladaImporter
                 {
                     var lookupName = name.Replace("_x0020_", " ");
                     if (!skeleton.BonesBySID.TryGetValue(lookupName, out var bone))
+                    {
                         throw new ParsingException($"Joint name list references nonexistent bone: {lookupName}");
+                    }
 
                     joints.Add(bone);
                 }
@@ -595,7 +636,9 @@ public class ColladaImporter
             {
                 invBindMatrices = inputSource.MatrixParams.Values.SingleOrDefault();
                 if (invBindMatrices == null)
+                {
                     throw new ParsingException("Joint input source 'INV_BIND_MATRIX' must contain a single array of matrices.");
+                }
             }
             else
             {
@@ -604,10 +647,14 @@ public class ColladaImporter
         }
 
         if (joints == null)
+        {
             throw new ParsingException("Required joint input semantic missing: JOINT");
+        }
 
         if (invBindMatrices == null)
+        {
             throw new ParsingException("Required joint input semantic missing: INV_BIND_MATRIX");
+        }
 
         var influenceCounts = ColladaHelpers.StringsToIntegers(skin.vertex_weights.vcount);
         var influences = ColladaHelpers.StringsToIntegers(skin.vertex_weights.v);
@@ -615,12 +662,16 @@ public class ColladaImporter
         foreach (var count in influenceCounts)
         {
             if (count > 4)
+            {
                 throw new ParsingException("GR2 only supports at most 4 vertex influences");
+            }
         }
 
         // TODO
         if (influenceCounts.Count != mesh.OriginalToConsolidatedVertexIndexMap.Count)
+        {
             Utils.Warn($"Vertex influence count ({influenceCounts.Count}) differs from vertex count ({mesh.OriginalToConsolidatedVertexIndexMap.Count})");
+        }
 
         List<float> weights = null;
 
@@ -636,26 +687,40 @@ public class ColladaImporter
                 weightInputIndex = (int)input.offset;
 
                 if (input.source[0] != '#')
+                {
                     throw new ParsingException("Only ID references are supported for weight input sources");
+                }
 
                 if (!sources.TryGetValue(input.source[1..], out var inputSource))
+                {
                     throw new ParsingException($"Weight input source does not exist: {input.source}");
+                }
 
                 if (!inputSource.FloatParams.TryGetValue("WEIGHT", out weights))
+                {
                     weights = inputSource.FloatParams.Values.SingleOrDefault();
+                }
 
                 if (weights == null)
+                {
                     throw new ParsingException($"Weight input source {input.source} must have WEIGHT float attribute");
+                }
             }
             else
+            {
                 throw new ParsingException($"Unsupported skin input semantic: {input.semantic}");
+            }
         }
 
         if (jointInputIndex == -1)
+        {
             throw new ParsingException("Required vertex weight input semantic missing: JOINT");
+        }
 
         if (weightInputIndex == -1)
+        {
             throw new ParsingException("Required vertex weight input semantic missing: WEIGHT");
+        }
 
         // Remove bones that are not actually influenced from the binding list
         var boundBones = new HashSet<Bone>();
@@ -668,13 +733,17 @@ public class ColladaImporter
             var joint = joints[jointIndex];
             var weight = weights[weightIndex];
             if (!boundBones.Contains(joint))
+            {
                 boundBones.Add(joint);
+            }
 
             offset += stride;
         }
 
         if (boundBones.Count > 127)
+        {
             throw new ParsingException("D:OS supports at most 127 bound bones per mesh.");
+        }
 
         mesh.BoneBindings = new();
         var boneToIndexMaps = new Dictionary<Bone, int>();
@@ -752,11 +821,16 @@ public class ColladaImporter
         int notInfluenced = 0;
         foreach (var vertex in mesh.PrimaryVertexData.Vertices)
         {
-            if (vertex.BoneWeights[0] == 0) notInfluenced++;
+            if (vertex.BoneWeights[0] == 0)
+            {
+                notInfluenced++;
+            }
         }
 
         if (notInfluenced > 0)
+        {
             Utils.Warn($"{notInfluenced} vertices are not influenced by any bone");
+        }
 
         if (skin.bind_shape_matrix != null)
         {
@@ -782,8 +856,11 @@ public class ColladaImporter
 
     private void UpdateOBBs(Skeleton skeleton, Mesh mesh)
     {
-        if (mesh.BoneBindings == null || mesh.BoneBindings.Count == 0) return;
-            
+        if (mesh.BoneBindings == null || mesh.BoneBindings.Count == 0)
+        {
+            return;
+        }
+
         var obbs = new List<OBB>(mesh.BoneBindings.Count);
         for (var i = 0; i < mesh.BoneBindings.Count; i++)
         {
@@ -838,7 +915,10 @@ public class ColladaImporter
     private void LoadColladaLSLibProfileData(animation anim, TrackGroup loaded)
     {
         var technique = FindExporterExtraData(anim.extra);
-        if (technique == null || technique.Any == null) return;
+        if (technique == null || technique.Any == null)
+        {
+            return;
+        }
 
         foreach (var setting in technique.Any)
         {
@@ -1095,7 +1175,10 @@ public class ColladaImporter
         root.Models.Add(rootModel);
         // TODO: make this an option!
         if (root.Skeletons.Count > 0)
+        {
             root.Skeletons[0].UpdateWorldTransforms();
+        }
+
         root.ZUp = ZUp;
         root.PostLoad(Header.DefaultTag);
 

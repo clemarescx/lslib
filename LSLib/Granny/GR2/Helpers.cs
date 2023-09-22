@@ -53,7 +53,10 @@ class UInt8ListSerializer : NodeSerializer
     {
         var controls = new List<byte>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
+        {
             controls.Add(gr2.Reader.ReadByte());
+        }
+
         return controls;
     }
 
@@ -61,7 +64,9 @@ class UInt8ListSerializer : NodeSerializer
     {
         var items = obj as List<byte>;
         for (int i = 0; i < items.Count; i++)
+        {
             section.Writer.Write(items[i]);
+        }
     }
 }
 
@@ -72,7 +77,10 @@ class UInt16ListSerializer : NodeSerializer
     {
         var controls = new List<ushort>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
+        {
             controls.Add(gr2.Reader.ReadUInt16());
+        }
+
         return controls;
     }
 
@@ -80,7 +88,9 @@ class UInt16ListSerializer : NodeSerializer
     {
         var items = obj as List<ushort>;
         for (int i = 0; i < items.Count; i++)
+        {
             section.Writer.Write(items[i]);
+        }
     }
 }
 
@@ -91,7 +101,10 @@ class Int16ListSerializer : NodeSerializer
     {
         var controls = new List<short>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
+        {
             controls.Add(gr2.Reader.ReadInt16());
+        }
+
         return controls;
     }
 
@@ -99,7 +112,9 @@ class Int16ListSerializer : NodeSerializer
     {
         var items = obj as List<short>;
         for (int i = 0; i < items.Count; i++)
+        {
             section.Writer.Write(items[i]);
+        }
     }
 }
 
@@ -110,7 +125,10 @@ class UInt32ListSerializer : NodeSerializer
     {
         var controls = new List<uint>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
+        {
             controls.Add(gr2.Reader.ReadUInt32());
+        }
+
         return controls;
     }
 
@@ -118,7 +136,9 @@ class UInt32ListSerializer : NodeSerializer
     {
         var items = obj as List<uint>;
         for (int i = 0; i < items.Count; i++)
+        {
             section.Writer.Write(items[i]);
+        }
     }
 }
 
@@ -129,7 +149,10 @@ class Int32ListSerializer : NodeSerializer
     {
         var controls = new List<int>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
+        {
             controls.Add(gr2.Reader.ReadInt32());
+        }
+
         return controls;
     }
 
@@ -137,7 +160,9 @@ class Int32ListSerializer : NodeSerializer
     {
         var items = obj as List<int>;
         for (int i = 0; i < items.Count; i++)
+        {
             section.Writer.Write(items[i]);
+        }
     }
 }
 
@@ -148,7 +173,10 @@ class SingleListSerializer : NodeSerializer
     {
         var controls = new List<float>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
+        {
             controls.Add(gr2.Reader.ReadSingle());
+        }
+
         return controls;
     }
 
@@ -156,6 +184,8 @@ class SingleListSerializer : NodeSerializer
     {
         var items = obj as List<float>;
         for (int i = 0; i < items.Count; i++)
+        {
             section.Writer.Write(items[i]);
+        }
     }
 }

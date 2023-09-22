@@ -30,7 +30,11 @@ public static class FastLZ
                 int reff = (int)op - (int)ofs - 1;
                 if (len == 7 - 1)
                 {
-                    if (ip > ip_bound) return 0;
+                    if (ip > ip_bound)
+                    {
+                        return 0;
+                    }
+
                     len += input[ip++];
                 }
                 reff -= input[ip++];
@@ -65,7 +69,11 @@ public static class FastLZ
                 op += ctrl;
             }
 
-            if (ip > ip_bound) break;
+            if (ip > ip_bound)
+            {
+                break;
+            }
+
             ctrl = input[ip++];
         }
 

@@ -263,7 +263,10 @@ public class Value : OsirisSerializable
                 }
 
                 if (StringValue != null)
+                {
                     writer.Write(StringValue);
+                }
+
                 break;
 
             default:
@@ -366,9 +369,20 @@ public class TypedValue : Value
 
     public override void DebugDump(TextWriter writer, Story story)
     {
-        if (IsValid) writer.Write("valid ");
-        if (OutParam) writer.Write("out ");
-        if (IsAType) writer.Write("type ");
+        if (IsValid)
+        {
+            writer.Write("valid ");
+        }
+
+        if (OutParam)
+        {
+            writer.Write("out ");
+        }
+
+        if (IsAType)
+        {
+            writer.Write("type ");
+        }
 
         if (IsValid)
         {
@@ -407,9 +421,21 @@ public class Variable : TypedValue
     public override void DebugDump(TextWriter writer, Story story)
     {
         writer.Write("#{0} ", Index);
-        if (VariableName != null && VariableName.Length > 0) writer.Write("'{0}' ", VariableName);
-        if (Unused) writer.Write("unused ");
-        if (Adapted) writer.Write("adapted ");
+        if (VariableName != null && VariableName.Length > 0)
+        {
+            writer.Write("'{0}' ", VariableName);
+        }
+
+        if (Unused)
+        {
+            writer.Write("unused ");
+        }
+
+        if (Adapted)
+        {
+            writer.Write("adapted ");
+        }
+
         base.DebugDump(writer, story);
     }
 
@@ -487,7 +513,10 @@ public class Tuple : OsirisSerializable
         {
             writer.Write("{0}: ", keys[i]);
             Logical[keys[i]].DebugDump(writer, story);
-            if (i < Logical.Count - 1) writer.Write(", ");
+            if (i < Logical.Count - 1)
+            {
+                writer.Write(", ");
+            }
         }
         writer.Write(")");
     }
@@ -499,7 +528,9 @@ public class Tuple : OsirisSerializable
             var value = Physical[i];
             value.MakeScript(writer, story, null, printTypes);
             if (i < Physical.Count - 1)
+            {
                 writer.Write(", ");
+            }
         }
     }
 }

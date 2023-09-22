@@ -16,19 +16,47 @@ public struct BoneWeight : IEquatable<BoneWeight>
     {
         get
         {
-            if (index == 0) return A;
-            else if (index == 1) return B;
-            else if (index == 2) return C;
-            else if (index == 3) return D;
+            if (index == 0)
+            {
+                return A;
+            }
+            else if (index == 1)
+            {
+                return B;
+            }
+            else if (index == 2)
+            {
+                return C;
+            }
+            else if (index == 3)
+            {
+                return D;
+            }
+
             throw new IndexOutOfRangeException($"Illegal bone influence index: {index}");
         }
         set
         {
-            if (index == 0) A = value;
-            else if (index == 1) B = value;
-            else if (index == 2) C = value;
-            else if (index == 3) D = value;
-            else throw new IndexOutOfRangeException($"Illegal bone influence index: {index}");
+            if (index == 0)
+            {
+                A = value;
+            }
+            else if (index == 1)
+            {
+                B = value;
+            }
+            else if (index == 2)
+            {
+                C = value;
+            }
+            else if (index == 3)
+            {
+                D = value;
+            }
+            else
+            {
+                throw new IndexOutOfRangeException($"Illegal bone influence index: {index}");
+            }
         }
     }
 
@@ -598,7 +626,10 @@ public class VertexSerializer : NodeSerializer
 
         var vertices = new List<Vertex>((int)arraySize);
         for (int i = 0; i < arraySize; i++)
+        {
             vertices.Add(ReadVertex(gr2, descriptor));
+        }
+
         return vertices;
     }
 

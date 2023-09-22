@@ -163,7 +163,9 @@ public class Transform
             for (var i = 0; i < 3; i++)
             {
                 for (var j = 0; j < 3; j++)
+                {
                     scaleShear[i, j] = ScaleShear[i, j];
+                }
             }
 
             transform = scaleShear * transform;
@@ -310,16 +312,24 @@ public class Magic
     public static Format FormatFromSignature(byte[] sig)
     {
         if (sig.SequenceEqual(LittleEndian32Magic) || sig.SequenceEqual(LittleEndian32Magic2) || sig.SequenceEqual(LittleEndian32MagicV6))
+        {
             return Format.LittleEndian32;
+        }
 
         if (sig.SequenceEqual(BigEndian32Magic) || sig.SequenceEqual(BigEndian32Magic2))
+        {
             return Format.BigEndian32;
+        }
 
         if (sig.SequenceEqual(LittleEndian64Magic) || sig.SequenceEqual(LittleEndian64Magic2))
+        {
             return Format.LittleEndian64;
+        }
 
         if (sig.SequenceEqual(BigEndian64Magic) || sig.SequenceEqual(BigEndian64Magic2))
+        {
             return Format.BigEndian64;
+        }
 
         throw new ParsingException("Incorrect header signature (maybe not a Granny .GR2 file?)");
     }
@@ -589,7 +599,9 @@ public class SectionReference
     public override bool Equals(object o)
     {
         if (o == null)
+        {
             return false;
+        }
 
         var reference = o as SectionReference;
         return reference != null && reference.Section == Section && reference.Offset == Offset;
@@ -624,7 +636,9 @@ public class RelocatableReference
     public override bool Equals(object o)
     {
         if (o == null)
+        {
             return false;
+        }
 
         var reference = o as RelocatableReference;
         return reference != null && reference.Offset == Offset;
@@ -659,7 +673,9 @@ public class StructReference : RelocatableReference
         // If the struct wasn't resolved yet, try the type definition cache
         // When a type definition is read from the GR2 file, it is stored here using its definition address as a key
         if (Type == null)
+        {
             gr2.Types.TryGetValue(this, out Type);
+        }
 
         if (Type == null)
         {
@@ -823,9 +839,13 @@ public class MemberDefinition
 
             case MemberType.Reference:
                 if (gr2.Magic.Is32Bit)
+                {
                     return 4;
+                }
                 else
+                {
                     return 8;
+                }
 
             case MemberType.String:
             case MemberType.Real32:
@@ -835,22 +855,34 @@ public class MemberDefinition
 
             case MemberType.VariantReference:
                 if (gr2.Magic.Is32Bit)
+                {
                     return 8;
+                }
                 else
+                {
                     return 16;
+                }
 
             case MemberType.ArrayOfReferences:
             case MemberType.ReferenceToArray:
                 if (gr2.Magic.Is32Bit)
+                {
                     return 8;
+                }
                 else
+                {
                     return 12;
+                }
 
             case MemberType.ReferenceToVariantArray:
                 if (gr2.Magic.Is32Bit)
+                {
                     return 12;
+                }
                 else
+                {
                     return 20;
+                }
 
             case MemberType.Transform:
                 return 17 * 4;
@@ -903,27 +935,41 @@ public class MemberDefinition
             SerializationAttribute serialization = attrs[0] as SerializationAttribute;
 
             if (serialization.Section != SectionType.Invalid)
+            {
                 PreferredSection = serialization.Section;
+            }
 
             DataArea = serialization.DataArea;
 
             if (serialization.Type != MemberType.Invalid)
+            {
                 Type = serialization.Type;
+            }
 
             if (serialization.TypeSelector != null)
+            {
                 TypeSelector = Activator.CreateInstance(serialization.TypeSelector) as VariantTypeSelector;
+            }
 
             if (serialization.SectionSelector != null)
+            {
                 SectionSelector = Activator.CreateInstance(serialization.SectionSelector) as SectionSelector;
+            }
 
             if (serialization.Serializer != null)
+            {
                 Serializer = Activator.CreateInstance(serialization.Serializer) as NodeSerializer;
+            }
 
             if (writer != null && serialization.Prototype != null)
+            {
                 WriteDefinition = writer.LookupStructDefinition(serialization.Prototype, serialization.Prototype);
+            }
 
             if (serialization.Name != null)
+            {
                 GrannyName = serialization.Name;
+            }
 
             Prototype = serialization.Prototype;
             SerializationKind = serialization.Kind;
@@ -936,7 +982,9 @@ public class MemberDefinition
     public FieldInfo LookupFieldInfo(object instance)
     {
         if (HasCachedField)
+        {
             return CachedField;
+        }
 
         var field = instance.GetType().GetField(Name);
         AssignFieldInfo(field);
@@ -950,7 +998,9 @@ public class MemberDefinition
         HasCachedField = true;
 
         if (field != null)
+        {
             LoadAttributes(field, null);
+        }
     }
 
     public static MemberDefinition CreateFromFieldInfo(FieldInfo info, GR2Writer writer)
@@ -968,40 +1018,71 @@ public class MemberDefinition
         if (type.IsArray && member.SerializationKind != SerializationKind.None)
         {
             if (member.ArraySize == 0)
+            {
                 throw new InvalidOperationException("SerializationAttribute.ArraySize must be set for fixed size arrays");
+            }
+
             type = type.GetElementType();
         }
 
         if (member.Type == MemberType.Invalid)
         {
             if (type == typeof(sbyte))
+            {
                 member.Type = MemberType.Int8;
+            }
             else if (type == typeof(byte))
+            {
                 member.Type = MemberType.UInt8;
+            }
             else if (type == typeof(short))
+            {
                 member.Type = MemberType.Int16;
+            }
             else if (type == typeof(ushort))
+            {
                 member.Type = MemberType.UInt16;
+            }
             else if (type == typeof(int))
+            {
                 member.Type = MemberType.Int32;
+            }
             else if (type == typeof(uint))
+            {
                 member.Type = MemberType.UInt32;
+            }
             else if (type == typeof(Half))
+            {
                 member.Type = MemberType.Real16;
+            }
             else if (type == typeof(float))
+            {
                 member.Type = MemberType.Real32;
+            }
             else if (type == typeof(string))
+            {
                 member.Type = MemberType.String;
+            }
             else if (type == typeof(Transform))
+            {
                 member.Type = MemberType.Transform;
+            }
             else if (type == typeof(object) || type.IsAbstract || type.IsInterface)
+            {
                 member.Type = MemberType.VariantReference;
+            }
             else if (type.GetInterfaces().Contains(typeof(IList<object>)))
+            {
                 member.Type = MemberType.ReferenceToVariantArray;
+            }
             else if (type.GetInterfaces().Contains(typeof(System.Collections.IList)))
+            {
                 member.Type = MemberType.ReferenceToArray; // or ArrayOfReferences?
+            }
             else
+            {
                 member.Type = MemberType.Reference; // or Inline?
+            }
         }
 
         if (member.SerializationKind != SerializationKind.None && member.WriteDefinition == null && writer != null)
@@ -1034,7 +1115,10 @@ public class StructDefinition
     {
         uint size = 0;
         foreach (var member in Members)
+        {
             size += member.Size(gr2);
+        }
+
         return size;
     }
 
@@ -1086,7 +1170,9 @@ public class StructDefinition
         {
             var member = MemberDefinition.CreateFromFieldInfo(field, writer);
             if (member.SerializationKind != SerializationKind.None)
+            {
                 Members.Add(member);
+            }
         }
     }
 }

@@ -182,7 +182,9 @@ class ColladaHelpers
             if (s[i] != ' ')
             {
                 if (startingPos == -1)
+                {
                     startingPos = i;
+                }
             }
             else
             {
@@ -195,7 +197,9 @@ class ColladaHelpers
         }
 
         if (startingPos != -1)
+        {
             floats.Add(int.Parse(s.Substring(startingPos, s.Length - startingPos)));
+        }
 
         return floats;
     }
@@ -215,7 +219,9 @@ class ColladaHelpers
         if (!source.FloatParams.TryGetValue("X", out var x) ||
             !source.FloatParams.TryGetValue("Y", out var y) ||
             !source.FloatParams.TryGetValue("Z", out var z))
+        {
             throw new ParsingException($"Position source {source.id} must have X, Y, Z float attributes");
+        }
 
         var positions = new List<Vector3>(x.Count);
         for (var i = 0; i < x.Count; i++)

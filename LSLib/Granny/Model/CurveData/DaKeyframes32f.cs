@@ -17,13 +17,21 @@ public class DaKeyframes32f : AnimationCurveData
     public ExportType CurveType()
     {
         if (Dimension == 3)
+        {
             return ExportType.Position;
+        }
         else if (Dimension == 4)
+        {
             return ExportType.Rotation;
+        }
         else if (Dimension == 9)
+        {
             return ExportType.ScaleShear;
+        }
         else
+        {
             throw new NotSupportedException("Unsupported DaKeyframes32f dimension number");
+        }
     }
 
     public override int NumKnots()
@@ -35,7 +43,9 @@ public class DaKeyframes32f : AnimationCurveData
     {
         var knots = new List<float>(NumKnots());
         for (var i = 0; i < NumKnots(); i++)
+        {
             knots.Add(i);
+        }
 
         return knots;
     }
@@ -48,7 +58,9 @@ public class DaKeyframes32f : AnimationCurveData
     public override List<Vector3> GetPoints()
     {
         if (CurveType() != ExportType.Position)
+        {
             throw new InvalidOperationException("DaKeyframes32f: This curve is not a position curve!");
+        }
 
         var numKnots = NumKnots();
         var positions = new List<Vector3>(numKnots);
@@ -73,7 +85,9 @@ public class DaKeyframes32f : AnimationCurveData
     public override List<Matrix3> GetMatrices()
     {
         if (CurveType() != ExportType.ScaleShear)
+        {
             throw new InvalidOperationException("DaKeyframes32f: This curve is not a scale/shear curve!");
+        }
 
         var numKnots = NumKnots();
         var scaleShear = new List<Matrix3>(numKnots);
@@ -108,7 +122,9 @@ public class DaKeyframes32f : AnimationCurveData
     public override List<Quaternion> GetQuaternions()
     {
         if (CurveType() != ExportType.Rotation)
+        {
             throw new InvalidOperationException("DaKeyframes32f: This curve is not a rotation curve!");
+        }
 
         var numKnots = NumKnots();
         var rotations = new List<Quaternion>(numKnots);

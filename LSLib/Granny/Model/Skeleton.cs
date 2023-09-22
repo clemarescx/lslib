@@ -232,9 +232,12 @@ public class Skeleton
 
     public void Flip()
     {
-        foreach (var bone in Bones) if (bone.IsRoot)
+        foreach (var bone in Bones)
         {
-            bone.Transform.SetScale(new(-1, 1, 1));
+            if (bone.IsRoot)
+            {
+                bone.Transform.SetScale(new(-1, 1, 1));
+            }
         }
 
         UpdateWorldTransforms();

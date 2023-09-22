@@ -566,7 +566,9 @@ public class ColladaExporter
         for (int i = 0; i < skeleton.Bones.Count; i++)
         {
             if (skeleton.Bones[i].ParentIndex == index)
+            {
                 children.Add(ExportBone(skeleton, name, i, skeleton.Bones[i]));
+            }
         }
 
         node.node1 = children.ToArray();
@@ -667,7 +669,9 @@ public class ColladaExporter
             for (int i = 0; i < 4; i++)
             {
                 for (int j = 0; j < 4; j++)
+                {
                     outputs.Add(transform[i, j]);
+                }
             }
         }
 
@@ -692,7 +696,10 @@ public class ColladaExporter
         {
             knots.Add(transformTrack.ParentAnimation.Duration);
             for (int i = 0; i < 16; i++)
+            {
                 outputs.Add(outputs[i]);
+            }
+
             interpolations.Add(interpolations[0]);
         }
 
@@ -890,9 +897,14 @@ public class ColladaExporter
         var asset = new asset();
         var contributor = new assetContributor();
         if (root.ArtToolInfo != null)
+        {
             contributor.authoring_tool = root.ArtToolInfo.FromArtToolName;
+        }
         else
+        {
             contributor.authoring_tool = $"LSLib COLLADA Exporter v{Common.LibraryVersion()}";
+        }
+
         asset.contributor = new assetContributor[] { contributor };
         asset.created = DateTime.Now;
         asset.modified = DateTime.Now;
@@ -903,9 +915,14 @@ public class ColladaExporter
 
         // TODO: Handle up vector, etc. properly?
         if (root.ArtToolInfo != null)
+        {
             asset.unit.meter = root.ArtToolInfo.UnitsPerMeter;
+        }
         else
+        {
             asset.unit.meter = 1;
+        }
+
         asset.up_axis = UpAxisType.Y_UP;
         collada.asset = asset;
 

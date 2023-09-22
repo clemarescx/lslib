@@ -233,7 +233,9 @@ public class ColladaMesh
                 foreach (var count in vertexCounts)
                 {
                     if (count != 3)
+                    {
                         throw new ParsingException("Non-triangle found in COLLADA polylist. Make sure that all geometries are triangulated.");
+                    }
                 }
             }
             else if (item is lines)
@@ -243,7 +245,9 @@ public class ColladaMesh
         }
 
         if (Indices == null || Inputs == null)
+        {
             throw new ParsingException("No valid triangle source found, expected <triangles> or <polylist>");
+        }
 
         InputOffsetCount = 0;
         foreach (var input in Inputs)
@@ -255,16 +259,22 @@ public class ColladaMesh
         }
 
         if (Indices.Count % (InputOffsetCount * 3) != 0 || Indices.Count / InputOffsetCount / 3 != TriangleCount)
+        {
             throw new ParsingException("Triangle input stride / vertex count mismatch.");
+        }
     }
 
     private ColladaSource FindSource(string id)
     {
         if (id.Length == 0 || id[0] != '#')
+        {
             throw new ParsingException($"Only ID references are supported for input sources: {id}");
+        }
 
         if (!Sources.TryGetValue(id[1..], out var inputSource))
+        {
             throw new ParsingException($"Input source does not exist: {id}");
+        }
 
         return inputSource;
     }
@@ -318,7 +328,9 @@ public class ColladaMesh
         }
 
         if (VertexInputIndex == -1)
+        {
             throw new ParsingException("Required triangle input semantic missing: VERTEX");
+        }
 
         Vertices = new(vertexPositions.Count);
         for (var vert = 0; vert < vertexPositions.Count; vert++)
@@ -360,10 +372,14 @@ public class ColladaMesh
                 ColorInputIndices.Add((int)input.offset);
 
                 if (input.source[0] != '#')
+                {
                     throw new ParsingException("Only ID references are supported for color input sources");
+                }
 
                 if (!Sources.TryGetValue(input.source[1..], out var inputSource))
+                {
                     throw new ParsingException($"Color input source does not exist: {input.source}");
+                }
 
                 if (!inputSource.FloatParams.TryGetValue("R", out var r) ||
                     !inputSource.FloatParams.TryGetValue("G", out var g) ||
@@ -399,20 +415,30 @@ public class ColladaMesh
                 UVInputIndices.Add((int)input.offset);
 
                 if (input.source[0] != '#')
+                {
                     throw new ParsingException("Only ID references are supported for UV input sources");
+                }
 
                 if (!Sources.TryGetValue(input.source[1..], out var inputSource))
+                {
                     throw new ParsingException($"UV input source does not exist: {input.source}");
+                }
 
                 if (!inputSource.FloatParams.TryGetValue("S", out var s) ||
                     !inputSource.FloatParams.TryGetValue("T", out var t))
+                {
                     throw new ParsingException($"UV input source {input.source} must have S, T float attributes");
+                }
 
                 var uvs = new List<Vector2>();
                 UVs.Add(uvs);
                 for (var i = 0; i < s.Count; i++)
                 {
-                    if (flip) t[i] = 1.0f - t[i];
+                    if (flip)
+                    {
+                        t[i] = 1.0f - t[i];
+                    }
+
                     uvs.Add(new(s[i], t[i]));
                 }
             }
@@ -514,7 +540,9 @@ public class ColladaMesh
         if (!HasNormals || Options.RecalculateNormals)
         {
             if (!HasNormals)
+            {
                 Utils.Info(string.Format("Channel 'NORMAL' not found, will rebuild vertex normals after import."));
+            }
 
             HasNormals = true;
             OutputVertexType.NormalType = NormalType.Float3;
@@ -589,11 +617,15 @@ public class ColladaMesh
 
             ConsolidatedIndices = new(TriangleCount * 3);
             for (var vert = 0; vert < TriangleCount * 3; vert++)
+            {
                 ConsolidatedIndices.Add(VertexIndex(vert));
+            }
 
             OriginalToConsolidatedVertexIndexMap = new();
             for (var i = 0; i < Vertices.Count; i++)
+            {
                 OriginalToConsolidatedVertexIndexMap.Add(i, new() { i });
+            }
         }
 
         if ((InputVertexType.TangentType == NormalType.None 
@@ -601,7 +633,9 @@ public class ColladaMesh
          && ((!HasTangents && UVs.Count > 0) || Options.RecalculateTangents))
         {
             if (!HasTangents)
+            {
                 Utils.Info(string.Format("Channel 'TANGENT'/'BINROMAL' not found, will rebuild vertex tangents after import."));
+            }
 
             OutputVertexType.TangentType = NormalType.Float3;
             OutputVertexType.BinormalType = NormalType.Float3;

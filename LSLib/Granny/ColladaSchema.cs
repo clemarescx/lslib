@@ -9854,7 +9854,9 @@ public partial class COLLADA
     public static string ConvertFromArray<T>(IList<T> array)
     {
         if (array == null)
+        {
             return null;
+        }
 
         StringBuilder text = new();
         if (typeof (T) == typeof (double))
@@ -9869,7 +9871,9 @@ public partial class COLLADA
                         "0.000000",
                         NumberFormatInfo.InvariantInfo));
                 if (i + 1 < array.Count)
+                {
                     text.Append(" ");
+                }
             }
         }
         else
@@ -9878,7 +9882,9 @@ public partial class COLLADA
             {
                 text.Append(Convert.ToString(array[i], NumberFormatInfo.InvariantInfo));
                 if (i + 1 < array.Count)
+                {
                     text.Append(" ");
+                }
             }
         }
         return text.ToString();
@@ -9889,7 +9895,10 @@ public partial class COLLADA
         string[] elements = regex.Split(arrayStr.Trim());
         string[] ret = new string[elements.Length];
         for (int i = 0; i < ret.Length; i++)
+        {
             ret[i] = elements[i];
+        }
+
         return ret;
     }
 
@@ -9898,7 +9907,10 @@ public partial class COLLADA
         string[] elements = regex.Split(arrayStr.Trim());
         int[] ret = new int[elements.Length];
         for (int i = 0; i < ret.Length; i++)
+        {
             ret[i] = int.Parse(elements[i]);
+        }
+
         return ret;
     }
 
@@ -9909,7 +9921,9 @@ public partial class COLLADA
         try
         {
             for (int i = 0; i < ret.Length; i++)
+            {
                 ret[i] = double.Parse(elements[i], NumberStyles.Float, CultureInfo.InvariantCulture);
+            }
         }
         catch (Exception ex)
         {
@@ -9923,7 +9937,10 @@ public partial class COLLADA
         string[] elements = regex.Split(arrayStr.Trim());
         bool[] ret = new bool[elements.Length];
         for (int i = 0; i < ret.Length; i++)
+        {
             ret[i] = bool.Parse(elements[i]);
+        }
+
         return ret;
     }
 

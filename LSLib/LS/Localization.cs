@@ -37,7 +37,11 @@ internal struct LocaEntry
         get
         {
             int nameLen;
-            for (nameLen = 0; nameLen < Key.Length && Key[nameLen] != 0; nameLen++) ;
+            for (nameLen = 0; nameLen < Key.Length && Key[nameLen] != 0; nameLen++)
+            {
+                ;
+            }
+
             return Encoding.UTF8.GetString(Key, 0, nameLen);
         }
 

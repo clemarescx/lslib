@@ -26,9 +26,14 @@ public class Call : OsirisSerializable
                     TypedValue param;
                     var type = reader.ReadByte();
                     if (type == 1)
+                    {
                         param = new Variable();
+                    }
                     else
+                    {
                         param = new();
+                    }
+
                     param.Read(reader);
                     Parameters.Add(param);
                 }
@@ -66,14 +71,21 @@ public class Call : OsirisSerializable
     {
         if (Name.Length > 0)
         {
-            if (Negate) writer.Write("!");
+            if (Negate)
+            {
+                writer.Write("!");
+            }
+
             writer.Write("{0}(", Name);
             if (Parameters != null)
             {
                 for (var i = 0; i < Parameters.Count; i++)
                 {
                     Parameters[i].DebugDump(writer, story);
-                    if (i < Parameters.Count - 1) writer.Write(", ");
+                    if (i < Parameters.Count - 1)
+                    {
+                        writer.Write(", ");
+                    }
                 }
             }
 
@@ -98,7 +110,11 @@ public class Call : OsirisSerializable
     {
         if (Name.Length > 0)
         {
-            if (Negate) writer.Write("NOT ");
+            if (Negate)
+            {
+                writer.Write("NOT ");
+            }
+
             writer.Write("{0}(", Name);
             if (Parameters != null)
             {
@@ -107,7 +123,9 @@ public class Call : OsirisSerializable
                     var param = Parameters[i];
                     param.MakeScript(writer, story, tuple, printTypes);
                     if (i < Parameters.Count - 1)
+                    {
                         writer.Write(", ");
+                    }
                 }
             }
 

@@ -36,7 +36,10 @@ public class Fact : OsirisSerializable
         for (var i = 0; i < Columns.Count; i++)
         {
             Columns[i].DebugDump(writer, story);
-            if (i < Columns.Count - 1) writer.Write(", ");
+            if (i < Columns.Count - 1)
+            {
+                writer.Write(", ");
+            }
         }
         writer.Write(")");
     }
@@ -102,25 +105,55 @@ internal class FactPropertyDescriptor : PropertyDescriptor
         {
             case Value.Type.Integer:
             {
-                if (value is string) column.IntValue = int.Parse((string)value);
-                else if (value is int) column.IntValue = (int)value;
-                else throw new ArgumentException("Invalid Int32 value");
+                if (value is string)
+                {
+                    column.IntValue = int.Parse((string)value);
+                }
+                else if (value is int)
+                {
+                    column.IntValue = (int)value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Int32 value");
+                }
+
                 break;
             }
 
             case Value.Type.Integer64:
             {
-                if (value is string) column.Int64Value = long.Parse((string)value);
-                else if (value is long) column.Int64Value = (long)value;
-                else throw new ArgumentException("Invalid Int64 value");
+                if (value is string)
+                {
+                    column.Int64Value = long.Parse((string)value);
+                }
+                else if (value is long)
+                {
+                    column.Int64Value = (long)value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid Int64 value");
+                }
+
                 break;
             }
 
             case Value.Type.Float:
             {
-                if (value is string) column.FloatValue = float.Parse((string)value);
-                else if (value is float) column.FloatValue = (float)value;
-                else throw new ArgumentException("Invalid float value");
+                if (value is string)
+                {
+                    column.FloatValue = float.Parse((string)value);
+                }
+                else if (value is float)
+                {
+                    column.FloatValue = (float)value;
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid float value");
+                }
+
                 break;
             }
 
@@ -168,9 +201,14 @@ public class FactCollection : List<Fact>, ITypedList
                 var type = Story.Types[types[i]];
                 Value.Type baseType;
                 if (type.Alias != 0)
+                {
                     baseType = (Value.Type)type.Alias;
+                }
                 else
+                {
                     baseType = (Value.Type)type.Index;
+                }
+
                 props.Add(new FactPropertyDescriptor(i, baseType, type.Index));
             }
 

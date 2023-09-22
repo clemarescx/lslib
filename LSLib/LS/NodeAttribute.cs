@@ -203,11 +203,15 @@ public class NodeAttribute
                 string[] nums = str.Split(' ');
                 int length = GetColumns();
                 if (length != nums.Length)
+                {
                     throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
+                }
 
                 int[] vec = new int[length];
                 for (int i = 0; i < length; i++)
+                {
                     vec[i] = int.Parse(nums[i]);
+                }
 
                 value = vec;
                 break;
@@ -220,11 +224,15 @@ public class NodeAttribute
                 string[] nums = str.Split(' ');
                 int length = GetColumns();
                 if (length != nums.Length)
+                {
                     throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
+                }
 
                 float[] vec = new float[length];
                 for (int i = 0; i < length; i++)
+                {
                     vec[i] = float.Parse(nums[i]);
+                }
 
                 value = vec;
                 break;
@@ -237,14 +245,27 @@ public class NodeAttribute
             case DataType.DT_Mat4:
                 var mat = Matrix.Parse(str);
                 if (mat.cols != GetColumns() || mat.rows != GetRows())
+                {
                     throw new FormatException("Invalid column/row count for matrix");
+                }
+
                 value = mat;
                 break;
 
             case DataType.DT_Bool:
-                if (str == "0") value = false;
-                else if (str == "1") value = true;
-                else value = Convert.ToBoolean(str);
+                if (str == "0")
+                {
+                    value = false;
+                }
+                else if (str == "1")
+                {
+                    value = true;
+                }
+                else
+                {
+                    value = Convert.ToBoolean(str);
+                }
+
                 break;
 
             case DataType.DT_String:
@@ -260,7 +281,9 @@ public class NodeAttribute
                 // We'll only set the value part of the translated string, not the TranslatedStringKey / Handle part
                 // That can be changed separately via attribute.Value.Handle
                 if (value == null)
+                {
                     value = new TranslatedString();
+                }
 
                 ((TranslatedString)value).Value = str;
                 break;
@@ -269,7 +292,9 @@ public class NodeAttribute
                 // We'll only set the value part of the translated string, not the TranslatedStringKey / Handle part
                 // That can be changed separately via attribute.Value.Handle
                 if (value == null)
+                {
                     value = new TranslatedFSString();
+                }
 
                 ((TranslatedFSString)value).Value = str;
                 break;

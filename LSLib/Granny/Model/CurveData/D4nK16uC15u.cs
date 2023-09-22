@@ -39,7 +39,9 @@ public class D4nK16uC15u : AnimationCurveData
         var numKnots = NumKnots();
         var knots = new List<float>(numKnots);
         for (var i = 0; i < numKnots; i++)
+        {
             knots.Add(KnotsControls[i] / OneOverKnotScale);
+        }
 
         return knots;
     }
@@ -68,7 +70,9 @@ public class D4nK16uC15u : AnimationCurveData
 
         var dataD = (float)Math.Sqrt(1 - (dataA * dataA + dataB * dataB + dataC * dataC));
         if ((a & 0x8000) != 0)
+        {
             dataD = -dataD;
+        }
 
         var f = new float[4];
         f[swizzle2] = dataA;

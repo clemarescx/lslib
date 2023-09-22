@@ -43,7 +43,9 @@ public class GR2Reader
     public void Dispose()
     {
         if (Stream != null)
+        {
             Stream.Dispose();
+        }
     }
 
     public void Read(object root)
@@ -53,7 +55,9 @@ public class GR2Reader
             Magic = ReadMagic();
 
             if (Magic.format != Magic.Format.LittleEndian32 && Magic.format != Magic.Format.LittleEndian64)
+            {
                 throw new ParsingException("Only little-endian GR2 files are supported");
+            }
 
             Header = ReadHeader();
             for (int i = 0; i < Header.numSections; i++)
@@ -109,7 +113,9 @@ public class GR2Reader
         magic.reserved2 = InputReader.ReadUInt32();
 
         if (magic.headerFormat != 0)
+        {
             throw new ParsingException("Compressed GR2 files are not supported");
+        }
 
         Debug.Assert(magic.reserved1 == 0);
         Debug.Assert(magic.reserved2 == 0);
@@ -139,7 +145,9 @@ public class GR2Reader
         };
 
         for (int i = 0; i < Header.ExtraTagCount; i++)
+        {
             header.extraTags[i] = InputReader.ReadUInt32();
+        }
 
         if (header.version >= 7)
         {
@@ -150,7 +158,9 @@ public class GR2Reader
         }
 
         if (header.version is < 6 or > 7)
+        {
             throw new ParsingException($"Unsupported GR2 version; file is version {header.version}, supported versions are 6 and 7");
+        }
 
         // if (header.tag != Header.Tag)
         //    throw new ParsingException(String.Format("Incorrect header tag; expected {0:X8}, got {1:X8}", Header.Tag, header.tag));
@@ -303,7 +313,10 @@ public class GR2Reader
 
     private void ReadSectionRelocations(Section section)
     {
-        if (section.Header.numRelocations == 0) return;
+        if (section.Header.numRelocations == 0)
+        {
+            return;
+        }
 
         InputStream.Seek(section.Header.relocationsOffset, SeekOrigin.Begin);
         if (section.Header.compression == 4)
@@ -389,7 +402,10 @@ public class GR2Reader
 
     private void ReadSectionMixedMarshallingRelocations(Section section)
     {
-        if (section.Header.numMixedMarshallingData == 0) return;
+        if (section.Header.numMixedMarshallingData == 0)
+        {
+            return;
+        }
 
         InputStream.Seek(section.Header.mixedMarshallingDataOffset, SeekOrigin.Begin);
         if (section.Header.compression == 4)
@@ -442,9 +458,14 @@ public class GR2Reader
     {
         var reference = new RelocatableReference();
         if (Magic.Is32Bit)
+        {
             reference.Offset = Reader.ReadUInt32();
+        }
         else
+        {
             reference.Offset = Reader.ReadUInt64();
+        }
+
         return reference;
     }
 
@@ -452,9 +473,14 @@ public class GR2Reader
     {
         var reference = new StructReference();
         if (Magic.Is32Bit)
+        {
             reference.Offset = Reader.ReadUInt32();
+        }
         else
+        {
             reference.Offset = Reader.ReadUInt64();
+        }
+
         return reference;
     }
 
@@ -462,9 +488,14 @@ public class GR2Reader
     {
         var reference = new StringReference();
         if (Magic.Is32Bit)
+        {
             reference.Offset = Reader.ReadUInt32();
+        }
         else
+        {
             reference.Offset = Reader.ReadUInt64();
+        }
+
         return reference;
     }
 
@@ -476,9 +507,14 @@ public class GR2Reader
         };
 
         if (Magic.Is32Bit)
+        {
             reference.Offset = Reader.ReadUInt32();
+        }
         else
+        {
             reference.Offset = Reader.ReadUInt64();
+        }
+
         return reference;
     }
 
@@ -490,9 +526,14 @@ public class GR2Reader
         };
 
         if (Magic.Is32Bit)
+        {
             reference.Offset = Reader.ReadUInt32();
+        }
         else
+        {
             reference.Offset = Reader.ReadUInt64();
+        }
+
         Debug.Assert(!reference.IsValid || reference.Size == 0 || reference.Offset + reference.Size * 4 <= (ulong)Stream.Length);
         return reference;
     }
@@ -505,7 +546,9 @@ public class GR2Reader
         var defn = new MemberDefinition();
         int typeId = Reader.ReadInt32();
         if (typeId > (uint)MemberType.Max)
+        {
             throw new ParsingException($"Unsupported member type: {typeId}");
+        }
 
         defn.Type = (MemberType)typeId;
         var name = ReadStringReference();
@@ -526,17 +569,26 @@ public class GR2Reader
         defn.ArraySize = Reader.ReadUInt32();
         defn.Extra = new uint[MemberDefinition.ExtraTagCount];
         for (var i = 0; i < MemberDefinition.ExtraTagCount; i++)
+        {
             defn.Extra[i] = Reader.ReadUInt32();
+        }
+
         // TODO 64-bit: ???
         if (Magic.Is32Bit)
+        {
             defn.Unknown = Reader.ReadUInt32();
+        }
         else
+        {
             defn.Unknown = (uint)Reader.ReadUInt64();
+        }
 
         Debug.Assert(!defn.IsValid || defn.Unknown == 0);
 
         if (defn.Type is MemberType.Inline or MemberType.Reference or MemberType.ArrayOfReferences or MemberType.ReferenceToArray)
+        {
             Debug.Assert(defn.Definition.IsValid);
+        }
 
 #if DEBUG_GR2_SERIALIZATION
             string description;
@@ -579,9 +631,13 @@ public class GR2Reader
         {
             var member = ReadMemberDefinition();
             if (member.IsValid)
+            {
                 defn.Members.Add(member);
+            }
             else
+            {
                 break;
+            }
         }
 
         return defn;
@@ -612,7 +668,9 @@ public class GR2Reader
             // if they're at the beginning of said struct.
             // They also cannot be referenced from multiple locations, so caching them is of no use.
             if (memberType != MemberType.Inline)
+            {
                 CachedStructs.Add(offset, node);
+            }
 
 #if DEBUG_GR2_FORMAT_DIFFERENCES
                 // Create a struct definition from this instance and check if the GR2 type differs from the local type.
@@ -703,7 +761,9 @@ public class GR2Reader
     internal object ReadInstance(MemberDefinition definition, object node, Type propertyType, object parent)
     {
         if (definition.SerializationKind == SerializationKind.UserRaw)
+        {
             return definition.Serializer.Read(this, null, definition, 0, parent);
+        }
 
         if (definition.ArraySize == 0)
         {
@@ -719,7 +779,10 @@ public class GR2Reader
                 // This mode is a bit odd, as we resolve StructRef-s for non-arrays, but don't for array types.
                 StructDefinition defn = null;
                 if (definition.Definition.IsValid)
+                {
                     defn = definition.Definition.Resolve(this);
+                }
+
                 return definition.Serializer.Read(this, defn, definition, definition.ArraySize, parent);
             }
             else if (propertyType.IsArray)
@@ -738,7 +801,9 @@ public class GR2Reader
             {
                 // For non-native arrays we always assume the property is an IList<T>
                 if (node == null)
+                {
                     node = Helpers.CreateInstance(propertyType);
+                }
 
                 var items = node as System.Collections.IList;
                 var type = items.GetType().GetGenericArguments().Single();
@@ -753,7 +818,10 @@ public class GR2Reader
         else
         {
             for (int i = 0; i < definition.ArraySize; i++)
+            {
                 ReadElement(definition, null, null, parent);
+            }
+
             return null;
         }
     }
@@ -784,9 +852,13 @@ public class GR2Reader
                     System.Console.WriteLine(String.Format(" === Inline Struct {0} === ", definition.Name));
 #endif
                 if (kind is SerializationKind.UserElement or SerializationKind.UserMember)
+                {
                     node = definition.Serializer.Read(this, definition.Definition.Resolve(this), definition, 0, parent);
+                }
                 else
+                {
                     node = ReadStruct(definition.Definition.Resolve(this), definition.Type, node, parent);
+                }
 #if DEBUG_GR2_SERIALIZATION
                     System.Console.WriteLine(" === End Struct === ");
 #endif
@@ -805,16 +877,23 @@ public class GR2Reader
                             System.Console.WriteLine(String.Format(" === Struct <{0}> at {1:X8} === ", definition.Name, Stream.Position));
 #endif
                     if (kind is SerializationKind.UserElement or SerializationKind.UserMember)
+                    {
                         node = definition.Serializer.Read(this, definition.Definition.Resolve(this), definition, 0, parent);
+                    }
                     else
+                    {
                         node = ReadStruct(definition.Definition.Resolve(this), definition.Type, node, parent);
+                    }
 #if DEBUG_GR2_SERIALIZATION
                             System.Console.WriteLine(" === End Struct === ");
 #endif
                     Stream.Seek(originalPos, SeekOrigin.Begin);
                 }
                 else
+                {
                     node = null;
+                }
+
                 break;
             }
 
@@ -827,9 +906,14 @@ public class GR2Reader
                 {
                     var structDefn = structRef.Resolve(this);
                     if (definition.TypeSelector != null && definition.Type == MemberType.VariantReference)
+                    {
                         propertyType = definition.TypeSelector.SelectType(definition, structDefn, parent);
+                    }
+
                     if (propertyType != null)
+                    {
                         node = Helpers.CreateInstance(propertyType);
+                    }
 
                     if (node != null)
                     {
@@ -839,9 +923,13 @@ public class GR2Reader
                                 System.Console.WriteLine(String.Format(" === Variant Struct <{0}> at {1:X8} === ", definition.Name, Stream.Position));
 #endif
                         if (kind is SerializationKind.UserElement or SerializationKind.UserMember)
+                        {
                             node = definition.Serializer.Read(this, structDefn, definition, 0, parent);
+                        }
                         else
+                        {
                             node = ReadStruct(structRef.Resolve(this), definition.Type, node, parent);
+                        }
 #if DEBUG_GR2_SERIALIZATION
                                 System.Console.WriteLine(" === End Struct === ");
 #endif
@@ -849,7 +937,10 @@ public class GR2Reader
                     }
                 }
                 else
+                {
                     node = null;
+                }
+
                 break;
             }
 
@@ -903,7 +994,10 @@ public class GR2Reader
                     node = items;
                 }
                 else
+                {
                     node = null;
+                }
+
                 break;
             }
 
@@ -912,9 +1006,13 @@ public class GR2Reader
             {
                 StructReference structRef;
                 if (definition.Type == MemberType.ReferenceToVariantArray)
+                {
                     structRef = ReadStructReference();
+                }
                 else
+                {
                     structRef = definition.Definition;
+                }
 
                 var itemsRef = ReadArrayReference();
 
@@ -945,7 +1043,9 @@ public class GR2Reader
                         if (definition.Type == MemberType.ReferenceToVariantArray &&
                             kind != SerializationKind.UserElement &&
                             definition.TypeSelector != null)
+                        {
                             type = definition.TypeSelector.SelectType(definition, structType, parent);
+                        }
 
                         for (int i = 0; i < itemsRef.Size; i++)
                         {
@@ -972,16 +1072,24 @@ public class GR2Reader
                     Stream.Seek(originalPos, SeekOrigin.Begin);
                 }
                 else
+                {
                     node = null;
+                }
+
                 break;
             }
 
             case MemberType.String:
                 var str = ReadStringReference();
                 if (str.IsValid)
+                {
                     node = str.Resolve(this);
+                }
                 else
+                {
                     node = null;
+                }
+
                 break;
 
             case MemberType.Transform:
@@ -991,7 +1099,9 @@ public class GR2Reader
                 };
 
                 for (int i = 0; i < 3; i++)
+                {
                     transform.Translation[i] = Reader.ReadSingle();
+                }
 
                 transform.Rotation.X = Reader.ReadSingle();
                 transform.Rotation.Y = Reader.ReadSingle();
@@ -1001,7 +1111,9 @@ public class GR2Reader
                 for (int i = 0; i < 3; i++)
                 {
                     for (int j = 0; j < 3; j++)
+                    {
                         transform.ScaleShear[i, j] = Reader.ReadSingle();
+                    }
                 }
 
                 node = transform;
@@ -1064,9 +1176,13 @@ public class GR2Reader
         {
             byte b = Reader.ReadByte();
             if (b != 0)
+            {
                 bytes.Add(b);
+            }
             else
+            {
                 break;
+            }
         }
 
         return Encoding.UTF8.GetString(bytes.ToArray());

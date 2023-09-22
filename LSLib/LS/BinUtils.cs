@@ -105,7 +105,10 @@ public static class BinUtils
                 int columns = attr.GetColumns();
                 var vec = new int[columns];
                 for (int i = 0; i < columns; i++)
+                {
                     vec[i] = reader.ReadInt32();
+                }
+
                 attr.Value = vec;
                 break;
             }
@@ -117,7 +120,10 @@ public static class BinUtils
                 int columns = attr.GetColumns();
                 var vec = new float[columns];
                 for (int i = 0; i < columns; i++)
+                {
                     vec[i] = reader.ReadSingle();
+                }
+
                 attr.Value = vec;
                 break;
             }
@@ -300,16 +306,26 @@ public static class BinUtils
 
         byte flags = 0;
         if (method == CompressionMethod.Zlib)
+        {
             flags = 0x1;
+        }
         else if (method == CompressionMethod.LZ4)
+        {
             flags = 0x2;
+        }
 
         if (level == CompressionLevel.FastCompression)
+        {
             flags |= 0x10;
+        }
         else if (level == CompressionLevel.DefaultCompression)
+        {
             flags |= 0x20;
+        }
         else if (level == CompressionLevel.MaxCompression)
+        {
             flags |= 0x40;
+        }
 
         return flags;
     }

@@ -587,7 +587,9 @@ public class LSFReader : ILSReader
         // Remove null bytes at the end of the string
         int lastNull = bytes.Length;
         while (lastNull > 0 && bytes[lastNull - 1] == 0)
+        {
             lastNull--;
+        }
 
         var nullTerminator = reader.ReadByte();
         if (nullTerminator != 0)

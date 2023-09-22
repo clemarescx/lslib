@@ -71,7 +71,10 @@ public sealed class PackageReader : IDisposable
         package.Metadata.Priority = 0;
         package.Version = PackageVersion.V7;
 
-        if (_metadataOnly) return package;
+        if (_metadataOnly)
+        {
+            return package;
+        }
 
         OpenStreams(mainStream, (int) header.NumParts);
         for (uint i = 0; i < header.NumFiles; i++)
@@ -97,7 +100,10 @@ public sealed class PackageReader : IDisposable
         package.Metadata.Priority = header.Priority;
         package.Version = PackageVersion.V10;
 
-        if (_metadataOnly) return package;
+        if (_metadataOnly)
+        {
+            return package;
+        }
 
         OpenStreams(mainStream, header.NumParts);
         for (uint i = 0; i < header.NumFiles; i++)
@@ -131,7 +137,10 @@ public sealed class PackageReader : IDisposable
         package.Metadata.Priority = header.Priority;
         package.Version = PackageVersion.V13;
 
-        if (_metadataOnly) return package;
+        if (_metadataOnly)
+        {
+            return package;
+        }
 
         OpenStreams(mainStream, header.NumParts);
         mainStream.Seek(header.FileListOffset, SeekOrigin.Begin);
@@ -286,7 +295,10 @@ public sealed class PackageReader : IDisposable
         package.Metadata.Priority = header.Priority;
         package.Version = PackageVersion.V15;
 
-        if (_metadataOnly) return package;
+        if (_metadataOnly)
+        {
+            return package;
+        }
 
         OpenStreams(mainStream, 1);
         mainStream.Seek((long)header.FileListOffset, SeekOrigin.Begin);
@@ -310,7 +322,10 @@ public sealed class PackageReader : IDisposable
         package.Metadata.Priority = header.Priority;
         package.Version = PackageVersion.V16;
 
-        if (_metadataOnly) return package;
+        if (_metadataOnly)
+        {
+            return package;
+        }
 
         OpenStreams(mainStream, header.NumParts);
         mainStream.Seek((long)header.FileListOffset, SeekOrigin.Begin);
@@ -334,7 +349,10 @@ public sealed class PackageReader : IDisposable
         package.Metadata.Priority = header.Priority;
         package.Version = PackageVersion.V18;
 
-        if (_metadataOnly) return package;
+        if (_metadataOnly)
+        {
+            return package;
+        }
 
         OpenStreams(mainStream, header.NumParts);
         mainStream.Seek((long)header.FileListOffset, SeekOrigin.Begin);

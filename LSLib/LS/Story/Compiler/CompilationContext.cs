@@ -377,7 +377,10 @@ public class CompilationLog
 
     public void Warn(CodeLocation location, string code, string message)
     {
-        if (WarningSwitches.TryGetValue(code, out bool enabled) && !enabled) return;
+        if (WarningSwitches.TryGetValue(code, out bool enabled) && !enabled)
+        {
+            return;
+        }
 
         var diag = new Diagnostic(location, MessageLevel.Warning, code, message);
         Log.Add(diag);

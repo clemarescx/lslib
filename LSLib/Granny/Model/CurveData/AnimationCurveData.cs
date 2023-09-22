@@ -59,7 +59,9 @@ public class CurveRegistry
         Init();
 
         if (!NameToTypeMap.TryGetValue(name, out var type))
+        {
             throw new ParsingException($"Unsupported curve type: {name}");
+        }
 
         return type;
     }
@@ -169,7 +171,9 @@ class AnimationCurveDataTypeSelector : VariantTypeSelector
     {
         var fieldName = defn.Members[0].Name;
         if (fieldName[..16] != "CurveDataHeader_")
+        {
             throw new ParsingException($"Unrecognized curve data header type: {fieldName}");
+        }
 
         var curveType = fieldName[16..];
         return CurveRegistry.Resolve(curveType);
@@ -227,14 +231,18 @@ public abstract class AnimationCurveData
                 for (var j = 0; j < i; j++)
                 {
                     if (matrix[i, j] != matrix[j, i])
+                    {
                         throw new ParsingException("Cannot convert into quaternion: Transformation matrix is not orthogonal!");
+                    }
                 }
             }
 
             // Check that the matrix is special orthogonal
             // det(matrix) = 1
             if (Math.Abs(matrix.Determinant - 1) > 0.001)
+            {
                 throw new ParsingException("Cannot convert into quaternion: Transformation matrix is not special orthogonal!");
+            }
 
             quats.Add(matrix.ExtractRotation());
         }

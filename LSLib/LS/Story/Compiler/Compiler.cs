@@ -113,7 +113,10 @@ public class Compiler
 
     private void VerifyIRStatement(IRRule rule, IRStatement statement)
     {
-        if (statement.Func == null) return;
+        if (statement.Func == null)
+        {
+            return;
+        }
 
         var func = Context.LookupSignature(statement.Func.Name);
         if (func == null)

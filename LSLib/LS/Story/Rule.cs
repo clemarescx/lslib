@@ -29,7 +29,11 @@ public class RuleNode : RelNode
         while (variables-- > 0)
         {
             var type = reader.ReadByte();
-            if (type != 1) throw new InvalidDataException("Illegal value type in rule variable list");
+            if (type != 1)
+            {
+                throw new InvalidDataException("Illegal value type in rule variable list");
+            }
+
             var variable = new Variable();
             variable.Read(reader);
             if (variable.Adapted)
@@ -43,9 +47,13 @@ public class RuleNode : RelNode
         Line = reader.ReadUInt32();
 
         if (reader.Ver >= OsiVersion.VerAddQuery)
+        {
             IsQuery = reader.ReadBoolean();
+        }
         else
+        {
             IsQuery = false;
+        }
     }
 
     public override void Write(OsiWriter writer)
@@ -62,7 +70,9 @@ public class RuleNode : RelNode
 
         writer.Write(Line);
         if (writer.Ver >= OsiVersion.VerAddQuery)
+        {
             writer.Write(IsQuery);
+        }
     }
 
     public override Type NodeType()
@@ -73,9 +83,13 @@ public class RuleNode : RelNode
     public override string TypeName()
     {
         if (IsQuery)
+        {
             return "Query Rule";
+        }
         else
+        {
             return "Rule";
+        }
     }
 
     public override void DebugDump(TextWriter writer, Story story)

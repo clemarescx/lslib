@@ -121,7 +121,10 @@ public class ModPathVisitor
 
     private void DiscoverPackagedFile(AbstractFileInfo file)
     {
-        if (file.IsDeletion()) return;
+        if (file.IsDeletion())
+        {
+            return;
+        }
 
         if (file.Name.EndsWith("meta.lsx", StringComparison.Ordinal))
         {
@@ -290,7 +293,10 @@ public class ModPathVisitor
     private void DiscoverModGoals(string modName, string modPath)
     {
         var goalPath = $@"{modPath}\Story\RawFiles\Goals";
-        if (!Directory.Exists(goalPath)) return;
+        if (!Directory.Exists(goalPath))
+        {
+            return;
+        }
 
         List<string> goalFiles = new();
         EnumerateFiles(goalFiles, goalPath, goalPath, "*.txt");
@@ -309,7 +315,10 @@ public class ModPathVisitor
     private void DiscoverModStats(string modName, string modPublicPath)
     {
         var statsPath = $@"{modPublicPath}\Stats\Generated\Data";
-        if (!Directory.Exists(statsPath)) return;
+        if (!Directory.Exists(statsPath))
+        {
+            return;
+        }
 
         List<string> statFiles = new();
         EnumerateFiles(statFiles, statsPath, statsPath, "*.txt");
@@ -328,7 +337,10 @@ public class ModPathVisitor
     private void DiscoverModGlobals(string modName, string modPath)
     {
         var globalsPath = $@"{modPath}\Globals";
-        if (!Directory.Exists(globalsPath)) return;
+        if (!Directory.Exists(globalsPath))
+        {
+            return;
+        }
 
         List<string> globalFiles = new();
         EnumerateFiles(globalFiles, globalsPath, globalsPath, "*.lsf");
@@ -347,7 +359,10 @@ public class ModPathVisitor
     private void DiscoverModLevelObjects(string modName, string modPath)
     {
         var levelsPath = $@"{modPath}\Levels";
-        if (!Directory.Exists(levelsPath)) return;
+        if (!Directory.Exists(levelsPath))
+        {
+            return;
+        }
 
         List<string> levelFiles = new();
         EnumerateFiles(levelFiles, levelsPath, levelsPath, "*.lsf");

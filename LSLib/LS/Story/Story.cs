@@ -287,14 +287,20 @@ public class StoryReader
         }
 
         if (reader.Ver >= OsiVersion.VerScramble)
+        {
             reader.Scramble = 0xAD;
+        }
 
         story.Types = ReadTypes(reader, story);
 
         if (reader.Ver >= OsiVersion.VerExternalStringTable && reader.Ver < OsiVersion.VerRemoveExternalStringTable)
+        {
             story.ExternalStringTable = ReadStrings(reader);
+        }
         else
+        {
             story.ExternalStringTable = new();
+        }
 
         story.Types[0] = OsirisType.MakeBuiltin(0, "UNKNOWN");
         story.Types[1] = OsirisType.MakeBuiltin(1, "INTEGER");
@@ -479,7 +485,9 @@ public class StoryWriter
             }
 
             if (Writer.Ver >= OsiVersion.VerScramble)
+            {
                 Writer.Scramble = 0xAD;
+            }
 
             if (Writer.Ver >= OsiVersion.VerAddTypeMap)
             {
@@ -505,7 +513,9 @@ public class StoryWriter
 
             // TODO: regenerate string table?
             if (Writer.Ver >= OsiVersion.VerExternalStringTable && Writer.Ver < OsiVersion.VerRemoveExternalStringTable)
+            {
                 WriteStrings(story.ExternalStringTable);
+            }
 
             Writer.WriteList(story.DivObjects);
             Writer.WriteList(story.Functions);

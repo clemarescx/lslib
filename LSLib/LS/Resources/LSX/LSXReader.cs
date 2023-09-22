@@ -38,7 +38,11 @@ public class LSXReader : ILSReader
         fs.Arguments = new(arguments);
         if (arguments > 0)
         {
-            while (reader.Read() && reader.NodeType != XmlNodeType.Element);
+            while (reader.Read() && reader.NodeType != XmlNodeType.Element)
+            {
+                ;
+            }
+
             if (reader.Name != "arguments")
             {
                 throw new InvalidFormatException($"Expected <arguments>: {reader.Name}");
@@ -60,7 +64,11 @@ public class LSXReader : ILSReader
                         Value = reader["value"]
                     };
 
-                    while (reader.Read() && reader.NodeType != XmlNodeType.Element);
+                    while (reader.Read() && reader.NodeType != XmlNodeType.Element)
+                    {
+                        ;
+                    }
+
                     if (reader.Name != "string")
                     {
                         throw new InvalidFormatException($"Expected <string>: {reader.Name}");
@@ -72,13 +80,24 @@ public class LSXReader : ILSReader
                     fs.Arguments.Add(arg);
                     processedArgs++;
 
-                    while (reader.Read() && reader.NodeType != XmlNodeType.EndElement);
+                    while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+                    {
+                        ;
+                    }
                 }
             }
 
-            while (reader.Read() && reader.NodeType != XmlNodeType.EndElement);
+            while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+            {
+                ;
+            }
+
             // Close outer element
-            while (reader.Read() && reader.NodeType != XmlNodeType.EndElement);
+            while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+            {
+                ;
+            }
+
             Debug.Assert(processedArgs == arguments);
         }
     }
@@ -90,7 +109,10 @@ public class LSXReader : ILSReader
             case "save":
                 // Root element
                 if (stack.Count() > 0)
+                {
                     throw new InvalidFormatException("Node <save> was unexpected.");
+                }
+
                 break;
 
             case "header":
@@ -109,7 +131,9 @@ public class LSXReader : ILSReader
 
             case "region":
                 if (currentRegion != null)
+                {
                     throw new InvalidFormatException("A <region> can only start at the root level of a resource.");
+                }
 
                 Debug.Assert(!reader.IsEmptyElement);
                 var region = new Region
@@ -124,7 +148,9 @@ public class LSXReader : ILSReader
 
             case "node":
                 if (currentRegion == null)
+                {
                     throw new InvalidFormatException("A <node> must be located inside a region.");
+                }
 
                 Node node;
                 if (stack.Count() == 0)
@@ -144,10 +170,15 @@ public class LSXReader : ILSReader
                 node.Name = reader["id"];
                 Debug.Assert(node.Name != null);
                 if (node.Parent != null)
+                {
                     node.Parent.AppendChild(node);
+                }
 
                 if (!reader.IsEmptyElement)
+                {
                     stack.Add(node);
+                }
+
                 break;
 
             case "attribute":
@@ -166,7 +197,9 @@ public class LSXReader : ILSReader
 
                 var attrName = reader["id"];
                 if (attrTypeId > (int)NodeAttribute.DataType.DT_Max)
+                {
                     throw new InvalidFormatException($"Unsupported attribute data type: {attrTypeId}");
+                }
 
                 Debug.Assert(attrName != null);
                 var attr = new NodeAttribute((NodeAttribute.DataType)attrTypeId);

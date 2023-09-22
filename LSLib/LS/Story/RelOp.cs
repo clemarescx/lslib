@@ -63,16 +63,26 @@ public class RelOpNode : RelNode
 
         writer.Write("    Left Value: ");
         if (LeftValueIndex != -1)
+        {
             writer.Write("[Source Column {0}]", LeftValueIndex);
+        }
         else
+        {
             LeftValue.DebugDump(writer, story);
+        }
+
         writer.WriteLine();
 
         writer.Write("    Right Value: ");
         if (RightValueIndex != -1)
+        {
             writer.Write("[Source Column {0}]", RightValueIndex);
+        }
         else
+        {
             RightValue.DebugDump(writer, story);
+        }
+
         writer.WriteLine();
     }
 
@@ -83,9 +93,13 @@ public class RelOpNode : RelNode
         writer.WriteLine("AND");
 
         if (LeftValueIndex != -1)
+        {
             adaptedTuple.Logical[LeftValueIndex].MakeScript(writer, story, tuple);
+        }
         else
+        {
             LeftValue.MakeScript(writer, story, tuple);
+        }
 
         switch (RelOp)
         {
@@ -98,9 +112,14 @@ public class RelOpNode : RelNode
         }
 
         if (RightValueIndex != -1)
+        {
             adaptedTuple.Logical[RightValueIndex].MakeScript(writer, story, tuple);
+        }
         else
+        {
             RightValue.MakeScript(writer, story, tuple);
+        }
+
         writer.WriteLine();
     }
 }

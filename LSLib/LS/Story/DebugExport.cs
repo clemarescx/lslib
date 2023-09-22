@@ -119,9 +119,13 @@ public class StoryDebugExportVisitor
     public void Visit(NodeReference r)
     {
         if (r.IsNull)
+        {
             writer.WriteNull();
+        }
         else
+        {
             writer.WriteValue(r.Index);
+        }
     }
 
     public void Visit(FunctionSignature fun)
@@ -151,35 +155,55 @@ public class StoryDebugExportVisitor
     public void VisitNode(Node node)
     {
         if (node is RelOpNode)
+        {
             Visit(node as RelOpNode);
+        }
         else if (node is RuleNode)
+        {
             Visit(node as RuleNode);
+        }
         //else if (node is RelNode)
         //    Visit(node as RelNode);
         else if (node is UserQueryNode)
+        {
             Visit(node as QueryNode);
+        }
         else if (node is InternalQueryNode)
+        {
             Visit(node as QueryNode);
+        }
         else if (node is DivQueryNode)
+        {
             Visit(node as QueryNode);
+        }
         //else if (node is QueryNode)
         //    Visit(node as QueryNode);
         else if (node is AndNode)
+        {
             Visit(node as JoinNode);
+        }
         else if (node is NotAndNode)
+        {
             Visit(node as JoinNode);
+        }
         //else if (node is JoinNode)
         //    Visit(node as JoinNode);
         //else if (node is TreeNode)
         //    Visit(node as TreeNode);
         else if (node is ProcNode)
+        {
             Visit(node as DataNode);
+        }
         else if (node is DatabaseNode)
+        {
             Visit(node as DataNode);
+        }
         // else if (node is DataNode)
         //     Visit(node as DataNode);
         else
+        {
             throw new("Unsupported node type");
+        }
     }
 
     public void Visit(Value val)
@@ -218,36 +242,55 @@ public class StoryDebugExportVisitor
     {
         writer.WriteStartObject();
         if (val is Variable)
+        {
             Visit(val as Variable);
+        }
         else if (val is TypedValue)
+        {
             Visit(val as TypedValue);
+        }
         else
+        {
             Visit(val);
+        }
+
         writer.WriteEndObject();
     }
 
     public void Visit(AdapterReference r)
     {
         if (r.IsNull)
+        {
             writer.WriteNull();
+        }
         else
+        {
             writer.WriteValue(r.Index);
+        }
     }
 
     public void Visit(DatabaseReference r)
     {
         if (r.IsNull)
+        {
             writer.WriteNull();
+        }
         else
+        {
             writer.WriteValue(r.Index);
+        }
     }
 
     public void Visit(GoalReference r)
     {
         if (r.IsNull)
+        {
             writer.WriteNull();
+        }
         else
+        {
             writer.WriteValue(r.Index);
+        }
     }
 
     public void Visit(NodeEntryItem entry)

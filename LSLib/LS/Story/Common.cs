@@ -279,12 +279,18 @@ public class SaveFileHeader : OsirisSerializable
         Unused = reader.ReadByte();
 
         if (Ver >= OsiVersion.VerAddVersionString)
+        {
             reader.ReadBytes(0x80); // Version string buffer
+        }
 
         if (Ver >= OsiVersion.VerAddDebugFlags)
+        {
             DebugFlags = reader.ReadUInt32();
+        }
         else
+        {
             DebugFlags = 0;
+        }
     }
 
     public void Write(OsiWriter writer)
@@ -306,7 +312,9 @@ public class SaveFileHeader : OsirisSerializable
         }
 
         if (Ver >= OsiVersion.VerAddDebugFlags)
+        {
             writer.Write(DebugFlags);
+        }
     }
 }
 

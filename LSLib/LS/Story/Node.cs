@@ -38,7 +38,9 @@ public abstract class Node : OsirisSerializable
         DatabaseRef.Write(writer);
         writer.Write(Name);
         if (Name.Length > 0)
+        {
             writer.Write(NumParams);
+        }
     }
 
     public abstract Type NodeType();

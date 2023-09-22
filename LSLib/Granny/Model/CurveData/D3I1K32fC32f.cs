@@ -27,7 +27,9 @@ public class D3I1K32fC32f : AnimationCurveData
         var numKnots = NumKnots();
         var knots = new List<float>(numKnots);
         for (var i = 0; i < numKnots; i++)
+        {
             knots.Add(KnotsControls[i]);
+        }
 
         return knots;
     }

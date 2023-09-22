@@ -62,7 +62,10 @@ public class Root
 
     public void ConvertToYUp(bool transformSkeletons)
     {
-        if (!ZUp) return;
+        if (!ZUp)
+        {
+            return;
+        }
 
         var transform = Matrix4.CreateRotationX((float)(-0.5 * Math.PI));
         TransformVertices(transform);
