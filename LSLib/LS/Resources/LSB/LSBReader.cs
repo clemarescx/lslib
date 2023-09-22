@@ -27,7 +27,7 @@ public class LSBReader : ILSReader
         {
             // Check for BG3 header
             var header = BinUtils.ReadStruct<LSBHeader>(reader);
-            if (header.Signature != BitConverter.ToUInt32(LSBHeader.SignatureBG3, 0) && header.Signature != LSBHeader.SignatureFW3)
+            if (header.Signature != BitConverter.ToUInt32(LSBHeader.SignatureBG3.AsSpan()) && header.Signature != LSBHeader.SignatureFW3)
                 throw new InvalidFormatException(string.Format("Illegal signature in LSB header ({0})", header.Signature));
 
             if (stream.Length != header.TotalSize)
@@ -37,7 +37,7 @@ public class LSBReader : ILSReader
             if (header.BigEndian != 0)
                 throw new InvalidFormatException("Big-endian LSB files are not supported");
 
-            IsBG3 = header.Signature == BitConverter.ToUInt32(LSBHeader.SignatureBG3, 0);
+            IsBG3 = header.Signature == BitConverter.ToUInt32(LSBHeader.SignatureBG3.AsSpan());
             ReadStaticStrings();
 
             Resource rsrc = new()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -76,7 +77,7 @@ public struct LSBHeader
     /// <summary>
     /// LSB file signature since BG3
     /// </summary>
-    public static readonly byte[] SignatureBG3 = "LSFM"u8.ToArray();
+    public static readonly ImmutableArray<byte> SignatureBG3 = "LSFM"u8.ToImmutableArray();
 
     /// <summary>
     /// LSB signature up to FW3 (DOS2 DE)

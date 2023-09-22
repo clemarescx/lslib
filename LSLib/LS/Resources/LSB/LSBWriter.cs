@@ -32,7 +32,7 @@ public class LSBWriter : ILSWriter
 
             if (rsrc.Metadata.MajorVersion >= 4)
             {
-                header.Signature = BitConverter.ToUInt32(LSBHeader.SignatureBG3, 0);
+                header.Signature = BitConverter.ToUInt32(LSBHeader.SignatureBG3.AsSpan());
             }
             else
             {
