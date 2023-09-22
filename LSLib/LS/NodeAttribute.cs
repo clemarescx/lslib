@@ -116,21 +116,21 @@ public class NodeAttribute
             _ => throw new NotSupportedException("Data type does not have columns")
         };
 
-    public bool IsNumeric() =>
-        Type is DataType.DT_Byte
-             or DataType.DT_Short
-             or DataType.DT_Short
-             or DataType.DT_Int
-             or DataType.DT_UInt
-             or DataType.DT_Float
-             or DataType.DT_Double
-             or DataType.DT_ULongLong
-             or DataType.DT_Long
-             or DataType.DT_Int8;
+    private static bool IsNumeric(DataType dataType) =>
+        dataType is DataType.DT_Byte
+                 or DataType.DT_Short
+                 or DataType.DT_Short
+                 or DataType.DT_Int
+                 or DataType.DT_UInt
+                 or DataType.DT_Float
+                 or DataType.DT_Double
+                 or DataType.DT_ULongLong
+                 or DataType.DT_Long
+                 or DataType.DT_Int8;
 
     public void FromString(string str)
     {
-        if (IsNumeric())
+        if (IsNumeric(Type))
         {
             // Workaround: Some XML files use empty strings, instead of "0" for zero values.
             if (str == string.Empty)
@@ -183,15 +183,15 @@ public class NodeAttribute
             case DataType.DT_IVec3:
             case DataType.DT_IVec4:
             {
-                string[] nums = str.Split(' ');
-                int length = GetColumns();
+                var nums = str.Split(' ');
+                var length = GetColumns();
                 if (length != nums.Length)
                 {
                     throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
                 }
 
-                int[] vec = new int[length];
-                for (int i = 0; i < length; i++)
+                var vec = new int[length];
+                for (var i = 0; i < length; i++)
                 {
                     vec[i] = int.Parse(nums[i]);
                 }
@@ -204,15 +204,15 @@ public class NodeAttribute
             case DataType.DT_Vec3:
             case DataType.DT_Vec4:
             {
-                string[] nums = str.Split(' ');
-                int length = GetColumns();
+                var nums = str.Split(' ');
+                var length = GetColumns();
                 if (length != nums.Length)
                 {
                     throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
                 }
 
-                float[] vec = new float[length];
-                for (int i = 0; i < length; i++)
+                var vec = new float[length];
+                for (var i = 0; i < length; i++)
                 {
                     vec[i] = float.Parse(nums[i]);
                 }
@@ -236,18 +236,12 @@ public class NodeAttribute
                 break;
 
             case DataType.DT_Bool:
-                if (str == "0")
+                Value = str switch
                 {
-                    Value = false;
-                }
-                else if (str == "1")
-                {
-                    Value = true;
-                }
-                else
-                {
-                    Value = Convert.ToBoolean(str);
-                }
+                    "0" => false,
+                    "1" => true,
+                    _   => Convert.ToBoolean(str)
+                };
 
                 break;
 
@@ -263,10 +257,7 @@ public class NodeAttribute
             case DataType.DT_TranslatedString:
                 // We'll only set the value part of the translated string, not the TranslatedStringKey / Handle part
                 // That can be changed separately via attribute.Value.Handle
-                if (Value == null)
-                {
-                    Value = new TranslatedString();
-                }
+                Value ??= new TranslatedString();
 
                 ((TranslatedString)Value).Value = str;
                 break;
@@ -274,10 +265,7 @@ public class NodeAttribute
             case DataType.DT_TranslatedFSString:
                 // We'll only set the value part of the translated string, not the TranslatedStringKey / Handle part
                 // That can be changed separately via attribute.Value.Handle
-                if (Value == null)
-                {
-                    Value = new TranslatedFSString();
-                }
+                Value ??= new TranslatedFSString();
 
                 ((TranslatedFSString)Value).Value = str;
                 break;
