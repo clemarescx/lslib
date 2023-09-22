@@ -151,8 +151,7 @@ public class LSJResourceConverter : JsonConverter
             {
                 if (key == "type")
                 {
-                    uint type;
-                    if (!UInt32.TryParse((string)reader.Value, out type))
+                    if (!UInt32.TryParse((string)reader.Value, out var type))
                     {
                         type = (uint)AttributeTypeMaps.TypeToId[(string)reader.Value];
                     }

@@ -590,8 +590,7 @@ public class GR2Reader
     internal object ReadStruct(StructDefinition definition, MemberType memberType, object node, object parent)
     {
         var offset = (UInt32)Stream.Position;
-        object cachedNode = null;
-        if (memberType != MemberType.Inline && CachedStructs.TryGetValue(offset, out cachedNode))
+        if (memberType != MemberType.Inline && CachedStructs.TryGetValue(offset, out var cachedNode))
         {
 #if DEBUG_GR2_SERIALIZATION
                 System.Console.WriteLine(String.Format("Skipped cached struct {1} at {0:X8}", offset, node.ToString()));

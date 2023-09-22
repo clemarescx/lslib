@@ -36,8 +36,7 @@ public class Deduplicator<T>
         var i = 0;
         foreach (var item in items)
         {
-            int mappedIndex;
-            if (!uniqueItems.TryGetValue(item, out mappedIndex))
+            if (!uniqueItems.TryGetValue(item, out var mappedIndex))
             {
                 mappedIndex = uniqueItems.Count;
                 uniqueItems.Add(item, mappedIndex);

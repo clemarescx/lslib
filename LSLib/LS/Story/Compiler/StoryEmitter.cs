@@ -496,8 +496,7 @@ public class StoryEmitter
 
     private Node EmitName(FunctionNameAndArity name, NameRefType refType)
     {
-        Node node = null;
-        if (!Funcs.TryGetValue(name, out node))
+        if (!Funcs.TryGetValue(name, out var node))
         {
             var signature = Context.LookupSignature(name);
             switch (signature.Type)
@@ -1162,8 +1161,7 @@ public class StoryEmitter
         var name = new FunctionNameAndArity($"{signature.Name}__DEF__", signature.Params.Count);
         if (!Funcs.TryGetValue(name, out Node initialFunc))
         {
-            Function osiUserQuery = null;
-            FuncEntries.TryGetValue(signature.GetNameAndArity(), out osiUserQuery);
+            FuncEntries.TryGetValue(signature.GetNameAndArity(), out var osiUserQuery);
             initialFunc = EmitUserQueryDefinition(signature, osiUserQuery);
             Funcs.Add(name, initialFunc);
         }

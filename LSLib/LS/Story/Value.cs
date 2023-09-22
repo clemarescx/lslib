@@ -119,9 +119,8 @@ public class Value : OsirisSerializable
 
             uint writtenTypeId = TypeId;
 
-            uint alias;
             bool dos1alias = false;
-            if (reader.TypeAliases.TryGetValue(writtenTypeId, out alias))
+            if (reader.TypeAliases.TryGetValue(writtenTypeId, out var alias))
             {
                 writtenTypeId = alias;
                 if (reader.Ver < OsiVersion.VerEnhancedTypes)
@@ -175,8 +174,7 @@ public class Value : OsirisSerializable
         {
             TypeId = reader.ReadUInt16();
 
-            OsirisEnum e;
-            if (!reader.Story.Enums.TryGetValue(TypeId, out e))
+            if (!reader.Story.Enums.TryGetValue(TypeId, out var e))
             {
                 throw new InvalidDataException($"Enum label serialized for a non-enum type: {TypeId}");
             }
@@ -209,8 +207,7 @@ public class Value : OsirisSerializable
 
         uint writtenTypeId = TypeId;
         bool aliased = false;
-        uint alias;
-        if (writer.TypeAliases.TryGetValue(TypeId, out alias))
+        if (writer.TypeAliases.TryGetValue(TypeId, out var alias))
         {
             aliased = true;
             writtenTypeId = alias;

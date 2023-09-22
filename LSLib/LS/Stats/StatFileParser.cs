@@ -283,9 +283,8 @@ public class StatLoader
                 Context.LogError(DiagnosticCode.StatNameMissing, $"Stat entry has no '{definition.NameProperty}' property", declaration.Location.FileName, declaration.Location.StartLine);
                 continue;
             }
-                
-            Dictionary<String, StatDeclaration> declarationsByType;
-            if (!Context.DeclarationsByType.TryGetValue(statType, out declarationsByType))
+
+            if (!Context.DeclarationsByType.TryGetValue(statType, out var declarationsByType))
             {
                 declarationsByType = new();
                 Context.DeclarationsByType[statType] = declarationsByType;

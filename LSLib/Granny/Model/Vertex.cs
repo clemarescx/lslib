@@ -590,8 +590,7 @@ public class VertexSerializer : NodeSerializer
 
     public object Read(GR2Reader gr2, StructDefinition definition, MemberDefinition member, uint arraySize, object parent)
     {
-        VertexDescriptor descriptor;
-        if (!VertexTypeCache.TryGetValue(parent, out descriptor))
+        if (!VertexTypeCache.TryGetValue(parent, out var descriptor))
         {
             descriptor = ConstructDescriptor(member, definition, parent);
             VertexTypeCache.Add(parent, descriptor);

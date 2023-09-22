@@ -14,8 +14,7 @@ public static class Helpers
 
     public static ObjectCtor GetConstructor(Type type)
     {
-        ObjectCtor ctor;
-        if (!CachedConstructors.TryGetValue(type, out ctor))
+        if (!CachedConstructors.TryGetValue(type, out var ctor))
         {
             NewExpression newExp = Expression.New(type);
             LambdaExpression lambda = Expression.Lambda(typeof(ObjectCtor), newExp, new ParameterExpression[] { });
@@ -34,8 +33,7 @@ public static class Helpers
 
     public static object CreateArrayInstance(Type type, int size)
     {
-        ArrayCtor ctor;
-        if (!CachedArrayConstructors.TryGetValue(type, out ctor))
+        if (!CachedArrayConstructors.TryGetValue(type, out var ctor))
         {
             var typeCtor = type.GetConstructor(new Type[] { typeof(int) });
             var sizeParam = Expression.Parameter(typeof(int), "");

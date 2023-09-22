@@ -139,8 +139,7 @@ public partial class StatParser
         else if (property is StatElement)
         {
             var ele = (StatElement)property;
-            object cont;
-            if (!decl.Properties.TryGetValue(ele.Collection, out cont))
+            if (!decl.Properties.TryGetValue(ele.Collection, out var cont))
             {
                 cont = new List<object>();
                 decl.Properties[ele.Collection] = cont;

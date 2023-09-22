@@ -263,8 +263,7 @@ public class ColladaMesh
         if (id.Length == 0 || id[0] != '#')
             throw new ParsingException($"Only ID references are supported for input sources: {id}");
 
-        ColladaSource inputSource = null;
-        if (!Sources.TryGetValue(id[1..], out inputSource))
+        if (!Sources.TryGetValue(id[1..], out var inputSource))
             throw new ParsingException($"Input source does not exist: {id}");
 
         return inputSource;
@@ -280,19 +279,14 @@ public class ColladaMesh
             vertexSemantics.Add(input.semantic, vertices);
         }
 
-        List<Vector3> vertexPositions = null;
-        List<Vector3> perVertexNormals = null;
-        List<Vector3> perVertexTangents = null;
-        List<Vector3> perVertexBinormals = null;
-
-        vertexSemantics.TryGetValue("POSITION", out vertexPositions);
-        vertexSemantics.TryGetValue("NORMAL", out perVertexNormals);
-        if (!vertexSemantics.TryGetValue("TANGENT", out perVertexTangents))
+        vertexSemantics.TryGetValue("POSITION", out var vertexPositions);
+        vertexSemantics.TryGetValue("NORMAL", out var perVertexNormals);
+        if (!vertexSemantics.TryGetValue("TANGENT", out var perVertexTangents))
         {
             vertexSemantics.TryGetValue("TEXTANGENT", out perVertexTangents);
         }
 
-        if (!vertexSemantics.TryGetValue("BINORMAL", out perVertexBinormals))
+        if (!vertexSemantics.TryGetValue("BINORMAL", out var perVertexBinormals))
         {
             vertexSemantics.TryGetValue("TEXBINORMAL", out perVertexBinormals);
         }
@@ -368,14 +362,12 @@ public class ColladaMesh
                 if (input.source[0] != '#')
                     throw new ParsingException("Only ID references are supported for color input sources");
 
-                ColladaSource inputSource = null;
-                if (!Sources.TryGetValue(input.source[1..], out inputSource))
+                if (!Sources.TryGetValue(input.source[1..], out var inputSource))
                     throw new ParsingException($"Color input source does not exist: {input.source}");
 
-                List<Single> r = null, g = null, b = null;
-                if (!inputSource.FloatParams.TryGetValue("R", out r) ||
-                    !inputSource.FloatParams.TryGetValue("G", out g) ||
-                    !inputSource.FloatParams.TryGetValue("B", out b))
+                if (!inputSource.FloatParams.TryGetValue("R", out var r) ||
+                    !inputSource.FloatParams.TryGetValue("G", out var g) ||
+                    !inputSource.FloatParams.TryGetValue("B", out var b))
                 {
                     if (!inputSource.FloatParams.TryGetValue("X", out r) ||
                         !inputSource.FloatParams.TryGetValue("Y", out g) ||
@@ -409,13 +401,11 @@ public class ColladaMesh
                 if (input.source[0] != '#')
                     throw new ParsingException("Only ID references are supported for UV input sources");
 
-                ColladaSource inputSource = null;
-                if (!Sources.TryGetValue(input.source[1..], out inputSource))
+                if (!Sources.TryGetValue(input.source[1..], out var inputSource))
                     throw new ParsingException($"UV input source does not exist: {input.source}");
 
-                List<Single> s = null, t = null;
-                if (!inputSource.FloatParams.TryGetValue("S", out s) ||
-                    !inputSource.FloatParams.TryGetValue("T", out t))
+                if (!inputSource.FloatParams.TryGetValue("S", out var s) ||
+                    !inputSource.FloatParams.TryGetValue("T", out var t))
                     throw new ParsingException($"UV input source {input.source} must have S, T float attributes");
 
                 var uvs = new List<Vector2>();
@@ -549,8 +539,7 @@ public class ColladaMesh
                     index[i] = Indices[vert * InputOffsetCount + i];
                 }
 
-                int consolidatedIndex;
-                if (!outVertexIndices.TryGetValue(index, out consolidatedIndex))
+                if (!outVertexIndices.TryGetValue(index, out var consolidatedIndex))
                 {
                     var vertexIndex = index[VertexInputIndex];
                     consolidatedIndex = ConsolidatedVertices.Count;
@@ -578,8 +567,7 @@ public class ColladaMesh
                     outVertexIndices.Add(index, consolidatedIndex);
                     ConsolidatedVertices.Add(vertex);
 
-                    List<int> mappedIndices = null;
-                    if (!OriginalToConsolidatedVertexIndexMap.TryGetValue(vertexIndex, out mappedIndices))
+                    if (!OriginalToConsolidatedVertexIndexMap.TryGetValue(vertexIndex, out var mappedIndices))
                     {
                         mappedIndices = new();
                         OriginalToConsolidatedVertexIndexMap.Add(vertexIndex, mappedIndices);

@@ -211,8 +211,7 @@ public class Node
 
     public void AppendChild(Node child)
     {
-        List<Node> children;
-        if (!Children.TryGetValue(child.Name, out children))
+        if (!Children.TryGetValue(child.Name, out var children))
         {
             children = new();
             Children.Add(child.Name, children);

@@ -38,15 +38,13 @@ static class NodeHelpers
 
     public static Matrix4 TranslationToMatrix4(this TargetableFloat3 t)
     {
-        Matrix4 trans;
-        Matrix4.CreateTranslation((float)t.Values[0], (float)t.Values[1], (float)t.Values[2], out trans);
+        Matrix4.CreateTranslation((float)t.Values[0], (float)t.Values[1], (float)t.Values[2], out var trans);
         return trans;
     }
 
     public static Matrix4 ScaleToMatrix4(this TargetableFloat3 t)
     {
-        Matrix4 scale;
-        Matrix4.CreateScale((float)t.Values[0], (float)t.Values[1], (float)t.Values[2], out scale);
+        Matrix4.CreateScale((float)t.Values[0], (float)t.Values[1], (float)t.Values[2], out var scale);
         return scale;
     }
 
@@ -214,10 +212,9 @@ class ColladaHelpers
 
     public static List<Vector3> SourceToPositions(ColladaSource source)
     {
-        List<Single> x = null, y = null, z = null;
-        if (!source.FloatParams.TryGetValue("X", out x) ||
-            !source.FloatParams.TryGetValue("Y", out y) ||
-            !source.FloatParams.TryGetValue("Z", out z))
+        if (!source.FloatParams.TryGetValue("X", out var x) ||
+            !source.FloatParams.TryGetValue("Y", out var y) ||
+            !source.FloatParams.TryGetValue("Z", out var z))
             throw new ParsingException($"Position source {source.id} must have X, Y, Z float attributes");
 
         var positions = new List<Vector3>(x.Count);

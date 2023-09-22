@@ -52,8 +52,7 @@ public class ColladaAnimation
             if (input.source[0] != '#')
                 throw new ParsingException("Only ID references are supported for animation input sources");
 
-            ColladaSource source;
-            if (!Sources.TryGetValue(input.source[1..], out source))
+            if (!Sources.TryGetValue(input.source[1..], out var source))
                 throw new ParsingException($"Animation sampler {input.semantic} references nonexistent source: {input.source}");
 
             switch (input.semantic)
@@ -122,8 +121,7 @@ public class ColladaAnimation
 
         if (skeleton != null)
         {
-            Bone bone = null;
-            if (!skeleton.BonesByID.TryGetValue(parts[0], out bone))
+            if (!skeleton.BonesByID.TryGetValue(parts[0], out var bone))
                 throw new ParsingException($"Animation channel references nonexistent bone: {parts[0]}");
 
             if (bone.TransformSID != parts[1])

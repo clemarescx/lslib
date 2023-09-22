@@ -501,8 +501,7 @@ public class VirtualTileSet : IDisposable
 
     public PageFile GetOrLoadPageFile(int pageFileIdx)
     {
-        PageFile file;
-        if (!PageFiles.TryGetValue(pageFileIdx, out file))
+        if (!PageFiles.TryGetValue(pageFileIdx, out var file))
         {
             var meta = PageFileInfos[pageFileIdx];
             file = new(this, PagePath + Path.DirectorySeparatorChar + meta.Name);

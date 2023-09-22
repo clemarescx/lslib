@@ -377,8 +377,7 @@ public class VariableManager
 
     public void Load(Node variableManager)
     {
-        List<Node> nodes;
-        if (variableManager.Children.TryGetValue("IntList", out nodes))
+        if (variableManager.Children.TryGetValue("IntList", out var nodes))
         {
             IntList.Load(nodes[0]);
         }

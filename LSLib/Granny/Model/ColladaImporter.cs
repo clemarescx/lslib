@@ -550,8 +550,7 @@ public class ColladaImporter
         if (skin.source1[0] != '#')
             throw new ParsingException("Only ID references are supported for skin geometries");
 
-        Mesh mesh = null;
-        if (!ColladaGeometries.TryGetValue(skin.source1[1..], out mesh))
+        if (!ColladaGeometries.TryGetValue(skin.source1[1..], out var mesh))
             throw new ParsingException($"Skin references nonexistent mesh: {skin.source1}");
 
         if (!mesh.VertexFormat.HasBoneWeights)
@@ -575,8 +574,7 @@ public class ColladaImporter
             if (input.source[0] != '#')
                 throw new ParsingException("Only ID references are supported for joint input sources");
 
-            ColladaSource inputSource = null;
-            if (!sources.TryGetValue(input.source[1..], out inputSource))
+            if (!sources.TryGetValue(input.source[1..], out var inputSource))
                 throw new ParsingException($"Joint input source does not exist: {input.source}");
 
             if (input.semantic == "JOINT")
@@ -589,9 +587,8 @@ public class ColladaImporter
                 joints = new();
                 foreach (var name in jointNames)
                 {
-                    Bone bone = null;
                     var lookupName = name.Replace("_x0020_", " ");
-                    if (!skeleton.BonesBySID.TryGetValue(lookupName, out bone))
+                    if (!skeleton.BonesBySID.TryGetValue(lookupName, out var bone))
                         throw new ParsingException($"Joint name list references nonexistent bone: {lookupName}");
 
                     joints.Add(bone);
@@ -644,8 +641,7 @@ public class ColladaImporter
                 if (input.source[0] != '#')
                     throw new ParsingException("Only ID references are supported for weight input sources");
 
-                ColladaSource inputSource = null;
-                if (!sources.TryGetValue(input.source[1..], out inputSource))
+                if (!sources.TryGetValue(input.source[1..], out var inputSource))
                     throw new ParsingException($"Weight input source does not exist: {input.source}");
 
                 if (!inputSource.FloatParams.TryGetValue("WEIGHT", out weights))
@@ -1050,9 +1046,8 @@ public class ColladaImporter
 
         foreach (var geometry in collGeometries)
         {
-            VertexDescriptor vertexFormat = null;
             // Use the override vertex format, if one was specified
-            Options.VertexFormats.TryGetValue(geometry.name, out vertexFormat);
+            Options.VertexFormats.TryGetValue(geometry.name, out var vertexFormat);
             var mesh = ImportMesh(root, geometry.name, geometry, geometry.Item as mesh, vertexFormat);
             ColladaGeometries.Add(geometry.id, mesh);
         }

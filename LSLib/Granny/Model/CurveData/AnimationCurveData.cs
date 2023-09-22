@@ -58,8 +58,7 @@ public class CurveRegistry
     {
         Init();
 
-        Type type = null;
-        if (!NameToTypeMap.TryGetValue(name, out type))
+        if (!NameToTypeMap.TryGetValue(name, out var type))
             throw new ParsingException($"Unsupported curve type: {name}");
 
         return type;
