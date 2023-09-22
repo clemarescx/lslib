@@ -153,7 +153,7 @@ public class ResourceUtils
         };
     }
 
-    private void EnumerateFiles(
+    private static void EnumerateFiles(
         List<string> paths,
         string rootPath,
         string currentPath,
@@ -163,10 +163,10 @@ public class ResourceUtils
         {
             if (IsA(filePath, format))
             {
-                var relativePath = filePath.Substring(rootPath.Length);
+                var relativePath = filePath[rootPath.Length..];
                 if (relativePath[0] == '/' || relativePath[0] == '\\')
                 {
-                    relativePath = relativePath.Substring(1);
+                    relativePath = relativePath[1..];
                 }
 
                 paths.Add(relativePath);

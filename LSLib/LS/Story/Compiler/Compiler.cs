@@ -251,11 +251,11 @@ public class Compiler
             var underscore = constant.StringValue.IndexOf('_');
             if (underscore != -1)
             {
-                var prefix = constant.StringValue.Substring(0, underscore);
+                var prefix = constant.StringValue[..underscore];
                 type = Context.LookupType(prefix);
                 if (type != null)
                 {
-                    nameWithoutType = constant.StringValue.Substring(underscore + 1);
+                    nameWithoutType = constant.StringValue[(underscore + 1)..];
                     if (constant.Type.TypeId > CompilationContext.MaxIntrinsicTypeId
                      && type.TypeId != constant.Type.TypeId)
                     {
@@ -274,7 +274,7 @@ public class Compiler
                 }
             }
 
-            var guid = constant.StringValue.Substring(constant.StringValue.Length - 36);
+            var guid = constant.StringValue[^36..];
             if (!Context.GameObjects.TryGetValue(guid, out GameObjectInfo objectInfo))
             {
                 Context.Log.Warn(constant.Location,
@@ -624,7 +624,7 @@ public class Compiler
         if (rule.Type is RuleType.Proc or RuleType.Query)
         {
             var initialName = (rule.Conditions[0] as IRFuncCondition).Func.Name;
-            if (rule.Type == RuleType.Proc && initialName.Name.Length > 4 && initialName.Name.Substring(0, 4).ToUpper() != "PROC")
+            if (rule.Type == RuleType.Proc && initialName.Name.Length > 4 && initialName.Name[..4].ToUpper() != "PROC")
             {
                 Context.Log.Warn(rule.Conditions[0].Location, 
                     DiagnosticCode.RuleNamingStyle,
@@ -632,7 +632,7 @@ public class Compiler
                     initialName);
             }
 
-            if (rule.Type == RuleType.Query && initialName.Name.Length > 3 && initialName.Name.Substring(0, 3).ToUpper() != "QRY")
+            if (rule.Type == RuleType.Query && initialName.Name.Length > 3 && initialName.Name[..3].ToUpper() != "QRY")
             {
                 Context.Log.Warn(rule.Conditions[0].Location, 
                     DiagnosticCode.RuleNamingStyle,
@@ -677,7 +677,7 @@ public class Compiler
         foreach (var signature in Context.Signatures)
         {
             if (signature.Value.Type == FunctionType.Database
-             && signature.Key.Name.Substring(0, 2).ToUpper() != "DB")
+             && signature.Key.Name[..2].ToUpper() != "DB")
             {
                 // TODO - return location of declaration
                 Context.Log.Warn(null, 

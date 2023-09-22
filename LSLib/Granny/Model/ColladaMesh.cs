@@ -267,7 +267,7 @@ public class ColladaMesh
             throw new ParsingException("Only ID references are supported for input sources: " + id);
 
         ColladaSource inputSource = null;
-        if (!Sources.TryGetValue(id.Substring(1), out inputSource))
+        if (!Sources.TryGetValue(id[1..], out inputSource))
             throw new ParsingException("Input source does not exist: " + id);
 
         return inputSource;
@@ -372,7 +372,7 @@ public class ColladaMesh
                     throw new ParsingException("Only ID references are supported for color input sources");
 
                 ColladaSource inputSource = null;
-                if (!Sources.TryGetValue(input.source.Substring(1), out inputSource))
+                if (!Sources.TryGetValue(input.source[1..], out inputSource))
                     throw new ParsingException("Color input source does not exist: " + input.source);
 
                 List<Single> r = null, g = null, b = null;
@@ -413,7 +413,7 @@ public class ColladaMesh
                     throw new ParsingException("Only ID references are supported for UV input sources");
 
                 ColladaSource inputSource = null;
-                if (!Sources.TryGetValue(input.source.Substring(1), out inputSource))
+                if (!Sources.TryGetValue(input.source[1..], out inputSource))
                     throw new ParsingException("UV input source does not exist: " + input.source);
 
                 List<Single> s = null, t = null;

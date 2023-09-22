@@ -56,7 +56,7 @@ public class ColladaAnimation
                 throw new ParsingException("Only ID references are supported for animation input sources");
 
             ColladaSource source;
-            if (!Sources.TryGetValue(input.source.Substring(1), out source))
+            if (!Sources.TryGetValue(input.source[1..], out source))
                 throw new ParsingException("Animation sampler " + input.semantic + " references nonexistent source: " + input.source);
 
             switch (input.semantic)

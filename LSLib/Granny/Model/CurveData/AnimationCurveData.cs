@@ -169,10 +169,10 @@ class AnimationCurveDataTypeSelector : VariantTypeSelector
     public Type SelectType(MemberDefinition member, StructDefinition defn, object parent)
     {
         var fieldName = defn.Members[0].Name;
-        if (fieldName.Substring(0, 16) != "CurveDataHeader_")
+        if (fieldName[..16] != "CurveDataHeader_")
             throw new ParsingException("Unrecognized curve data header type: " + fieldName);
 
-        var curveType = fieldName.Substring(16);
+        var curveType = fieldName[16..];
         return CurveRegistry.Resolve(curveType);
     }
 }

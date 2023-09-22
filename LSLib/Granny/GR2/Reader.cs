@@ -530,7 +530,7 @@ public class GR2Reader
             // Remove "The Divinity Engine" prefix from LSM fields
             if (defn.Name.StartsWith("The Divinity Engine", StringComparison.Ordinal))
             {
-                defn.Name = defn.Name.Substring(19);
+                defn.Name = defn.Name[19..];
             }
 
             defn.GrannyName = defn.Name;

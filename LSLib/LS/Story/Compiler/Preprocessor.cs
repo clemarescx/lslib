@@ -24,14 +24,14 @@ public class Preprocessor
             var next = script.IndexOf("/* [OSITOOLS_ONLY]", pos, StringComparison.Ordinal);
             if (next == -1)
             {
-                builder.Append(script.Substring(pos));
+                builder.Append(script[pos..]);
                 break;
             }
 
             var end = script.IndexOf("*/", next, StringComparison.Ordinal);
             if (end == -1)
             {
-                builder.Append(script.Substring(pos));
+                builder.Append(script[pos..]);
                 break;
             }
 
@@ -49,14 +49,14 @@ public class Preprocessor
             int next = ph1.IndexOf("// [BEGIN_NO_OSITOOLS]", pos, StringComparison.Ordinal);
             if (next == -1)
             {
-                builderPh2.Append(ph1.Substring(pos));
+                builderPh2.Append(ph1[pos..]);
                 break;
             }
 
             var end = ph1.IndexOf("// [END_NO_OSITOOLS]", next, StringComparison.Ordinal);
             if (end == -1)
             {
-                builderPh2.Append(ph1.Substring(pos));
+                builderPh2.Append(ph1[pos..]);
                 break;
             }
 

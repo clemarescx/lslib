@@ -159,9 +159,9 @@ public class NodeAttribute
                 str = "0";
             }
             // Handle hexadecimal integers in XML files
-            else if (str.Length > 2 && str.Substring(0, 2) == "0x")
+            else if (str.Length > 2 && str[..2] == "0x")
             {
-                str = Convert.ToUInt64(str.Substring(2), 16).ToString();
+                str = Convert.ToUInt64(str[2..], 16).ToString();
             }
         }
 

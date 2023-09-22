@@ -68,10 +68,10 @@ public class ModPathVisitor
     {
         foreach (string filePath in Directory.GetFiles(currentPath, pattern))
         {
-            var relativePath = filePath.Substring(rootPath.Length);
+            var relativePath = filePath[rootPath.Length..];
             if (relativePath[0] == '/' || relativePath[0] == '\\')
             {
-                relativePath = relativePath.Substring(1);
+                relativePath = relativePath[1..];
             }
 
             paths.Add(relativePath);

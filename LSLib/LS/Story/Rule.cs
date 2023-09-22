@@ -205,9 +205,9 @@ public class RuleNode : RelNode
             var ruleRoot = GetRoot(story);
             if (ruleRoot.Name != null &&
                 ruleRoot.Name.Length > 7 &&
-                ruleRoot.Name.Substring(ruleRoot.Name.Length - 7) == "__DEF__")
+                ruleRoot.Name[^7..] == "__DEF__")
             {
-                ruleRoot.Name = ruleRoot.Name.Substring(0, ruleRoot.Name.Length - 7);
+                ruleRoot.Name = ruleRoot.Name[..^7];
             }
         }
     }
@@ -228,7 +228,7 @@ public class RuleNode : RelNode
             var ruleRoot = GetRoot(story);
             if (ruleRoot.Name != null &&
                 (ruleRoot.Name.Length < 7 ||
-                 ruleRoot.Name.Substring(ruleRoot.Name.Length - 7) != "__DEF__"))
+                 ruleRoot.Name[^7..] != "__DEF__"))
             {
                 ruleRoot.Name += "__DEF__";
             }

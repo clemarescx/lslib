@@ -552,7 +552,7 @@ public class ColladaImporter
             throw new ParsingException("Only ID references are supported for skin geometries");
 
         Mesh mesh = null;
-        if (!ColladaGeometries.TryGetValue(skin.source1.Substring(1), out mesh))
+        if (!ColladaGeometries.TryGetValue(skin.source1[1..], out mesh))
             throw new ParsingException("Skin references nonexistent mesh: " + skin.source1);
 
         if (!mesh.VertexFormat.HasBoneWeights)
@@ -577,7 +577,7 @@ public class ColladaImporter
                 throw new ParsingException("Only ID references are supported for joint input sources");
 
             ColladaSource inputSource = null;
-            if (!sources.TryGetValue(input.source.Substring(1), out inputSource))
+            if (!sources.TryGetValue(input.source[1..], out inputSource))
                 throw new ParsingException("Joint input source does not exist: " + input.source);
 
             if (input.semantic == "JOINT")
@@ -646,7 +646,7 @@ public class ColladaImporter
                     throw new ParsingException("Only ID references are supported for weight input sources");
 
                 ColladaSource inputSource = null;
-                if (!sources.TryGetValue(input.source.Substring(1), out inputSource))
+                if (!sources.TryGetValue(input.source[1..], out inputSource))
                     throw new ParsingException("Weight input source does not exist: " + input.source);
 
                 if (!inputSource.FloatParams.TryGetValue("WEIGHT", out weights))
@@ -981,7 +981,7 @@ public class ColladaImporter
                         if (controller.Item is skin)
                         {
                             collSkins.Add(controller.Item as skin);
-                            SkinnedMeshes.Add((controller.Item as skin).source1.Substring(1));
+                            SkinnedMeshes.Add((controller.Item as skin).source1[1..]);
                         }
                         else
                         {

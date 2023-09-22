@@ -557,7 +557,7 @@ public class Matrix
         // restore the |’s with \r\n’s
         matStr = matStr.Replace("\r\n", "|");
         while (matStr.LastIndexOf("|") == (matStr.Length - 1))
-            matStr = matStr.Substring(0, matStr.Length - 1);
+            matStr = matStr[..^1];
 
         matStr = matStr.Replace("|", "\r\n");
         return matStr.Trim();
