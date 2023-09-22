@@ -753,7 +753,7 @@ public class StoryEmitter
 
     private Adapter EmitNodeAdapter(IRRule rule, IRCondition condition, Node node)
     {
-        if (node is DataNode || node is QueryNode)
+        if (node is DataNode or QueryNode)
         {
             return EmitJoinAdapter(condition as IRFuncCondition, rule);
         }
@@ -1425,11 +1425,7 @@ public class StoryEmitter
     {
         foreach (var signature in Context.Signatures)
         {
-            if (signature.Value.Type == FunctionType.SysCall
-             || signature.Value.Type == FunctionType.SysQuery
-             || signature.Value.Type == FunctionType.Call
-             || signature.Value.Type == FunctionType.Query
-             || signature.Value.Type == FunctionType.Event)
+            if (signature.Value.Type is FunctionType.SysCall or FunctionType.SysQuery or FunctionType.Call or FunctionType.Query or FunctionType.Event)
             {
                 if (!Funcs.TryGetValue(signature.Key, out Node funcNode))
                 {

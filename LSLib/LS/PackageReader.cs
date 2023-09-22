@@ -392,7 +392,7 @@ public class PackageReader : IDisposable
             // Check for v9 and v7 package headers
             mainStream.Seek(0, SeekOrigin.Begin);
             version = reader.ReadInt32();
-            if (version == 7 || version == 9)
+            if (version is 7 or 9)
             {
                 return ReadPackageV7(mainStream, reader);
             }

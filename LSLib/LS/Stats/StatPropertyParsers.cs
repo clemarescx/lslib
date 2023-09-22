@@ -28,7 +28,7 @@ public class BooleanParser : IStatValueParser
 {
     public object Parse(string value, ref bool succeeded, ref string errorText)
     {
-        if (value == "Yes" || value == "No")
+        if (value is "Yes" or "No")
         {
             succeeded = true;
             return (value == "Yes");
@@ -89,7 +89,7 @@ public class EnumParser : IStatValueParser
 
     public object Parse(string value, ref bool succeeded, ref string errorText)
     {
-        if (value == null || value == "")
+        if (value is null or "")
         {
             value = "None";
         }

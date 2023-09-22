@@ -427,7 +427,7 @@ public class VertexSerializer : NodeSerializer
                         desc.PositionType = PositionType.Float3;
                     }
                     // Game incorrectly uses UInt16 instead of BinormalInt16 sometimes
-                    else if ((member.Type == MemberType.BinormalInt16 || member.Type == MemberType.UInt16) && member.ArraySize == 4)
+                    else if (member.Type is MemberType.BinormalInt16 or MemberType.UInt16 && member.ArraySize == 4)
                     {
                         desc.PositionType = PositionType.Word4;
                     }
@@ -480,7 +480,7 @@ public class VertexSerializer : NodeSerializer
 
                 case "QTangent":
                     // Game incorrectly uses UInt16 instead of BinormalInt16 sometimes
-                    if ((member.Type == MemberType.BinormalInt16 || member.Type == MemberType.UInt16) && member.ArraySize == 4)
+                    if (member.Type is MemberType.BinormalInt16 or MemberType.UInt16 && member.ArraySize == 4)
                     {
                         desc.NormalType = NormalType.QTangent;
                         desc.TangentType = NormalType.QTangent;

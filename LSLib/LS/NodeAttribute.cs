@@ -146,16 +146,7 @@ public class NodeAttribute
 
     public bool IsNumeric()
     {
-        return this.type == DataType.DT_Byte
-            || this.type == DataType.DT_Short
-            || this.type == DataType.DT_Short
-            || this.type == DataType.DT_Int
-            || this.type == DataType.DT_UInt
-            || this.type == DataType.DT_Float
-            || this.type == DataType.DT_Double
-            || this.type == DataType.DT_ULongLong
-            || this.type == DataType.DT_Long
-            || this.type == DataType.DT_Int8;
+        return this.type is DataType.DT_Byte or DataType.DT_Short or DataType.DT_Short or DataType.DT_Int or DataType.DT_UInt or DataType.DT_Float or DataType.DT_Double or DataType.DT_ULongLong or DataType.DT_Long or DataType.DT_Int8;
     }
 
     public void FromString(string str)

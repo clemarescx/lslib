@@ -550,7 +550,7 @@ public class CompilationContext
             return false;
         }
 
-        if (type.TypeId < MaxIntrinsicTypeId || type.TypeId > 255)
+        if (type.TypeId is < MaxIntrinsicTypeId or > 255)
         {
             Log.Error(null, DiagnosticCode.TypeIdInvalid, "Type ID must be in the range 5..255");
             return false;

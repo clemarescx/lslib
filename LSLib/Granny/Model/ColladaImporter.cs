@@ -55,7 +55,7 @@ internal class ColladaSource
         {
             if (param.name == null)
                 param.name = "default";
-            if (param.type == "float" || param.type == "double")
+            if (param.type is "float" or "double")
             {
                 var items = new List<Single>((int)accessor.count);
                 var offset = (int)accessor.offset;
@@ -237,7 +237,7 @@ public class ColladaImporter
 
         foreach (var skeleton in root.Skeletons ?? Enumerable.Empty<Skeleton>())
         {
-            if (Options.ModelInfoFormat == DivinityModelInfoFormat.None || Options.ModelInfoFormat == DivinityModelInfoFormat.LSMv3)
+            if (Options.ModelInfoFormat is DivinityModelInfoFormat.None or DivinityModelInfoFormat.LSMv3)
             {
                 foreach (var bone in skeleton.Bones ?? Enumerable.Empty<Bone>())
                 {

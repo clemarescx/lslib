@@ -329,7 +329,7 @@ public class VirtualTileSet : IDisposable
                 Debug.Assert(bc.B == 0);
                 Debug.Assert(bc.C1 == 0);
                 Debug.Assert(bc.C2 == 0);
-                Debug.Assert(bc.DataType == (Byte)GTSDataType.R8G8B8A8_SRGB || bc.DataType == (Byte)GTSDataType.X8Y8Z8W8);
+                Debug.Assert(bc.DataType is (Byte)GTSDataType.R8G8B8A8_SRGB or (Byte)GTSDataType.X8Y8Z8W8);
                 Debug.Assert(bc.BCField3 == 0);
                 Debug.Assert(bc.E1 == 0);
                 Debug.Assert(bc.E3 == 0);
@@ -349,7 +349,7 @@ public class VirtualTileSet : IDisposable
                 Debug.Assert(blk.A_Unused == 0);
                 Debug.Assert(blk.Width == 4);
                 Debug.Assert(blk.Height == 1);
-                Debug.Assert(blk.DataType == GTSDataType.R8G8B8A8_SRGB || blk.DataType == GTSDataType.X8Y8Z8W8);
+                Debug.Assert(blk.DataType is GTSDataType.R8G8B8A8_SRGB or GTSDataType.X8Y8Z8W8);
                 ParameterBlocks.Add(hdr.ParameterBlockID, blk);
             }
         }

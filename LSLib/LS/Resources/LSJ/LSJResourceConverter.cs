@@ -147,11 +147,7 @@ public class LSJResourceConverter : JsonConverter
             {
                 key = reader.Value.ToString();
             }
-            else if (reader.TokenType == JsonToken.String
-                  || reader.TokenType == JsonToken.Integer
-                  || reader.TokenType == JsonToken.Float
-                  || reader.TokenType == JsonToken.Boolean
-                  || reader.TokenType == JsonToken.Null)
+            else if (reader.TokenType is JsonToken.String or JsonToken.Integer or JsonToken.Float or JsonToken.Boolean or JsonToken.Null)
             {
                 if (key == "type")
                 {
@@ -481,7 +477,7 @@ public class LSJResourceConverter : JsonConverter
             {
                 key = reader.Value.ToString();
             }
-            else if (reader.TokenType == JsonToken.String || reader.TokenType == JsonToken.Integer)
+            else if (reader.TokenType is JsonToken.String or JsonToken.Integer)
             {
                 if (key == "time")
                 {

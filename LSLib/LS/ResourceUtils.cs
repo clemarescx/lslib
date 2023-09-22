@@ -147,7 +147,7 @@ public class ResourceUtils
         {
             ResourceFormat.LSX => extension == ".lsx",
             ResourceFormat.LSB => extension == ".lsb",
-            ResourceFormat.LSF => extension == ".lsf" || extension == ".lsbc" || extension == ".lsfx",
+            ResourceFormat.LSF => extension is ".lsf" or ".lsbc" or ".lsfx",
             ResourceFormat.LSJ => extension == ".lsj",
             _                  => false
         };

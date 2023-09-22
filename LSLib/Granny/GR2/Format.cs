@@ -280,7 +280,7 @@ public class Magic
     /// </summary>
     public bool Is32Bit
     {
-        get { return format == Format.LittleEndian32 || format == Format.BigEndian32; }
+        get { return format is Format.LittleEndian32 or Format.BigEndian32; }
     }
 
     /// <summary>
@@ -288,7 +288,7 @@ public class Magic
     /// </summary>
     public bool Is64Bit
     {
-        get { return format == Format.LittleEndian64 || format == Format.BigEndian64; }
+        get { return format is Format.LittleEndian64 or Format.BigEndian64; }
     }
 
     /// <summary>
@@ -296,7 +296,7 @@ public class Magic
     /// </summary>
     public bool IsLittleEndian
     {
-        get { return format == Format.LittleEndian32 || format == Format.LittleEndian64; }
+        get { return format is Format.LittleEndian32 or Format.LittleEndian64; }
     }
 
     /// <summary>
@@ -1036,11 +1036,11 @@ public class MemberDefinition
 
         if (member.SerializationKind != SerializationKind.None && member.WriteDefinition == null && writer != null)
         {
-            if (member.Type == MemberType.Inline || member.Type == MemberType.Reference)
+            if (member.Type is MemberType.Inline or MemberType.Reference)
             {
                 member.WriteDefinition = writer.LookupStructDefinition(type, null);
             }
-            else if (member.Type == MemberType.ReferenceToArray || member.Type == MemberType.ArrayOfReferences)
+            else if (member.Type is MemberType.ReferenceToArray or MemberType.ArrayOfReferences)
             {
                 member.WriteDefinition = writer.LookupStructDefinition(type.GetGenericArguments().Single(), null);
             }

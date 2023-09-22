@@ -312,13 +312,13 @@ public class ColladaMesh
                 Normals = ColladaHelpers.SourceToPositions(normalsSource);
                 NormalsInputIndex = (int)input.offset;
             }
-            else if (input.semantic == "TANGENT" || input.semantic == "TEXTANGENT")
+            else if (input.semantic is "TANGENT" or "TEXTANGENT")
             {
                 var tangentsSource = FindSource(input.source);
                 Tangents = ColladaHelpers.SourceToPositions(tangentsSource);
                 TangentsInputIndex = (int)input.offset;
             }
-            else if (input.semantic == "BINORMAL" || input.semantic == "TEXBINORMAL")
+            else if (input.semantic is "BINORMAL" or "TEXBINORMAL")
             {
                 var binormalsSource = FindSource(input.source);
                 Binormals = ColladaHelpers.SourceToPositions(binormalsSource);
@@ -625,9 +625,7 @@ public class ColladaMesh
         }
 
         // Use optimized tangent, texture map and color map format when exporting for D:OS 2
-        if ((Options.ModelInfoFormat == DivinityModelInfoFormat.LSMv0
-          || Options.ModelInfoFormat == DivinityModelInfoFormat.LSMv1
-          || Options.ModelInfoFormat == DivinityModelInfoFormat.LSMv3)
+        if (Options.ModelInfoFormat is DivinityModelInfoFormat.LSMv0 or DivinityModelInfoFormat.LSMv1 or DivinityModelInfoFormat.LSMv3
          && Options.EnableQTangents
          && HasNormals 
          && HasTangents)

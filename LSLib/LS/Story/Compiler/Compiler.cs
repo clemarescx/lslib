@@ -30,7 +30,7 @@ public class Compiler
         {
             // BG3 allows promoting integer constants to float
             if (Game == TargetGame.BG3 && value is IRConstant 
-                                       && (param.Type.IntrinsicTypeId == Value.Type.Float || param.Type.IntrinsicTypeId == Value.Type.Integer64)
+                                       && param.Type.IntrinsicTypeId is Value.Type.Float or Value.Type.Integer64
                                        && value.Type.IntrinsicTypeId == Value.Type.Integer)
             {
                 return;
@@ -608,12 +608,8 @@ public class Compiler
         }
 
         // Using greater than/less than operators for strings and GUIDs is probably a mistake.
-        if ((lhs.IntrinsicTypeId == Value.Type.String
-          || lhs.IntrinsicTypeId == Value.Type.GuidString)
-         && (condition.Op == RelOpType.Greater
-          || condition.Op == RelOpType.GreaterOrEqual
-          || condition.Op == RelOpType.Less
-          || condition.Op == RelOpType.LessOrEqual))
+        if (lhs.IntrinsicTypeId is Value.Type.String or Value.Type.GuidString
+         && condition.Op is RelOpType.Greater or RelOpType.GreaterOrEqual or RelOpType.Less or RelOpType.LessOrEqual)
         {
             Context.Log.Warn(condition.Location, 
                 DiagnosticCode.StringLtGtComparison,
@@ -625,7 +621,7 @@ public class Compiler
 
     private void VerifyIRRule(IRRule rule)
     {
-        if (rule.Type == RuleType.Proc || rule.Type == RuleType.Query)
+        if (rule.Type is RuleType.Proc or RuleType.Query)
         {
             var initialName = (rule.Conditions[0] as IRFuncCondition).Func.Name;
             if (rule.Type == RuleType.Proc && initialName.Name.Length > 4 && initialName.Name.Substring(0, 4).ToUpper() != "PROC")
@@ -706,7 +702,7 @@ public class Compiler
                 if (!signature.Value.Read)
                 {
                     // Unused databases are considered an error in DOS:2 DE.
-                    if (Game == TargetGame.DOS2DE || Game == TargetGame.BG3)
+                    if (Game is TargetGame.DOS2DE or TargetGame.BG3)
                     {
                         // TODO - return location of declaration
                         Context.Log.Error(null,
@@ -728,7 +724,7 @@ public class Compiler
                  && signature.Value.Read)
                 {
                     // Unused databases are considered an error in DOS:2 DE.
-                    if (Game == TargetGame.DOS2DE || Game == TargetGame.BG3)
+                    if (Game is TargetGame.DOS2DE or TargetGame.BG3)
                     {
                         Context.Log.Error(null,
                             DiagnosticCode.UnusedDatabaseError,
@@ -1241,8 +1237,7 @@ public class Compiler
         Context.RegisterGoal(goal);
         foreach (var rule in goal.KBSection)
         {
-            if (rule.Type == RuleType.Query
-             || rule.Type == RuleType.Proc)
+            if (rule.Type is RuleType.Query or RuleType.Proc)
             {
                 AddQueryOrProc(rule);
             }

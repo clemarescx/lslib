@@ -54,7 +54,7 @@ public class ColladaMeshExporter
                 offset = LastInputOffset++
             };
 
-            if (localInputSemantic == "TEXCOORD" || localInputSemantic == "COLOR")
+            if (localInputSemantic is "TEXCOORD" or "COLOR")
             {
                 vertexInputOff.set = setIndex;
             }

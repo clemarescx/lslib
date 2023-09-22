@@ -152,7 +152,7 @@ public class GR2Reader
             header.reserved3 = InputReader.ReadUInt32();
         }
 
-        if (header.version < 6 || header.version > 7)
+        if (header.version is < 6 or > 7)
             throw new ParsingException(String.Format("Unsupported GR2 version; file is version {0}, supported versions are 6 and 7", header.version));
 
         // if (header.tag != Header.Tag)
@@ -548,8 +548,7 @@ public class GR2Reader
 
         Debug.Assert(!defn.IsValid || defn.Unknown == 0);
 
-        if (defn.Type == MemberType.Inline || defn.Type == MemberType.Reference || defn.Type == MemberType.ArrayOfReferences ||
-            defn.Type == MemberType.ReferenceToArray)
+        if (defn.Type is MemberType.Inline or MemberType.Reference or MemberType.ArrayOfReferences or MemberType.ReferenceToArray)
             Debug.Assert(defn.Definition.IsValid);
 
 #if DEBUG_GR2_SERIALIZATION
@@ -784,7 +783,7 @@ public class GR2Reader
         if (node == null &&
             propertyType != null &&
             !definition.IsScalar &&
-            (kind == SerializationKind.Builtin || kind == SerializationKind.UserElement) &&
+            kind is SerializationKind.Builtin or SerializationKind.UserElement &&
             // Variant construction is a special case as we don't know the struct defn beforehand
             definition.Type != MemberType.VariantReference)
         {
@@ -798,7 +797,7 @@ public class GR2Reader
 #if DEBUG_GR2_SERIALIZATION
                     System.Console.WriteLine(String.Format(" === Inline Struct {0} === ", definition.Name));
 #endif
-                if (kind == SerializationKind.UserElement || kind == SerializationKind.UserMember)
+                if (kind is SerializationKind.UserElement or SerializationKind.UserMember)
                     node = definition.Serializer.Read(this, definition.Definition.Resolve(this), definition, 0, parent);
                 else
                     node = ReadStruct(definition.Definition.Resolve(this), definition.Type, node, parent);
@@ -819,7 +818,7 @@ public class GR2Reader
 #if DEBUG_GR2_SERIALIZATION
                             System.Console.WriteLine(String.Format(" === Struct <{0}> at {1:X8} === ", definition.Name, Stream.Position));
 #endif
-                    if (kind == SerializationKind.UserElement || kind == SerializationKind.UserMember)
+                    if (kind is SerializationKind.UserElement or SerializationKind.UserMember)
                         node = definition.Serializer.Read(this, definition.Definition.Resolve(this), definition, 0, parent);
                     else
                         node = ReadStruct(definition.Definition.Resolve(this), definition.Type, node, parent);
@@ -853,7 +852,7 @@ public class GR2Reader
 #if DEBUG_GR2_SERIALIZATION
                                 System.Console.WriteLine(String.Format(" === Variant Struct <{0}> at {1:X8} === ", definition.Name, Stream.Position));
 #endif
-                        if (kind == SerializationKind.UserElement || kind == SerializationKind.UserMember)
+                        if (kind is SerializationKind.UserElement or SerializationKind.UserMember)
                             node = definition.Serializer.Read(this, structDefn, definition, 0, parent);
                         else
                             node = ReadStruct(structRef.Resolve(this), definition.Type, node, parent);
