@@ -12,21 +12,20 @@ public static class BinUtils
 {
     public static T ReadStruct<T>(BinaryReader reader)
     {
-        T outStruct;
-        int count = Marshal.SizeOf(typeof(T));
-        byte[] readBuffer = reader.ReadBytes(count);
-        GCHandle handle = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
-        outStruct = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
+        var count = Marshal.SizeOf(typeof(T));
+        var readBuffer = reader.ReadBytes(count);
+        var handle = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
+        var outStruct = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
         handle.Free();
         return outStruct;
     }
 
     public static void ReadStructs<T>(BinaryReader reader, T[] elements)
     {
-        int elementSize = Marshal.SizeOf(typeof(T));
-        int bytes = elementSize * elements.Length;
-        byte[] readBuffer = reader.ReadBytes(bytes);
-        GCHandle handle = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
+        var elementSize = Marshal.SizeOf(typeof(T));
+        var bytes = elementSize * elements.Length;
+        var readBuffer = reader.ReadBytes(bytes);
+        var handle = GCHandle.Alloc(readBuffer, GCHandleType.Pinned);
         var addr = handle.AddrOfPinnedObject();
         for (var i = 0; i < elements.Length; i++)
         {
@@ -39,9 +38,9 @@ public static class BinUtils
 
     public static void WriteStruct<T>(BinaryWriter writer, ref T inStruct)
     {
-        int count = Marshal.SizeOf(typeof(T));
-        byte[] writeBuffer = new byte[count];
-        GCHandle handle = GCHandle.Alloc(writeBuffer, GCHandleType.Pinned);
+        var count = Marshal.SizeOf(typeof(T));
+        var writeBuffer = new byte[count];
+        var handle = GCHandle.Alloc(writeBuffer, GCHandleType.Pinned);
         Marshal.StructureToPtr(inStruct, handle.AddrOfPinnedObject(), true);
         handle.Free();
         writer.Write(writeBuffer);
@@ -49,10 +48,10 @@ public static class BinUtils
 
     public static void WriteStructs<T>(BinaryWriter writer, T[] elements)
     {
-        int elementSize = Marshal.SizeOf(typeof(T));
-        int bytes = elementSize * elements.Length;
-        byte[] writeBuffer = new byte[bytes];
-        GCHandle handle = GCHandle.Alloc(writeBuffer, GCHandleType.Pinned);
+        var elementSize = Marshal.SizeOf(typeof(T));
+        var bytes = elementSize * elements.Length;
+        var writeBuffer = new byte[bytes];
+        var handle = GCHandle.Alloc(writeBuffer, GCHandleType.Pinned);
         var addr = handle.AddrOfPinnedObject();
         for (var i = 0; i < elements.Length; i++)
         {
@@ -104,9 +103,9 @@ public static class BinUtils
             case NodeAttribute.DataType.DT_IVec3:
             case NodeAttribute.DataType.DT_IVec4:
             {
-                int columns = attr.GetColumns();
+                var columns = attr.GetColumns();
                 var vec = new int[columns];
-                for (int i = 0; i < columns; i++)
+                for (var i = 0; i < columns; i++)
                 {
                     vec[i] = reader.ReadInt32();
                 }
@@ -119,9 +118,9 @@ public static class BinUtils
             case NodeAttribute.DataType.DT_Vec3:
             case NodeAttribute.DataType.DT_Vec4:
             {
-                int columns = attr.GetColumns();
+                var columns = attr.GetColumns();
                 var vec = new float[columns];
-                for (int i = 0; i < columns; i++)
+                for (var i = 0; i < columns; i++)
                 {
                     vec[i] = reader.ReadSingle();
                 }
@@ -136,14 +135,14 @@ public static class BinUtils
             case NodeAttribute.DataType.DT_Mat4x3:
             case NodeAttribute.DataType.DT_Mat4:
             {
-                int columns = attr.GetColumns();
-                int rows = attr.GetRows();
+                var columns = attr.GetColumns();
+                var rows = attr.GetRows();
                 var mat = new Matrix(rows, columns);
                 attr.Value = mat;
 
-                for (int col = 0; col < columns; col++)
+                for (var col = 0; col < columns; col++)
                 {
-                    for (int row = 0; row < rows; row++)
+                    for (var row = 0; row < rows; row++)
                     {
                         mat[row, col] = reader.ReadSingle();
                     }
@@ -244,9 +243,9 @@ public static class BinUtils
             case NodeAttribute.DataType.DT_Mat4:
             {
                 var mat = (Matrix)attr.Value;
-                for (int col = 0; col < mat.cols; col++)
+                for (var col = 0; col < mat.cols; col++)
                 {
-                    for (int row = 0; row < mat.rows; row++)
+                    for (var row = 0; row < mat.rows; row++)
                     {
                         writer.Write((float)mat[row, col]);
                     }
@@ -285,27 +284,23 @@ public static class BinUtils
         }
     }
 
-    public static CompressionMethod CompressionFlagsToMethod(byte flags)
-    {
-        return (flags & 0x0f) switch
+    public static CompressionMethod CompressionFlagsToMethod(byte flags) =>
+        (flags & 0x0f) switch
         {
             (int)CompressionMethod.None => CompressionMethod.None,
             (int)CompressionMethod.Zlib => CompressionMethod.Zlib,
             (int)CompressionMethod.LZ4  => CompressionMethod.LZ4,
             _                           => throw new ArgumentException("Invalid compression method")
         };
-    }
 
-    public static CompressionLevel CompressionFlagsToLevel(byte flags)
-    {
-        return (flags & 0xf0) switch
+    public static CompressionLevel CompressionFlagsToLevel(byte flags) =>
+        (flags & 0xf0) switch
         {
             (int)CompressionFlags.FastCompress        => CompressionLevel.FastCompression,
             (int)CompressionFlags.DefaultCompress     => CompressionLevel.DefaultCompression,
             (int)CompressionFlags.MaxCompressionLevel => CompressionLevel.MaxCompression,
             _                                         => throw new ArgumentException("Invalid compression flags")
         };
-    }
 
     public static byte MakeCompressionFlags(CompressionMethod method, CompressionLevel level)
     {
@@ -348,8 +343,8 @@ public static class BinUtils
                 using var compressedStream = new MemoryStream(compressed);
                 using var decompressedStream = new MemoryStream();
                 using var stream = new ZLibStream(compressedStream, CompressionMode.Decompress);
-                byte[] buf = new byte[0x10000];
-                int length = 0;
+                var buf = new byte[0x10000];
+                var length = 0;
                 while ((length = stream.Read(buf, 0, buf.Length)) > 0)
                 {
                     decompressedStream.Write(buf, 0, length);
@@ -387,25 +382,21 @@ public static class BinUtils
         }
     }
 
-    public static byte[] Compress(byte[] uncompressed, byte compressionFlags)
-    {
-        return Compress(uncompressed, (CompressionMethod)(compressionFlags & 0x0F), CompressionFlagsToLevel(compressionFlags));
-    }
+    public static byte[] Compress(byte[] uncompressed, byte compressionFlags) => 
+        Compress(uncompressed, (CompressionMethod)(compressionFlags & 0x0F), CompressionFlagsToLevel(compressionFlags));
 
     public static byte[] Compress(
         byte[] uncompressed,
         CompressionMethod method,
         CompressionLevel compressionLevel,
-        bool chunked = false)
-    {
-        return method switch
+        bool chunked = false) =>
+        method switch
         {
             CompressionMethod.None => uncompressed,
             CompressionMethod.Zlib => CompressZlib(uncompressed, compressionLevel),
             CompressionMethod.LZ4  => CompressLZ4(uncompressed, compressionLevel, chunked),
             _                      => throw new ArgumentException("Invalid compression method specified")
         };
-    }
 
     public static byte[] CompressZlib(byte[] uncompressed, CompressionLevel compressionLevel)
     {
@@ -430,13 +421,12 @@ public static class BinUtils
         {
             return Native.LZ4FrameCompressor.Compress(uncompressed);
         }
-        else if (compressionLevel == CompressionLevel.FastCompression)
+
+        if (compressionLevel == CompressionLevel.FastCompression)
         {
             return LZ4Codec.Encode(uncompressed, 0, uncompressed.Length);
         }
-        else
-        {
-            return LZ4Codec.EncodeHC(uncompressed, 0, uncompressed.Length);
-        }
+
+        return LZ4Codec.EncodeHC(uncompressed, 0, uncompressed.Length);
     }
 }
