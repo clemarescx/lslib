@@ -3,11 +3,11 @@ using System.IO;
 
 namespace LSLib.LS;
 
-public class FileManager
+public static class FileManager
 {
     public static void TryToCreateDirectory(string path)
     {
-        string outputPath = path;
+        var outputPath = path;
 
         if (string.IsNullOrWhiteSpace(outputPath))
         {
@@ -39,7 +39,7 @@ public class FileManager
         {
             throw new NullReferenceException("Cannot create directory without non-null output path");
         }
-            
+
         // if the directory does not exist, create the directory
         if (!Directory.Exists(outputPath))
         {
