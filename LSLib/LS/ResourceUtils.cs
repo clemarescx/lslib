@@ -88,10 +88,8 @@ public class ResourceUtils
 
     public static Resource LoadResource(string inputPath, ResourceFormat format)
     {
-        using (var stream = File.Open(inputPath, FileMode.Open, FileAccess.Read, FileShare.Read))
-        {
-            return LoadResource(stream, format);
-        }
+        using var stream = File.Open(inputPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        return LoadResource(stream, format);
     }
 
     public static Resource LoadResource(Stream stream, ResourceFormat format)

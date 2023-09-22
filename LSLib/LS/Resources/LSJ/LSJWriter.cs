@@ -24,7 +24,7 @@ public class LSJWriter : ILSWriter
         settings.Converters.Add(new LSJResourceConverter());
         var serializer = JsonSerializer.Create(settings);
 
-        using (var streamWriter = new StreamWriter(stream))
+        using var streamWriter = new StreamWriter(stream);
         using (this.writer = new(streamWriter))
         {
             writer.IndentChar = '\t';

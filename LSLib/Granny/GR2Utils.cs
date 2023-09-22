@@ -48,14 +48,12 @@ public class GR2Utils
         {
             case ExportFormat.GR2:
             {
-                using (var fs = File.Open(inputPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                {
-                    var root = new Root();
-                    var gr2 = new GR2Reader(fs);
-                    gr2.Read(root);
-                    root.PostLoad(gr2.Tag);
-                    return root;
-                }
+                using var fs = File.Open(inputPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                var root = new Root();
+                var gr2 = new GR2Reader(fs);
+                gr2.Read(root);
+                root.PostLoad(gr2.Tag);
+                return root;
             }
 
             case ExportFormat.DAE:

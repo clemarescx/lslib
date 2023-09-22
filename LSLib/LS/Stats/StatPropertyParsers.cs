@@ -238,33 +238,31 @@ public class ExpressionParser : IStatValueParser
     public virtual object Parse(string value, ref bool succeeded, ref string errorText)
     {
         var valueBytes = Encoding.UTF8.GetBytes("__TYPE_" + ExpressionType + "__ " + value);
-        using (var buf = new MemoryStream(valueBytes))
-        {
-            List<string> errorTexts = new();
+        using var buf = new MemoryStream(valueBytes);
+        List<string> errorTexts = new();
 
-            var scanner = new StatPropertyScanner();
-            scanner.SetSource(buf);
-            var parser = new StatPropertyParser(scanner, Definitions, ParserFactory);
-            parser.OnError += (string message) => errorTexts.Add(message);
-            succeeded = parser.Parse();
-            if (!succeeded)
-            {
-                var location = scanner.LastLocation();
-                var column = location.StartColumn - 10 - ExpressionType.Length + 1;
-                errorText = $"Syntax error at or near character {column}";
-                return null;
-            }
-            else if (errorTexts.Count > 0)
-            {
-                succeeded = false;
-                errorText = String.Join("; ", errorTexts);
-                return null;
-            }
-            else
-            {
-                succeeded = true;
-                return parser.GetParsedObject();
-            }
+        var scanner = new StatPropertyScanner();
+        scanner.SetSource(buf);
+        var parser = new StatPropertyParser(scanner, Definitions, ParserFactory);
+        parser.OnError += (string message) => errorTexts.Add(message);
+        succeeded = parser.Parse();
+        if (!succeeded)
+        {
+            var location = scanner.LastLocation();
+            var column = location.StartColumn - 10 - ExpressionType.Length + 1;
+            errorText = $"Syntax error at or near character {column}";
+            return null;
+        }
+        else if (errorTexts.Count > 0)
+        {
+            succeeded = false;
+            errorText = String.Join("; ", errorTexts);
+            return null;
+        }
+        else
+        {
+            succeeded = true;
+            return parser.GetParsedObject();
         }
     }
 }

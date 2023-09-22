@@ -25,7 +25,7 @@ public class LSJReader : ILSReader
         settings.Converters.Add(new LSJResourceConverter());
         var serializer = JsonSerializer.Create(settings);
 
-        using (var streamReader = new StreamReader(stream))
+        using var streamReader = new StreamReader(stream);
         using (this.reader = new(streamReader))
         {
             return serializer.Deserialize<Resource>(this.reader);

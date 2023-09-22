@@ -64,13 +64,11 @@ abstract public class VariableHolder<TValue>
         Remaps.Clear();
         Remaps.Capacity = remaps.Length / 2;
 
-        using (var ms = new MemoryStream(remaps))
-        using (var reader = new BinaryReader(ms))
+        using var ms = new MemoryStream(remaps);
+        using var reader = new BinaryReader(ms);
+        for (var i = 0; i < remaps.Length/2; i++)
         {
-            for (var i = 0; i < remaps.Length/2; i++)
-            {
-                Remaps.Add(reader.ReadUInt16());
-            }
+            Remaps.Add(reader.ReadUInt16());
         }
     }
 
@@ -100,13 +98,11 @@ public class IntVariableHolder : VariableHolder<Int32>
         Values.Clear();
         Values.Capacity = numVars;
 
-        using (var ms = new MemoryStream(variables))
-        using (var reader = new BinaryReader(ms))
+        using var ms = new MemoryStream(variables);
+        using var reader = new BinaryReader(ms);
+        for (var i = 0; i < numVars; i++)
         {
-            for (var i = 0; i < numVars; i++)
-            {
-                Values.Add(reader.ReadInt32());
-            }
+            Values.Add(reader.ReadInt32());
         }
     }
 }
@@ -134,13 +130,11 @@ public class Int64VariableHolder : VariableHolder<Int64>
         Values.Clear();
         Values.Capacity = numVars;
 
-        using (var ms = new MemoryStream(variables))
-        using (var reader = new BinaryReader(ms))
+        using var ms = new MemoryStream(variables);
+        using var reader = new BinaryReader(ms);
+        for (var i = 0; i < numVars; i++)
         {
-            for (var i = 0; i < numVars; i++)
-            {
-                Values.Add(reader.ReadInt64());
-            }
+            Values.Add(reader.ReadInt64());
         }
     }
 }
@@ -169,13 +163,11 @@ public class FloatVariableHolder : VariableHolder<float>
         Values.Clear();
         Values.Capacity = numVars;
 
-        using (var ms = new MemoryStream(variables))
-        using (var reader = new BinaryReader(ms))
+        using var ms = new MemoryStream(variables);
+        using var reader = new BinaryReader(ms);
+        for (var i = 0; i < numVars; i++)
         {
-            for (var i = 0; i < numVars; i++)
-            {
-                Values.Add(reader.ReadSingle());
-            }
+            Values.Add(reader.ReadSingle());
         }
     }
 }
@@ -199,21 +191,19 @@ public class StringVariableHolder : VariableHolder<string>
     {
         var variables = (byte[])variableList.Attributes["Variables"].Value;
 
-        using (var ms = new MemoryStream(variables))
-        using (var reader = new BinaryReader(ms))
+        using var ms = new MemoryStream(variables);
+        using var reader = new BinaryReader(ms);
+        var numVars = reader.ReadInt32();
+
+        Values.Clear();
+        Values.Capacity = numVars;
+
+        for (var i = 0; i < numVars; i++)
         {
-            var numVars = reader.ReadInt32();
-
-            Values.Clear();
-            Values.Capacity = numVars;
-
-            for (var i = 0; i < numVars; i++)
-            {
-                var length = reader.ReadUInt16();
-                var bytes = reader.ReadBytes(length);
-                var str = Encoding.UTF8.GetString(bytes);
-                Values.Add(str);
-            }
+            var length = reader.ReadUInt16();
+            var bytes = reader.ReadBytes(length);
+            var str = Encoding.UTF8.GetString(bytes);
+            Values.Add(str);
         }
     }
 }
@@ -242,19 +232,17 @@ public class Float3VariableHolder : VariableHolder<Vector3>
         Values.Clear();
         Values.Capacity = numVars;
 
-        using (var ms = new MemoryStream(variables))
-        using (var reader = new BinaryReader(ms))
+        using var ms = new MemoryStream(variables);
+        using var reader = new BinaryReader(ms);
+        for (var i = 0; i < numVars; i++)
         {
-            for (var i = 0; i < numVars; i++)
+            Vector3 vec = new()
             {
-                Vector3 vec = new()
-                {
-                    X = reader.ReadSingle(),
-                    Y = reader.ReadSingle(),
-                    Z = reader.ReadSingle()
-                };
-                Values.Add(vec);
-            }
+                X = reader.ReadSingle(),
+                Y = reader.ReadSingle(),
+                Z = reader.ReadSingle()
+            };
+            Values.Add(vec);
         }
     }
 }
@@ -383,15 +371,13 @@ public class VariableManager
     {
         Keys.Clear();
 
-        using (var ms = new MemoryStream(handleList))
-        using (var reader = new BinaryReader(ms))
+        using var ms = new MemoryStream(handleList);
+        using var reader = new BinaryReader(ms);
+        var numHandles = reader.ReadInt32();
+        for (var i = 0; i < numHandles; i++)
         {
-            var numHandles = reader.ReadInt32();
-            for (var i = 0; i < numHandles; i++)
-            {
-                var entry = BinUtils.ReadStruct<Key2TableEntry>(reader);
-                Keys.Add((int)entry.NameIndex, entry);
-            }
+            var entry = BinUtils.ReadStruct<Key2TableEntry>(reader);
+            Keys.Add((int)entry.NameIndex, entry);
         }
     }
 

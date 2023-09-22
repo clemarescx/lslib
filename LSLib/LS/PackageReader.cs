@@ -345,59 +345,57 @@ public class PackageReader : IDisposable
     {
         var mainStream = File.Open(_path, FileMode.Open, FileAccess.Read, FileShare.Read);
 
-        using (var reader = new BinaryReader(mainStream, new UTF8Encoding(), true))
+        using var reader = new BinaryReader(mainStream, new UTF8Encoding(), true);
+        // Check for v13 package headers
+        mainStream.Seek(-8, SeekOrigin.End);
+        Int32 headerSize = reader.ReadInt32();
+        byte[] signature = reader.ReadBytes(4);
+        if (Package.Signature.SequenceEqual(signature))
         {
-            // Check for v13 package headers
-            mainStream.Seek(-8, SeekOrigin.End);
-            Int32 headerSize = reader.ReadInt32();
-            byte[] signature = reader.ReadBytes(4);
-            if (Package.Signature.SequenceEqual(signature))
-            {
-                mainStream.Seek(-headerSize, SeekOrigin.End);
-                return ReadPackageV13(mainStream, reader);
-            }
-
-            // Check for v10 package headers
-            mainStream.Seek(0, SeekOrigin.Begin);
-            signature = reader.ReadBytes(4);
-            Int32 version;
-            if (Package.Signature.SequenceEqual(signature))
-            {
-                version = reader.ReadInt32();
-                if (version == 10)
-                {
-                    return ReadPackageV10(mainStream, reader);
-                }
-                else if (version == 15)
-                {
-                    mainStream.Seek(4, SeekOrigin.Begin);
-                    return ReadPackageV15(mainStream, reader);
-                }
-                else if (version == 16)
-                {
-                    mainStream.Seek(4, SeekOrigin.Begin);
-                    return ReadPackageV16(mainStream, reader);
-                }
-                else if (version == 18)
-                {
-                    mainStream.Seek(4, SeekOrigin.Begin);
-                    return ReadPackageV18(mainStream, reader);
-                }
-                else
-                {
-                    throw new InvalidDataException($"Package version v{version} not supported");
-                }
-            }
-
-            // Check for v9 and v7 package headers
-            mainStream.Seek(0, SeekOrigin.Begin);
-            version = reader.ReadInt32();
-            if (version is 7 or 9)
-            {
-                return ReadPackageV7(mainStream, reader);
-            }
-
-            throw new NotAPackageException("No valid signature found in package file");
+            mainStream.Seek(-headerSize, SeekOrigin.End);
+            return ReadPackageV13(mainStream, reader);
         }
+
+        // Check for v10 package headers
+        mainStream.Seek(0, SeekOrigin.Begin);
+        signature = reader.ReadBytes(4);
+        Int32 version;
+        if (Package.Signature.SequenceEqual(signature))
+        {
+            version = reader.ReadInt32();
+            if (version == 10)
+            {
+                return ReadPackageV10(mainStream, reader);
+            }
+            else if (version == 15)
+            {
+                mainStream.Seek(4, SeekOrigin.Begin);
+                return ReadPackageV15(mainStream, reader);
+            }
+            else if (version == 16)
+            {
+                mainStream.Seek(4, SeekOrigin.Begin);
+                return ReadPackageV16(mainStream, reader);
+            }
+            else if (version == 18)
+            {
+                mainStream.Seek(4, SeekOrigin.Begin);
+                return ReadPackageV18(mainStream, reader);
+            }
+            else
+            {
+                throw new InvalidDataException($"Package version v{version} not supported");
+            }
+        }
+
+        // Check for v9 and v7 package headers
+        mainStream.Seek(0, SeekOrigin.Begin);
+        version = reader.ReadInt32();
+        if (version is 7 or 9)
+        {
+            return ReadPackageV7(mainStream, reader);
+        }
+
+        throw new NotAPackageException("No valid signature found in package file");
     }
 }

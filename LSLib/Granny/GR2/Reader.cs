@@ -284,17 +284,16 @@ public class GR2Reader
             System.Console.WriteLine(String.Format(" ===== Relocations for section at {0:X8} ===== ", section.Header.offsetInFile));
 #endif
 
-        using (var relocationsReader = new BinaryReader(relocationsStream, Encoding.Default, true))
+        using var relocationsReader = new BinaryReader(relocationsStream, Encoding.Default, true);
+        for (int i = 0; i < section.Header.numRelocations; i++)
         {
-            for (int i = 0; i < section.Header.numRelocations; i++)
-            {
-                UInt32 offsetInSection = relocationsReader.ReadUInt32();
-                Debug.Assert(offsetInSection <= section.Header.uncompressedSize);
-                var reference = ReadSectionReference(relocationsReader);
+            UInt32 offsetInSection = relocationsReader.ReadUInt32();
+            Debug.Assert(offsetInSection <= section.Header.uncompressedSize);
+            var reference = ReadSectionReference(relocationsReader);
 
-                Stream.Position = section.Header.offsetInFile + offsetInSection;
-                var fixupAddress = Sections[(int)reference.Section].Header.offsetInFile + reference.Offset;
-                Stream.Write(BitConverter.GetBytes(fixupAddress), 0, 4);
+            Stream.Position = section.Header.offsetInFile + offsetInSection;
+            var fixupAddress = Sections[(int)reference.Section].Header.offsetInFile + reference.Offset;
+            Stream.Write(BitConverter.GetBytes(fixupAddress), 0, 4);
 
 #if DEBUG_GR2_SERIALIZATION
                     System.Console.WriteLine(String.Format("    LOCAL  {0:X8} --> {1}:{2:X8}", offsetInSection, (SectionType)reference.Section, reference.Offset));
@@ -302,7 +301,6 @@ public class GR2Reader
                         offsetInSection + section.Header.offsetInFile,
                         reference.Offset + Sections[(int)reference.Section].Header.offsetInFile));
 #endif
-            }
         }
     }
 
@@ -313,17 +311,14 @@ public class GR2Reader
         InputStream.Seek(section.Header.relocationsOffset, SeekOrigin.Begin);
         if (section.Header.compression == 4)
         {
-            using (var reader = new BinaryReader(InputStream, Encoding.Default, true))
-            {
-                UInt32 compressedSize = reader.ReadUInt32();
-                byte[] compressed = reader.ReadBytes((int)compressedSize);
-                var uncompressed = Granny2Compressor.Decompress4(
-                    compressed, (int)(section.Header.numRelocations * 12));
-                using (var ms = new MemoryStream(uncompressed))
-                {
-                    ReadSectionRelocationsInternal(section, ms);
-                }
-            }
+            using var reader = new BinaryReader(InputStream, Encoding.Default, true);
+            UInt32 compressedSize = reader.ReadUInt32();
+            byte[] compressed = reader.ReadBytes((int)compressedSize);
+            var uncompressed = Granny2Compressor.Decompress4(
+                compressed, (int)(section.Header.numRelocations * 12));
+
+            using var ms = new MemoryStream(uncompressed);
+            ReadSectionRelocationsInternal(section, ms);
         }
         else
         {
@@ -374,26 +369,24 @@ public class GR2Reader
             System.Console.WriteLine(String.Format(" ===== Mixed marshalling relocations for section at {0:X8} ===== ", section.Header.offsetInFile));
 #endif
 
-        using (var relocationsReader = new BinaryReader(relocationsStream, Encoding.Default, true))
+        using var relocationsReader = new BinaryReader(relocationsStream, Encoding.Default, true);
+        for (int i = 0; i < section.Header.numMixedMarshallingData; i++)
         {
-            for (int i = 0; i < section.Header.numMixedMarshallingData; i++)
+            UInt32 count = relocationsReader.ReadUInt32();
+            UInt32 offsetInSection = relocationsReader.ReadUInt32();
+            Debug.Assert(offsetInSection <= section.Header.uncompressedSize);
+            var type = ReadSectionReference(relocationsReader);
+            var typeDefn = new StructReference
             {
-                UInt32 count = relocationsReader.ReadUInt32();
-                UInt32 offsetInSection = relocationsReader.ReadUInt32();
-                Debug.Assert(offsetInSection <= section.Header.uncompressedSize);
-                var type = ReadSectionReference(relocationsReader);
-                var typeDefn = new StructReference
-                {
-                    Offset = Sections[(int)type.Section].Header.offsetInFile + type.Offset
-                };
+                Offset = Sections[(int)type.Section].Header.offsetInFile + type.Offset
+            };
 
-                Seek(section, offsetInSection);
-                MixedMarshal(count, typeDefn.Resolve(this));
+            Seek(section, offsetInSection);
+            MixedMarshal(count, typeDefn.Resolve(this));
 
 #if DEBUG_GR2_SERIALIZATION
                     System.Console.WriteLine(String.Format("    {0:X8} [{1}] --> {2}:{3:X8}", offsetInSection, count, (SectionType)type.Section, type.Offset));
 #endif
-            }
         }
     }
 
@@ -404,17 +397,14 @@ public class GR2Reader
         InputStream.Seek(section.Header.mixedMarshallingDataOffset, SeekOrigin.Begin);
         if (section.Header.compression == 4)
         {
-            using (var reader = new BinaryReader(InputStream, Encoding.Default, true))
-            {
-                UInt32 compressedSize = reader.ReadUInt32();
-                byte[] compressed = reader.ReadBytes((int)compressedSize);
-                var uncompressed = Granny2Compressor.Decompress4(
-                    compressed, (int)(section.Header.numMixedMarshallingData * 16));
-                using (var ms = new MemoryStream(uncompressed))
-                {
-                    ReadSectionMixedMarshallingRelocationsInternal(section, ms);
-                }
-            }
+            using var reader = new BinaryReader(InputStream, Encoding.Default, true);
+            UInt32 compressedSize = reader.ReadUInt32();
+            byte[] compressed = reader.ReadBytes((int)compressedSize);
+            var uncompressed = Granny2Compressor.Decompress4(
+                compressed, (int)(section.Header.numMixedMarshallingData * 16));
+
+            using var ms = new MemoryStream(uncompressed);
+            ReadSectionMixedMarshallingRelocationsInternal(section, ms);
         }
         else
         {

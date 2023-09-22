@@ -55,11 +55,9 @@ public class VirtualTileSet : IDisposable
     {
         PagePath = pagePath;
 
-        using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read))
-        using (var reader = new BinaryReader(fs))
-        {
-            LoadFromStream(fs, reader, false);
-        }
+        using var fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+        using var reader = new BinaryReader(fs);
+        LoadFromStream(fs, reader, false);
     }
 
     public VirtualTileSet(string path) : this(path, Path.GetDirectoryName(path))
@@ -68,11 +66,9 @@ public class VirtualTileSet : IDisposable
 
     public void Save(string path)
     {
-        using (var fs = new FileStream(path, FileMode.Create, FileAccess.Write))
-        using (var writer = new BinaryWriter(fs))
-        {
-            SaveToStream(fs, writer);
-        }
+        using var fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+        using var writer = new BinaryWriter(fs);
+        SaveToStream(fs, writer);
     }
 
     public void Dispose()

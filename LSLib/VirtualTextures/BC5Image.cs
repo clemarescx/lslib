@@ -77,11 +77,9 @@ public class BC5Image
             dwCaps = 0x1000
         };
 
-        using (var pagef = new FileStream(path, FileMode.Create, FileAccess.Write))
-        using (var bw = new BinaryWriter(pagef))
-        {
-            BinUtils.WriteStruct<DDSHeader>(bw, ref header);
-            bw.Write(Data, 0, Data.Length);
-        }
+        using var pagef = new FileStream(path, FileMode.Create, FileAccess.Write);
+        using var bw = new BinaryWriter(pagef);
+        BinUtils.WriteStruct<DDSHeader>(bw, ref header);
+        bw.Write(Data, 0, Data.Length);
     }
 }

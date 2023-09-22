@@ -266,105 +266,103 @@ public class StoryReader
     public Story Read(Stream stream)
     {
         var story = new Story();
-        using (var reader = new OsiReader(stream, story))
+        using var reader = new OsiReader(stream, story);
+        var header = new SaveFileHeader();
+        header.Read(reader);
+        reader.MinorVersion = header.MinorVersion;
+        reader.MajorVersion = header.MajorVersion;
+        story.MinorVersion = header.MinorVersion;
+        story.MajorVersion = header.MajorVersion;
+
+        if (reader.Ver > OsiVersion.VerLastSupported)
         {
-            var header = new SaveFileHeader();
-            header.Read(reader);
-            reader.MinorVersion = header.MinorVersion;
-            reader.MajorVersion = header.MajorVersion;
-            story.MinorVersion = header.MinorVersion;
-            story.MajorVersion = header.MajorVersion;
-
-            if (reader.Ver > OsiVersion.VerLastSupported)
-            {
-                var msg = String.Format(
-                    "Osiris version v{0}.{1} unsupported; this tool supports loading up to version 1.12.",
-                    reader.MajorVersion, reader.MinorVersion
-                );
-                throw new InvalidDataException(msg);
-            }
-
-            if (reader.Ver < OsiVersion.VerRemoveExternalStringTable)
-            {
-                reader.ShortTypeIds = false;
-            }
-            else if (reader.Ver >= OsiVersion.VerEnums)
-            {
-                reader.ShortTypeIds = true;
-            }
-
-            if (reader.Ver >= OsiVersion.VerScramble)
-                reader.Scramble = 0xAD;
-
-            story.Types = ReadTypes(reader, story);
-
-            if (reader.Ver >= OsiVersion.VerExternalStringTable && reader.Ver < OsiVersion.VerRemoveExternalStringTable)
-                story.ExternalStringTable = ReadStrings(reader);
-            else
-                story.ExternalStringTable = new();
-
-            story.Types[0] = OsirisType.MakeBuiltin(0, "UNKNOWN");
-            story.Types[1] = OsirisType.MakeBuiltin(1, "INTEGER");
-
-            if (reader.Ver >= OsiVersion.VerEnhancedTypes)
-            {
-                story.Types[2] = OsirisType.MakeBuiltin(2, "INTEGER64");
-                story.Types[3] = OsirisType.MakeBuiltin(3, "REAL");
-                story.Types[4] = OsirisType.MakeBuiltin(4, "STRING");
-                // BG3 defines GUIDSTRING in the .osi file
-                if (!story.Types.ContainsKey(5))
-                {
-                    story.Types[5] = OsirisType.MakeBuiltin(5, "GUIDSTRING");
-                }
-            }
-            else
-            {
-                story.Types[2] = OsirisType.MakeBuiltin(2, "FLOAT");
-                story.Types[3] = OsirisType.MakeBuiltin(3, "STRING");
-
-                // Populate custom type IDs for versions that had no type alias map
-                if (reader.Ver < OsiVersion.VerAddTypeMap)
-                {
-                    for (byte typeId = 4; typeId <= 17; typeId++)
-                    {
-                        story.Types[typeId] = OsirisType.MakeBuiltin(typeId, $"TYPE{typeId}");
-                        story.Types[typeId].Alias = 3;
-                        reader.TypeAliases.Add(typeId, 3);
-                    }
-                }
-            }
-
-            if (reader.Ver >= OsiVersion.VerEnums)
-            {
-                story.Enums = ReadEnums(reader);
-            }
-            else
-            {
-                story.Enums = new();
-            }
-
-            story.DivObjects = reader.ReadList<OsirisDivObject>();
-            story.Functions = reader.ReadList<Function>();
-            story.Nodes = ReadNodes(reader);
-            story.Adapters = ReadAdapters(reader);
-            story.Databases = ReadDatabases(reader);
-            story.Goals = ReadGoals(reader, story);
-            story.GlobalActions = reader.ReadList<Call>();
-            story.ShortTypeIds = (bool)reader.ShortTypeIds;
-
-            story.FunctionSignatureMap = new();
-            foreach (var func in story.Functions)
-            {
-                story.FunctionSignatureMap.Add(func.Name.Name + "/" + func.Name.Parameters.Types.Count.ToString(), func);
-            }
-
-            foreach (var node in story.Nodes)
-            {
-                node.Value.PostLoad(story);
-            }
-
-            return story;
+            var msg = String.Format(
+                "Osiris version v{0}.{1} unsupported; this tool supports loading up to version 1.12.",
+                reader.MajorVersion, reader.MinorVersion
+            );
+            throw new InvalidDataException(msg);
         }
+
+        if (reader.Ver < OsiVersion.VerRemoveExternalStringTable)
+        {
+            reader.ShortTypeIds = false;
+        }
+        else if (reader.Ver >= OsiVersion.VerEnums)
+        {
+            reader.ShortTypeIds = true;
+        }
+
+        if (reader.Ver >= OsiVersion.VerScramble)
+            reader.Scramble = 0xAD;
+
+        story.Types = ReadTypes(reader, story);
+
+        if (reader.Ver >= OsiVersion.VerExternalStringTable && reader.Ver < OsiVersion.VerRemoveExternalStringTable)
+            story.ExternalStringTable = ReadStrings(reader);
+        else
+            story.ExternalStringTable = new();
+
+        story.Types[0] = OsirisType.MakeBuiltin(0, "UNKNOWN");
+        story.Types[1] = OsirisType.MakeBuiltin(1, "INTEGER");
+
+        if (reader.Ver >= OsiVersion.VerEnhancedTypes)
+        {
+            story.Types[2] = OsirisType.MakeBuiltin(2, "INTEGER64");
+            story.Types[3] = OsirisType.MakeBuiltin(3, "REAL");
+            story.Types[4] = OsirisType.MakeBuiltin(4, "STRING");
+            // BG3 defines GUIDSTRING in the .osi file
+            if (!story.Types.ContainsKey(5))
+            {
+                story.Types[5] = OsirisType.MakeBuiltin(5, "GUIDSTRING");
+            }
+        }
+        else
+        {
+            story.Types[2] = OsirisType.MakeBuiltin(2, "FLOAT");
+            story.Types[3] = OsirisType.MakeBuiltin(3, "STRING");
+
+            // Populate custom type IDs for versions that had no type alias map
+            if (reader.Ver < OsiVersion.VerAddTypeMap)
+            {
+                for (byte typeId = 4; typeId <= 17; typeId++)
+                {
+                    story.Types[typeId] = OsirisType.MakeBuiltin(typeId, $"TYPE{typeId}");
+                    story.Types[typeId].Alias = 3;
+                    reader.TypeAliases.Add(typeId, 3);
+                }
+            }
+        }
+
+        if (reader.Ver >= OsiVersion.VerEnums)
+        {
+            story.Enums = ReadEnums(reader);
+        }
+        else
+        {
+            story.Enums = new();
+        }
+
+        story.DivObjects = reader.ReadList<OsirisDivObject>();
+        story.Functions = reader.ReadList<Function>();
+        story.Nodes = ReadNodes(reader);
+        story.Adapters = ReadAdapters(reader);
+        story.Databases = ReadDatabases(reader);
+        story.Goals = ReadGoals(reader, story);
+        story.GlobalActions = reader.ReadList<Call>();
+        story.ShortTypeIds = (bool)reader.ShortTypeIds;
+
+        story.FunctionSignatureMap = new();
+        foreach (var func in story.Functions)
+        {
+            story.FunctionSignatureMap.Add(func.Name.Name + "/" + func.Name.Parameters.Types.Count.ToString(), func);
+        }
+
+        foreach (var node in story.Nodes)
+        {
+            node.Value.PostLoad(story);
+        }
+
+        return story;
     }
 }
 

@@ -323,8 +323,8 @@ public static class BinUtils
 
             case CompressionMethod.Zlib:
             {
-                using (var compressedStream = new MemoryStream(compressed))
-                using (var decompressedStream = new MemoryStream())
+                using var compressedStream = new MemoryStream(compressed);
+                using var decompressedStream = new MemoryStream();
                 using (var stream = new ZInputStream(compressedStream))
                 {
                     byte[] buf = new byte[0x10000];
@@ -385,13 +385,11 @@ public static class BinUtils
             _                                   => System.IO.Compression.CompressionLevel.Optimal
         };
 
-        using (var outputStream = new MemoryStream())
-        using (var compressor = new ZLibStream(outputStream, level))
-        {
-            compressor.Write(uncompressed, 0, uncompressed.Length);
-            compressor.Flush();
-            return outputStream.ToArray();
-        }
+        using var outputStream = new MemoryStream();
+        using var compressor = new ZLibStream(outputStream, level);
+        compressor.Write(uncompressed, 0, uncompressed.Length);
+        compressor.Flush();
+        return outputStream.ToArray();
     }
 
     public static byte[] CompressLZ4(byte[] uncompressed, CompressionLevel compressionLevel, bool chunked = false)

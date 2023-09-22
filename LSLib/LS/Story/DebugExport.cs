@@ -18,7 +18,7 @@ public class StoryDebugExportVisitor
 
     public void Visit(Story story)
     {
-        using (var streamWriter = new StreamWriter(stream))
+        using var streamWriter = new StreamWriter(stream);
         using (this.writer = new(streamWriter))
         {
             writer.IndentChar = '\t';

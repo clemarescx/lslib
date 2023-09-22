@@ -36,10 +36,8 @@ public class SavegameHelpers : IDisposable
         Stream rsrcStream = globalsInfo.MakeStream();
         try
         {
-            using (var rsrcReader = new LSFReader(rsrcStream))
-            {
-                resource = rsrcReader.Read();
-            }
+            using var rsrcReader = new LSFReader(rsrcStream);
+            resource = rsrcReader.Read();
         }
         finally
         {
@@ -140,12 +138,10 @@ public class SavegameHelpers : IDisposable
             rewrittenPackage.Files.AddRange(files);
         }
 
-        using (var packageWriter = new PackageWriter(rewrittenPackage, path))
-        {
-            packageWriter.Version = conversionParams.PAKVersion;
-            packageWriter.Compression = CompressionMethod.Zlib;
-            packageWriter.CompressionLevel = CompressionLevel.DefaultCompression;
-            packageWriter.Write();
-        }
+        using var packageWriter = new PackageWriter(rewrittenPackage, path);
+        packageWriter.Version = conversionParams.PAKVersion;
+        packageWriter.Compression = CompressionMethod.Zlib;
+        packageWriter.CompressionLevel = CompressionLevel.DefaultCompression;
+        packageWriter.Write();
     }
 }
