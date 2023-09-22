@@ -51,7 +51,7 @@ public enum PositionType
     None,
     Float3,
     Word4
-};
+}
 
 public enum NormalType
 {
@@ -60,21 +60,21 @@ public enum NormalType
     Half4,
     Byte4,
     QTangent
-};
+}
 
 public enum ColorMapType
 {
     None,
     Float4,
     Byte4
-};
+}
 
 public enum TextureCoordinateType
 {
     None,
     Float2,
     Half2
-};
+}
 
 /// <summary>
 /// Describes the properties (Position, Normal, Tangent, ...) of the vertex format

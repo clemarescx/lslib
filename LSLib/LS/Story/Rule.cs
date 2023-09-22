@@ -9,7 +9,7 @@ public enum RuleType
     Rule,
     Proc,
     Query
-};
+}
 
 public class RuleNode : RelNode
 {

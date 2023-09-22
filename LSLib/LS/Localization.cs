@@ -262,7 +262,7 @@ public enum LocaFormat
 {
     Loca,
     Xml
-};
+}
 
 public class LocaUtils
 {

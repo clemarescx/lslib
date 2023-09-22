@@ -8,7 +8,7 @@ public enum Game
     DivinityOriginalSin2DE = 3,
     BaldursGate3 = 4,
     Unset = 5
-};
+}
 
 public static class GameEnumExtensions
 {

@@ -22,7 +22,7 @@ public enum FourCCElementType
     Int,
     String,
     Binary
-};
+}
 
 public struct FourCCElement
 {

@@ -609,7 +609,7 @@ public class WritableSection : Section
         Writer.Write(r.Section);
         Writer.Write(r.Offset);
     }
-};
+}
 
 public class RelocationArea
 {
@@ -654,7 +654,7 @@ public class RelocationArea
         Writer.Write(r.Section);
         Writer.Write(r.Offset);
     }
-};
+}
 
 public class GR2Writer
 {

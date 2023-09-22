@@ -68,7 +68,7 @@ public class NodeAttribute
         DT_TranslatedFSString = 33,
         // Last supported datatype, always keep this one at the end
         DT_Max = DT_TranslatedFSString
-    };
+    }
 
     private DataType type;
     private object value;

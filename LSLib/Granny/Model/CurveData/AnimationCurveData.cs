@@ -184,7 +184,7 @@ public abstract class AnimationCurveData
         Position,
         Rotation,
         ScaleShear
-    };
+    }
 
     [Serialization(Kind = SerializationKind.None)]
     public Animation ParentAnimation;

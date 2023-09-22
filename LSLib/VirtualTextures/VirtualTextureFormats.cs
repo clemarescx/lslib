@@ -32,7 +32,7 @@ public struct DDSHeader
     public UInt32 dwCaps3;
     public UInt32 dwCaps4;
     public UInt32 dwReserved2;
-};
+}
 
 public enum GTSDataType : uint
 {
@@ -63,7 +63,7 @@ public enum GTSDataType : uint
     R32G32B32A32_FLOAT = 24,
     R16G16B16_FLOAT = 25,
     R16G16B16A16_FLOAT = 26
-};
+}
 
 public enum GTSCodec : uint
 {
@@ -79,7 +79,7 @@ public enum GTSCodec : uint
     BC = 9,
     MultiChannel = 10,
     ASTC = 11
-};
+}
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct GTSHeader

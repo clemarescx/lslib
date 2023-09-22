@@ -112,7 +112,7 @@ class RootBoneInfo
 {
     public node Bone;
     public List<node> Parents;
-};
+}
 
 public class ColladaImporter
 {

@@ -255,7 +255,7 @@ internal enum VariableType
     String = 3,
     FixedString = 4,
     Float3 = 5
-};
+}
 
 /// <summary>
 /// Node (structure) entry in the LSF file
@@ -285,7 +285,7 @@ internal struct Key2TableEntry
     /// Type of value
     /// </summary>
     public VariableType ValueType => (VariableType)(ValueIndexAndType & 7);
-};
+}
 
 public class VariableManager
 {

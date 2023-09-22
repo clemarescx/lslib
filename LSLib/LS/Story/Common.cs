@@ -478,7 +478,7 @@ public enum EntryPoint : uint
     Left = 1,
     // This node is on the right side of the next AND/NOT AND expression
     Right = 2
-};
+}
 
 public class NodeEntryItem : OsirisSerializable
 {

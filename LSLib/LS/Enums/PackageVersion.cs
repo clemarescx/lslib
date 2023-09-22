@@ -9,4 +9,4 @@ public enum PackageVersion
     V15 = 15, // BG3 EA
     V16 = 16, // BG3 EA Patch4
     V18 = 18  // BG3 Release
-};
+}

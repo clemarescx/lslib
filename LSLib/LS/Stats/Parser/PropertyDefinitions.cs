@@ -48,7 +48,7 @@ public enum StatusBoostType
     None,
     AoE,
     Surface
-};
+}
 
 public class StatusBoost
 {
@@ -60,7 +60,7 @@ public enum ConditionOperator
 {
     And,
     Or
-};
+}
 
 public class Condition
 {

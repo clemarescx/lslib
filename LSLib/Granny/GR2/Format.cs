@@ -264,7 +264,7 @@ public class Magic
         BigEndian32,
         LittleEndian64,
         BigEndian64
-    };
+    }
 
     /// <summary>
     /// Indicates the 32-bitness of the GR2 file.
@@ -468,7 +468,7 @@ public class Header
         stream.Seek(originalPos, SeekOrigin.Begin);
         return crc;
     }
-};
+}
 
 public enum SectionType : uint
 {
@@ -479,7 +479,7 @@ public enum SectionType : uint
     CurveAndDiscardable = 4,
     FirstVertexData = 5,
     Invalid = 0xffffffff
-};
+}
 
 public class SectionHeader
 {
@@ -521,7 +521,7 @@ public class SectionHeader
     /// Number of mixed-marshalling entries for this section
     /// </summary>
     public uint numMixedMarshallingData;
-};
+}
 
 public class Section
 {
@@ -554,7 +554,7 @@ public enum MemberType : uint
     EmptyReference = 22,
     Max = EmptyReference,
     Invalid = 0xffffffff
-};
+}
 
 /// <summary>
 /// Reference to an absolute address within the GR2 file
@@ -1127,7 +1127,7 @@ public enum SerializationKind
     ///    called once for each array element.
     /// </summary>
     UserElement
-};
+}
 
 public interface NodeSerializer
 {

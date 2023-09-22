@@ -16,7 +16,7 @@ public abstract class Node : OsirisSerializable
         Rule = 7,
         InternalQuery = 8,
         UserQuery = 9
-    };
+    }
 
     public uint Index;
     public DatabaseReference DatabaseRef;

@@ -20,7 +20,7 @@ internal struct LSFMagic
     /// Version of the LSOF file; D:OS EE is version 1/2, D:OS 2 is version 3
     /// </summary>
     public UInt32 Version;
-};
+}
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct LSFHeader
@@ -29,7 +29,7 @@ internal struct LSFHeader
     /// Possibly version number? (major, minor, rev, build)
     /// </summary>
     public Int32 EngineVersion;
-};
+}
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct LSFHeaderV5
@@ -38,7 +38,7 @@ internal struct LSFHeaderV5
     /// Possibly version number? (major, minor, rev, build)
     /// </summary>
     public Int64 EngineVersion;
-};
+}
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct LSFMetadataV5
@@ -174,7 +174,7 @@ internal struct LSFNodeEntryV2
     /// Offset in hash chain
     /// </summary>
     public int NameOffset => (int)(NameHashTableIndex & 0xffff);
-};
+}
 
 /// <summary>
 /// Node (structure) entry in the LSF file
@@ -212,7 +212,7 @@ internal struct LSFNodeEntryV3
     /// Offset in hash chain
     /// </summary>
     public int NameOffset => (int)(NameHashTableIndex & 0xffff);
-};
+}
 
 /// <summary>
 /// Processed node information for a node in the LSF file
@@ -237,7 +237,7 @@ internal class LSFNodeInfo
     /// (-1: node has no attributes)
     /// </summary>
     public int FirstAttributeIndex;
-};
+}
 
 /// <summary>
 /// V2 attribute extension in the LSF file
@@ -282,7 +282,7 @@ internal struct LSFAttributeEntryV2
     /// Length of this attribute
     /// </summary>
     public uint Length => TypeAndLength >> 6;
-};
+}
 
 /// <summary>
 /// V3 attribute extension in the LSF file
@@ -332,7 +332,7 @@ internal struct LSFAttributeEntryV3
     /// Length of this attribute
     /// </summary>
     public uint Length => TypeAndLength >> 6;
-};
+}
 
 internal class LSFAttributeInfo
 {
@@ -361,4 +361,4 @@ internal class LSFAttributeInfo
     /// (-1: this is the last attribute)
     /// </summary>
     public int NextAttributeIndex;
-};
+}

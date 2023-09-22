@@ -79,7 +79,7 @@ public enum FunctionType
     UserQuery,
     // Database defined in user code
     Database
-};
+}
 
 /// <summary>
 /// Function name

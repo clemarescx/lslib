@@ -15,7 +15,7 @@ public enum DivinityModelFlag
     Rigid = 0x20,
     Spring = 0x40,
     Occluder = 0x80
-};
+}
 
 
 [Flags]
@@ -26,7 +26,7 @@ public enum DivinityClothFlag
     Cloth02 = 0x02,
     Cloth04 = 0x04,
     ClothPhysics = 0x100
-};
+}
 
 public static class DivinityModelFlagMethods
 {
@@ -93,7 +93,7 @@ public enum DivinityVertexUsage
     BoneWeights = 6,
     BoneIndices = 7,
     Color = 8
-};
+}
 
 public enum DivinityVertexAttributeFormat
 {
@@ -109,7 +109,7 @@ public enum DivinityVertexAttributeFormat
     UInt8 = 9,
     BinormalInt8 = 10,
     Int8 = 11
-};
+}
 
 public class DivinityFormatDesc
 {

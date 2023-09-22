@@ -101,7 +101,7 @@ public enum PackageFlags
     /// Archive contents should be preloaded on game startup.
     /// </summary>
     Preload = 0x08
-};
+}
 
 public class PackageMetadata
 {

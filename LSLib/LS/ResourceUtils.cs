@@ -36,12 +36,12 @@ public class ResourceConversionParameters
     /// <summary>
     /// LSF/LSB compression method
     /// </summary>
-    public readonly CompressionMethod Compression = CompressionMethod.LZ4;
+    public const CompressionMethod Compression = CompressionMethod.LZ4;
 
     /// <summary>
     /// LSF/LSB compression level (i.e. size/compression time tradeoff)
     /// </summary>
-    public readonly CompressionLevel CompressionLevel = CompressionLevel.DefaultCompression;
+    public const CompressionLevel CompressionLevel = Enums.CompressionLevel.DefaultCompression;
 
     public static ResourceConversionParameters FromGameVersion(Game game)
     {
@@ -119,8 +119,8 @@ public class ResourceUtils
             {
                 Version = conversionParams.LSF,
                 EncodeSiblingData = conversionParams.LSFEncodeSiblingData,
-                Compression = conversionParams.Compression,
-                CompressionLevel = conversionParams.CompressionLevel
+                Compression = ResourceConversionParameters.Compression,
+                CompressionLevel = ResourceConversionParameters.CompressionLevel
             },
             ResourceFormat.LSJ => new LSJWriter(file) { PrettyPrint = conversionParams.PrettyPrint },
             _                  => throw new ArgumentException("Invalid resource format")

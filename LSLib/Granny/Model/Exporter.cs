@@ -23,7 +23,7 @@ public enum ExportFormat
 {
     GR2,
     DAE
-};
+}
 
 public enum DivinityModelInfoFormat
 {
@@ -37,7 +37,7 @@ public enum DivinityModelInfoFormat
     LSMv1,
     // Use BG3 extended LSM UserMeshProperties and FormatDescs
     LSMv3
-};
+}
 
 public class ExporterOptions
 {

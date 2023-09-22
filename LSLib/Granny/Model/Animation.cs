@@ -111,7 +111,7 @@ public class Keyframe
         Rotation = transform.Rotation;
         ScaleShear = transform.ScaleShear;
     }
-};
+}
 
 public class KeyframeTrack
 {

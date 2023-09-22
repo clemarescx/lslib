@@ -11,7 +11,7 @@ public enum RelOpType : byte
     GreaterOrEqual = 3,
     Equal = 4,
     NotEqual = 5
-};
+}
 
 public class RelOpNode : RelNode
 {
