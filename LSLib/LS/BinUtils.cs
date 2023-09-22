@@ -1,9 +1,10 @@
-﻿using zlib;
-using LZ4;
+﻿using LZ4;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Runtime.InteropServices;
 using LSLib.LS.Enums;
+using CompressionLevel = LSLib.LS.Enums.CompressionLevel;
 
 namespace LSLib.LS
 {
@@ -397,27 +398,19 @@ namespace LSLib.LS
 
         public static byte[] CompressZlib(byte[] uncompressed, CompressionLevel compressionLevel)
         {
-            int level = zlib.zlibConst.Z_DEFAULT_COMPRESSION;
-            switch (compressionLevel)
+            var level = compressionLevel switch
             {
-                case CompressionLevel.FastCompression:
-                    level = zlib.zlibConst.Z_BEST_SPEED;
-                    break;
-
-                case CompressionLevel.DefaultCompression:
-                    level = zlib.zlibConst.Z_DEFAULT_COMPRESSION;
-                    break;
-
-                case CompressionLevel.MaxCompression:
-                    level = zlib.zlibConst.Z_BEST_COMPRESSION;
-                    break;
-            }
+                CompressionLevel.FastCompression    => System.IO.Compression.CompressionLevel.Fastest,
+                CompressionLevel.DefaultCompression => System.IO.Compression.CompressionLevel.Optimal,
+                CompressionLevel.MaxCompression     => System.IO.Compression.CompressionLevel.SmallestSize,
+                _                                   => System.IO.Compression.CompressionLevel.Optimal
+            };
 
             using (var outputStream = new MemoryStream())
-            using (var compressor = new ZOutputStream(outputStream, level))
+            using (var compressor = new ZLibStream(outputStream, level))
             {
                 compressor.Write(uncompressed, 0, uncompressed.Length);
-                compressor.finish();
+                compressor.Flush();
                 return outputStream.ToArray();
             }
         }

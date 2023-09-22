@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="lz4net" Version="1.0.15.93" />
-    <PackageReference Include="zlib.net" Version="1.0.4.0" />
   </ItemGroup>
   <PropertyGroup />
   <PropertyGroup>
