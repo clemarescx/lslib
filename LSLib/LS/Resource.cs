@@ -8,9 +8,7 @@ namespace LSLib.LS;
 
 public class InvalidFormatException : Exception
 {
-    public InvalidFormatException(string message)
-        : base(message)
-    { }
+    public InvalidFormatException(string message) : base(message) { }
 }
 
 public struct PackedVersion
@@ -20,43 +18,35 @@ public struct PackedVersion
     public uint Revision;
     public uint Build;
 
-    public static PackedVersion FromInt64(long packed)
-    {
-        return new()
+    public static PackedVersion FromInt64(long packed) =>
+        new()
         {
             Major = (uint)((packed >> 55) & 0x7f),
             Minor = (uint)((packed >> 47) & 0xff),
             Revision = (uint)((packed >> 31) & 0xffff),
             Build = (uint)(packed & 0x7fffffff),
         };
-    }
 
-    public static PackedVersion FromInt32(int packed)
-    {
-        return new()
+    public static PackedVersion FromInt32(int packed) =>
+        new()
         {
             Major = (uint)((packed >> 28) & 0x0f),
             Minor = (uint)((packed >> 24) & 0x0f),
             Revision = (uint)((packed >> 16) & 0xff),
             Build = (uint)(packed & 0xffff),
         };
-    }
 
-    public int ToVersion32()
-    {
-        return (int)((Major & 0x0f) << 28 |
-                       (Minor & 0x0f) << 24 |
-                       (Revision & 0xff) << 16 |
-                       (Build & 0xffff) << 0);
-    }
+    public readonly int ToVersion32() =>
+        (int)((Major & 0x0f) << 28 
+            | (Minor & 0x0f) << 24 
+            | (Revision & 0xff) << 16 
+            | (Build & 0xffff) << 0);
 
-    public long ToVersion64()
-    {
-        return ((long)Major & 0x7f) << 55 |
-               ((long)Minor & 0xff) << 47 |
-               ((long)Revision & 0xffff) << 31 |
-               ((long)Build & 0x7fffffff) << 0;
-    }
+    public readonly long ToVersion64() => 
+        ((long)Major & 0x7f) << 55 
+      | ((long)Minor & 0xff) << 47 
+      | ((long)Revision & 0xffff) << 31 
+      | ((long)Build & 0x7fffffff) << 0;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -193,22 +183,7 @@ public class Node
     public readonly Dictionary<string, NodeAttribute> Attributes = new();
     public readonly Dictionary<string, List<Node>> Children = new();
 
-    public int ChildCount =>
-        Children.Select(c => c.Value.Count).Sum();
-
-    public int TotalChildCount()
-    {
-        int count = 0;
-        foreach (var key in Children)
-        {
-            foreach (var child in key.Value)
-            {
-                count += 1 + child.TotalChildCount();
-            }
-        }
-
-        return count;
-    }
+    public int ChildCount => Children.Select(c => c.Value.Count).Sum();
 
     public void AppendChild(Node child)
     {
