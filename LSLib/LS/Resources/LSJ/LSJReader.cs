@@ -2,34 +2,33 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace LSLib.LS
+namespace LSLib.LS;
+
+public class LSJReader : IDisposable
 {
-    public class LSJReader : IDisposable
+    private Stream stream;
+    private JsonTextReader reader;
+
+    public LSJReader(Stream stream)
     {
-        private Stream stream;
-        private JsonTextReader reader;
+        this.stream = stream;
+    }
 
-        public LSJReader(Stream stream)
+    public void Dispose()
+    {
+        stream.Dispose();
+    }
+
+    public Resource Read()
+    {
+        var settings = new JsonSerializerSettings();
+        settings.Converters.Add(new LSJResourceConverter());
+        var serializer = JsonSerializer.Create(settings);
+
+        using (var streamReader = new StreamReader(stream))
+        using (this.reader = new JsonTextReader(streamReader))
         {
-            this.stream = stream;
-        }
-
-        public void Dispose()
-        {
-            stream.Dispose();
-        }
-
-        public Resource Read()
-        {
-            var settings = new JsonSerializerSettings();
-            settings.Converters.Add(new LSJResourceConverter());
-            var serializer = JsonSerializer.Create(settings);
-
-            using (var streamReader = new StreamReader(stream))
-            using (this.reader = new JsonTextReader(streamReader))
-            {
-                return serializer.Deserialize<Resource>(this.reader);
-            }
+            return serializer.Deserialize<Resource>(this.reader);
         }
     }
 }
