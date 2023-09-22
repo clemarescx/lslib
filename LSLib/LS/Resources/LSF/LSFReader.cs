@@ -9,7 +9,7 @@ using LSLib.LS.Enums;
 
 namespace LSLib.LS;
 
-public class LSFReader : ILSReader
+public sealed class LSFReader : ILSReader
 {
     /// <summary>
     /// Input stream
@@ -20,30 +20,37 @@ public class LSFReader : ILSReader
     /// Static string hash map
     /// </summary>
     private List<List<string>> Names;
+
     /// <summary>
     /// Preprocessed list of nodes (structures)
     /// </summary>
     private List<LSFNodeInfo> Nodes;
+
     /// <summary>
     /// Preprocessed list of node attributes
     /// </summary>
     private List<LSFAttributeInfo> Attributes;
+
     /// <summary>
     /// Node instances
     /// </summary>
     private List<Node> NodeInstances;
+
     /// <summary>
     /// Raw value data stream
     /// </summary>
     private Stream Values;
+
     /// <summary>
     /// Version of the file we're serializing
     /// </summary>
     private LSFVersion Version;
+
     /// <summary>
     /// Game version that generated the LSF file
     /// </summary>
     private PackedVersion GameVersion;
+
     private LSFMetadataV6 Metadata;
 
     public LSFReader(Stream stream)
@@ -83,7 +90,7 @@ public class LSFReader : ILSReader
             while (numStrings-- > 0)
             {
                 var nameLen = reader.ReadUInt16();
-                byte[] bytes = reader.ReadBytes(nameLen);
+                var bytes = reader.ReadBytes(nameLen);
                 var name = Encoding.UTF8.GetString(bytes);
                 hash.Add(name);
 #if DEBUG_LSF_SERIALIZATION
@@ -102,10 +109,10 @@ public class LSFReader : ILSReader
     {
 #if DEBUG_LSF_SERIALIZATION
             Console.WriteLine(" ----- DUMP OF NODE TABLE -----");
+            var index = 0;
 #endif
 
         using var reader = new BinaryReader(s);
-        int index = 0;
         while (s.Position < s.Length)
         {
             var resolved = new LSFNodeInfo();
@@ -136,10 +143,10 @@ public class LSFReader : ILSReader
                         index, Names[resolved.NameIndex][resolved.NameOffset], pos, resolved.ParentIndex,
                         resolved.FirstAttributeIndex
                     ));
+                    index++;
 #endif
 
             Nodes.Add(resolved);
-            index++;
         }
     }
 
@@ -156,7 +163,7 @@ public class LSFReader : ILSReader
 
         var prevAttributeRefs = new List<int>();
         uint dataOffset = 0;
-        int index = 0;
+        var index = 0;
         while (s.Position < s.Length)
         {
             var attribute = BinUtils.ReadStruct<LSFAttributeEntryV2>(reader);
@@ -264,7 +271,12 @@ public class LSFReader : ILSReader
 #endif
     }
 
-    private MemoryStream Decompress(BinaryReader reader, uint sizeOnDisk, uint uncompressedSize, string debugDumpTo, bool allowChunked)
+    private MemoryStream Decompress(
+        BinaryReader reader,
+        uint sizeOnDisk,
+        uint uncompressedSize,
+        string debugDumpTo,
+        bool allowChunked)
     {
         if (sizeOnDisk == 0 && uncompressedSize != 0) // data is not compressed
         {
@@ -277,18 +289,21 @@ public class LSFReader : ILSReader
                 }
 #endif
 
-            return new(buf);
+            return new MemoryStream(buf);
         }
 
         if (sizeOnDisk == 0 && uncompressedSize == 0) // no data
         {
-            return new();
+            return new MemoryStream();
         }
-            
-        bool chunked = Version >= LSFVersion.VerChunkedCompress && allowChunked;
-        bool isCompressed = BinUtils.CompressionFlagsToMethod(Metadata.CompressionFlags) != CompressionMethod.None;
-        uint compressedSize = isCompressed ? sizeOnDisk : uncompressedSize;
-        byte[] compressed = reader.ReadBytes((int)compressedSize);
+
+        var chunked = Version >= LSFVersion.VerChunkedCompress && allowChunked;
+        var isCompressed = BinUtils.CompressionFlagsToMethod(Metadata.CompressionFlags) != CompressionMethod.None;
+        var compressedSize = isCompressed
+            ? sizeOnDisk
+            : uncompressedSize;
+
+        var compressed = reader.ReadBytes((int)compressedSize);
         var uncompressed = BinUtils.Decompress(compressed, (int)uncompressedSize, Metadata.CompressionFlags, chunked);
 
 #if DUMP_LSF_SERIALIZATION
@@ -298,7 +313,7 @@ public class LSFReader : ILSReader
             }
 #endif
 
-        return new(uncompressed);
+        return new MemoryStream(uncompressed);
     }
 
     private void ReadHeaders(BinaryReader reader)
@@ -341,7 +356,7 @@ public class LSFReader : ILSReader
         if (Version < LSFVersion.VerBG3AdditionalBlob)
         {
             var meta = BinUtils.ReadStruct<LSFMetadataV5>(reader);
-            Metadata = new()
+            Metadata = new LSFMetadataV6
             {
                 StringsUncompressedSize = meta.StringsUncompressedSize,
                 StringsSizeOnDisk = meta.StringsSizeOnDisk,
@@ -366,28 +381,26 @@ public class LSFReader : ILSReader
         using var reader = new BinaryReader(Stream);
         ReadHeaders(reader);
 
-        Names = new();
+        Names = new List<List<string>>();
         var namesStream = Decompress(reader, Metadata.StringsSizeOnDisk, Metadata.StringsUncompressedSize, "strings.bin", false);
         using (namesStream)
         {
             ReadNames(namesStream);
         }
 
-        Nodes = new();
+        Nodes = new List<LSFNodeInfo>();
         var nodesStream = Decompress(reader, Metadata.NodesSizeOnDisk, Metadata.NodesUncompressedSize, "nodes.bin", true);
         using (nodesStream)
         {
-            var longNodes = Version >= LSFVersion.VerExtendedNodes
-                         && Metadata.HasSiblingData == 1;
+            var longNodes = Version >= LSFVersion.VerExtendedNodes && Metadata.HasSiblingData == 1;
             ReadNodes(nodesStream, longNodes);
         }
 
-        Attributes = new();
+        Attributes = new List<LSFAttributeInfo>();
         var attributesStream = Decompress(reader, Metadata.AttributesSizeOnDisk, Metadata.AttributesUncompressedSize, "attributes.bin", true);
         using (attributesStream)
         {
-            var hasSiblingData = Version >= LSFVersion.VerExtendedNodes
-                              && Metadata.HasSiblingData == 1;
+            var hasSiblingData = Version >= LSFVersion.VerExtendedNodes && Metadata.HasSiblingData == 1;
             if (hasSiblingData)
             {
                 ReadAttributesV3(attributesStream);
@@ -414,10 +427,9 @@ public class LSFReader : ILSReader
     private void ReadRegions(Resource resource)
     {
         var attrReader = new BinaryReader(Values);
-        NodeInstances = new();
-        for (int i = 0; i < Nodes.Count; i++)
+        NodeInstances = new List<Node>();
+        foreach (var defn in Nodes)
         {
-            var defn = Nodes[i];
             if (defn.ParentIndex == -1)
             {
                 var region = new Region();
@@ -445,27 +457,29 @@ public class LSFReader : ILSReader
             Console.WriteLine(String.Format("Begin node {0}", node.Name));
 #endif
 
-        if (defn.FirstAttributeIndex != -1)
+        if (defn.FirstAttributeIndex == -1)
         {
-            var attribute = Attributes[defn.FirstAttributeIndex];
-            while (true)
-            {
-                Values.Position = attribute.DataOffset;
-                var value = ReadAttribute((NodeAttribute.DataType)attribute.TypeId, attributeReader, attribute.Length);
-                node.Attributes[Names[attribute.NameIndex][attribute.NameOffset]] = value;
+            return;
+        }
+
+        var attribute = Attributes[defn.FirstAttributeIndex];
+        while (true)
+        {
+            Values.Position = attribute.DataOffset;
+            var value = ReadAttribute((NodeAttribute.DataType)attribute.TypeId, attributeReader, attribute.Length);
+            node.Attributes[Names[attribute.NameIndex][attribute.NameOffset]] = value;
 
 #if DEBUG_LSF_SERIALIZATION
                     Console.WriteLine(String.Format("    {0:X}: {1} ({2})", attribute.DataOffset, Names[attribute.NameIndex][attribute.NameOffset], value));
 #endif
 
-                if (attribute.NextAttributeIndex == -1)
-                {
-                    break;
-                }
-                else
-                {
-                    attribute = Attributes[attribute.NextAttributeIndex];
-                }
+            if (attribute.NextAttributeIndex == -1)
+            {
+                break;
+            }
+            else
+            {
+                attribute = Attributes[attribute.NextAttributeIndex];
             }
         }
     }
@@ -497,10 +511,10 @@ public class LSFReader : ILSReader
                 var attr = new NodeAttribute(type);
                 var str = new TranslatedString();
 
-                if (Version >= LSFVersion.VerBG3 || 
-                    GameVersion.Major > 4 || 
-                    GameVersion is { Major: 4, Revision: > 0 } ||
-                    (GameVersion.Major == 4 && GameVersion is { Revision: 0, Build: >= 0x1a }))
+                if (Version >= LSFVersion.VerBG3
+                 || GameVersion.Major > 4
+                 || GameVersion is { Major: 4, Revision: > 0 }
+                 || (GameVersion.Major == 4 && GameVersion is { Revision: 0, Build: >= 0x1a }))
                 {
                     str.Version = reader.ReadUInt16();
                 }
@@ -562,8 +576,8 @@ public class LSFReader : ILSReader
         str.Handle = ReadString(reader, handleLength);
 
         var arguments = reader.ReadInt32();
-        str.Arguments = new(arguments);
-        for (int i = 0; i < arguments; i++)
+        str.Arguments = new List<TranslatedFSStringArgument>(arguments);
+        for (var i = 0; i < arguments; i++)
         {
             var arg = new TranslatedFSStringArgument();
             var argKeyLength = reader.ReadInt32();
@@ -580,12 +594,12 @@ public class LSFReader : ILSReader
         return str;
     }
 
-    private string ReadString(BinaryReader reader, int length)
+    private static string ReadString(BinaryReader reader, int length)
     {
         var bytes = reader.ReadBytes(length - 1);
 
         // Remove null bytes at the end of the string
-        int lastNull = bytes.Length;
+        var lastNull = bytes.Length;
         while (lastNull > 0 && bytes[lastNull - 1] == 0)
         {
             lastNull--;
@@ -598,24 +612,5 @@ public class LSFReader : ILSReader
         }
 
         return Encoding.UTF8.GetString(bytes, 0, lastNull);
-    }
-
-    private string ReadString(BinaryReader reader)
-    {
-        List<byte> bytes = new();
-        while (true)
-        {
-            var b = reader.ReadByte();
-            if (b != 0)
-            {
-                bytes.Add(b);
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return Encoding.UTF8.GetString(bytes.ToArray());
     }
 }
