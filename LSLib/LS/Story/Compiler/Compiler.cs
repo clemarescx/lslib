@@ -7,8 +7,8 @@ namespace LSLib.LS.Story.Compiler;
 
 public class Compiler
 {
-    public CompilationContext Context = new();
-    public HashSet<FunctionNameAndArity> IgnoreUnusedDatabases = new();
+    public readonly CompilationContext Context = new();
+    public readonly HashSet<FunctionNameAndArity> IgnoreUnusedDatabases = new();
     public TargetGame Game = TargetGame.DOS2;
     public bool AllowTypeCoercion = false;
     public HashSet<string> TypeCoercionWhitelist;

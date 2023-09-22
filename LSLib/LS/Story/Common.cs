@@ -91,9 +91,9 @@ public class OsiReader : BinaryReader
     public UInt32 MajorVersion;
     // Use 16-bit instead of 32-bit type IDs, BG3 Patch8+
     public bool? ShortTypeIds = null;
-    public Dictionary<uint, uint> TypeAliases = new();
+    public readonly Dictionary<uint, uint> TypeAliases = new();
     // TODO: Make RO!
-    public Story Story;
+    public readonly Story Story;
 
     public uint Ver
     {
@@ -219,7 +219,7 @@ public class OsiWriter : BinaryWriter
     public UInt32 MajorVersion;
     // Use 16-bit instead of 32-bit type IDs, BG3 Patch8+
     public bool ShortTypeIds;
-    public Dictionary<uint, uint> TypeAliases = new();
+    public readonly Dictionary<uint, uint> TypeAliases = new();
     public Dictionary<uint, OsirisEnum> Enums = new();
 
     public uint Ver

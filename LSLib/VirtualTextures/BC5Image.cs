@@ -7,9 +7,9 @@ namespace LSLib.VirtualTextures;
 
 public class BC5Image
 {
-    public byte[] Data;
-    public int Width;
-    public int Height;
+    public readonly byte[] Data;
+    public readonly int Width;
+    public readonly int Height;
 
     public BC5Image(byte[] data, int width, int height)
     {

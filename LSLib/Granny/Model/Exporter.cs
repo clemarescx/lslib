@@ -90,16 +90,16 @@ public class ExporterOptions
     public string ConformGR2Path;
     public bool ConformSkeletons = true;
     public bool ConformSkeletonsCopy = false;
-    public bool ConformAnimations = true;
-    public bool ConformMeshBoneBindings = true;
-    public bool ConformModels = true;
-    public Dictionary<string, VertexDescriptor> VertexFormats = new();
+    public readonly bool ConformAnimations = true;
+    public readonly bool ConformMeshBoneBindings = true;
+    public readonly bool ConformModels = true;
+    public readonly Dictionary<string, VertexDescriptor> VertexFormats = new();
     // Extended model info format to use when exporting to D:OS
     public DivinityModelInfoFormat ModelInfoFormat = DivinityModelInfoFormat.None;
     // Model flags to use when exporting
     public DivinityModelFlag ModelType = 0;
     // Remove unused metadata from the GR2 file
-    public bool StripMetadata = true;
+    public readonly bool StripMetadata = true;
     // Flip mesh on X axis
     public bool FlipMesh = false;
     // Flip skeleton on X axis
@@ -110,16 +110,16 @@ public class ExporterOptions
     public bool IgnoreUVNaN = false;
     // Remove animation keys that are a linear interpolation of the preceding and following keys
     // Disabled by default, as D:OS doesn't support sparse knot values in anim curves.
-    public bool RemoveTrivialAnimationKeys = false;
+    public readonly bool RemoveTrivialAnimationKeys = false;
     // Recalculate mesh bone binding OBBs
-    public bool RecalculateOBBs = false;
+    public readonly bool RecalculateOBBs = false;
     // Allow encoding tangents/binormals as QTangents
     // See: Spherical Skinning with Dual-Quaternions and QTangents, Crytek R&D
     public bool EnableQTangents = true;
 
-    public List<string> DisabledAnimations = new();
-    public List<string> DisabledModels = new();
-    public List<string> DisabledSkeletons = new();
+    public readonly List<string> DisabledAnimations = new();
+    public readonly List<string> DisabledModels = new();
+    public readonly List<string> DisabledSkeletons = new();
 
     public void LoadGameSettings(Game game)
     {

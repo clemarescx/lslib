@@ -14,7 +14,7 @@ namespace LSLib.LS.Story.Compiler;
 /// </summary>
 public abstract class IRReference<NameType, ReferencedType>
 {
-    public NameType Name;
+    public readonly NameType Name;
     protected CompilationContext Context;
 
     public bool IsNull

@@ -11,9 +11,9 @@ namespace LSLib.Granny.Model;
 internal class ColladaSource
 {
     public String id;
-    public Dictionary<String, List<Single>> FloatParams = new();
-    public Dictionary<String, List<Matrix4>> MatrixParams = new();
-    public Dictionary<String, List<String>> NameParams = new();
+    public readonly Dictionary<String, List<Single>> FloatParams = new();
+    public readonly Dictionary<String, List<Matrix4>> MatrixParams = new();
+    public readonly Dictionary<String, List<String>> NameParams = new();
 
     public static ColladaSource FromCollada(source src)
     {

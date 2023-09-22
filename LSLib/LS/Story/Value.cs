@@ -452,8 +452,8 @@ public class Variable : TypedValue
 
 public class Tuple : OsirisSerializable
 {
-    public List<Value> Physical = new();
-    public Dictionary<int, Value> Logical = new();
+    public readonly List<Value> Physical = new();
+    public readonly Dictionary<int, Value> Logical = new();
 
     public void Read(OsiReader reader)
     {

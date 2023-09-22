@@ -21,7 +21,7 @@ public class ResourceConversionParameters
     /// <summary>
     /// Store sibling/neighbour node data in LSF files (usually done by savegames only)
     /// </summary>
-    public bool LSFEncodeSiblingData = false;
+    public readonly bool LSFEncodeSiblingData = false;
 
     /// <summary>
     /// Format of generated LSX files
@@ -31,17 +31,17 @@ public class ResourceConversionParameters
     /// <summary>
     /// Pretty-print (format) LSX/LSJ files
     /// </summary>
-    public bool PrettyPrint = true;
+    public readonly bool PrettyPrint = true;
 
     /// <summary>
     /// LSF/LSB compression method
     /// </summary>
-    public CompressionMethod Compression = CompressionMethod.LZ4;
+    public readonly CompressionMethod Compression = CompressionMethod.LZ4;
 
     /// <summary>
     /// LSF/LSB compression level (i.e. size/compression time tradeoff)
     /// </summary>
-    public CompressionLevel CompressionLevel = CompressionLevel.DefaultCompression;
+    public readonly CompressionLevel CompressionLevel = CompressionLevel.DefaultCompression;
 
     public static ResourceConversionParameters FromGameVersion(Game game)
     {

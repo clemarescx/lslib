@@ -11,7 +11,7 @@ namespace LSLib.Granny.GR2;
 
 public class GrannyString
 {
-    public String String;
+    public readonly String String;
 
     public GrannyString()
     {

@@ -76,7 +76,7 @@ public struct LSBHeader
     /// <summary>
     /// LSB file signature since BG3
     /// </summary>
-    public static byte[] SignatureBG3 = new byte[] { 0x4C, 0x53, 0x46, 0x4D };
+    public static readonly byte[] SignatureBG3 = new byte[] { 0x4C, 0x53, 0x46, 0x4D };
 
     /// <summary>
     /// LSB signature up to FW3 (DOS2 DE)
@@ -92,7 +92,7 @@ public struct LSBHeader
 
 public static class AttributeTypeMaps
 {
-    public static Dictionary<string, NodeAttribute.DataType> TypeToId = new()
+    public static readonly Dictionary<string, NodeAttribute.DataType> TypeToId = new()
     {
         { "None", NodeAttribute.DataType.DT_None },
         { "uint8", NodeAttribute.DataType.DT_Byte },
@@ -130,7 +130,7 @@ public static class AttributeTypeMaps
         { "TranslatedFSString", NodeAttribute.DataType.DT_TranslatedFSString },
     };
 
-    public static Dictionary<NodeAttribute.DataType, string> IdToType = new()
+    public static readonly Dictionary<NodeAttribute.DataType, string> IdToType = new()
     {
         { NodeAttribute.DataType.DT_None, "None" },
         { NodeAttribute.DataType.DT_Byte, "uint8" },
@@ -172,7 +172,7 @@ public static class AttributeTypeMaps
 public class Resource
 {
     public LSMetadata Metadata;
-    public Dictionary<string, Region> Regions = new();
+    public readonly Dictionary<string, Region> Regions = new();
 
     public Resource()
     {
@@ -189,8 +189,8 @@ public class Node
 {
     public string Name;
     public Node Parent;
-    public Dictionary<string, NodeAttribute> Attributes = new();
-    public Dictionary<string, List<Node>> Children = new();
+    public readonly Dictionary<string, NodeAttribute> Attributes = new();
+    public readonly Dictionary<string, List<Node>> Children = new();
 
     public int ChildCount
     {

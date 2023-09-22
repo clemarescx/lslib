@@ -36,7 +36,7 @@ public struct FourCCElement
 
 public class VirtualTileSet : IDisposable
 {
-    public String PagePath;
+    public readonly String PagePath;
     public GTSHeader Header;
     public GTSTileSetLayer[] TileSetLayers;
     public GTSTileSetLevel[] TileSetLevels;

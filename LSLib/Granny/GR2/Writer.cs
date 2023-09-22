@@ -17,21 +17,21 @@ public class MixedMarshallingData
 
 public class WritableSection : Section
 {
-    public SectionType Type;
-    public MemoryStream MainStream;
-    public MemoryStream DataStream;
+    public readonly SectionType Type;
+    public readonly MemoryStream MainStream;
+    public readonly MemoryStream DataStream;
 
-    public BinaryWriter MainWriter;
-    public BinaryWriter DataWriter;
+    public readonly BinaryWriter MainWriter;
+    public readonly BinaryWriter DataWriter;
 
     public BinaryWriter Writer;
-    public GR2Writer GR2;
+    public readonly GR2Writer GR2;
 
-    public Dictionary<UInt32, object> Fixups = new();
+    public readonly Dictionary<UInt32, object> Fixups = new();
     // Fixups for the data area that we'll need to update after serialization is finished
-    public Dictionary<UInt32, object> DataFixups = new();
+    public readonly Dictionary<UInt32, object> DataFixups = new();
 
-    public List<MixedMarshallingData> MixedMarshalling = new();
+    public readonly List<MixedMarshallingData> MixedMarshalling = new();
 
     public WritableSection(SectionType type, GR2Writer writer)
     {
@@ -613,9 +613,9 @@ public class WritableSection : Section
 
 public class RelocationArea
 {
-    public MemoryStream Stream;
-    public BinaryWriter Writer;
-    public GR2Writer GR2;
+    public readonly MemoryStream Stream;
+    public readonly BinaryWriter Writer;
+    public readonly GR2Writer GR2;
 
     public RelocationArea(GR2Writer writer)
     {
@@ -682,22 +682,22 @@ public class GR2Writer
         public String str;
     }
 
-    internal MemoryStream Stream;
+    internal readonly MemoryStream Stream;
     internal BinaryWriter Writer;
     internal Magic Magic;
     internal Header Header;
     internal WritableSection CurrentSection;
-    internal List<WritableSection> Sections = new();
-    internal Dictionary<Type, StructDefinition> Types = new();
+    internal readonly List<WritableSection> Sections = new();
+    internal readonly Dictionary<Type, StructDefinition> Types = new();
     internal RelocationArea Relocations;
 
     private List<QueuedSerialization> StructWrites = new();
     private List<QueuedArraySerialization> ArrayWrites = new();
     private List<QueuedStringSerialization> StringWrites = new();
 
-    internal Dictionary<object, SectionReference> ObjectOffsets = new();
-    internal Dictionary<object, SectionReference> DataObjectOffsets = new();
-    internal HashSet<string> Strings = new();
+    internal readonly Dictionary<object, SectionReference> ObjectOffsets = new();
+    internal readonly Dictionary<object, SectionReference> DataObjectOffsets = new();
+    internal readonly HashSet<string> Strings = new();
 
     // Version tag that will be written to the GR2 file
     public UInt32 VersionTag = Header.DefaultTag;

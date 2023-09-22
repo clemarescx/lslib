@@ -69,9 +69,9 @@ public class StatLoadingError
 public class StatLoadingContext
 {
     public StatDefinitionRepository Definitions;
-    public List<StatLoadingError> Errors = new();
-    public Dictionary<string, Dictionary<string, StatDeclaration>> DeclarationsByType = new();
-    public Dictionary<string, Dictionary<string, StatDeclaration>> ResolvedDeclarationsByType = new();
+    public readonly List<StatLoadingError> Errors = new();
+    public readonly Dictionary<string, Dictionary<string, StatDeclaration>> DeclarationsByType = new();
+    public readonly Dictionary<string, Dictionary<string, StatDeclaration>> ResolvedDeclarationsByType = new();
 
     public void LogError(string code, string message, string path = null, int line = 0, string statObjectName = null)
     {
@@ -89,7 +89,7 @@ public class StatLoadingContext
 class StatBaseClassResolver
 {
     private readonly StatLoadingContext Context;
-    public bool AllowMappingErrors = false;
+    public readonly bool AllowMappingErrors = false;
 
     private class BaseClassMapping
     {

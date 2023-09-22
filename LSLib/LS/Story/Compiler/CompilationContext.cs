@@ -362,12 +362,12 @@ public class Diagnostic
 
 public class CompilationLog
 {
-    public List<Diagnostic> Log = new();
+    public readonly List<Diagnostic> Log = new();
     /// <summary>
     /// Controls whether specific warnings are enabled or disabled.
     /// All are enabled by default.
     /// </summary>
-    public Dictionary<string, bool> WarningSwitches = new();
+    public readonly Dictionary<string, bool> WarningSwitches = new();
 
     public CompilationLog()
     {
@@ -463,13 +463,13 @@ public class CompilationContext
 {
     public const uint MaxIntrinsicTypeId = 5;
 
-    public Dictionary<uint, ValueType> TypesById = new();
-    public Dictionary<String, ValueType> TypesByName = new();
-    public Dictionary<String, IRGoal> GoalsByName = new();
-    public Dictionary<FunctionNameAndArity, FunctionSignature> Signatures = new();
-    public Dictionary<FunctionNameAndArity, object> Functions = new();
-    public Dictionary<String, GameObjectInfo> GameObjects = new();
-    public CompilationLog Log = new();
+    public readonly Dictionary<uint, ValueType> TypesById = new();
+    public readonly Dictionary<String, ValueType> TypesByName = new();
+    public readonly Dictionary<String, IRGoal> GoalsByName = new();
+    public readonly Dictionary<FunctionNameAndArity, FunctionSignature> Signatures = new();
+    public readonly Dictionary<FunctionNameAndArity, object> Functions = new();
+    public readonly Dictionary<String, GameObjectInfo> GameObjects = new();
+    public readonly CompilationLog Log = new();
 
     public CompilationContext()
     {

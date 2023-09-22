@@ -41,7 +41,7 @@ public class OsirisVariableHelper
 
 abstract public class VariableHolder<TValue>
 {
-    protected List<TValue> Values = new();
+    protected readonly List<TValue> Values = new();
     private List<UInt16> Remaps = new();
         
     public TValue GetRaw(int index)

@@ -9,7 +9,7 @@ internal struct LSFMagic
     /// <summary>
     /// LSOF file signature
     /// </summary>
-    public static byte[] Signature = new byte[] { 0x4C, 0x53, 0x4F, 0x46 };
+    public static readonly byte[] Signature = new byte[] { 0x4C, 0x53, 0x4F, 0x46 };
 
     /// <summary>
     /// LSOF file signature; should be the same as LSFHeader.Signature

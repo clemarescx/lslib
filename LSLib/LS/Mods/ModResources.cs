@@ -11,10 +11,10 @@ public class ModInfo
 {
     public string Name;
     public AbstractFileInfo Meta;
-    public Dictionary<string, AbstractFileInfo> Scripts = new();
-    public Dictionary<string, AbstractFileInfo> Stats = new();
-    public Dictionary<string, AbstractFileInfo> Globals = new();
-    public Dictionary<string, AbstractFileInfo> LevelObjects = new();
+    public readonly Dictionary<string, AbstractFileInfo> Scripts = new();
+    public readonly Dictionary<string, AbstractFileInfo> Stats = new();
+    public readonly Dictionary<string, AbstractFileInfo> Globals = new();
+    public readonly Dictionary<string, AbstractFileInfo> LevelObjects = new();
     public AbstractFileInfo OrphanQueryIgnoreList;
     public AbstractFileInfo StoryHeaderFile;
     public AbstractFileInfo TypeCoercionWhitelistFile;
@@ -27,8 +27,8 @@ public class ModInfo
 
 public class ModResources : IDisposable
 {
-    public Dictionary<string, ModInfo> Mods = new();
-    public List<PackageReader> LoadedPackages = new();
+    public readonly Dictionary<string, ModInfo> Mods = new();
+    public readonly List<PackageReader> LoadedPackages = new();
 
     public void Dispose()
     {

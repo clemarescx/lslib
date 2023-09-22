@@ -15,7 +15,7 @@ namespace LSLib.LS;
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct LocaHeader
 {
-    public static UInt32 DefaultSignature = 0x41434f4c; // 'LOCA'
+    public static readonly UInt32 DefaultSignature = 0x41434f4c; // 'LOCA'
 
     public UInt32 Signature;
     public UInt32 NumEntries;

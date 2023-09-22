@@ -20,14 +20,14 @@ public class ParsingException : Exception
 
 public class GR2Reader
 {
-    internal Stream InputStream;
+    internal readonly Stream InputStream;
     internal BinaryReader InputReader;
     internal Stream Stream;
     internal BinaryReader Reader;
     internal Magic Magic;
     internal Header Header;
-    internal List<Section> Sections = new();
-    internal Dictionary<StructReference, StructDefinition> Types = new();
+    internal readonly List<Section> Sections = new();
+    internal readonly Dictionary<StructReference, StructDefinition> Types = new();
     private Dictionary<UInt32, object> CachedStructs = new();
 #if DEBUG_GR2_SERIALIZATION
         private HashSet<StructReference> DebugPendingResolve = new HashSet<StructReference>();

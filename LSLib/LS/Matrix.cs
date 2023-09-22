@@ -40,9 +40,9 @@ namespace LSLib.LS;
 
 public class Matrix
 {
-    public int rows;
-    public int cols;
-    public double[,] mat;
+    public readonly int rows;
+    public readonly int cols;
+    public readonly double[,] mat;
 
     public Matrix L;
     public Matrix U;

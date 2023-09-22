@@ -597,7 +597,7 @@ public class Package
 {
     public const PackageVersion CurrentVersion = PackageVersion.V18;
 
-    public static byte[] Signature =
+    public static readonly byte[] Signature =
     {
         0x4C,
         0x53,
@@ -605,8 +605,8 @@ public class Package
         0x4B
     };
 
-    public PackageMetadata Metadata = new();
-    public List<AbstractFileInfo> Files = new();
+    public readonly PackageMetadata Metadata = new();
+    public readonly List<AbstractFileInfo> Files = new();
     public PackageVersion Version;
 
     public static string MakePartFilename(string path, int part)

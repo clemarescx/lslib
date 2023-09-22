@@ -11,8 +11,8 @@ namespace LSLib.Granny.Model;
 public class Deduplicator<T>
 {
     private IEqualityComparer<T> Comparer;
-    public Dictionary<int, int> DeduplicationMap = new();
-    public List<T> Uniques = new();
+    public readonly Dictionary<int, int> DeduplicationMap = new();
+    public readonly List<T> Uniques = new();
 
     public Deduplicator(IEqualityComparer<T> comparer)
     {
@@ -84,10 +84,10 @@ public struct SkinnedVertex : IEquatable<SkinnedVertex>
     
 public class VertexDeduplicator
 {
-    public Deduplicator<SkinnedVertex> Vertices = new(new GenericEqualityComparer<SkinnedVertex>());
-    public Deduplicator<Matrix3> Normals = new(new GenericEqualityComparer<Matrix3>());
-    public List<Deduplicator<Vector2>> UVs = new();
-    public List<Deduplicator<Vector4>> Colors = new();
+    public readonly Deduplicator<SkinnedVertex> Vertices = new(new GenericEqualityComparer<SkinnedVertex>());
+    public readonly Deduplicator<Matrix3> Normals = new(new GenericEqualityComparer<Matrix3>());
+    public readonly List<Deduplicator<Vector2>> UVs = new();
+    public readonly List<Deduplicator<Vector4>> Colors = new();
 
     public void MakeIdentityMapping(List<Vertex> vertices)
     {
@@ -199,7 +199,7 @@ public class VertexData
     public VertexDeduplicator Deduplicator;
 
     [Serialization(Kind = SerializationKind.None)]
-    public SectionType SerializationSection = SectionType.Invalid;
+    public readonly SectionType SerializationSection = SectionType.Invalid;
 
     public void PostLoad()
     {
@@ -463,7 +463,7 @@ public class TriTopology
     public List<TriAnnotationSet> TriAnnotationSets;
 
     [Serialization(Kind = SerializationKind.None)]
-    public SectionType SerializationSection = SectionType.Invalid;
+    public readonly SectionType SerializationSection = SectionType.Invalid;
 
     public void ChangeWindingOrder()
     {

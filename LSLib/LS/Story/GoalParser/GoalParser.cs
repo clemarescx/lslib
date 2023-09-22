@@ -59,7 +59,7 @@ using ASTActionList = List<ASTAction>;
 
 internal class ParserConstants
 {
-    public static CultureInfo ParserCulture = new("en-US");
+    public static readonly CultureInfo ParserCulture = new("en-US");
 }
 
 public class CodeLocation : IMerge<CodeLocation>
