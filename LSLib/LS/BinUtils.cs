@@ -382,7 +382,7 @@ public static class BinUtils
         }
     }
 
-    public static byte[] Compress(byte[] uncompressed, byte compressionFlags) => 
+    public static byte[] Compress(byte[] uncompressed, byte compressionFlags) =>
         Compress(uncompressed, (CompressionMethod)(compressionFlags & 0x0F), CompressionFlagsToLevel(compressionFlags));
 
     public static byte[] Compress(
