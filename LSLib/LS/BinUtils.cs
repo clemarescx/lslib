@@ -33,6 +33,7 @@ public static class BinUtils
             var elementAddr = new IntPtr(addr.ToInt64() + elementSize * i);
             elements[i] = Marshal.PtrToStructure<T>(elementAddr);
         }
+
         handle.Free();
     }
 
@@ -58,6 +59,7 @@ public static class BinUtils
             var elementAddr = new IntPtr(addr.ToInt64() + elementSize * i);
             Marshal.StructureToPtr(elements[i], elementAddr, true);
         }
+
         handle.Free();
         writer.Write(writeBuffer);
     }
@@ -146,6 +148,7 @@ public static class BinUtils
                         mat[row, col] = reader.ReadSingle();
                     }
                 }
+
                 break;
             }
 
@@ -221,6 +224,7 @@ public static class BinUtils
                 {
                     writer.Write(item);
                 }
+
                 break;
 
             case NodeAttribute.DataType.DT_Vec2:
@@ -230,6 +234,7 @@ public static class BinUtils
                 {
                     writer.Write(item);
                 }
+
                 break;
 
             case NodeAttribute.DataType.DT_Mat2:
@@ -246,11 +251,16 @@ public static class BinUtils
                         writer.Write((float)mat[row, col]);
                     }
                 }
+
                 break;
             }
 
             case NodeAttribute.DataType.DT_Bool:
-                writer.Write((byte)((bool)attr.Value ? 1 : 0));
+                writer.Write(
+                    (byte)((bool)attr.Value
+                        ? 1
+                        : 0));
+
                 break;
 
             case NodeAttribute.DataType.DT_ULongLong:
@@ -304,33 +314,29 @@ public static class BinUtils
             return 0;
         }
 
-        byte flags = 0;
-        if (method == CompressionMethod.Zlib)
+        byte flags = method switch
         {
-            flags = 0x1;
-        }
-        else if (method == CompressionMethod.LZ4)
-        {
-            flags = 0x2;
-        }
+            CompressionMethod.Zlib => 0x1,
+            CompressionMethod.LZ4  => 0x2,
+            _                      => 0
+        };
 
-        if (level == CompressionLevel.FastCompression)
+        flags |= level switch
         {
-            flags |= 0x10;
-        }
-        else if (level == CompressionLevel.DefaultCompression)
-        {
-            flags |= 0x20;
-        }
-        else if (level == CompressionLevel.MaxCompression)
-        {
-            flags |= 0x40;
-        }
+            CompressionLevel.FastCompression    => 0x10,
+            CompressionLevel.DefaultCompression => 0x20,
+            CompressionLevel.MaxCompression     => 0x40,
+            _                                   => 0
+        };
 
         return flags;
     }
 
-    public static byte[] Decompress(byte[] compressed, int decompressedSize, byte compressionFlags, bool chunked = false)
+    public static byte[] Decompress(
+        byte[] compressed,
+        int decompressedSize,
+        byte compressionFlags,
+        bool chunked = false)
     {
         switch ((CompressionMethod)(compressionFlags & 0x0F))
         {
@@ -341,17 +347,15 @@ public static class BinUtils
             {
                 using var compressedStream = new MemoryStream(compressed);
                 using var decompressedStream = new MemoryStream();
-                using (var stream = new ZInputStream(compressedStream))
+                using var stream = new ZLibStream(compressedStream, CompressionMode.Decompress);
+                byte[] buf = new byte[0x10000];
+                int length = 0;
+                while ((length = stream.Read(buf, 0, buf.Length)) > 0)
                 {
-                    byte[] buf = new byte[0x10000];
-                    int length = 0;
-                    while ((length = stream.read(buf, 0, buf.Length)) > 0)
-                    {
-                        decompressedStream.Write(buf, 0, length);
-                    }
-
-                    return decompressedStream.ToArray();
+                    decompressedStream.Write(buf, 0, length);
                 }
+
+                return decompressedStream.ToArray();
             }
 
             case CompressionMethod.LZ4:
@@ -363,7 +367,15 @@ public static class BinUtils
                 else
                 {
                     var decompressed = new byte[decompressedSize];
-                    LZ4Codec.Decode(compressed, 0, compressed.Length, decompressed, 0, decompressedSize, true);
+                    LZ4Codec.Decode(
+                        compressed,
+                        0,
+                        compressed.Length,
+                        decompressed,
+                        0,
+                        decompressedSize,
+                        true);
+
                     return decompressed;
                 }
 
@@ -380,7 +392,11 @@ public static class BinUtils
         return Compress(uncompressed, (CompressionMethod)(compressionFlags & 0x0F), CompressionFlagsToLevel(compressionFlags));
     }
 
-    public static byte[] Compress(byte[] uncompressed, CompressionMethod method, CompressionLevel compressionLevel, bool chunked = false)
+    public static byte[] Compress(
+        byte[] uncompressed,
+        CompressionMethod method,
+        CompressionLevel compressionLevel,
+        bool chunked = false)
     {
         return method switch
         {
