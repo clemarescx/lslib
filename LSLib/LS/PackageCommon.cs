@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -93,10 +94,12 @@ public enum PackageFlags
     /// Allow memory-mapped access to the files in this archive.
     /// </summary>
     AllowMemoryMapping = 0x02,
+
     /// <summary>
     /// All files are compressed into a single LZ4 stream
     /// </summary>
     Solid = 0x04,
+
     /// <summary>
     /// Archive contents should be preloaded on game startup.
     /// </summary>
@@ -109,6 +112,7 @@ public class PackageMetadata
     /// Package flags bitmask. Allowed values are in the PackageFlags enumeration.
     /// </summary>
     public PackageFlags Flags = 0;
+
     /// <summary>
     /// Load priority. Packages with higher priority are loaded later (i.e. they override earlier packages).
     /// </summary>
@@ -169,7 +173,6 @@ public abstract class AbstractFileInfo
     public abstract bool IsDeletion();
 }
 
-
 public class UncompressedPackagedFileStream : Stream
 {
     private readonly Stream PackageStream;
@@ -180,7 +183,7 @@ public class UncompressedPackagedFileStream : Stream
         PackageStream = packageStream;
         FileInfo = fileInfo;
         PackageStream.Seek((long)fileInfo.OffsetInFile, SeekOrigin.Begin);
-            
+
         if ((CompressionMethod)(FileInfo.Flags & 0x0F) != CompressionMethod.None)
         {
             throw new ArgumentException("We only support uncompressed files!");
@@ -192,14 +195,16 @@ public class UncompressedPackagedFileStream : Stream
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        if (PackageStream.Position < (long)FileInfo.OffsetInFile
-         || PackageStream.Position > (long)FileInfo.OffsetInFile + (long)FileInfo.SizeOnDisk)
+        if (PackageStream.Position < (long)FileInfo.OffsetInFile || PackageStream.Position > (long)FileInfo.OffsetInFile + (long)FileInfo.SizeOnDisk)
         {
-            throw new("Stream at unexpected position while reading packaged file?");
+            throw new Exception("Stream at unexpected position while reading packaged file?");
         }
 
-        long readable = (long)FileInfo.SizeOnDisk - Position;
-        int bytesToRead = readable < count ? (int)readable : count;
+        var readable = (long)FileInfo.SizeOnDisk - Position;
+        var bytesToRead = readable < count
+            ? (int)readable
+            : count;
+
         return PackageStream.Read(buffer, offset, bytesToRead);
     }
 
@@ -207,7 +212,6 @@ public class UncompressedPackagedFileStream : Stream
     {
         throw new NotSupportedException();
     }
-
 
     public override long Position
     {
@@ -223,7 +227,7 @@ public class UncompressedPackagedFileStream : Stream
     public override void Flush() { }
 }
 
-public class PackagedFileInfo : AbstractFileInfo, IDisposable
+public sealed class PackagedFileInfo : AbstractFileInfo, IDisposable
 {
     public uint ArchivePart;
     public uint Crc;
@@ -232,9 +236,9 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
     public Stream PackageStream;
     public ulong SizeOnDisk;
     public ulong UncompressedSize;
-    public bool Solid;
-    public uint SolidOffset;
-    public Stream SolidStream;
+    private bool Solid;
+    private uint SolidOffset;
+    private Stream SolidStream;
     private Stream _uncompressedStream;
 
     public void Dispose()
@@ -242,7 +246,10 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         ReleaseStream();
     }
 
-    public override ulong Size() => (Flags & 0x0F) == 0 ? SizeOnDisk : UncompressedSize;
+    public override ulong Size() =>
+        (Flags & 0x0F) == 0
+            ? SizeOnDisk
+            : UncompressedSize;
 
     public override uint CRC() => Crc;
 
@@ -273,19 +280,19 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         var compressed = new byte[SizeOnDisk];
 
         PackageStream.Seek((long)OffsetInFile, SeekOrigin.Begin);
-        int readSize = PackageStream.Read(compressed, 0, (int)SizeOnDisk);
+        var readSize = PackageStream.Read(compressed, 0, (int)SizeOnDisk);
         if (readSize != (long)SizeOnDisk)
         {
-            string msg = $"Failed to read {SizeOnDisk} bytes from archive (only got {readSize})";
+            var msg = $"Failed to read {SizeOnDisk} bytes from archive (only got {readSize})";
             throw new InvalidDataException(msg);
         }
 
         if (Crc != 0)
         {
-            uint computedCrc = Crc32.Compute(compressed, 0);
+            var computedCrc = Crc32.Compute(compressed, 0);
             if (computedCrc != Crc)
             {
-                string msg = $"CRC check failed on file '{Name}', archive is possibly corrupted. Expected {Crc,8:X}, got {computedCrc,8:X}";
+                var msg = $"CRC check failed on file '{Name}', archive is possibly corrupted. Expected {Crc,8:X}, got {computedCrc,8:X}";
                 throw new InvalidDataException(msg);
             }
         }
@@ -293,13 +300,13 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         if (Solid)
         {
             SolidStream.Seek(SolidOffset, SeekOrigin.Begin);
-            byte[] uncompressed = new byte[UncompressedSize];
-            SolidStream.Read(uncompressed, 0, (int)UncompressedSize);
+            var uncompressed = new byte[UncompressedSize];
+            SolidStream.ReadExactly(uncompressed, 0, (int)UncompressedSize);
             _uncompressedStream = new MemoryStream(uncompressed);
         }
         else
         {
-            byte[] uncompressed = BinUtils.Decompress(compressed, (int)Size(), (byte)Flags);
+            var uncompressed = BinUtils.Decompress(compressed, (int)Size(), (byte)Flags);
             _uncompressedStream = new MemoryStream(uncompressed);
         }
 
@@ -331,16 +338,16 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
             Solid = false
         };
 
-        int nameLen;
-        for (nameLen = 0; nameLen < entry.Name.Length && entry.Name[nameLen] != 0; nameLen++)
-        {
-        }
+        var nameLen = Array.FindIndex(entry.Name, c => c == 0) is var nullIdx and not -1
+            ? nullIdx
+            : entry.Name.Length;
+
         info.Name = Encoding.UTF8.GetString(entry.Name, 0, nameLen);
 
-        uint compressionMethod = entry.Flags & 0x0F;
+        var compressionMethod = entry.Flags & 0x0F;
         if (compressionMethod > 2 || (entry.Flags & ~0x7F) != 0)
         {
-            string msg = $"File '{info.Name}' has unsupported flags: {entry.Flags}";
+            var msg = $"File '{info.Name}' has unsupported flags: {entry.Flags}";
             throw new InvalidDataException(msg);
         }
 
@@ -361,16 +368,16 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
             Solid = false
         };
 
-        int nameLen;
-        for (nameLen = 0; nameLen < entry.Name.Length && entry.Name[nameLen] != 0; nameLen++)
-        {
-        }
+        var nameLen = Array.FindIndex(entry.Name, c => c == 0) is var nullIdx and not -1
+            ? nullIdx
+            : entry.Name.Length;
+
         info.Name = Encoding.UTF8.GetString(entry.Name, 0, nameLen);
 
-        uint compressionMethod = entry.Flags & 0x0F;
+        var compressionMethod = entry.Flags & 0x0F;
         if (compressionMethod > 2 || (entry.Flags & ~0x7F) != 0)
         {
-            string msg = $"File '{info.Name}' has unsupported flags: {entry.Flags}";
+            var msg = $"File '{info.Name}' has unsupported flags: {entry.Flags}";
             throw new InvalidDataException(msg);
         }
 
@@ -391,23 +398,27 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
             Solid = false
         };
 
-        int nameLen;
-        for (nameLen = 0; nameLen < entry.Name.Length && entry.Name[nameLen] != 0; nameLen++)
-        {
-        }
+        var nameLen = Array.FindIndex(entry.Name, c => c == 0) is var nullIdx and not -1
+            ? nullIdx
+            : entry.Name.Length;
+
         info.Name = Encoding.UTF8.GetString(entry.Name, 0, nameLen);
 
-        uint compressionMethod = (uint)entry.Flags & 0x0F;
+        var compressionMethod = (uint)entry.Flags & 0x0F;
         if (compressionMethod > 2 || ((uint)entry.Flags & ~0x7F) != 0)
         {
-            string msg = $"File '{info.Name}' has unsupported flags: {entry.Flags}";
+            var msg = $"File '{info.Name}' has unsupported flags: {entry.Flags}";
             throw new InvalidDataException(msg);
         }
 
         return info;
     }
 
-    internal static PackagedFileInfo CreateSolidFromEntry(FileEntry13 entry, Stream dataStream, uint solidOffset, Stream solidStream)
+    internal static PackagedFileInfo CreateSolidFromEntry(
+        FileEntry13 entry,
+        Stream dataStream,
+        uint solidOffset,
+        Stream solidStream)
     {
         var info = CreateFromEntry(entry, dataStream);
         info.Solid = true;
@@ -423,10 +434,10 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
             PackageStream = dataStream
         };
 
-        int nameLen;
-        for (nameLen = 0; nameLen < entry.Name.Length && entry.Name[nameLen] != 0; nameLen++)
-        {
-        }
+        var nameLen = Array.FindIndex(entry.Name, c => c == 0) is var nullIdx and not -1
+            ? nullIdx
+            : entry.Name.Length;
+
         info.Name = Encoding.UTF8.GetString(entry.Name, 0, nameLen);
 
         info.OffsetInFile = entry.OffsetInFile;
@@ -435,7 +446,9 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         info.ArchivePart = entry.ArchivePart;
         info.Crc = 0;
 
-        info.Flags = entry.UncompressedSize > 0 ? BinUtils.MakeCompressionFlags(CompressionMethod.Zlib, CompressionLevel.DefaultCompression) : (uint) 0;
+        info.Flags = entry.UncompressedSize > 0
+            ? BinUtils.MakeCompressionFlags(CompressionMethod.Zlib, CompressionLevel.DefaultCompression)
+            : (uint)0;
 
         return info;
     }
@@ -446,12 +459,16 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         {
             Name = new byte[256]
         };
-        byte[] encodedName = Encoding.UTF8.GetBytes(Name.Replace('\\', '/'));
+
+        var encodedName = Encoding.UTF8.GetBytes(Name.Replace('\\', '/'));
         Array.Copy(encodedName, entry.Name, encodedName.Length);
 
         entry.OffsetInFile = (uint)OffsetInFile;
         entry.SizeOnDisk = (uint)SizeOnDisk;
-        entry.UncompressedSize = (Flags & 0x0F) == 0 ? 0 : (uint)UncompressedSize;
+        entry.UncompressedSize = (Flags & 0x0F) == 0
+            ? 0
+            : (uint)UncompressedSize;
+
         entry.ArchivePart = ArchivePart;
         return entry;
     }
@@ -462,12 +479,16 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
         {
             Name = new byte[256]
         };
-        byte[] encodedName = Encoding.UTF8.GetBytes(Name.Replace('\\', '/'));
+
+        var encodedName = Encoding.UTF8.GetBytes(Name.Replace('\\', '/'));
         Array.Copy(encodedName, entry.Name, encodedName.Length);
 
         entry.OffsetInFile = (uint)OffsetInFile;
         entry.SizeOnDisk = (uint)SizeOnDisk;
-        entry.UncompressedSize = (Flags & 0x0F) == 0 ? 0 : (uint)UncompressedSize;
+        entry.UncompressedSize = (Flags & 0x0F) == 0
+            ? 0
+            : (uint)UncompressedSize;
+
         entry.ArchivePart = ArchivePart;
         entry.Flags = Flags;
         entry.Crc = Crc;
@@ -481,13 +502,16 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
             Name = new byte[256],
             OffsetInFile = OffsetInFile,
             SizeOnDisk = SizeOnDisk,
-            UncompressedSize = (Flags & 0x0F) == 0 ? 0 : UncompressedSize,
+            UncompressedSize = (Flags & 0x0F) == 0
+                ? 0
+                : UncompressedSize,
             Flags = Flags,
             Crc = Crc,
             ArchivePart = ArchivePart,
             Unknown2 = 0
         };
-        byte[] encodedName = Encoding.UTF8.GetBytes(Name.Replace('\\', '/'));
+
+        var encodedName = Encoding.UTF8.GetBytes(Name.Replace('\\', '/'));
         Array.Copy(encodedName, entry.Name, encodedName.Length);
 
         return entry;
@@ -501,11 +525,14 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
             OffsetInFile1 = (uint)(OffsetInFile & 0xffffffff),
             OffsetInFile2 = (ushort)(OffsetInFile >> 32 & 0xffff),
             SizeOnDisk = (uint)SizeOnDisk,
-            UncompressedSize = (Flags & 0x0F) == 0 ? 0 : (uint)UncompressedSize,
+            UncompressedSize = (Flags & 0x0F) == 0
+                ? 0
+                : (uint)UncompressedSize,
             Flags = (byte)Flags,
             ArchivePart = (byte)ArchivePart
         };
-        byte[] encodedName = Encoding.UTF8.GetBytes(Name.Replace('\\', '/'));
+
+        var encodedName = Encoding.UTF8.GetBytes(Name.Replace('\\', '/'));
         Array.Copy(encodedName, entry.Name, encodedName.Length);
 
         return entry;
@@ -517,7 +544,7 @@ public class PackagedFileInfo : AbstractFileInfo, IDisposable
     }
 }
 
-public class FilesystemFileInfo : AbstractFileInfo, IDisposable
+public sealed class FilesystemFileInfo : AbstractFileInfo, IDisposable
 {
     public long CachedSize;
     public string FilesystemPath;
@@ -528,11 +555,11 @@ public class FilesystemFileInfo : AbstractFileInfo, IDisposable
         ReleaseStream();
     }
 
-    public override ulong Size() => (ulong) CachedSize;
+    public override ulong Size() => (ulong)CachedSize;
 
     public override uint CRC() => throw new NotImplementedException("!");
 
-    public override Stream MakeStream() => _stream ?? (_stream = File.Open(FilesystemPath, FileMode.Open, FileAccess.Read, FileShare.Read));
+    public override Stream MakeStream() => _stream ??= File.Open(FilesystemPath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
     public override void ReleaseStream()
     {
@@ -540,6 +567,7 @@ public class FilesystemFileInfo : AbstractFileInfo, IDisposable
         {
             return;
         }
+
         _stream.Dispose();
         _stream = null;
     }
@@ -565,17 +593,15 @@ public class FilesystemFileInfo : AbstractFileInfo, IDisposable
 
 public class StreamFileInfo : AbstractFileInfo
 {
-    public Stream Stream;
+    private Stream Stream;
 
-    public override ulong Size() => (ulong) Stream.Length;
+    public override ulong Size() => (ulong)Stream.Length;
 
     public override uint CRC() => throw new NotImplementedException("!");
 
     public override Stream MakeStream() => Stream;
 
-    public override void ReleaseStream()
-    {
-    }
+    public override void ReleaseStream() { }
 
     public static StreamFileInfo CreateFromStream(Stream stream, string name)
     {
@@ -584,6 +610,7 @@ public class StreamFileInfo : AbstractFileInfo
             Name = name,
             Stream = stream
         };
+
         return info;
     }
 
@@ -597,7 +624,7 @@ public class Package
 {
     public const PackageVersion CurrentVersion = PackageVersion.V18;
 
-    public static readonly byte[] Signature = "LSPK"u8.ToArray();
+    public static readonly ImmutableArray<byte> Signature = "LSPK"u8.ToImmutableArray();
 
     public readonly PackageMetadata Metadata = new();
     public readonly List<AbstractFileInfo> Files = new();
@@ -605,9 +632,9 @@ public class Package
 
     public static string MakePartFilename(string path, int part)
     {
-        string dirName = Path.GetDirectoryName(path);
-        string baseName = Path.GetFileNameWithoutExtension(path);
-        string extension = Path.GetExtension(path);
+        var dirName = Path.GetDirectoryName(path);
+        var baseName = Path.GetFileNameWithoutExtension(path);
+        var extension = Path.GetExtension(path);
         return $"{dirName}/{baseName}_{part}{extension}";
     }
 }
@@ -623,7 +650,11 @@ public class PackageCreationOptions
 
 public class Packager
 {
-    public delegate void ProgressUpdateDelegate(string status, long numerator, long denominator, AbstractFileInfo file);
+    public delegate void ProgressUpdateDelegate(
+        string status,
+        long numerator,
+        long denominator,
+        AbstractFileInfo file);
 
     public ProgressUpdateDelegate ProgressUpdate = delegate { };
 
@@ -639,18 +670,18 @@ public class Packager
             outputPath += Path.DirectorySeparatorChar;
         }
 
-        List<AbstractFileInfo> files = package.Files;
+        var files = package.Files;
 
         if (filter != null)
         {
             files = files.FindAll(obj => filter(obj));
         }
 
-        long totalSize = files.Sum(p => (long)p.Size());
+        var totalSize = files.Sum(p => (long)p.Size());
         long currentSize = 0;
 
         var buffer = new byte[32768];
-        foreach (AbstractFileInfo file in files)
+        foreach (var file in files)
         {
             ProgressUpdate(file.Name, currentSize, totalSize, file);
             currentSize += (long)file.Size();
@@ -660,16 +691,16 @@ public class Packager
                 continue;
             }
 
-            string outPath = outputPath + file.Name;
+            var outPath = outputPath + file.Name;
 
             FileManager.TryToCreateDirectory(outPath);
 
-            Stream inStream = file.MakeStream();
+            var inStream = file.MakeStream();
 
             try
             {
                 using var inReader = new BinaryReader(inStream);
-                using FileStream outFile = File.Open(outPath, FileMode.Create, FileAccess.Write);
+                using var outFile = File.Open(outPath, FileMode.Create, FileAccess.Write);
                 int read;
                 while ((read = inReader.Read(buffer, 0, buffer.Length)) > 0)
                 {
@@ -687,7 +718,7 @@ public class Packager
     {
         ProgressUpdate("Reading package headers ...", 0, 1, null);
         using var reader = new PackageReader(packagePath);
-        Package package = reader.Read();
+        var package = reader.Read();
         UncompressPackage(package, outputPath, filter);
     }
 
@@ -700,12 +731,12 @@ public class Packager
             path += Path.DirectorySeparatorChar;
         }
 
-        Dictionary<string, string> files = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
-                                                    .ToDictionary(k => k.Replace(path, string.Empty), v => v);
+        var files = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
+                             .ToDictionary(k => k.Replace(path, string.Empty), v => v);
 
-        foreach (KeyValuePair<string, string> file in files)
+        foreach (var file in files)
         {
-            FilesystemFileInfo fileInfo = FilesystemFileInfo.CreateFromEntry(file.Value, file.Key);
+            var fileInfo = FilesystemFileInfo.CreateFromEntry(file.Value, file.Key);
             package.Files.Add(fileInfo);
             fileInfo.Dispose();
         }
@@ -718,7 +749,7 @@ public class Packager
         FileManager.TryToCreateDirectory(packagePath);
 
         ProgressUpdate("Enumerating files ...", 0, 1, null);
-        Package package = CreatePackageFromPath(inputPath);
+        var package = CreatePackageFromPath(inputPath);
         package.Metadata.Flags = options.Flags;
         package.Metadata.Priority = options.Priority;
 
@@ -727,7 +758,10 @@ public class Packager
         writer.WriteProgress += WriteProgressUpdate;
         writer.Version = options.Version;
         writer.Compression = options.Compression;
-        writer.CompressionLevel = options.FastCompression ? CompressionLevel.FastCompression : CompressionLevel.DefaultCompression;
+        writer.CompressionLevel = options.FastCompression
+            ? CompressionLevel.FastCompression
+            : CompressionLevel.DefaultCompression;
+
         writer.Write();
     }
 }
