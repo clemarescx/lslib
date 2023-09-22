@@ -30,7 +30,7 @@ public static class Common
     /// <returns><c>true</c> if the string matches the given pattern; otherwise <c>false</c>.</returns>
     public static bool Like(this string str, string pattern)
     {
-        return new Regex("^" + Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".") + "$", RegexOptions.Singleline).IsMatch(str);
+        return new Regex($"^{Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".")}$", RegexOptions.Singleline).IsMatch(str);
     }
 
     /// <summary>

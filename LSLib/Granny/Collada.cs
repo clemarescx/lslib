@@ -23,7 +23,7 @@ class ColladaUtils
         }
 
         accessor.param = accessorParams.ToArray();
-        accessor.source = "#" + arrayId;
+        accessor.source = $"#{arrayId}";
         accessor.stride = (ulong)(components.Length * stride);
         accessor.offset = 0;
         accessor.count = (ulong)(elements / stride);
@@ -33,7 +33,7 @@ class ColladaUtils
 
     public static source MakeFloatSource(string parentName, string name, string[] components, float[] values, int stride = 1, string type = "float")
     {
-        var posName = parentName + "-" + name + "-array";
+        var posName = $"{parentName}-{name}-array";
         // Create a shortened source name if the length exceeds 64 bytes
         if (posName.Length > 64)
         {
@@ -43,12 +43,12 @@ class ColladaUtils
 
         var positions = new float_array
         {
-            id = parentName + "-" + name + "-array"
+            id = $"{parentName}-{name}-array"
         };
 
         var source = new source
         {
-            id = parentName + "-" + name,
+            id = $"{parentName}-{name}",
             name = name
         };
 
@@ -65,12 +65,12 @@ class ColladaUtils
     {
         var names = new Name_array
         {
-            id = parentName + "-" + name + "-array"
+            id = $"{parentName}-{name}-array"
         };
 
         var source = new source
         {
-            id = parentName + "-" + name,
+            id = $"{parentName}-{name}",
             name = name
         };
 

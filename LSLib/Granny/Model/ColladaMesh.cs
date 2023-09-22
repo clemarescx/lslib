@@ -126,8 +126,8 @@ public class ColladaMesh
 
             if ((Single.IsNaN(r) || Single.IsInfinity(r)) && !Options.IgnoreUVNaN)
             {
-                throw new($"Couldn't calculate tangents; the mesh most likely contains non-manifold geometry.{Environment.NewLine}"
-                        + $"UV1: {w1}{Environment.NewLine}UV2: {w2}{Environment.NewLine}UV3: {w3}");
+                throw new(
+                    $"Couldn't calculate tangents; the mesh most likely contains non-manifold geometry.{Environment.NewLine}UV1: {w1}{Environment.NewLine}UV2: {w2}{Environment.NewLine}UV3: {w3}");
             }
 
             var sdir = new Vector3(
@@ -264,11 +264,11 @@ public class ColladaMesh
     private ColladaSource FindSource(string id)
     {
         if (id.Length == 0 || id[0] != '#')
-            throw new ParsingException("Only ID references are supported for input sources: " + id);
+            throw new ParsingException($"Only ID references are supported for input sources: {id}");
 
         ColladaSource inputSource = null;
         if (!Sources.TryGetValue(id[1..], out inputSource))
-            throw new ParsingException("Input source does not exist: " + id);
+            throw new ParsingException($"Input source does not exist: {id}");
 
         return inputSource;
     }
@@ -373,7 +373,7 @@ public class ColladaMesh
 
                 ColladaSource inputSource = null;
                 if (!Sources.TryGetValue(input.source[1..], out inputSource))
-                    throw new ParsingException("Color input source does not exist: " + input.source);
+                    throw new ParsingException($"Color input source does not exist: {input.source}");
 
                 List<Single> r = null, g = null, b = null;
                 if (!inputSource.FloatParams.TryGetValue("R", out r) ||
@@ -384,7 +384,7 @@ public class ColladaMesh
                         !inputSource.FloatParams.TryGetValue("Y", out g) ||
                         !inputSource.FloatParams.TryGetValue("Z", out b))
                     {
-                        throw new ParsingException("Color input source " + input.source + " must have R, G, B float attributes");
+                        throw new ParsingException($"Color input source {input.source} must have R, G, B float attributes");
                     }
                 }
 
@@ -414,12 +414,12 @@ public class ColladaMesh
 
                 ColladaSource inputSource = null;
                 if (!Sources.TryGetValue(input.source[1..], out inputSource))
-                    throw new ParsingException("UV input source does not exist: " + input.source);
+                    throw new ParsingException($"UV input source does not exist: {input.source}");
 
                 List<Single> s = null, t = null;
                 if (!inputSource.FloatParams.TryGetValue("S", out s) ||
                     !inputSource.FloatParams.TryGetValue("T", out t))
-                    throw new ParsingException("UV input source " + input.source + " must have S, T float attributes");
+                    throw new ParsingException($"UV input source {input.source} must have S, T float attributes");
 
                 var uvs = new List<Vector2>();
                 UVs.Add(uvs);

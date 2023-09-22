@@ -43,7 +43,7 @@ public class LSJResourceConverter : JsonConverter
                 }
                 else
                 {
-                    throw new InvalidDataException("Unknown property encountered during TranslatedFSString argument parsing: " + key);
+                    throw new InvalidDataException($"Unknown property encountered during TranslatedFSString argument parsing: {key}");
                 }
             }
             else if (reader.TokenType == JsonToken.StartObject && key == "string")
@@ -52,7 +52,7 @@ public class LSJResourceConverter : JsonConverter
             }
             else
             {
-                throw new InvalidDataException("Unexpected JSON token during parsing of TranslatedFSString argument: " + reader.TokenType);
+                throw new InvalidDataException($"Unexpected JSON token during parsing of TranslatedFSString argument: {reader.TokenType}");
             }
         }
 
@@ -89,7 +89,7 @@ public class LSJResourceConverter : JsonConverter
                 }
                 else
                 {
-                    throw new InvalidDataException("Unknown TranslatedFSString property: " + key);
+                    throw new InvalidDataException($"Unknown TranslatedFSString property: {key}");
                 }
             }
             else if (reader.TokenType == JsonToken.StartArray && key == "arguments")
@@ -102,7 +102,7 @@ public class LSJResourceConverter : JsonConverter
             }
             else
             {
-                throw new InvalidDataException("Unexpected JSON token during parsing of TranslatedFSString: " + reader.TokenType);
+                throw new InvalidDataException($"Unexpected JSON token during parsing of TranslatedFSString: {reader.TokenType}");
             }
         }
 
@@ -125,7 +125,7 @@ public class LSJResourceConverter : JsonConverter
             }
             else
             {
-                throw new InvalidDataException("Unexpected JSON token during parsing of TranslatedFSString argument list: " + reader.TokenType);
+                throw new InvalidDataException($"Unexpected JSON token during parsing of TranslatedFSString argument list: {reader.TokenType}");
             }
         }
 
@@ -321,7 +321,7 @@ public class LSJResourceConverter : JsonConverter
 
                         case NodeAttribute.DataType.DT_None:
                         default:
-                            throw new NotImplementedException("Don't know how to unserialize type " + attribute.Type.ToString());
+                            throw new NotImplementedException($"Don't know how to unserialize type {attribute.Type}");
                     }
                 }
                 else if (key == "handle")
@@ -364,7 +364,7 @@ public class LSJResourceConverter : JsonConverter
                 }
                 else
                 {
-                    throw new InvalidDataException("Unknown property encountered during attribute parsing: " + key);
+                    throw new InvalidDataException($"Unknown property encountered during attribute parsing: {key}");
                 }
             }
             else if (reader.TokenType == JsonToken.StartArray && key == "arguments")
@@ -383,7 +383,7 @@ public class LSJResourceConverter : JsonConverter
             }
             else
             {
-                throw new InvalidDataException("Unexpected JSON token during parsing of attribute: " + reader.TokenType);
+                throw new InvalidDataException($"Unexpected JSON token during parsing of attribute: {reader.TokenType}");
             }
         }
 
@@ -429,13 +429,13 @@ public class LSJResourceConverter : JsonConverter
                     }
                     else
                     {
-                        throw new InvalidDataException("Unexpected JSON token during parsing of child node list: " + reader.TokenType);
+                        throw new InvalidDataException($"Unexpected JSON token during parsing of child node list: {reader.TokenType}");
                     }
                 }
             }
             else
             {
-                throw new InvalidDataException("Unexpected JSON token during parsing of node: " + reader.TokenType);
+                throw new InvalidDataException($"Unexpected JSON token during parsing of node: {reader.TokenType}");
             }
         }
 
@@ -453,7 +453,7 @@ public class LSJResourceConverter : JsonConverter
 
         if (!reader.Read() || reader.TokenType != JsonToken.StartObject)
         {
-            throw new InvalidDataException("Expected JSON object start token for 'save': " + reader.TokenType);
+            throw new InvalidDataException($"Expected JSON object start token for 'save': {reader.TokenType}");
         }
 
         if (!reader.Read() || reader.TokenType != JsonToken.PropertyName || !reader.Value.Equals("header"))
@@ -463,7 +463,7 @@ public class LSJResourceConverter : JsonConverter
 
         if (!reader.Read() || reader.TokenType != JsonToken.StartObject)
         {
-            throw new InvalidDataException("Expected JSON object start token for 'header': " + reader.TokenType);
+            throw new InvalidDataException($"Expected JSON object start token for 'header': {reader.TokenType}");
         }
 
         string key = "";
@@ -497,17 +497,17 @@ public class LSJResourceConverter : JsonConverter
                     }
                     else
                     {
-                        throw new InvalidDataException("Malformed version string: " + reader.Value.ToString());
+                        throw new InvalidDataException($"Malformed version string: {reader.Value}");
                     }
                 }
                 else
                 {
-                    throw new InvalidDataException("Unknown property encountered during header parsing: " + key);
+                    throw new InvalidDataException($"Unknown property encountered during header parsing: {key}");
                 }
             }
             else
             {
-                throw new InvalidDataException("Unexpected JSON token during parsing of header: " + reader.TokenType);
+                throw new InvalidDataException($"Unexpected JSON token during parsing of header: {reader.TokenType}");
             }
         }
 
@@ -518,7 +518,7 @@ public class LSJResourceConverter : JsonConverter
 
         if (!reader.Read() || reader.TokenType != JsonToken.StartObject)
         {
-            throw new InvalidDataException("Expected JSON object start token for 'regions': " + reader.TokenType);
+            throw new InvalidDataException($"Expected JSON object start token for 'regions': {reader.TokenType}");
         }
 
         while (reader.Read())
@@ -541,7 +541,7 @@ public class LSJResourceConverter : JsonConverter
             }
             else
             {
-                throw new InvalidDataException("Unexpected JSON token during parsing of region list: " + reader.TokenType);
+                throw new InvalidDataException($"Unexpected JSON token during parsing of region list: {reader.TokenType}");
             }
         }
 
@@ -577,10 +577,7 @@ public class LSJResourceConverter : JsonConverter
         writer.WritePropertyName("time");
         writer.WriteValue(resource.Metadata.Timestamp);
         writer.WritePropertyName("version");
-        var versionString = resource.Metadata.MajorVersion.ToString() + "."
-                                                                      + resource.Metadata.MinorVersion.ToString() + "."
-                                                                      + resource.Metadata.Revision.ToString() + "."
-                                                                      + resource.Metadata.BuildNumber.ToString();
+        var versionString = $"{resource.Metadata.MajorVersion}.{resource.Metadata.MinorVersion}.{resource.Metadata.Revision}.{resource.Metadata.BuildNumber}";
         writer.WriteValue(versionString);
         writer.WriteEndObject();
 
@@ -774,7 +771,7 @@ public class LSJResourceConverter : JsonConverter
                     for (var r = 0; r < mat.rows; r++)
                     {
                         for (var c = 0; c < mat.cols; c++)
-                            str += mat[r, c].ToString() + " ";
+                            str += $"{mat[r, c]} ";
                         str += Environment.NewLine;
                     }
 
@@ -784,7 +781,7 @@ public class LSJResourceConverter : JsonConverter
 
                 case NodeAttribute.DataType.DT_None:
                 default:
-                    throw new NotImplementedException("Don't know how to serialize type " + attribute.Value.Type.ToString());
+                    throw new NotImplementedException($"Don't know how to serialize type {attribute.Value.Type}");
             }
 
             writer.WriteEndObject();

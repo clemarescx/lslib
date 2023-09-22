@@ -20,7 +20,7 @@ public struct BoneWeight : IEquatable<BoneWeight>
             else if (index == 1) return B;
             else if (index == 2) return C;
             else if (index == 3) return D;
-            throw new IndexOutOfRangeException("Illegal bone influence index: " + index);
+            throw new IndexOutOfRangeException($"Illegal bone influence index: {index}");
         }
         set
         {
@@ -28,7 +28,7 @@ public struct BoneWeight : IEquatable<BoneWeight>
             else if (index == 1) B = value;
             else if (index == 2) C = value;
             else if (index == 3) D = value;
-            else throw new IndexOutOfRangeException("Illegal bone influence index: " + index);
+            else throw new IndexOutOfRangeException($"Illegal bone influence index: {index}");
         }
     }
 
@@ -135,7 +135,7 @@ public class VertexDescriptor
         {
             for (int i = 0; i < ColorMaps; i++)
             {
-                names.Add("DiffuseColor_" + i.ToString());
+                names.Add($"DiffuseColor_{i}");
             }
         }
 
@@ -143,7 +143,7 @@ public class VertexDescriptor
         {
             for (int i = 0; i < TextureCoordinates; i++)
             {
-                names.Add("TextureCoordinate_" + i.ToString());
+                names.Add($"TextureCoordinate_{i}");
             }
         }
 
@@ -276,7 +276,7 @@ public class VertexDescriptor
     {
         if (VertexType == null)
         {
-            var typeName = "Vertex_" + Name();
+            var typeName = $"Vertex_{Name()}";
             VertexType = VertexTypeBuilder.CreateVertexSubtype(typeName);
         }
 

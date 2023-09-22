@@ -354,7 +354,7 @@ public class StoryReader
         story.FunctionSignatureMap = new();
         foreach (var func in story.Functions)
         {
-            story.FunctionSignatureMap.Add(func.Name.Name + "/" + func.Name.Parameters.Types.Count.ToString(), func);
+            story.FunctionSignatureMap.Add($"{func.Name.Name}/{func.Name.Parameters.Types.Count}", func);
         }
 
         foreach (var node in story.Nodes)

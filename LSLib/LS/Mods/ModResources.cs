@@ -289,7 +289,7 @@ public class ModPathVisitor
 
     private void DiscoverModGoals(string modName, string modPath)
     {
-        var goalPath = modPath + @"\Story\RawFiles\Goals";
+        var goalPath = $@"{modPath}\Story\RawFiles\Goals";
         if (!Directory.Exists(goalPath)) return;
 
         List<string> goalFiles = new();
@@ -299,7 +299,7 @@ public class ModPathVisitor
         {
             var fileInfo = new FilesystemFileInfo
             {
-                FilesystemPath = goalPath + "\\" + goalFile,
+                FilesystemPath = $"{goalPath}\\{goalFile}",
                 Name = goalFile
             };
             AddScriptToMod(modName, goalFile, fileInfo);
@@ -308,7 +308,7 @@ public class ModPathVisitor
 
     private void DiscoverModStats(string modName, string modPublicPath)
     {
-        var statsPath = modPublicPath + @"\Stats\Generated\Data";
+        var statsPath = $@"{modPublicPath}\Stats\Generated\Data";
         if (!Directory.Exists(statsPath)) return;
 
         List<string> statFiles = new();
@@ -318,7 +318,7 @@ public class ModPathVisitor
         {
             var fileInfo = new FilesystemFileInfo
             {
-                FilesystemPath = statsPath + "\\" + statFile,
+                FilesystemPath = $"{statsPath}\\{statFile}",
                 Name = statFile
             };
             AddStatToMod(modName, statFile, fileInfo);
@@ -327,7 +327,7 @@ public class ModPathVisitor
 
     private void DiscoverModGlobals(string modName, string modPath)
     {
-        var globalsPath = modPath + @"\Globals";
+        var globalsPath = $@"{modPath}\Globals";
         if (!Directory.Exists(globalsPath)) return;
 
         List<string> globalFiles = new();
@@ -337,7 +337,7 @@ public class ModPathVisitor
         {
             var fileInfo = new FilesystemFileInfo
             {
-                FilesystemPath = globalsPath + "\\" + globalFile,
+                FilesystemPath = $"{globalsPath}\\{globalFile}",
                 Name = globalFile
             };
             AddGlobalsToMod(modName, globalFile, fileInfo);
@@ -346,7 +346,7 @@ public class ModPathVisitor
 
     private void DiscoverModLevelObjects(string modName, string modPath)
     {
-        var levelsPath = modPath + @"\Levels";
+        var levelsPath = $@"{modPath}\Levels";
         if (!Directory.Exists(levelsPath)) return;
 
         List<string> levelFiles = new();
@@ -357,7 +357,7 @@ public class ModPathVisitor
         {
             var fileInfo = new FilesystemFileInfo
             {
-                FilesystemPath = levelsPath + "\\" + levelFile,
+                FilesystemPath = $"{levelsPath}\\{levelFile}",
                 Name = levelFile
             };
             AddLevelObjectsToMod(modName, levelFile, fileInfo);
@@ -373,7 +373,7 @@ public class ModPathVisitor
         {
             DiscoverModGoals(modName, modPath);
 
-            var headerPath = modPath + @"\Story\RawFiles\story_header.div";
+            var headerPath = $@"{modPath}\Story\RawFiles\story_header.div";
             if (File.Exists(headerPath))
             {
                 var fileInfo = new FilesystemFileInfo
@@ -384,7 +384,7 @@ public class ModPathVisitor
                 GetMod(modName).StoryHeaderFile = fileInfo;
             }
 
-            var orphanQueryIgnoresPath = modPath + @"\Story\story_orphanqueries_ignore_local.txt";
+            var orphanQueryIgnoresPath = $@"{modPath}\Story\story_orphanqueries_ignore_local.txt";
             if (File.Exists(orphanQueryIgnoresPath))
             {
                 var fileInfo = new FilesystemFileInfo
@@ -395,7 +395,7 @@ public class ModPathVisitor
                 GetMod(modName).OrphanQueryIgnoreList = fileInfo;
             }
 
-            var typeCoercionWhitelistPath = modPath + @"\Story\RawFiles\TypeCoercionWhitelist.txt";
+            var typeCoercionWhitelistPath = $@"{modPath}\Story\RawFiles\TypeCoercionWhitelist.txt";
             if (File.Exists(typeCoercionWhitelistPath))
             {
                 var fileInfo = new FilesystemFileInfo

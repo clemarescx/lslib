@@ -591,8 +591,8 @@ class VertexDefinitionSelector : StructDefinitionSelector
         {
             switch (desc.ColorMapType)
             {
-                case ColorMapType.Float4: AddMember(defn, "DiffuseColor" + i.ToString(), MemberType.Real32, 4); break;
-                case ColorMapType.Byte4:  AddMember(defn, "DiffuseColor" + i.ToString(), MemberType.NormalUInt8, 4); break;
+                case ColorMapType.Float4: AddMember(defn, $"DiffuseColor{i}", MemberType.Real32, 4); break;
+                case ColorMapType.Byte4:  AddMember(defn, $"DiffuseColor{i}", MemberType.NormalUInt8, 4); break;
             }
         }
 
@@ -600,8 +600,8 @@ class VertexDefinitionSelector : StructDefinitionSelector
         {
             switch (desc.TextureCoordinateType)
             {
-                case TextureCoordinateType.Float2: AddMember(defn, "TextureCoordinates" + i.ToString(), MemberType.Real32, 2); break;
-                case TextureCoordinateType.Half2:  AddMember(defn, "TextureCoordinates" + i.ToString(), MemberType.Real16, 2); break;
+                case TextureCoordinateType.Float2: AddMember(defn, $"TextureCoordinates{i}", MemberType.Real32, 2); break;
+                case TextureCoordinateType.Half2:  AddMember(defn, $"TextureCoordinates{i}", MemberType.Real16, 2); break;
             }
         }
 

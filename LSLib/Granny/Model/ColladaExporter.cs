@@ -39,7 +39,7 @@ public class ColladaMeshExporter
             var input = new InputLocal
             {
                 semantic = inputSemantic,
-                source = "#" + collSource.id
+                source = $"#{collSource.id}"
             };
 
             Inputs.Add(input);
@@ -50,7 +50,7 @@ public class ColladaMeshExporter
             var vertexInputOff = new InputLocalOffset
             {
                 semantic = localInputSemantic,
-                source = "#" + collSource.id,
+                source = $"#{collSource.id}",
                 offset = LastInputOffset++
             };
 
@@ -154,7 +154,7 @@ public class ColladaMeshExporter
                 }
 
                 default:
-                    throw new NotImplementedException("Vertex component not supported: " + component);
+                    throw new NotImplementedException($"Vertex component not supported: {component}");
             }
         }
     }
@@ -346,7 +346,7 @@ public class ColladaMeshExporter
         {
             vertices = new()
             {
-                id = ExportedMesh.Name + "-vertices",
+                id = $"{ExportedMesh.Name}-vertices",
                 input = Inputs.ToArray()
             },
             source = Sources.ToArray(),
@@ -381,7 +381,7 @@ public class ColladaExporter
         var mesh = exporter.Export();
         var geom = new geometry
         {
-            id = meshBinding.Mesh.Name + "-geom",
+            id = $"{meshBinding.Mesh.Name}-geom",
             name = meshBinding.Mesh.Name,
             Item = mesh
         };
@@ -402,8 +402,8 @@ public class ColladaExporter
             skin = ExportSkin(meshBinding.Mesh, model.Skeleton.Bones, boneNames, geom.id);
             ctrl = new()
             {
-                id = meshBinding.Mesh.Name + "-skin",
-                name = meshBinding.Mesh.Name + "_Skin",
+                id = $"{meshBinding.Mesh.Name}-skin",
+                name = $"{meshBinding.Mesh.Name}_Skin",
                 Item = skin
             };
 
@@ -412,7 +412,7 @@ public class ColladaExporter
 
         var geomNode = new node
         {
-            id = geom.name + "-node",
+            id = $"{geom.name}-node",
             name = geom.name,
             type = NodeType.NODE
         };
@@ -421,8 +421,8 @@ public class ColladaExporter
         {
             var controllerInstance = new instance_controller
             {
-                url = "#" + ctrl.id,
-                skeleton = new string[] { "#" + skelRef }
+                url = $"#{ctrl.id}",
+                skeleton = new string[] { $"#{skelRef}" }
             };
 
             geomNode.instance_controller = new instance_controller[] { controllerInstance };
@@ -431,7 +431,7 @@ public class ColladaExporter
         {
             var geomInstance = new instance_geometry
             {
-                url = "#" + geom.id
+                url = $"#{geom.id}"
             };
 
             geomNode.instance_geometry = new instance_geometry[] { geomInstance };
@@ -512,14 +512,14 @@ public class ColladaExporter
         var jointOffsets = new InputLocalOffset
         {
             semantic = "JOINT",
-            source = "#" + jointSource.id,
+            source = $"#{jointSource.id}",
             offset = 0
         };
 
         var weightOffsets = new InputLocalOffset
         {
             semantic = "WEIGHT",
-            source = "#" + weightsSource.id,
+            source = $"#{weightsSource.id}",
             offset = 1
         };
 
@@ -533,7 +533,7 @@ public class ColladaExporter
 
         var skin = new skin
         {
-            source1 = "#" + geometryId,
+            source1 = $"#{geometryId}",
             bind_shape_matrix = "1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1"
         };
 
@@ -541,13 +541,13 @@ public class ColladaExporter
         var skinJointInput = new InputLocal
         {
             semantic = "JOINT",
-            source = "#" + jointSource.id
+            source = $"#{jointSource.id}"
         };
 
         var skinInvBindInput = new InputLocal
         {
             semantic = "INV_BIND_MATRIX",
-            source = "#" + poseSource.id
+            source = $"#{poseSource.id}"
         };
 
         skinJoints.input = new InputLocal[] { skinJointInput, skinInvBindInput };
@@ -700,7 +700,7 @@ public class ColladaExporter
         var knotsInput = new InputLocal
         {
             semantic = "INPUT",
-            source = "#" + knotsSource.id
+            source = $"#{knotsSource.id}"
         };
 
         inputs.Add(knotsInput);
@@ -709,7 +709,7 @@ public class ColladaExporter
         var outInput = new InputLocal
         {
             semantic = "OUTPUT",
-            source = "#" + outSource.id
+            source = $"#{outSource.id}"
         };
 
         inputs.Add(outInput);
@@ -719,20 +719,20 @@ public class ColladaExporter
         var interpInput = new InputLocal
         {
             semantic = "INTERPOLATION",
-            source = "#" + interpSource.id
+            source = $"#{interpSource.id}"
         };
 
         inputs.Add(interpInput);
 
         var sampler = new sampler
         {
-            id = name + "_sampler",
+            id = $"{name}_sampler",
             input = inputs.ToArray()
         };
 
         var channel = new channel
         {
-            source = "#" + sampler.id,
+            source = $"#{sampler.id}",
             target = target
         };
 
@@ -769,10 +769,10 @@ public class ColladaExporter
     {
         var anims = new List<animation>();
         var name = track.Name.Replace(' ', '_');
-        var boneName = "Bone_" + track.Name.Replace(' ', '_');
+        var boneName = $"Bone_{track.Name.Replace(' ', '_')}";
 
         // Export all tracks in a single transform
-        anims.AddRange(ExportKeyframeTrack(track, extData, name + "_Transform", boneName + "/Transform"));
+        anims.AddRange(ExportKeyframeTrack(track, extData, $"{name}_Transform", $"{boneName}/Transform"));
 
         return anims;
     }
@@ -892,7 +892,7 @@ public class ColladaExporter
         if (root.ArtToolInfo != null)
             contributor.authoring_tool = root.ArtToolInfo.FromArtToolName;
         else
-            contributor.authoring_tool = "LSLib COLLADA Exporter v" + Common.LibraryVersion();
+            contributor.authoring_tool = $"LSLib COLLADA Exporter v{Common.LibraryVersion()}";
         asset.contributor = new assetContributor[] { contributor };
         asset.created = DateTime.Now;
         asset.modified = DateTime.Now;
@@ -923,7 +923,7 @@ public class ColladaExporter
             animations.AddRange(anims);
             var clip = new animation_clip
             {
-                id = anim.Name + "_Animation",
+                id = $"{anim.Name}_Animation",
                 name = anim.Name,
                 start = 0.0,
                 end = anim.Duration,
@@ -935,7 +935,7 @@ public class ColladaExporter
             {
                 var instance = new InstanceWithExtra
                 {
-                    url = "#" + animChannel.id
+                    url = $"#{animChannel.id}"
                 };
 
                 animInstances.Add(instance);

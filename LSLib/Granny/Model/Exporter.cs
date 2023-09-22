@@ -316,7 +316,7 @@ public class Exporter
                 if(bone == null)
                 {
                     //Dummy_Foot -> Dummy_Foot_01
-                    bone = skeleton.GetBoneByName(track.Name + "_01");
+                    bone = skeleton.GetBoneByName($"{track.Name}_01");
                 }
 
                 if (bone == null)
@@ -377,8 +377,8 @@ public class Exporter
                 var inputParent = skeleton.Bones[inputBone.ParentIndex];
                 if (conformParent.Name != inputParent.Name)
                 {
-                    throw new ExportException($"Conforming parent ({conformParent.Name}) for bone '{conformBone.Name}' " +
-                                              $"differs from input parent ({inputParent.Name}) for skeleton '{skeleton.Name}'.");
+                    throw new ExportException(
+                        $"Conforming parent ({conformParent.Name}) for bone '{conformBone.Name}' differs from input parent ({inputParent.Name}) for skeleton '{skeleton.Name}'.");
                 }
             }
 
@@ -405,7 +405,7 @@ public class Exporter
             {
                 var bone = skeleton.GetBoneByName(track.Name);
                 //Dummy_Foot -> Dummy_Foot_01
-                if (bone == null) bone = skeleton.GetBoneByName(track.Name + "_01");
+                if (bone == null) bone = skeleton.GetBoneByName($"{track.Name}_01");
                 if (bone == null)
                 {
                     throw new ExportException($"Animation track references bone '{track.Name}' that cannot be found in the skeleton '{skeleton.Name}'.");
@@ -782,7 +782,7 @@ public class Exporter
             }
             catch (ExportException e)
             {
-                throw new ExportException("Failed to conform skeleton:\n" + e.Message);
+                throw new ExportException($"Failed to conform skeleton:\n{e.Message}");
             }
         }
 

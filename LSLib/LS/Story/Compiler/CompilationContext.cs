@@ -117,7 +117,7 @@ public class FunctionNameAndArity : IEquatable<FunctionNameAndArity>
 
     public override string ToString()
     {
-        return Name + "(" + Arity.ToString() + ")";
+        return $"{Name}({Arity})";
     }
 }
 

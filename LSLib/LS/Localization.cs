@@ -274,7 +274,7 @@ public class LocaUtils
         {
             ".loca" => LocaFormat.Loca,
             ".xml"  => LocaFormat.Xml,
-            _       => throw new ArgumentException("Unrecognized file extension: " + extension)
+            _       => throw new ArgumentException($"Unrecognized file extension: {extension}")
         };
     }
 

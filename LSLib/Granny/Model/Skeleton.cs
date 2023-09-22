@@ -136,7 +136,7 @@ public class Bone
     {
         var node = new node
         {
-            id = "Bone_" + Name.Replace(' ', '_'),
+            id = $"Bone_{Name.Replace(' ', '_')}",
             name = Name, // .Replace(' ', '_');
             sid = Name.Replace(' ', '_'),
             type = NodeType.JOINT

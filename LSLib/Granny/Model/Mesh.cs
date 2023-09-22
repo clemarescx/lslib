@@ -319,7 +319,7 @@ public class VertexData
                 uvs[index++] = uv[1];
         }
 
-        return ColladaUtils.MakeFloatSource(name, "uvs" + uvIndex.ToString(), new string[] { "S", "T" }, uvs);
+        return ColladaUtils.MakeFloatSource(name, $"uvs{uvIndex}", new string[] { "S", "T" }, uvs);
     }
 
     public source MakeColladaColors(string name, int setIndex)
@@ -335,7 +335,7 @@ public class VertexData
             colors[index++] = color[2];
         }
 
-        return ColladaUtils.MakeFloatSource(name, "colors" + setIndex.ToString(), new string[] { "R", "G", "B" }, colors);
+        return ColladaUtils.MakeFloatSource(name, $"colors{setIndex}", new string[] { "R", "G", "B" }, colors);
     }
 
     public source MakeBoneWeights(string name)
@@ -537,7 +537,7 @@ public class TriTopology
                     inputMaps.Add(normalMaps); break;
                 case "TEXCOORD": inputMaps.Add(uvMaps[uvIndex]); uvIndex++; break;
                 case "COLOR":    inputMaps.Add(colorMaps[colorIndex]); colorIndex++; break;
-                default:         throw new InvalidOperationException("No input maps available for semantic " + input.semantic);
+                default:         throw new InvalidOperationException($"No input maps available for semantic {input.semantic}");
             }
         }
 

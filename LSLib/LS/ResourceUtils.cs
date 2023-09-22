@@ -77,7 +77,7 @@ public class ResourceUtils
             ".lsbc" => ResourceFormat.LSF,
             ".lsbs" => ResourceFormat.LSF,
             ".lsj"  => ResourceFormat.LSJ,
-            _       => throw new ArgumentException("Unrecognized file extension: " + extension)
+            _       => throw new ArgumentException($"Unrecognized file extension: {extension}")
         };
     }
 
@@ -180,12 +180,12 @@ public class ResourceUtils
         for (var i = 0; i < paths.Count; i++)
         {
             var path = paths[i];
-            var inPath = inputDir + "/" + path;
-            var outPath = outputDir + "/" + Path.ChangeExtension(path, outputFormat.ToString().ToLower());
+            var inPath = $"{inputDir}/{path}";
+            var outPath = $"{outputDir}/{Path.ChangeExtension(path, outputFormat.ToString().ToLower())}";
 
             FileManager.TryToCreateDirectory(outPath);
 
-            progressUpdate("Converting: " + inPath, i, paths.Count);
+            progressUpdate($"Converting: {inPath}", i, paths.Count);
             try
             {
                 var resource = LoadResource(inPath, inputFormat);

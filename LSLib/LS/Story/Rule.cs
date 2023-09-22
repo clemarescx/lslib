@@ -130,8 +130,8 @@ public class RuleNode : RelNode
         }
         else if (root is ProcNode)
         {
-            var querySig = root.Name + "__DEF__/" + root.NumParams.ToString();
-            var sig = root.Name + "/" + root.NumParams.ToString();
+            var querySig = $"{root.Name}__DEF__/{root.NumParams}";
+            var sig = $"{root.Name}/{root.NumParams}";
 
             if (!story.FunctionSignatureMap.TryGetValue(querySig, out Function func)
              && !story.FunctionSignatureMap.TryGetValue(sig, out func))

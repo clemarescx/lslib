@@ -65,7 +65,7 @@ static class NodeHelpers
                     ItemsChoiceType2.translate => (n.Items[i] as TargetableFloat3).TranslationToMatrix4() * Matrix4.Identity,
                     ItemsChoiceType2.rotate    => (n.Items[i] as rotate).ToMatrix4() * Matrix4.Identity,
                     ItemsChoiceType2.scale     => (n.Items[i] as TargetableFloat3).ScaleToMatrix4() * Matrix4.Identity,
-                    _                          => throw new("Unsupported Collada NODE transform: " + name)
+                    _                          => throw new($"Unsupported Collada NODE transform: {name}")
                 };
             }
         }
@@ -218,7 +218,7 @@ class ColladaHelpers
         if (!source.FloatParams.TryGetValue("X", out x) ||
             !source.FloatParams.TryGetValue("Y", out y) ||
             !source.FloatParams.TryGetValue("Z", out z))
-            throw new ParsingException("Position source " + source.id + " must have X, Y, Z float attributes");
+            throw new ParsingException($"Position source {source.id} must have X, Y, Z float attributes");
 
         var positions = new List<Vector3>(x.Count);
         for (var i = 0; i < x.Count; i++)

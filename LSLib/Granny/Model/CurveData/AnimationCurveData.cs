@@ -60,7 +60,7 @@ public class CurveRegistry
 
         Type type = null;
         if (!NameToTypeMap.TryGetValue(name, out type))
-            throw new ParsingException("Unsupported curve type: " + name);
+            throw new ParsingException($"Unsupported curve type: {name}");
 
         return type;
     }
@@ -170,7 +170,7 @@ class AnimationCurveDataTypeSelector : VariantTypeSelector
     {
         var fieldName = defn.Members[0].Name;
         if (fieldName[..16] != "CurveDataHeader_")
-            throw new ParsingException("Unrecognized curve data header type: " + fieldName);
+            throw new ParsingException($"Unrecognized curve data header type: {fieldName}");
 
         var curveType = fieldName[16..];
         return CurveRegistry.Resolve(curveType);

@@ -99,7 +99,7 @@ internal class ColladaSource
                 source.NameParams.Add(param.name, items);
             }
             else
-                throw new ParsingException("Unsupported accessor param type: " + param.type);
+                throw new ParsingException($"Unsupported accessor param type: {param.type}");
 
             paramOffset++;
         }
@@ -150,7 +150,7 @@ public class ColladaImporter
                 else if (collada.asset.unit.name == "centimeter")
                     toolInfo.UnitsPerMeter = (float)collada.asset.unit.meter * 100;
                 else
-                    throw new NotImplementedException("Unsupported asset unit type: " + collada.asset.unit.name);
+                    throw new NotImplementedException($"Unsupported asset unit type: {collada.asset.unit.name}");
             }
 
             if (collada.asset.contributor != null && collada.asset.contributor.Length > 0)
@@ -447,8 +447,7 @@ public class ColladaImporter
             if (version > Common.ColladaMetadataVersion)
             {
                 throw new ParsingException(
-                    $"Collada file is using a newer LSLib metadata format than this LSLib version supports, please upgrade.\r\n" +
-                    $"File version: {version}, exporter version: {Common.ColladaMetadataVersion}");
+                    $"Collada file is using a newer LSLib metadata format than this LSLib version supports, please upgrade.\r\nFile version: {version}, exporter version: {Common.ColladaMetadataVersion}");
             }
         }
     }
@@ -553,7 +552,7 @@ public class ColladaImporter
 
         Mesh mesh = null;
         if (!ColladaGeometries.TryGetValue(skin.source1[1..], out mesh))
-            throw new ParsingException("Skin references nonexistent mesh: " + skin.source1);
+            throw new ParsingException($"Skin references nonexistent mesh: {skin.source1}");
 
         if (!mesh.VertexFormat.HasBoneWeights)
         {
@@ -578,7 +577,7 @@ public class ColladaImporter
 
             ColladaSource inputSource = null;
             if (!sources.TryGetValue(input.source[1..], out inputSource))
-                throw new ParsingException("Joint input source does not exist: " + input.source);
+                throw new ParsingException($"Joint input source does not exist: {input.source}");
 
             if (input.semantic == "JOINT")
             {
@@ -593,7 +592,7 @@ public class ColladaImporter
                     Bone bone = null;
                     var lookupName = name.Replace("_x0020_", " ");
                     if (!skeleton.BonesBySID.TryGetValue(lookupName, out bone))
-                        throw new ParsingException("Joint name list references nonexistent bone: " + lookupName);
+                        throw new ParsingException($"Joint name list references nonexistent bone: {lookupName}");
 
                     joints.Add(bone);
                 }
@@ -606,7 +605,7 @@ public class ColladaImporter
             }
             else
             {
-                throw new ParsingException("Unsupported joint semantic: " + input.semantic);
+                throw new ParsingException($"Unsupported joint semantic: {input.semantic}");
             }
         }
 
@@ -647,16 +646,16 @@ public class ColladaImporter
 
                 ColladaSource inputSource = null;
                 if (!sources.TryGetValue(input.source[1..], out inputSource))
-                    throw new ParsingException("Weight input source does not exist: " + input.source);
+                    throw new ParsingException($"Weight input source does not exist: {input.source}");
 
                 if (!inputSource.FloatParams.TryGetValue("WEIGHT", out weights))
                     weights = inputSource.FloatParams.Values.SingleOrDefault();
 
                 if (weights == null)
-                    throw new ParsingException("Weight input source " + input.source + " must have WEIGHT float attribute");
+                    throw new ParsingException($"Weight input source {input.source} must have WEIGHT float attribute");
             }
             else
-                throw new ParsingException("Unsupported skin input semantic: " + input.semantic);
+                throw new ParsingException($"Unsupported skin input semantic: {input.semantic}");
         }
 
         if (jointInputIndex == -1)

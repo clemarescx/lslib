@@ -241,7 +241,7 @@ public class StoryEmitter
         var sig = signature.GetNameAndArity();
         FuncEntries.Add(sig, osiFunc);
         Story.Functions.Add(osiFunc);
-        Story.FunctionSignatureMap.Add(sig.Name + "/" + sig.Arity.ToString(), osiFunc);
+        Story.FunctionSignatureMap.Add($"{sig.Name}/{sig.Arity}", osiFunc);
 
         if (DebugInfo != null)
         {
@@ -536,7 +536,7 @@ public class StoryEmitter
         if (node is UserQueryNode)
         {
             // We need to add a reference to the user query definition entry as well
-            var defnName = new FunctionNameAndArity(name.Name + "__DEF__", name.Arity);
+            var defnName = new FunctionNameAndArity($"{name.Name}__DEF__", name.Arity);
             if (FuncEntries.TryGetValue(defnName, out Function defn))
             {
                 switch (refType)
@@ -1139,7 +1139,7 @@ public class StoryEmitter
         var aliasedSignature = new FunctionSignature
         {
             FullyTyped = signature.FullyTyped,
-            Name = signature.Name + "__DEF__",
+            Name = $"{signature.Name}__DEF__",
             Params = signature.Params,
             Type = signature.Type,
             Inserted = signature.Inserted,
@@ -1159,7 +1159,7 @@ public class StoryEmitter
     private Node EmitUserQueryInitialFunc(IRFuncCondition condition)
     {
         var signature = Context.LookupSignature(condition.Func.Name);
-        var name = new FunctionNameAndArity(signature.Name + "__DEF__", signature.Params.Count);
+        var name = new FunctionNameAndArity($"{signature.Name}__DEF__", signature.Params.Count);
         if (!Funcs.TryGetValue(name, out Node initialFunc))
         {
             Function osiUserQuery = null;

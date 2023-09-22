@@ -326,7 +326,7 @@ public class IRConstant : IRValue
             IRConstantType.Unknown => "(unknown)",
             IRConstantType.Integer => IntegerValue.ToString(),
             IRConstantType.Float   => FloatValue.ToString(),
-            IRConstantType.String  => "\"" + StringValue + "\"",
+            IRConstantType.String  => $"\"{StringValue}\"",
             IRConstantType.Name    => StringValue,
             _                      => "(unknown type)"
         };

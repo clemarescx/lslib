@@ -199,12 +199,12 @@ public class StatDefinitionRepository
         {
             var translatedKeyRefField = new StatField
             {
-                Name = fieldName + "Ref",
+                Name = $"{fieldName}Ref",
                 Type = typeName,
                 EnumType = enumeration
             };
 
-            subtype.Fields.Add(fieldName + "Ref", translatedKeyRefField);
+            subtype.Fields.Add($"{fieldName}Ref", translatedKeyRefField);
         }
     }
 

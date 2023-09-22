@@ -47,7 +47,7 @@ public class ColladaAnimation
         }
 
         if (sampler == null)
-            throw new ParsingException("Animation " + Animation.id + " has no sampler!");
+            throw new ParsingException($"Animation {Animation.id} has no sampler!");
 
         ColladaSource inputSource = null, outputSource = null, interpolationSource = null;
         foreach (var input in sampler.input)
@@ -57,7 +57,7 @@ public class ColladaAnimation
 
             ColladaSource source;
             if (!Sources.TryGetValue(input.source[1..], out source))
-                throw new ParsingException("Animation sampler " + input.semantic + " references nonexistent source: " + input.source);
+                throw new ParsingException($"Animation sampler {input.semantic} references nonexistent source: {input.source}");
 
             switch (input.semantic)
             {
@@ -79,22 +79,22 @@ public class ColladaAnimation
         }
 
         if (inputSource == null || outputSource == null || interpolationSource == null)
-            throw new ParsingException("Animation " + Animation.id + " must have an INPUT, OUTPUT and INTERPOLATION sampler input!");
+            throw new ParsingException($"Animation {Animation.id} must have an INPUT, OUTPUT and INTERPOLATION sampler input!");
 
         if (!inputSource.FloatParams.TryGetValue("TIME", out Times))
             Times = inputSource.FloatParams.Values.SingleOrDefault();
 
         if (Times == null)
-            throw new ParsingException("Animation " + Animation.id + " INPUT must have a TIME parameter!");
+            throw new ParsingException($"Animation {Animation.id} INPUT must have a TIME parameter!");
 
         if (!outputSource.MatrixParams.TryGetValue("TRANSFORM", out Transforms))
             Transforms = outputSource.MatrixParams.Values.SingleOrDefault();
 
         if (Transforms == null)
-            throw new ParsingException("Animation " + Animation.id + " OUTPUT must have a TRANSFORM parameter!");
+            throw new ParsingException($"Animation {Animation.id} OUTPUT must have a TRANSFORM parameter!");
 
         if (Transforms.Count != Times.Count)
-            throw new ParsingException("Animation " + Animation.id + " has different time and transform counts!");
+            throw new ParsingException($"Animation {Animation.id} has different time and transform counts!");
 
         for (var i = 0; i < Transforms.Count; i++ )
         {
@@ -117,20 +117,20 @@ public class ColladaAnimation
         }
 
         if (channel == null)
-            throw new ParsingException("Animation " + Animation.id + " has no channel!");
+            throw new ParsingException($"Animation {Animation.id} has no channel!");
 
         var parts = channel.target.Split(new char[] { '/' });
         if (parts.Length != 2)
-            throw new ParsingException("Unsupported channel target format: " + channel.target);
+            throw new ParsingException($"Unsupported channel target format: {channel.target}");
 
         if (skeleton != null)
         {
             Bone bone = null;
             if (!skeleton.BonesByID.TryGetValue(parts[0], out bone))
-                throw new ParsingException("Animation channel references nonexistent bone: " + parts[0]);
+                throw new ParsingException($"Animation channel references nonexistent bone: {parts[0]}");
 
             if (bone.TransformSID != parts[1])
-                throw new ParsingException("Animation channel references nonexistent transform or transform is not float4x4: " + channel.target);
+                throw new ParsingException($"Animation channel references nonexistent transform or transform is not float4x4: {channel.target}");
 
             BoneName = bone.Name;
         }

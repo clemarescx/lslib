@@ -102,7 +102,7 @@ public class EnumParser : IStatValueParser
         else
         {
             succeeded = false;
-            errorText = "expected one of: " + String.Join(", ", Enumeration.Values.Take(4)) + ", ...";
+            errorText = $"expected one of: {String.Join(", ", Enumeration.Values.Take(4))}, ...";
             return null;
         }
     }
@@ -237,7 +237,7 @@ public class ExpressionParser : IStatValueParser
         
     public virtual object Parse(string value, ref bool succeeded, ref string errorText)
     {
-        var valueBytes = Encoding.UTF8.GetBytes("__TYPE_" + ExpressionType + "__ " + value);
+        var valueBytes = Encoding.UTF8.GetBytes($"__TYPE_{ExpressionType}__ {value}");
         using var buf = new MemoryStream(valueBytes);
         List<string> errorTexts = new();
 
