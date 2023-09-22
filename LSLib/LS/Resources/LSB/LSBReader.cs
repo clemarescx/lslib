@@ -23,7 +23,7 @@ public class LSBReader : ILSReader
 
     public Resource Read()
     {
-        using (reader = new(stream))
+        using (reader = new BinaryReader(stream))
         {
             // Check for BG3 header
             var header = BinUtils.ReadStruct<LSBHeader>(reader);
@@ -40,17 +40,17 @@ public class LSBReader : ILSReader
             IsBG3 = header.Signature == BitConverter.ToUInt32(LSBHeader.SignatureBG3.AsSpan());
             ReadStaticStrings();
 
-            Resource rsrc = new()
+            Resource resource = new()
             {
                 Metadata = header.Metadata
             };
 
-            ReadRegions(rsrc);
-            return rsrc;
+            ReadRegions(resource);
+            return resource;
         }
     }
 
-    private void ReadRegions(Resource rsrc)
+    private void ReadRegions(Resource resource)
     {
         uint regions = reader.ReadUInt32();
         for (uint i = 0; i < regions; i++)
@@ -67,7 +67,7 @@ public class LSBReader : ILSReader
 
             stream.Seek(regionOffset, SeekOrigin.Begin);
             ReadNode(rgn);
-            rsrc.Regions[rgn.RegionName] = rgn;
+            resource.Regions[rgn.RegionName] = rgn;
             stream.Seek(lastRegionPos, SeekOrigin.Begin);
         }
     }
