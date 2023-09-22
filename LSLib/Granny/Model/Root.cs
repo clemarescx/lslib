@@ -33,7 +33,7 @@ public class Root
     public object ExtendedData;
 
     [Serialization(Kind = SerializationKind.None)]
-    public bool ZUp = false;
+    public bool ZUp;
     [Serialization(Kind = SerializationKind.None)]
     public uint GR2Tag;
 

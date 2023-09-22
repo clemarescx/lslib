@@ -17,7 +17,7 @@ public class ColladaMeshExporter
     private List<source> Sources;
     private List<InputLocal> Inputs;
     private List<InputLocalOffset> InputOffsets;
-    private ulong LastInputOffset = 0;
+    private ulong LastInputOffset;
     private XmlDocument Xml = new();
 
 

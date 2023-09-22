@@ -48,11 +48,11 @@ public class ExporterOptions
     public ExportFormat OutputFormat;
 
     // Export 64-bit GR2
-    public bool Is64Bit = false;
+    public bool Is64Bit;
     // Use alternate GR2 signature when saving
     // (This is the signature D:OS EE and D:OS 2 uses, but GR2 tools
     // don't recognize it as legitimate.)
-    public bool AlternateSignature = false;
+    public bool AlternateSignature;
     // GR2 run-time tag that that'll appear in the output file
     // If the GR2 tag doesn't match, the game will convert the GR2 to the latest tag,
     // which is a slow process. The advantage of a mismatched tag is that we don't

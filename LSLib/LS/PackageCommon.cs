@@ -112,7 +112,7 @@ public class PackageMetadata
     /// <summary>
     /// Load priority. Packages with higher priority are loaded later (i.e. they override earlier packages).
     /// </summary>
-    public byte Priority = 0;
+    public byte Priority;
 }
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]

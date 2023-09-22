@@ -19,7 +19,7 @@ public class ColladaMesh
     private List<List<Vector4>> Colors;
     private List<int> Indices;
 
-    private int InputOffsetCount = 0;
+    private int InputOffsetCount;
     private int VertexInputIndex = -1;
     private int NormalsInputIndex = -1;
     private int TangentsInputIndex = -1;
@@ -28,8 +28,8 @@ public class ColladaMesh
     private List<int> ColorInputIndices = new();
     private VertexDescriptor InputVertexType;
     private VertexDescriptor OutputVertexType;
-    private bool HasNormals = false;
-    private bool HasTangents = false;
+    private bool HasNormals;
+    private bool HasTangents;
 
     public int TriangleCount;
     public List<Vertex> ConsolidatedVertices;

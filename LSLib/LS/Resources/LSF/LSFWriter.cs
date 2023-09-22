@@ -16,12 +16,12 @@ public class LSFWriter :ILSWriter
 
     private MemoryStream NodeStream;
     private BinaryWriter NodeWriter;
-    private int NextNodeIndex = 0;
+    private int NextNodeIndex;
     private Dictionary<Node, int> NodeIndices;
 
     private MemoryStream AttributeStream;
     private BinaryWriter AttributeWriter;
-    private int NextAttributeIndex = 0;
+    private int NextAttributeIndex;
 
     private MemoryStream ValueStream;
     private BinaryWriter ValueWriter;

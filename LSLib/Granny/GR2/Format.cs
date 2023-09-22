@@ -37,7 +37,7 @@ public class Transform
         HasScaleShear = 0x04
     }
 
-    public uint Flags = 0;
+    public uint Flags;
     public Vector3 Translation = Vector3.Zero;
     public Quaternion Rotation = Quaternion.Identity;
     public Matrix3 ScaleShear = Matrix3.Identity;
@@ -579,7 +579,7 @@ public class SectionReference
     /// <summary>
     /// Offset in bytes from the beginning of the section
     /// </summary>
-    public uint Offset = 0;
+    public uint Offset;
 
     /// <summary>
     /// Returns if the reference points to a valid address within the file
@@ -785,7 +785,7 @@ public class MemberDefinition
     public uint Unknown;
 
     // We need to keep a separate cached flag, as we can cache null fields as well
-    public bool HasCachedField = false;
+    public bool HasCachedField;
     public FieldInfo CachedField;
 
     public NodeSerializer Serializer;
@@ -798,7 +798,7 @@ public class MemberDefinition
     /// <summary>
     /// Should we save this member to the data area?
     /// </summary>
-    public bool DataArea = false;
+    public bool DataArea;
     /// <summary>
     /// The Granny type we should save when serializing this field
     /// (Mainly used to provide a type definition for user-defined serializers)
@@ -807,11 +807,11 @@ public class MemberDefinition
     /// <summary>
     /// Minimum GR2 file version this member should be exported to
     /// </summary>
-    public uint MinVersion = 0;
+    public uint MinVersion;
     /// <summary>
     /// Maximum GR2 file version this member should be exported to
     /// </summary>
-    public uint MaxVersion = 0;
+    public uint MaxVersion;
 
     public bool IsValid => Type != (uint)MemberType.None;
 
@@ -1109,7 +1109,7 @@ public class StructDefinition
     /// <summary>
     /// Should we do mixed marshalling on this struct?
     /// </summary>
-    public bool MixedMarshal = false;
+    public bool MixedMarshal;
 
     public uint Size(GR2Reader gr2)
     {

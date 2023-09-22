@@ -134,7 +134,7 @@ public class ColladaImporter
     [Serialization(Kind = SerializationKind.None)]
     public ExporterOptions Options = new();
 
-    private bool ZUp = false;
+    private bool ZUp;
 
     [Serialization(Kind = SerializationKind.None)]
     public Dictionary<string, Mesh> ColladaGeometries;
@@ -851,7 +851,7 @@ public class ColladaImporter
     class OBB
     {
         public Vector3 Min, Max;
-        public int NumVerts = 0;
+        public int NumVerts;
     }
 
     private void UpdateOBBs(Skeleton skeleton, Mesh mesh)

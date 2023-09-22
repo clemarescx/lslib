@@ -109,16 +109,16 @@ public enum TextureCoordinateType
 /// </summary>
 public class VertexDescriptor
 {
-    public bool HasBoneWeights = false;
+    public bool HasBoneWeights;
     public int NumBoneInfluences = 4;
     public PositionType PositionType = PositionType.None;
     public NormalType NormalType = NormalType.None;
     public NormalType TangentType = NormalType.None;
     public NormalType BinormalType = NormalType.None;
     public ColorMapType ColorMapType = ColorMapType.None;
-    public int ColorMaps = 0;
+    public int ColorMaps;
     public TextureCoordinateType TextureCoordinateType = TextureCoordinateType.None;
-    public int TextureCoordinates = 0;
+    public int TextureCoordinates;
     private Type VertexType;
 
     public List<string> ComponentNames()

@@ -1172,7 +1172,7 @@ public class StoryEmitter
     private class ReferencedDatabaseInfo
     {
         public NodeReference DbNodeRef = new();
-        public byte Indirection = 0;
+        public byte Indirection;
         public NodeEntryItem JoinRef = new()
         {
             NodeRef = new(),

@@ -194,7 +194,7 @@ public class Skeleton
     public Dictionary<string, Bone> BonesByID;
 
     [Serialization(Kind = SerializationKind.None)]
-    public bool IsDummy = false;
+    public bool IsDummy;
 
     public static Skeleton FromCollada(node root)
     {

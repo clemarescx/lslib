@@ -9,7 +9,7 @@ public class LSBWriter : ILSWriter
     private Stream stream;
     private BinaryWriter writer;
     private Dictionary<string, uint> staticStrings = new();
-    private uint nextStaticStringId = 0;
+    private uint nextStaticStringId;
     private uint Version;
 
     public LSBWriter(Stream stream)
