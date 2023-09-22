@@ -21,7 +21,7 @@ public class ResourceConversionParameters
     /// <summary>
     /// Store sibling/neighbour node data in LSF files (usually done by savegames only)
     /// </summary>
-    public readonly bool LSFEncodeSiblingData = false;
+    public const bool LSFEncodeSiblingData = false;
 
     /// <summary>
     /// Format of generated LSX files
@@ -31,7 +31,7 @@ public class ResourceConversionParameters
     /// <summary>
     /// Pretty-print (format) LSX/LSJ files
     /// </summary>
-    public readonly bool PrettyPrint = true;
+    public const bool PrettyPrint = true;
 
     /// <summary>
     /// LSF/LSB compression method
@@ -113,16 +113,16 @@ public class ResourceUtils
 
         ILSWriter writer = format switch
         {
-            ResourceFormat.LSX => new LSXWriter(file) { Version = conversionParams.LSX, PrettyPrint = conversionParams.PrettyPrint },
+            ResourceFormat.LSX => new LSXWriter(file) { Version = conversionParams.LSX, PrettyPrint = ResourceConversionParameters.PrettyPrint },
             ResourceFormat.LSB => new LSBWriter(file),
             ResourceFormat.LSF => new LSFWriter(file)
             {
                 Version = conversionParams.LSF,
-                EncodeSiblingData = conversionParams.LSFEncodeSiblingData,
+                EncodeSiblingData = ResourceConversionParameters.LSFEncodeSiblingData,
                 Compression = ResourceConversionParameters.Compression,
                 CompressionLevel = ResourceConversionParameters.CompressionLevel
             },
-            ResourceFormat.LSJ => new LSJWriter(file) { PrettyPrint = conversionParams.PrettyPrint },
+            ResourceFormat.LSJ => new LSJWriter(file) { PrettyPrint = ResourceConversionParameters.PrettyPrint },
             _                  => throw new ArgumentException("Invalid resource format")
         };
 
@@ -143,12 +143,12 @@ public class ResourceUtils
     }
 
     private static void EnumerateFiles(
-        List<string> paths,
+        ICollection<string> paths,
         string rootPath,
         string currentPath,
         ResourceFormat format)
     {
-        foreach (string filePath in Directory.GetFiles(currentPath).Where(filePath => IsA(filePath, format)))
+        foreach (var filePath in Directory.GetFiles(currentPath).Where(filePath => IsA(filePath, format)))
         {
             var relativePath = filePath[rootPath.Length..];
             if (relativePath[0] == '/' || relativePath[0] == '\\')
@@ -159,7 +159,7 @@ public class ResourceUtils
             paths.Add(relativePath);
         }
 
-        foreach (string directoryPath in Directory.GetDirectories(currentPath))
+        foreach (var directoryPath in Directory.GetDirectories(currentPath))
         {
             EnumerateFiles(paths, rootPath, directoryPath, format);
         }
