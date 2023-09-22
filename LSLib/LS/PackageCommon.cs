@@ -597,13 +597,7 @@ public class Package
 {
     public const PackageVersion CurrentVersion = PackageVersion.V18;
 
-    public static readonly byte[] Signature =
-    {
-        0x4C,
-        0x53,
-        0x50,
-        0x4B
-    };
+    public static readonly byte[] Signature = "LSPK"u8.ToArray();
 
     public readonly PackageMetadata Metadata = new();
     public readonly List<AbstractFileInfo> Files = new();
