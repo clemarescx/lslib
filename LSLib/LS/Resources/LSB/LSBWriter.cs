@@ -30,14 +30,9 @@ public class LSBWriter : ILSWriter
                 Metadata = resource.Metadata
             };
 
-            if (resource.Metadata.MajorVersion >= 4)
-            {
-                header.Signature = BitConverter.ToUInt32(LSBHeader.SignatureBG3.AsSpan());
-            }
-            else
-            {
-                header.Signature = LSBHeader.SignatureFW3;
-            }
+            header.Signature = resource.Metadata.MajorVersion >= 4
+                ? BitConverter.ToUInt32(LSBHeader.SignatureBG3.AsSpan())
+                : LSBHeader.SignatureFW3;
 
             BinUtils.WriteStruct(writer, ref header);
 
@@ -127,7 +122,7 @@ public class LSBWriter : ILSWriter
                 }
                 else
                 {
-                    WriteString(str.Value ?? "", true);
+                    WriteString(str.Value ?? string.Empty, true);
                 }
 
                 WriteString(str.Handle, true);
@@ -197,8 +192,12 @@ public class LSBWriter : ILSWriter
 
     private void WriteString(string s, bool nullTerminated)
     {
-        byte[] utf = System.Text.Encoding.UTF8.GetBytes(s);
-        int length = utf.Length + (nullTerminated ? 1 : 0);
+        var utf = System.Text.Encoding.UTF8.GetBytes(s);
+        var length = utf.Length
+                   + (nullTerminated
+                         ? 1
+                         : 0);
+
         writer.Write(length);
         writer.Write(utf);
         if (nullTerminated)
@@ -209,8 +208,12 @@ public class LSBWriter : ILSWriter
 
     private void WriteWideString(string s, bool nullTerminated)
     {
-        byte[] unicode = System.Text.Encoding.Unicode.GetBytes(s);
-        int length = unicode.Length / 2 + (nullTerminated ? 1 : 0);
+        var unicode = System.Text.Encoding.Unicode.GetBytes(s);
+        var length = unicode.Length / 2
+                   + (nullTerminated
+                         ? 1
+                         : 0);
+
         writer.Write(length);
         writer.Write(unicode);
         if (nullTerminated)
