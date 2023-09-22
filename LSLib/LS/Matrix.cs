@@ -7,33 +7,34 @@
     - updated on 1. 6.2014 - Trimming the string before parsing
     - updated on 14.6.2012 - parsing improved. Thanks to Andy!
     - updated on 3.10.2012 - there was a terrible bug in LU, SoLE and Inversion. Thanks to Danilo Neves Cruz for reporting that!
-	
+
     This code is distributed under MIT licence.
-	
-	
-		Permission is hereby granted, free of charge, to any person
-		obtaining a copy of this software and associated documentation
-		files (the "Software"), to deal in the Software without
-		restriction, including without limitation the rights to use,
-		copy, modify, merge, publish, distribute, sublicense, and/or sell
-		copies of the Software, and to permit persons to whom the
-		Software is furnished to do so, subject to the following
-		conditions:
 
-		The above copyright notice and this permission notice shall be
-		included in all copies or substantial portions of the Software.
 
-		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-		EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-		OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-		NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-		HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-		WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-		FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-		OTHER DEALINGS IN THE SOFTWARE.
+        Permission is hereby granted, free of charge, to any person
+        obtaining a copy of this software and associated documentation
+        files (the "Software"), to deal in the Software without
+        restriction, including without limitation the rights to use,
+        copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the
+        Software is furnished to do so, subject to the following
+        conditions:
+
+        The above copyright notice and this permission notice shall be
+        included in all copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+        OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+        NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+        HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+        WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+        FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+        OTHER DEALINGS IN THE SOFTWARE.
 */
 
 using System;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace LSLib.LS;
@@ -70,7 +71,7 @@ public class Matrix
     public Matrix GetCol(int k)
     {
         Matrix m = new(rows, 1);
-        for (int i = 0; i < rows; i++)
+        for (var i = 0; i < rows; i++)
         {
             m[i, 0] = mat[i, k];
         }
@@ -80,7 +81,7 @@ public class Matrix
 
     public void SetCol(Matrix v, int k)
     {
-        for (int i = 0; i < rows; i++)
+        for (var i = 0; i < rows; i++)
         {
             mat[i, k] = v[i, 0];
         }
@@ -97,20 +98,20 @@ public class Matrix
         U = Duplicate();
 
         pi = new int[rows];
-        for (int i = 0; i < rows; i++)
+        for (var i = 0; i < rows; i++)
         {
             pi[i] = i;
         }
 
         double p = 0;
         double pom2;
-        int k0 = 0;
-        int pom1 = 0;
+        var k0 = 0;
+        var pom1 = 0;
 
-        for (int k = 0; k < cols - 1; k++)
+        for (var k = 0; k < cols - 1; k++)
         {
             p = 0;
-            for (int i = k; i < rows; i++) // find the row with the biggest pivot
+            for (var i = k; i < rows; i++) // find the row with the biggest pivot
             {
                 if (Math.Abs(U[i, k]) > p)
                 {
@@ -118,16 +119,21 @@ public class Matrix
                     k0 = i;
                 }
             }
+
             if (p == 0) // samé nuly ve sloupci
             {
                 throw new MException("The matrix is singular!");
             }
 
-            pom1 = pi[k]; pi[k] = pi[k0]; pi[k0] = pom1; // switch two rows in permutation matrix
+            pom1 = pi[k];
+            pi[k] = pi[k0];
+            pi[k0] = pom1; // switch two rows in permutation matrix
 
-            for (int i = 0; i < k; i++)
+            for (var i = 0; i < k; i++)
             {
-                pom2 = L[k, i]; L[k, i] = L[k0, i]; L[k0, i] = pom2;
+                pom2 = L[k, i];
+                L[k, i] = L[k0, i];
+                L[k0, i] = pom2;
             }
 
             if (k != k0)
@@ -135,22 +141,23 @@ public class Matrix
                 detOfP *= -1;
             }
 
-            for (int i = 0; i < cols; i++) // Switch rows in U
+            for (var i = 0; i < cols; i++) // Switch rows in U
             {
-                pom2 = U[k, i]; U[k, i] = U[k0, i]; U[k0, i] = pom2;
+                pom2 = U[k, i];
+                U[k, i] = U[k0, i];
+                U[k0, i] = pom2;
             }
 
-            for (int i = k + 1; i < rows; i++)
+            for (var i = k + 1; i < rows; i++)
             {
                 L[i, k] = U[i, k] / U[k, k];
-                for (int j = k; j < cols; j++)
+                for (var j = k; j < cols; j++)
                 {
-                    U[i, j] = U[i, j] - L[i, k] * U[k, j];
+                    U[i, j] -= L[i, k] * U[k, j];
                 }
             }
         }
     }
-
 
     public Matrix SolveWith(Matrix v) // Function solves Ax = v in confirmity with solution vector "v"
     {
@@ -170,13 +177,13 @@ public class Matrix
         }
 
         Matrix b = new(rows, 1);
-        for (int i = 0; i < rows; i++)
+        for (var i = 0; i < rows; i++)
         {
             b[i, 0] = v[pi[i], 0]; // switch two items in "v" due to permutation matrix
         }
 
-        Matrix z = SubsForth(L, b);
-        Matrix x = SubsBack(U, z);
+        var z = SubsForth(L, b);
+        var x = SubsBack(U, z);
 
         return x;
     }
@@ -190,16 +197,16 @@ public class Matrix
 
         Matrix inv = new(rows, cols);
 
-        for (int i = 0; i < rows; i++)
+        for (var i = 0; i < rows; i++)
         {
-            Matrix Ei = ZeroMatrix(rows, 1);
+            var Ei = ZeroMatrix(rows, 1);
             Ei[i, 0] = 1;
-            Matrix col = SolveWith(Ei);
+            var col = SolveWith(Ei);
             inv.SetCol(col, i);
         }
+
         return inv;
     }
-
 
     public double Det() // Function for determinant
     {
@@ -208,8 +215,8 @@ public class Matrix
             MakeLU();
         }
 
-        double det = detOfP;
-        for (int i = 0; i < rows; i++)
+        var det = detOfP;
+        for (var i = 0; i < rows; i++)
         {
             det *= U[i, i];
         }
@@ -224,8 +231,8 @@ public class Matrix
             MakeLU();
         }
 
-        Matrix matrix = ZeroMatrix(rows, cols);
-        for (int i = 0; i < rows; i++)
+        var matrix = ZeroMatrix(rows, cols);
+        for (var i = 0; i < rows; i++)
         {
             matrix[pi[i], i] = 1;
         }
@@ -236,9 +243,9 @@ public class Matrix
     public Matrix Duplicate() // Function returns the copy of this matrix
     {
         Matrix matrix = new(rows, cols);
-        for (int i = 0; i < rows; i++)
+        for (var i = 0; i < rows; i++)
         {
-            for (int j = 0; j < cols; j++)
+            for (var j = 0; j < cols; j++)
             {
                 matrix[i, j] = mat[i, j];
             }
@@ -254,19 +261,20 @@ public class Matrix
             A.MakeLU();
         }
 
-        int n = A.rows;
+        var n = A.rows;
         Matrix x = new(n, 1);
 
-        for (int i = 0; i < n; i++)
+        for (var i = 0; i < n; i++)
         {
             x[i, 0] = b[i, 0];
-            for (int j = 0; j < i; j++)
+            for (var j = 0; j < i; j++)
             {
                 x[i, 0] -= A[i, j] * x[j, 0];
             }
 
-            x[i, 0] = x[i, 0] / A[i, i];
+            x[i, 0] /= A[i, i];
         }
+
         return x;
     }
 
@@ -277,28 +285,29 @@ public class Matrix
             A.MakeLU();
         }
 
-        int n = A.rows;
+        var n = A.rows;
         Matrix x = new(n, 1);
 
-        for (int i = n - 1; i > -1; i--)
+        for (var i = n - 1; i > -1; i--)
         {
             x[i, 0] = b[i, 0];
-            for (int j = n - 1; j > i; j--)
+            for (var j = n - 1; j > i; j--)
             {
                 x[i, 0] -= A[i, j] * x[j, 0];
             }
 
-            x[i, 0] = x[i, 0] / A[i, i];
+            x[i, 0] /= A[i, i];
         }
+
         return x;
     }
 
     public static Matrix ZeroMatrix(int iRows, int iCols) // Function generates the zero matrix
     {
         Matrix matrix = new(iRows, iCols);
-        for (int i = 0; i < iRows; i++)
+        for (var i = 0; i < iRows; i++)
         {
-            for (int j = 0; j < iCols; j++)
+            for (var j = 0; j < iCols; j++)
             {
                 matrix[i, j] = 0;
             }
@@ -309,8 +318,8 @@ public class Matrix
 
     public static Matrix IdentityMatrix(int iRows, int iCols) // Function generates the identity matrix
     {
-        Matrix matrix = ZeroMatrix(iRows, iCols);
-        for (int i = 0; i < Math.Min(iRows, iCols); i++)
+        var matrix = ZeroMatrix(iRows, iCols);
+        for (var i = 0; i < Math.Min(iRows, iCols); i++)
         {
             matrix[i, i] = 1;
         }
@@ -322,9 +331,9 @@ public class Matrix
     {
         Random random = new();
         Matrix matrix = new(iRows, iCols);
-        for (int i = 0; i < iRows; i++)
+        for (var i = 0; i < iRows; i++)
         {
-            for (int j = 0; j < iCols; j++)
+            for (var j = 0; j < iCols; j++)
             {
                 matrix[i, j] = random.Next(-dispersion, dispersion);
             }
@@ -335,46 +344,51 @@ public class Matrix
 
     public static Matrix Parse(string ps) // Function parses the matrix from string
     {
-        string s = NormalizeMatrixString(ps);
-        string[] rows = Regex.Split(s, "\r\n");
-        string[] nums = rows[0].Split(' ');
+        var s = NormalizeMatrixString(ps);
+        var rows = Regex.Split(s, "\r\n");
+        var nums = rows[0].Split(' ');
         Matrix matrix = new(rows.Length, nums.Length);
         try
         {
-            for (int i = 0; i < rows.Length; i++)
+            for (var i = 0; i < rows.Length; i++)
             {
                 nums = rows[i].Split(' ');
-                for (int j = 0; j < nums.Length; j++)
+                for (var j = 0; j < nums.Length; j++)
                 {
                     matrix[i, j] = double.Parse(nums[j]);
                 }
             }
         }
-        catch (FormatException) { throw new MException("Wrong input format!"); }
+        catch (FormatException)
+        {
+            throw new MException("Wrong input format!");
+        }
+
         return matrix;
     }
 
     public override string ToString() // Function returns matrix as a string
     {
-        string s = "";
-        for (int i = 0; i < rows; i++)
+        var s = new StringBuilder();
+        for (var i = 0; i < rows; i++)
         {
-            for (int j = 0; j < cols; j++)
+            for (var j = 0; j < cols; j++)
             {
-                s += $"{$"{mat[i, j],5:0.00}"} ";
+                s.Append($"{mat[i, j],5:0.00} ");
             }
 
-            s += "\r\n";
+            s.Append("\r\n");
         }
-        return s;
+
+        return s.ToString();
     }
 
     public static Matrix Transpose(Matrix m) // Matrix transpose, for any rectangular matrix
     {
         Matrix t = new(m.cols, m.rows);
-        for (int i = 0; i < m.rows; i++)
+        for (var i = 0; i < m.rows; i++)
         {
-            for (int j = 0; j < m.cols; j++)
+            for (var j = 0; j < m.cols; j++)
             {
                 t[j, i] = m[i, j];
             }
@@ -385,29 +399,25 @@ public class Matrix
 
     public static Matrix Power(Matrix m, int pow) // Power matrix to exponent
     {
-        if (pow == 0)
+        switch (pow)
         {
-            return IdentityMatrix(m.rows, m.cols);
-        }
-
-        if (pow == 1)
-        {
-            return m.Duplicate();
-        }
-
-        if (pow == -1)
-        {
-            return m.Invert();
+            case 0:  return IdentityMatrix(m.rows, m.cols);
+            case 1:  return m.Duplicate();
+            case -1: return m.Invert();
         }
 
         Matrix x;
-        if (pow < 0) { x = m.Invert(); pow *= -1; }
+        if (pow < 0)
+        {
+            x = m.Invert();
+            pow *= -1;
+        }
         else
         {
             x = m.Duplicate();
         }
 
-        Matrix ret = IdentityMatrix(m.rows, m.cols);
+        var ret = IdentityMatrix(m.rows, m.cols);
         while (pow != 0)
         {
             if ((pow & 1) == 1)
@@ -418,14 +428,23 @@ public class Matrix
             x *= x;
             pow >>= 1;
         }
+
         return ret;
     }
 
-    private static void SafeAplusBintoC(Matrix A, int xa, int ya, Matrix B, int xb, int yb, Matrix C, int size)
+    private static void SafeAplusBintoC(
+        Matrix A,
+        int xa,
+        int ya,
+        Matrix B,
+        int xb,
+        int yb,
+        Matrix C,
+        int size)
     {
-        for (int i = 0; i < size; i++)     // rows
+        for (var i = 0; i < size; i++) // rows
         {
-            for (int j = 0; j < size; j++) // cols
+            for (var j = 0; j < size; j++) // cols
             {
                 C[i, j] = 0;
                 if (xa + j < A.cols && ya + i < A.rows)
@@ -441,11 +460,19 @@ public class Matrix
         }
     }
 
-    private static void SafeAminusBintoC(Matrix A, int xa, int ya, Matrix B, int xb, int yb, Matrix C, int size)
+    private static void SafeAminusBintoC(
+        Matrix A,
+        int xa,
+        int ya,
+        Matrix B,
+        int xb,
+        int yb,
+        Matrix C,
+        int size)
     {
-        for (int i = 0; i < size; i++)     // rows
+        for (var i = 0; i < size; i++) // rows
         {
-            for (int j = 0; j < size; j++) // cols
+            for (var j = 0; j < size; j++) // cols
             {
                 C[i, j] = 0;
                 if (xa + j < A.cols && ya + i < A.rows)
@@ -461,11 +488,16 @@ public class Matrix
         }
     }
 
-    private static void SafeACopytoC(Matrix A, int xa, int ya, Matrix C, int size)
+    private static void SafeACopytoC(
+        Matrix A,
+        int xa,
+        int ya,
+        Matrix C,
+        int size)
     {
-        for (int i = 0; i < size; i++)     // rows
+        for (var i = 0; i < size; i++) // rows
         {
-            for (int j = 0; j < size; j++) // cols
+            for (var j = 0; j < size; j++) // cols
             {
                 C[i, j] = 0;
                 if (xa + j < A.cols && ya + i < A.rows)
@@ -476,33 +508,54 @@ public class Matrix
         }
     }
 
-    private static void AplusBintoC(Matrix A, int xa, int ya, Matrix B, int xb, int yb, Matrix C, int size)
+    private static void AplusBintoC(
+        Matrix A,
+        int xa,
+        int ya,
+        Matrix B,
+        int xb,
+        int yb,
+        Matrix C,
+        int size)
     {
-        for (int i = 0; i < size; i++) // rows
+        for (var i = 0; i < size; i++) // rows
         {
-            for (int j = 0; j < size; j++)
+            for (var j = 0; j < size; j++)
             {
                 C[i, j] = A[ya + i, xa + j] + B[yb + i, xb + j];
             }
         }
     }
 
-    private static void AminusBintoC(Matrix A, int xa, int ya, Matrix B, int xb, int yb, Matrix C, int size)
+    private static void AminusBintoC(
+        Matrix A,
+        int xa,
+        int ya,
+        Matrix B,
+        int xb,
+        int yb,
+        Matrix C,
+        int size)
     {
-        for (int i = 0; i < size; i++) // rows
+        for (var i = 0; i < size; i++) // rows
         {
-            for (int j = 0; j < size; j++)
+            for (var j = 0; j < size; j++)
             {
                 C[i, j] = A[ya + i, xa + j] - B[yb + i, xb + j];
             }
         }
     }
 
-    private static void ACopytoC(Matrix A, int xa, int ya, Matrix C, int size)
+    private static void ACopytoC(
+        Matrix A,
+        int xa,
+        int ya,
+        Matrix C,
+        int size)
     {
-        for (int i = 0; i < size; i++) // rows
+        for (var i = 0; i < size; i++) // rows
         {
-            for (int j = 0; j < size; j++)
+            for (var j = 0; j < size; j++)
             {
                 C[i, j] = A[ya + i, xa + j];
             }
@@ -518,16 +571,16 @@ public class Matrix
 
         Matrix R;
 
-        int msize = Math.Max(Math.Max(A.rows, A.cols), Math.Max(B.rows, B.cols));
+        var msize = Math.Max(Math.Max(A.rows, A.cols), Math.Max(B.rows, B.cols));
 
         if (msize < 32)
         {
             R = ZeroMatrix(A.rows, B.cols);
-            for (int i = 0; i < R.rows; i++)
+            for (var i = 0; i < R.rows; i++)
             {
-                for (int j = 0; j < R.cols; j++)
+                for (var j = 0; j < R.cols; j++)
                 {
-                    for (int k = 0; k < A.cols; k++)
+                    for (var k = 0; k < A.cols; k++)
                     {
                         R[i, j] += A[i, k] * B[k, j];
                     }
@@ -537,12 +590,18 @@ public class Matrix
             return R;
         }
 
-        int size = 1; int n = 0;
-        while (msize > size) { size *= 2; n++; };
-        int h = size / 2;
+        var size = 1;
+        var n = 0;
+        while (msize > size)
+        {
+            size *= 2;
+            n++;
+        }
 
+        ;
+        var h = size / 2;
 
-        Matrix[,] mField = new Matrix[n, 9];
+        var mField = new Matrix[n, 9];
 
         /*
          *  8x8, 8x8, 8x8, ...
@@ -552,76 +611,166 @@ public class Matrix
          */
 
         int z;
-        for (int i = 0; i < n - 4; i++) // rows
+        for (var i = 0; i < n - 4; i++) // rows
         {
             z = (int)Math.Pow(2, n - i - 1);
-            for (int j = 0; j < 9; j++)
+            for (var j = 0; j < 9; j++)
             {
                 mField[i, j] = new(z, z);
             }
         }
 
-        SafeAplusBintoC(A, 0, 0, A, h, h, mField[0, 0], h);
-        SafeAplusBintoC(B, 0, 0, B, h, h, mField[0, 1], h);
+        SafeAplusBintoC(
+            A,
+            0,
+            0,
+            A,
+            h,
+            h,
+            mField[0, 0],
+            h);
+
+        SafeAplusBintoC(
+            B,
+            0,
+            0,
+            B,
+            h,
+            h,
+            mField[0, 1],
+            h);
+
         StrassenMultiplyRun(mField[0, 0], mField[0, 1], mField[0, 1 + 1], 1, mField); // (A11 + A22) * (B11 + B22);
 
-        SafeAplusBintoC(A, 0, h, A, h, h, mField[0, 0], h);
+        SafeAplusBintoC(
+            A,
+            0,
+            h,
+            A,
+            h,
+            h,
+            mField[0, 0],
+            h);
+
         SafeACopytoC(B, 0, 0, mField[0, 1], h);
         StrassenMultiplyRun(mField[0, 0], mField[0, 1], mField[0, 1 + 2], 1, mField); // (A21 + A22) * B11;
 
         SafeACopytoC(A, 0, 0, mField[0, 0], h);
-        SafeAminusBintoC(B, h, 0, B, h, h, mField[0, 1], h);
+        SafeAminusBintoC(
+            B,
+            h,
+            0,
+            B,
+            h,
+            h,
+            mField[0, 1],
+            h);
+
         StrassenMultiplyRun(mField[0, 0], mField[0, 1], mField[0, 1 + 3], 1, mField); //A11 * (B12 - B22);
 
         SafeACopytoC(A, h, h, mField[0, 0], h);
-        SafeAminusBintoC(B, 0, h, B, 0, 0, mField[0, 1], h);
+        SafeAminusBintoC(
+            B,
+            0,
+            h,
+            B,
+            0,
+            0,
+            mField[0, 1],
+            h);
+
         StrassenMultiplyRun(mField[0, 0], mField[0, 1], mField[0, 1 + 4], 1, mField); //A22 * (B21 - B11);
 
-        SafeAplusBintoC(A, 0, 0, A, h, 0, mField[0, 0], h);
+        SafeAplusBintoC(
+            A,
+            0,
+            0,
+            A,
+            h,
+            0,
+            mField[0, 0],
+            h);
+
         SafeACopytoC(B, h, h, mField[0, 1], h);
         StrassenMultiplyRun(mField[0, 0], mField[0, 1], mField[0, 1 + 5], 1, mField); //(A11 + A12) * B22;
 
-        SafeAminusBintoC(A, 0, h, A, 0, 0, mField[0, 0], h);
-        SafeAplusBintoC(B, 0, 0, B, h, 0, mField[0, 1], h);
+        SafeAminusBintoC(
+            A,
+            0,
+            h,
+            A,
+            0,
+            0,
+            mField[0, 0],
+            h);
+
+        SafeAplusBintoC(
+            B,
+            0,
+            0,
+            B,
+            h,
+            0,
+            mField[0, 1],
+            h);
+
         StrassenMultiplyRun(mField[0, 0], mField[0, 1], mField[0, 1 + 6], 1, mField); //(A21 - A11) * (B11 + B12);
 
-        SafeAminusBintoC(A, h, 0, A, h, h, mField[0, 0], h);
-        SafeAplusBintoC(B, 0, h, B, h, h, mField[0, 1], h);
+        SafeAminusBintoC(
+            A,
+            h,
+            0,
+            A,
+            h,
+            h,
+            mField[0, 0],
+            h);
+
+        SafeAplusBintoC(
+            B,
+            0,
+            h,
+            B,
+            h,
+            h,
+            mField[0, 1],
+            h);
+
         StrassenMultiplyRun(mField[0, 0], mField[0, 1], mField[0, 1 + 7], 1, mField); // (A12 - A22) * (B21 + B22);
 
         R = new(A.rows, B.cols); // result
 
         /// C11
-        for (int i = 0; i < Math.Min(h, R.rows); i++)     // rows
+        for (var i = 0; i < Math.Min(h, R.rows); i++) // rows
         {
-            for (int j = 0; j < Math.Min(h, R.cols); j++) // cols
+            for (var j = 0; j < Math.Min(h, R.cols); j++) // cols
             {
                 R[i, j] = mField[0, 1 + 1][i, j] + mField[0, 1 + 4][i, j] - mField[0, 1 + 5][i, j] + mField[0, 1 + 7][i, j];
             }
         }
 
         /// C12
-        for (int i = 0; i < Math.Min(h, R.rows); i++)         // rows
+        for (var i = 0; i < Math.Min(h, R.rows); i++) // rows
         {
-            for (int j = h; j < Math.Min(2 * h, R.cols); j++) // cols
+            for (var j = h; j < Math.Min(2 * h, R.cols); j++) // cols
             {
                 R[i, j] = mField[0, 1 + 3][i, j - h] + mField[0, 1 + 5][i, j - h];
             }
         }
 
         /// C21
-        for (int i = h; i < Math.Min(2 * h, R.rows); i++) // rows
+        for (var i = h; i < Math.Min(2 * h, R.rows); i++) // rows
         {
-            for (int j = 0; j < Math.Min(h, R.cols); j++) // cols
+            for (var j = 0; j < Math.Min(h, R.cols); j++) // cols
             {
                 R[i, j] = mField[0, 1 + 2][i - h, j] + mField[0, 1 + 4][i - h, j];
             }
         }
 
         /// C22
-        for (int i = h; i < Math.Min(2 * h, R.rows); i++)     // rows
+        for (var i = h; i < Math.Min(2 * h, R.rows); i++) // rows
         {
-            for (int j = h; j < Math.Min(2 * h, R.cols); j++) // cols
+            for (var j = h; j < Math.Min(2 * h, R.cols); j++) // cols
             {
                 R[i, j] = mField[0, 1 + 1][i - h, j - h] - mField[0, 1 + 2][i - h, j - h] + mField[0, 1 + 3][i - h, j - h] + mField[0, 1 + 6][i - h, j - h];
             }
@@ -632,19 +781,24 @@ public class Matrix
 
     // function for square matrix 2^N x 2^N
 
-    private static void StrassenMultiplyRun(Matrix A, Matrix B, Matrix C, int l, Matrix[,] f) // A * B into C, level of recursion, matrix field
+    private static void StrassenMultiplyRun(
+        Matrix A,
+        Matrix B,
+        Matrix C,
+        int l,
+        Matrix[,] f) // A * B into C, level of recursion, matrix field
     {
-        int size = A.rows;
-        int h = size / 2;
+        var size = A.rows;
+        var h = size / 2;
 
         if (size < 32)
         {
-            for (int i = 0; i < C.rows; i++)
+            for (var i = 0; i < C.rows; i++)
             {
-                for (int j = 0; j < C.cols; j++)
+                for (var j = 0; j < C.cols; j++)
                 {
                     C[i, j] = 0;
-                    for (int k = 0; k < A.cols; k++)
+                    for (var k = 0; k < A.cols; k++)
                     {
                         C[i, j] += A[i, k] * B[k, j];
                     }
@@ -654,65 +808,155 @@ public class Matrix
             return;
         }
 
-        AplusBintoC(A, 0, 0, A, h, h, f[l, 0], h);
-        AplusBintoC(B, 0, 0, B, h, h, f[l, 1], h);
+        AplusBintoC(
+            A,
+            0,
+            0,
+            A,
+            h,
+            h,
+            f[l, 0],
+            h);
+
+        AplusBintoC(
+            B,
+            0,
+            0,
+            B,
+            h,
+            h,
+            f[l, 1],
+            h);
+
         StrassenMultiplyRun(f[l, 0], f[l, 1], f[l, 1 + 1], l + 1, f); // (A11 + A22) * (B11 + B22);
 
-        AplusBintoC(A, 0, h, A, h, h, f[l, 0], h);
+        AplusBintoC(
+            A,
+            0,
+            h,
+            A,
+            h,
+            h,
+            f[l, 0],
+            h);
+
         ACopytoC(B, 0, 0, f[l, 1], h);
         StrassenMultiplyRun(f[l, 0], f[l, 1], f[l, 1 + 2], l + 1, f); // (A21 + A22) * B11;
 
         ACopytoC(A, 0, 0, f[l, 0], h);
-        AminusBintoC(B, h, 0, B, h, h, f[l, 1], h);
+        AminusBintoC(
+            B,
+            h,
+            0,
+            B,
+            h,
+            h,
+            f[l, 1],
+            h);
+
         StrassenMultiplyRun(f[l, 0], f[l, 1], f[l, 1 + 3], l + 1, f); //A11 * (B12 - B22);
 
         ACopytoC(A, h, h, f[l, 0], h);
-        AminusBintoC(B, 0, h, B, 0, 0, f[l, 1], h);
+        AminusBintoC(
+            B,
+            0,
+            h,
+            B,
+            0,
+            0,
+            f[l, 1],
+            h);
+
         StrassenMultiplyRun(f[l, 0], f[l, 1], f[l, 1 + 4], l + 1, f); //A22 * (B21 - B11);
 
-        AplusBintoC(A, 0, 0, A, h, 0, f[l, 0], h);
+        AplusBintoC(
+            A,
+            0,
+            0,
+            A,
+            h,
+            0,
+            f[l, 0],
+            h);
+
         ACopytoC(B, h, h, f[l, 1], h);
         StrassenMultiplyRun(f[l, 0], f[l, 1], f[l, 1 + 5], l + 1, f); //(A11 + A12) * B22;
 
-        AminusBintoC(A, 0, h, A, 0, 0, f[l, 0], h);
-        AplusBintoC(B, 0, 0, B, h, 0, f[l, 1], h);
+        AminusBintoC(
+            A,
+            0,
+            h,
+            A,
+            0,
+            0,
+            f[l, 0],
+            h);
+
+        AplusBintoC(
+            B,
+            0,
+            0,
+            B,
+            h,
+            0,
+            f[l, 1],
+            h);
+
         StrassenMultiplyRun(f[l, 0], f[l, 1], f[l, 1 + 6], l + 1, f); //(A21 - A11) * (B11 + B12);
 
-        AminusBintoC(A, h, 0, A, h, h, f[l, 0], h);
-        AplusBintoC(B, 0, h, B, h, h, f[l, 1], h);
+        AminusBintoC(
+            A,
+            h,
+            0,
+            A,
+            h,
+            h,
+            f[l, 0],
+            h);
+
+        AplusBintoC(
+            B,
+            0,
+            h,
+            B,
+            h,
+            h,
+            f[l, 1],
+            h);
+
         StrassenMultiplyRun(f[l, 0], f[l, 1], f[l, 1 + 7], l + 1, f); // (A12 - A22) * (B21 + B22);
 
         /// C11
-        for (int i = 0; i < h; i++)     // rows
+        for (var i = 0; i < h; i++) // rows
         {
-            for (int j = 0; j < h; j++) // cols
+            for (var j = 0; j < h; j++) // cols
             {
                 C[i, j] = f[l, 1 + 1][i, j] + f[l, 1 + 4][i, j] - f[l, 1 + 5][i, j] + f[l, 1 + 7][i, j];
             }
         }
 
         /// C12
-        for (int i = 0; i < h; i++)        // rows
+        for (var i = 0; i < h; i++) // rows
         {
-            for (int j = h; j < size; j++) // cols
+            for (var j = h; j < size; j++) // cols
             {
                 C[i, j] = f[l, 1 + 3][i, j - h] + f[l, 1 + 5][i, j - h];
             }
         }
 
         /// C21
-        for (int i = h; i < size; i++)  // rows
+        for (var i = h; i < size; i++) // rows
         {
-            for (int j = 0; j < h; j++) // cols
+            for (var j = 0; j < h; j++) // cols
             {
                 C[i, j] = f[l, 1 + 2][i - h, j] + f[l, 1 + 4][i - h, j];
             }
         }
 
         /// C22
-        for (int i = h; i < size; i++)     // rows
+        for (var i = h; i < size; i++) // rows
         {
-            for (int j = h; j < size; j++) // cols
+            for (var j = h; j < size; j++) // cols
             {
                 C[i, j] = f[l, 1 + 1][i - h, j - h] - f[l, 1 + 2][i - h, j - h] + f[l, 1 + 3][i - h, j - h] + f[l, 1 + 6][i - h, j - h];
             }
@@ -726,12 +970,12 @@ public class Matrix
             throw new MException("Wrong dimensions of matrix!");
         }
 
-        Matrix result = ZeroMatrix(m1.rows, m2.cols);
-        for (int i = 0; i < result.rows; i++)
+        var result = ZeroMatrix(m1.rows, m2.cols);
+        for (var i = 0; i < result.rows; i++)
         {
-            for (int j = 0; j < result.cols; j++)
+            for (var j = 0; j < result.cols; j++)
             {
-                for (int k = 0; k < m1.cols; k++)
+                for (var k = 0; k < m1.cols; k++)
                 {
                     result[i, j] += m1[i, k] * m2[k, j];
                 }
@@ -740,12 +984,13 @@ public class Matrix
 
         return result;
     }
+
     private static Matrix Multiply(double n, Matrix m) // Multiplication by constant n
     {
         Matrix r = new(m.rows, m.cols);
-        for (int i = 0; i < m.rows; i++)
+        for (var i = 0; i < m.rows; i++)
         {
-            for (int j = 0; j < m.cols; j++)
+            for (var j = 0; j < m.cols; j++)
             {
                 r[i, j] = m[i, j] * n;
             }
@@ -753,6 +998,7 @@ public class Matrix
 
         return r;
     }
+
     private static Matrix Add(Matrix m1, Matrix m2) // Sčítání matic
     {
         if (m1.rows != m2.rows || m1.cols != m2.cols)
@@ -761,9 +1007,9 @@ public class Matrix
         }
 
         Matrix r = new(m1.rows, m1.cols);
-        for (int i = 0; i < r.rows; i++)
+        for (var i = 0; i < r.rows; i++)
         {
-            for (int j = 0; j < r.cols; j++)
+            for (var j = 0; j < r.cols; j++)
             {
                 r[i, j] = m1[i, j] + m2[i, j];
             }
@@ -775,7 +1021,7 @@ public class Matrix
     public static string NormalizeMatrixString(string matStr) // From Andy - thank you! :)
     {
         // Remove any multiple spaces
-        while (matStr.IndexOf("  ") != -1)
+        while (matStr.IndexOf("  ", StringComparison.Ordinal) != -1)
         {
             matStr = matStr.Replace("  ", " ");
         }
@@ -788,7 +1034,7 @@ public class Matrix
         // Make it easier by first replacing \r\n’s with |’s then
         // restore the |’s with \r\n’s
         matStr = matStr.Replace("\r\n", "|");
-        while (matStr.LastIndexOf("|") == matStr.Length - 1)
+        while (matStr.LastIndexOf("|", StringComparison.Ordinal) == matStr.Length - 1)
         {
             matStr = matStr[..^1];
         }
@@ -799,27 +1045,20 @@ public class Matrix
 
     //   O P E R A T O R S
 
-    public static Matrix operator -(Matrix m)
-    { return Multiply(-1, m); }
+    public static Matrix operator -(Matrix m) => Multiply(-1, m);
 
-    public static Matrix operator +(Matrix m1, Matrix m2)
-    { return Add(m1, m2); }
+    public static Matrix operator +(Matrix m1, Matrix m2) => Add(m1, m2);
 
-    public static Matrix operator -(Matrix m1, Matrix m2)
-    { return Add(m1, -m2); }
+    public static Matrix operator -(Matrix m1, Matrix m2) => Add(m1, -m2);
 
-    public static Matrix operator *(Matrix m1, Matrix m2)
-    { return StrassenMultiply(m1, m2); }
+    public static Matrix operator *(Matrix m1, Matrix m2) => StrassenMultiply(m1, m2);
 
-    public static Matrix operator *(double n, Matrix m)
-    { return Multiply(n, m); }
+    public static Matrix operator *(double n, Matrix m) => Multiply(n, m);
 }
 
 //  The class for exceptions
 
 public class MException : Exception
 {
-    public MException(string Message)
-        : base(Message)
-    { }
+    public MException(string Message) : base(Message) { }
 }
