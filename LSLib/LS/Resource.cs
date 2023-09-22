@@ -76,7 +76,7 @@ public struct LSBHeader
     /// <summary>
     /// LSB file signature since BG3
     /// </summary>
-    public static readonly byte[] SignatureBG3 = new byte[] { 0x4C, 0x53, 0x46, 0x4D };
+    public static readonly byte[] SignatureBG3 = "LSFM"u8.ToArray();
 
     /// <summary>
     /// LSB signature up to FW3 (DOS2 DE)
