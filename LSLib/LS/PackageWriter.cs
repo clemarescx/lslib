@@ -58,7 +58,7 @@ public class PackageWriter : IDisposable
             _streams.Add(nextPart);
         }
 
-        Stream stream = _streams.Last();
+        Stream stream = _streams[^1];
         var packaged = new PackagedFileInfo
         {
             PackageStream = stream,

@@ -429,7 +429,7 @@ public class Exporter
                     throw new ExportException($"Skeleton source file should contain exactly one skeleton. Skeleton Count: '{Root.Skeletons.Count}'.");
                 }
 
-                var skeleton = Root.Skeletons.First();
+                var skeleton = Root.Skeletons[0];
 
                 // Generate a dummy model if there isn't one, otherwise we won't
                 // be able to bind the animations to anything
@@ -688,7 +688,7 @@ public class Exporter
             {
                 foreach (var model in Root.Models)
                 {
-                    model.Skeleton = Root.Skeletons.First();
+                    model.Skeleton = Root.Skeletons[0];
                 }
             }
             else

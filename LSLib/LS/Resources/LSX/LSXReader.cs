@@ -137,7 +137,7 @@ public class LSXReader : ILSReader
                     // New node under the current parent
                     node = new()
                     {
-                        Parent = stack.Last()
+                        Parent = stack[^1]
                     };
                 }
 
@@ -199,7 +199,7 @@ public class LSXReader : ILSReader
                     ReadTranslatedFSString(fs);
                 }
 
-                stack.Last().Attributes.Add(attrName, attr);
+                stack[^1].Attributes.Add(attrName, attr);
                 break;
 
             case "children":

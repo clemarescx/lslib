@@ -155,7 +155,7 @@ public class ColladaImporter
 
             if (collada.asset.contributor != null && collada.asset.contributor.Length > 0)
             {
-                var contributor = collada.asset.contributor.First();
+                var contributor = collada.asset.contributor[0];
                 if (contributor.authoring_tool != null)
                     toolInfo.FromArtToolName = contributor.authoring_tool;
             }

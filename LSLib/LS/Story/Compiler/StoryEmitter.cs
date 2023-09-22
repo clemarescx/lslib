@@ -1235,12 +1235,12 @@ public class StoryEmitter
             {
                 Id = osiRule.Index,
                 GoalId = (uint)Story.Goals.Count,
-                Name = (rule.Conditions.First() as IRFuncCondition).Func.Name.ToString(),
+                Name = (rule.Conditions[0] as IRFuncCondition).Func.Name.ToString(),
                 Variables = new(),
                 Actions = new(),
                 ConditionsStartLine = (uint)rule.Location.StartLine,
-                ConditionsEndLine = (uint)rule.Conditions.Last().Location.EndLine,
-                ActionsStartLine = (uint)rule.Actions.First().Location.StartLine,
+                ConditionsEndLine = (uint)rule.Conditions[^1].Location.EndLine,
+                ActionsStartLine = (uint)rule.Actions[0].Location.StartLine,
                 ActionsEndLine = (uint)rule.Location.EndLine
             };
                 
