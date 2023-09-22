@@ -42,7 +42,7 @@ public sealed class PackageReader : IDisposable
             return;
         }
 
-        foreach (Stream stream in _streams)
+        foreach (var stream in _streams)
         {
             stream.Dispose();
         }
@@ -56,7 +56,7 @@ public sealed class PackageReader : IDisposable
 
         for (var part = 1; part < numParts; part++)
         {
-            string partPath = Package.MakePartFilename(_path, part);
+            var partPath = Package.MakePartFilename(_path, part);
             _streams[part] = File.Open(partPath, FileMode.Open, FileAccess.Read, FileShare.Read);
         }
     }
@@ -129,7 +129,7 @@ public sealed class PackageReader : IDisposable
 
         if (header.Version != (ulong) PackageVersion.V13)
         {
-            string msg = $"Unsupported package version {header.Version}; this package layout is only supported for {PackageVersion.V13}";
+            var msg = $"Unsupported package version {header.Version}; this package layout is only supported for {PackageVersion.V13}";
             throw new InvalidDataException(msg);
         }
 
@@ -144,15 +144,15 @@ public sealed class PackageReader : IDisposable
 
         OpenStreams(mainStream, header.NumParts);
         mainStream.Seek(header.FileListOffset, SeekOrigin.Begin);
-        int numFiles = reader.ReadInt32();
-        int fileBufferSize = Marshal.SizeOf(typeof(FileEntry13)) * numFiles;
-        byte[] compressedFileList = reader.ReadBytes((int) header.FileListSize - 4);
+        var numFiles = reader.ReadInt32();
+        var fileBufferSize = Marshal.SizeOf(typeof(FileEntry13)) * numFiles;
+        var compressedFileList = reader.ReadBytes((int) header.FileListSize - 4);
 
         var uncompressedList = new byte[fileBufferSize];
-        int uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, true);
+        var uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, true);
         if (uncompressedSize != fileBufferSize)
         {
-            string msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
+            var msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
             throw new InvalidDataException(msg);
         }
 
@@ -165,14 +165,12 @@ public sealed class PackageReader : IDisposable
         if ((package.Metadata.Flags & PackageFlags.Solid) == PackageFlags.Solid && numFiles > 0)
         {
             // Calculate compressed frame offset and bounds
-            uint totalUncompressedSize = 0;
             uint totalSizeOnDisk = 0;
-            uint firstOffset = 0xffffffff;
+            var firstOffset = 0xffffffff;
             uint lastOffset = 0;
 
             foreach (var entry in entries)
             {
-                totalUncompressedSize += entry.UncompressedSize;
                 totalSizeOnDisk += entry.SizeOnDisk;
                 if (entry.OffsetInFile < firstOffset)
                 {
@@ -186,16 +184,16 @@ public sealed class PackageReader : IDisposable
 
             if (firstOffset != 7 || lastOffset - firstOffset != totalSizeOnDisk)
             {
-                string msg = $"Incorrectly compressed solid archive; offsets {firstOffset}/{lastOffset}, bytes {totalSizeOnDisk}";
+                var msg = $"Incorrectly compressed solid archive; offsets {firstOffset}/{lastOffset}, bytes {totalSizeOnDisk}";
                 throw new InvalidDataException(msg);
             }
 
             // Decompress all files as a single frame (solid)
-            byte[] frame = new byte[lastOffset];
+            var frame = new byte[lastOffset];
             mainStream.Seek(0, SeekOrigin.Begin);
-            mainStream.Read(frame, 0, (int)lastOffset);
+            mainStream.ReadExactly(frame, 0, (int)lastOffset);
 
-            byte[] decompressed = Native.LZ4FrameCompressor.Decompress(frame);
+            var decompressed = Native.LZ4FrameCompressor.Decompress(frame);
             var decompressedStream = new MemoryStream(decompressed);
 
             // Update offsets to point to the decompressed chunk
@@ -228,16 +226,16 @@ public sealed class PackageReader : IDisposable
 
     private void ReadFileListV15(BinaryReader reader, Package package)
     {
-        int numFiles = reader.ReadInt32();
-        int compressedSize = reader.ReadInt32();
-        byte[] compressedFileList = reader.ReadBytes(compressedSize);
+        var numFiles = reader.ReadInt32();
+        var compressedSize = reader.ReadInt32();
+        var compressedFileList = reader.ReadBytes(compressedSize);
 
-        int fileBufferSize = Marshal.SizeOf(typeof(FileEntry15)) * numFiles;
+        var fileBufferSize = Marshal.SizeOf(typeof(FileEntry15)) * numFiles;
         var uncompressedList = new byte[fileBufferSize];
-        int uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, true);
+        var uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, true);
         if (uncompressedSize != fileBufferSize)
         {
-            string msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
+            var msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
             throw new InvalidDataException(msg);
         }
 
@@ -255,16 +253,16 @@ public sealed class PackageReader : IDisposable
 
     private void ReadFileListV18(BinaryReader reader, Package package)
     {
-        int numFiles = reader.ReadInt32();
-        int compressedSize = reader.ReadInt32();
-        byte[] compressedFileList = reader.ReadBytes(compressedSize);
+        var numFiles = reader.ReadInt32();
+        var compressedSize = reader.ReadInt32();
+        var compressedFileList = reader.ReadBytes(compressedSize);
 
-        int fileBufferSize = Marshal.SizeOf(typeof(FileEntry18)) * numFiles;
+        var fileBufferSize = Marshal.SizeOf(typeof(FileEntry18)) * numFiles;
         var uncompressedList = new byte[fileBufferSize];
-        int uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, false);
+        var uncompressedSize = LZ4Codec.Decode(compressedFileList, 0, compressedFileList.Length, uncompressedList, 0, fileBufferSize, false);
         if (uncompressedSize != fileBufferSize)
         {
-            string msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
+            var msg = $"LZ4 compressor disagrees about the size of file headers; expected {fileBufferSize}, got {uncompressedSize}";
             throw new InvalidDataException(msg);
         }
 
@@ -287,7 +285,7 @@ public sealed class PackageReader : IDisposable
 
         if (header.Version != (ulong)PackageVersion.V15)
         {
-            string msg = $"Unsupported package version {header.Version}; this layout is only supported for V15";
+            var msg = $"Unsupported package version {header.Version}; this layout is only supported for V15";
             throw new InvalidDataException(msg);
         }
 
@@ -314,7 +312,7 @@ public sealed class PackageReader : IDisposable
 
         if (header.Version != (ulong)PackageVersion.V16)
         {
-            string msg = $"Unsupported package version {header.Version}; this layout is only supported for V16";
+            var msg = $"Unsupported package version {header.Version}; this layout is only supported for V16";
             throw new InvalidDataException(msg);
         }
 
@@ -341,7 +339,7 @@ public sealed class PackageReader : IDisposable
 
         if (header.Version != (ulong)PackageVersion.V18)
         {
-            string msg = $"Unsupported package version {header.Version}; this layout is only supported for V18";
+            var msg = $"Unsupported package version {header.Version}; this layout is only supported for V18";
             throw new InvalidDataException(msg);
         }
 
@@ -368,8 +366,8 @@ public sealed class PackageReader : IDisposable
         using var reader = new BinaryReader(mainStream, new UTF8Encoding(), true);
         // Check for v13 package headers
         mainStream.Seek(-8, SeekOrigin.End);
-        int headerSize = reader.ReadInt32();
-        byte[] signature = reader.ReadBytes(4);
+        var headerSize = reader.ReadInt32();
+        var signature = reader.ReadBytes(4);
         if (Package.Signature.SequenceEqual(signature))
         {
             mainStream.Seek(-headerSize, SeekOrigin.End);
@@ -383,28 +381,22 @@ public sealed class PackageReader : IDisposable
         if (Package.Signature.SequenceEqual(signature))
         {
             version = reader.ReadInt32();
-            if (version == 10)
+            switch (version)
             {
-                return ReadPackageV10(mainStream, reader);
-            }
-            else if (version == 15)
-            {
-                mainStream.Seek(4, SeekOrigin.Begin);
-                return ReadPackageV15(mainStream, reader);
-            }
-            else if (version == 16)
-            {
-                mainStream.Seek(4, SeekOrigin.Begin);
-                return ReadPackageV16(mainStream, reader);
-            }
-            else if (version == 18)
-            {
-                mainStream.Seek(4, SeekOrigin.Begin);
-                return ReadPackageV18(mainStream, reader);
-            }
-            else
-            {
-                throw new InvalidDataException($"Package version v{version} not supported");
+                case 10: return ReadPackageV10(mainStream, reader);
+                case 15:
+                    mainStream.Seek(4, SeekOrigin.Begin);
+                    return ReadPackageV15(mainStream, reader);
+
+                case 16:
+                    mainStream.Seek(4, SeekOrigin.Begin);
+                    return ReadPackageV16(mainStream, reader);
+
+                case 18:
+                    mainStream.Seek(4, SeekOrigin.Begin);
+                    return ReadPackageV18(mainStream, reader);
+
+                default: throw new InvalidDataException($"Package version v{version} not supported");
             }
         }
 
