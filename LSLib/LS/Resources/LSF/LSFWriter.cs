@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using LSLib.LS.Enums;
 
 namespace LSLib.LS;
 
-public class LSFWriter :ILSWriter
+public sealed class LSFWriter : ILSWriter
 {
     private static int StringHashMapSize = 0x200;
 
@@ -49,22 +50,22 @@ public class LSFWriter :ILSWriter
 
         Meta = resource.Metadata;
 
-        using (Writer = new(Stream, Encoding.Default, true))
-        using (NodeStream = new())
-        using (NodeWriter = new(NodeStream))
-        using (AttributeStream = new())
-        using (AttributeWriter = new(AttributeStream))
-        using (ValueStream = new())
-        using (ValueWriter = new(ValueStream))
+        using (Writer = new BinaryWriter(Stream, Encoding.Default, true))
+        using (NodeStream = new MemoryStream())
+        using (NodeWriter = new BinaryWriter(NodeStream))
+        using (AttributeStream = new MemoryStream())
+        using (AttributeWriter = new BinaryWriter(AttributeStream))
+        using (ValueStream = new MemoryStream())
+        using (ValueWriter = new BinaryWriter(ValueStream))
         {
             NextNodeIndex = 0;
             NextAttributeIndex = 0;
-            NodeIndices = new();
+            NodeIndices = new Dictionary<Node, int>();
             NextSiblingIndices = null;
-            StringHashMap = new(StringHashMapSize);
+            StringHashMap = new List<List<string>>(StringHashMapSize);
             while (StringHashMap.Count < StringHashMapSize)
             {
-                StringHashMap.Add(new());
+                StringHashMap.Add(new List<string>());
             }
 
             if (EncodeSiblingData)
@@ -74,7 +75,7 @@ public class LSFWriter :ILSWriter
 
             WriteRegions(resource);
 
-            byte[] stringBuffer = null;
+            byte[] stringBuffer;
             using (var stringStream = new MemoryStream())
             using (var stringWriter = new BinaryWriter(stringStream))
             {
@@ -92,7 +93,7 @@ public class LSFWriter :ILSWriter
                 Version = (uint)Version
             };
 
-            BinUtils.WriteStruct<LSFMagic>(Writer, ref magic);
+            BinUtils.WriteStruct(Writer, ref magic);
 
             PackedVersion gameVersion = new()
             {
@@ -109,7 +110,7 @@ public class LSFWriter :ILSWriter
                     EngineVersion = gameVersion.ToVersion32()
                 };
 
-                BinUtils.WriteStruct<LSFHeader>(Writer, ref header);
+                BinUtils.WriteStruct(Writer, ref header);
             }
             else
             {
@@ -118,14 +119,14 @@ public class LSFWriter :ILSWriter
                     EngineVersion = gameVersion.ToVersion64()
                 };
 
-                BinUtils.WriteStruct<LSFHeaderV5>(Writer, ref header);
+                BinUtils.WriteStruct(Writer, ref header);
             }
 
-            bool chunked = Version >= LSFVersion.VerChunkedCompress;
-            byte[] stringsCompressed = BinUtils.Compress(stringBuffer, Compression, CompressionLevel);
-            byte[] nodesCompressed = BinUtils.Compress(nodeBuffer, Compression, CompressionLevel, chunked);
-            byte[] attributesCompressed = BinUtils.Compress(attributeBuffer, Compression, CompressionLevel, chunked);
-            byte[] valuesCompressed = BinUtils.Compress(valueBuffer, Compression, CompressionLevel, chunked);
+            var chunked = Version >= LSFVersion.VerChunkedCompress;
+            var stringsCompressed = BinUtils.Compress(stringBuffer, Compression, CompressionLevel);
+            var nodesCompressed = BinUtils.Compress(nodeBuffer, Compression, CompressionLevel, chunked);
+            var attributesCompressed = BinUtils.Compress(attributeBuffer, Compression, CompressionLevel, chunked);
+            var valuesCompressed = BinUtils.Compress(valueBuffer, Compression, CompressionLevel, chunked);
 
             if (Version < LSFVersion.VerBG3AdditionalBlob)
             {
@@ -155,9 +156,11 @@ public class LSFWriter :ILSWriter
                 meta.CompressionFlags = BinUtils.MakeCompressionFlags(Compression, CompressionLevel);
                 meta.Unknown2 = 0;
                 meta.Unknown3 = 0;
-                meta.HasSiblingData = EncodeSiblingData ? 1u : 0u;
+                meta.HasSiblingData = EncodeSiblingData
+                    ? 1u
+                    : 0u;
 
-                BinUtils.WriteStruct<LSFMetadataV5>(Writer, ref meta);
+                BinUtils.WriteStruct(Writer, ref meta);
             }
             else
             {
@@ -188,9 +191,11 @@ public class LSFWriter :ILSWriter
                 meta.CompressionFlags = BinUtils.MakeCompressionFlags(Compression, CompressionLevel);
                 meta.Unknown2 = 0;
                 meta.Unknown3 = 0;
-                meta.HasSiblingData = EncodeSiblingData ? 1u : 0u;
+                meta.HasSiblingData = EncodeSiblingData
+                    ? 1u
+                    : 0u;
 
-                BinUtils.WriteStruct<LSFMetadataV6>(Writer, ref meta);
+                BinUtils.WriteStruct(Writer, ref meta);
             }
 
             Writer.Write(stringsCompressed, 0, stringsCompressed.Length);
@@ -202,23 +207,19 @@ public class LSFWriter :ILSWriter
 
     private int ComputeSiblingIndices(Node node)
     {
-        int index = NextNodeIndex;
+        var index = NextNodeIndex;
         NextNodeIndex++;
         NextSiblingIndices.Add(-1);
 
-        int lastSiblingIndex = -1;
-        foreach (var children in node.Children)
+        var lastSiblingIndex = -1;
+        foreach (var childIndex in node.Children.SelectMany(children => children.Value.Select(ComputeSiblingIndices)))
         {
-            foreach (var child in children.Value)
+            if (lastSiblingIndex != -1)
             {
-                int childIndex = ComputeSiblingIndices(child);
-                if (lastSiblingIndex != -1)
-                {
-                    NextSiblingIndices[lastSiblingIndex] = childIndex;
-                }
-
-                lastSiblingIndex = childIndex;
+                NextSiblingIndices[lastSiblingIndex] = childIndex;
             }
+
+            lastSiblingIndex = childIndex;
         }
 
         return index;
@@ -227,12 +228,11 @@ public class LSFWriter :ILSWriter
     private void ComputeSiblingIndices(Resource resource)
     {
         NextNodeIndex = 0;
-        NextSiblingIndices = new();
+        NextSiblingIndices = new List<int>();
 
-        int lastRegionIndex = -1;
-        foreach (var region in resource.Regions)
+        var lastRegionIndex = -1;
+        foreach (var regionIndex in resource.Regions.Select(region => ComputeSiblingIndices(region.Value)))
         {
-            int regionIndex = ComputeSiblingIndices(region.Value);
             if (lastRegionIndex != -1)
             {
                 NextSiblingIndices[lastRegionIndex] = regionIndex;
@@ -245,24 +245,23 @@ public class LSFWriter :ILSWriter
     private void WriteRegions(Resource resource)
     {
         NextNodeIndex = 0;
-        foreach (var region in resource.Regions)
+        foreach (var region in resource.Regions.Select(r => r.Value))
         {
-            if (Version >= LSFVersion.VerExtendedNodes
-             && EncodeSiblingData)
+            if (Version >= LSFVersion.VerExtendedNodes && EncodeSiblingData)
             {
-                WriteNodeV3(region.Value);
+                WriteNodeV3(region);
             }
             else
             {
-                WriteNodeV2(region.Value);
+                WriteNodeV2(region);
             }
         }
     }
 
     private void WriteNodeAttributesV2(Node node)
     {
-        uint lastOffset = (uint)ValueStream.Position;
-        foreach (KeyValuePair<string, NodeAttribute> entry in node.Attributes)
+        var lastOffset = (uint)ValueStream.Position;
+        foreach (var entry in node.Attributes)
         {
             WriteAttributeValue(ValueWriter, entry.Value);
 
@@ -271,7 +270,7 @@ public class LSFWriter :ILSWriter
             attributeInfo.TypeAndLength = (uint)entry.Value.Type | length << 6;
             attributeInfo.NameHashTableIndex = AddStaticString(entry.Key);
             attributeInfo.NodeIndex = NextNodeIndex;
-            BinUtils.WriteStruct<LSFAttributeEntryV2>(AttributeWriter, ref attributeInfo);
+            BinUtils.WriteStruct(AttributeWriter, ref attributeInfo);
             NextAttributeIndex++;
 
             lastOffset = (uint)ValueStream.Position;
@@ -280,9 +279,9 @@ public class LSFWriter :ILSWriter
 
     private void WriteNodeAttributesV3(Node node)
     {
-        uint lastOffset = (uint)ValueStream.Position;
-        int numWritten = 0;
-        foreach (KeyValuePair<string, NodeAttribute> entry in node.Attributes)
+        var lastOffset = (uint)ValueStream.Position;
+        var numWritten = 0;
+        foreach (var entry in node.Attributes)
         {
             WriteAttributeValue(ValueWriter, entry.Value);
             numWritten++;
@@ -299,8 +298,9 @@ public class LSFWriter :ILSWriter
             {
                 attributeInfo.NextAttributeIndex = NextAttributeIndex + 1;
             }
+
             attributeInfo.Offset = lastOffset;
-            BinUtils.WriteStruct<LSFAttributeEntryV3>(AttributeWriter, ref attributeInfo);
+            BinUtils.WriteStruct(AttributeWriter, ref attributeInfo);
 
             NextAttributeIndex++;
 
@@ -310,18 +310,15 @@ public class LSFWriter :ILSWriter
 
     private void WriteNodeChildren(Node node)
     {
-        foreach (var children in node.Children)
+        foreach (var child in node.Children.SelectMany(children => children.Value))
         {
-            foreach (var child in children.Value)
+            if (Version >= LSFVersion.VerExtendedNodes && EncodeSiblingData)
             {
-                if (Version >= LSFVersion.VerExtendedNodes && EncodeSiblingData)
-                {
-                    WriteNodeV3(child);
-                }
-                else
-                {
-                    WriteNodeV2(child);
-                }
+                WriteNodeV3(child);
+            }
+            else
+            {
+                WriteNodeV2(child);
             }
         }
     }
@@ -350,7 +347,7 @@ public class LSFWriter :ILSWriter
             nodeInfo.FirstAttributeIndex = -1;
         }
 
-        BinUtils.WriteStruct<LSFNodeEntryV2>(NodeWriter, ref nodeInfo);
+        BinUtils.WriteStruct(NodeWriter, ref nodeInfo);
         NodeIndices[node] = NextNodeIndex;
         NextNodeIndex++;
 
@@ -384,7 +381,7 @@ public class LSFWriter :ILSWriter
             nodeInfo.FirstAttributeIndex = -1;
         }
 
-        BinUtils.WriteStruct<LSFNodeEntryV3>(NodeWriter, ref nodeInfo);
+        BinUtils.WriteStruct(NodeWriter, ref nodeInfo);
         NodeIndices[node] = NextNodeIndex;
         NextNodeIndex++;
 
@@ -393,10 +390,10 @@ public class LSFWriter :ILSWriter
 
     private void WriteTranslatedFSString(BinaryWriter writer, TranslatedFSString fs)
     {
-        if (Version >= LSFVersion.VerBG3 ||
-            Meta.MajorVersion > 4 ||
-            Meta is { MajorVersion: 4, Revision: > 0 } ||
-            Meta.MajorVersion == 4 && Meta is { Revision: 0, BuildNumber: >= 0x1a })
+        if (Version >= LSFVersion.VerBG3
+         || Meta.MajorVersion > 4
+         || Meta is { MajorVersion: 4, Revision: > 0 }
+         || Meta.MajorVersion == 4 && Meta is { Revision: 0, BuildNumber: >= 0x1a })
         {
             writer.Write(fs.Version);
         }
@@ -469,7 +466,7 @@ public class LSFWriter :ILSWriter
     {
         var hashCode = (uint)s.GetHashCode();
         var bucket = (int)(hashCode & 0x1ff ^ hashCode >> 9 & 0x1ff ^ hashCode >> 18 & 0x1ff ^ hashCode >> 27 & 0x1ff);
-        for (int i = 0; i < StringHashMap[bucket].Count; i++)
+        for (var i = 0; i < StringHashMap[bucket].Count; i++)
         {
             if (StringHashMap[bucket][i].Equals(s))
             {
@@ -484,35 +481,34 @@ public class LSFWriter :ILSWriter
     private void WriteStaticStrings(BinaryWriter writer)
     {
         writer.Write((uint)StringHashMap.Count);
-        for (int i = 0; i < StringHashMap.Count; i++)
+        foreach (var entry in StringHashMap)
         {
-            var entry = StringHashMap[i];
             writer.Write((ushort)entry.Count);
-            for (int j = 0; j < entry.Count; j++)
+            foreach (var t in entry)
             {
-                WriteStaticString(writer, entry[j]);
+                WriteStaticString(writer, t);
             }
         }
     }
 
-    private void WriteStaticString(BinaryWriter writer, string s)
+    private static void WriteStaticString(BinaryWriter writer, string s)
     {
-        byte[] utf = Encoding.UTF8.GetBytes(s);
+        var utf = Encoding.UTF8.GetBytes(s);
         writer.Write((ushort)utf.Length);
         writer.Write(utf);
     }
 
-    private void WriteStringWithLength(BinaryWriter writer, string s)
+    private static void WriteStringWithLength(BinaryWriter writer, string s)
     {
-        byte[] utf = Encoding.UTF8.GetBytes(s);
+        var utf = Encoding.UTF8.GetBytes(s);
         writer.Write(utf.Length + 1);
         writer.Write(utf);
         writer.Write((byte)0);
     }
 
-    private void WriteString(BinaryWriter writer, string s)
+    private static void WriteString(BinaryWriter writer, string s)
     {
-        byte[] utf = Encoding.UTF8.GetBytes(s);
+        var utf = Encoding.UTF8.GetBytes(s);
         writer.Write(utf);
         writer.Write((byte)0);
     }
