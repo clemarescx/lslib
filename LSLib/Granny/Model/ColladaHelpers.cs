@@ -1,6 +1,5 @@
 ﻿using LSLib.Granny.GR2;
 using OpenTK;
-using System;
 using System.Collections.Generic;
 
 namespace LSLib.Granny.Model;

@@ -1,6 +1,5 @@
 ﻿using LSLib.LS.Stats.StatParser;
 using LSLib.LS.Story.GoalParser;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

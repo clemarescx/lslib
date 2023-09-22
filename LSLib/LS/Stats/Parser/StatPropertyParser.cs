@@ -1,6 +1,4 @@
-﻿using QUT.Gppg;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace LSLib.LS.Stats.Properties;
 

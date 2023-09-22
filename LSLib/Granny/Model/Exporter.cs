@@ -4,11 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using LSLib.LS;
-using OpenTK;
-using Alphaleonis.Win32.Filesystem;
 using File = Alphaleonis.Win32.Filesystem.File;
 using LSLib.LS.Enums;
-using System.Numerics;
 
 namespace LSLib.Granny.Model;
 
