@@ -732,11 +732,11 @@ public class Packager
         }
 
         var files = Directory.EnumerateFiles(path, "*.*", SearchOption.AllDirectories)
-                             .ToDictionary(k => k.Replace(path, string.Empty), v => v);
+                             .Select(filePath => (fileName: filePath.Replace(path, string.Empty), path: filePath));
 
-        foreach (var file in files)
+        foreach (var (fileName, filePath) in files)
         {
-            var fileInfo = FilesystemFileInfo.CreateFromEntry(file.Value, file.Key);
+            var fileInfo = FilesystemFileInfo.CreateFromEntry(filePath, fileName);
             package.Files.Add(fileInfo);
             fileInfo.Dispose();
         }

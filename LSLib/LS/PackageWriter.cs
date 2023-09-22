@@ -202,7 +202,7 @@ public sealed class PackageWriter : IDisposable
         }
 
         mainStream.Seek(0, SeekOrigin.Begin);
-        writer.Write(Package.Signature);
+        writer.Write(Package.Signature.AsSpan());
         header.NumParts = (ushort)_streams.Count;
         header.Priority = _package.Metadata.Priority;
         header.Flags = (byte)_package.Metadata.Flags;
@@ -266,7 +266,7 @@ public sealed class PackageWriter : IDisposable
         BinUtils.WriteStruct(writer, ref header);
 
         writer.Write((uint)(8 + Marshal.SizeOf(typeof(LSPKHeader13))));
-        writer.Write(Package.Signature);
+        writer.Write(Package.Signature.AsSpan());
     }
 
     private List<PackagedFileInfo> PackFiles()
@@ -316,7 +316,7 @@ public sealed class PackageWriter : IDisposable
 
         using (var writer = new BinaryWriter(mainStream, new UTF8Encoding(), true))
         {
-            writer.Write(Package.Signature);
+            writer.Write(Package.Signature.AsSpan());
             BinUtils.WriteStruct(writer, ref header);
         }
 
@@ -345,7 +345,7 @@ public sealed class PackageWriter : IDisposable
 
         using (var writer = new BinaryWriter(mainStream, new UTF8Encoding(), true))
         {
-            writer.Write(Package.Signature);
+            writer.Write(Package.Signature.AsSpan());
             BinUtils.WriteStruct(writer, ref header);
         }
 
@@ -397,7 +397,7 @@ public sealed class PackageWriter : IDisposable
 
         using (var writer = new BinaryWriter(mainStream, new UTF8Encoding(), true))
         {
-            writer.Write(Package.Signature);
+            writer.Write(Package.Signature.AsSpan());
             BinUtils.WriteStruct(writer, ref header);
         }
 
