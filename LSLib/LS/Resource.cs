@@ -189,7 +189,7 @@ public class Node
     {
         if (!Children.TryGetValue(child.Name, out var children))
         {
-            children = new();
+            children = new List<Node>();
             Children.Add(child.Name, children);
         }
 
