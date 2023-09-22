@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Collections.Generic;
 using System.Xml;
 
 namespace LSLib.LS;
@@ -10,13 +10,12 @@ namespace LSLib.LS;
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct LocaHeader
 {
-    public static readonly UInt32 DefaultSignature = 0x41434f4c; // 'LOCA'
+    public const uint DefaultSignature = 0x41434f4c; // 'LOCA'
 
     public UInt32 Signature;
     public UInt32 NumEntries;
     public UInt32 TextsOffset;
 }
-
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct LocaEntry
@@ -31,11 +30,9 @@ internal struct LocaEntry
     {
         get
         {
-            int nameLen;
-            for (nameLen = 0; nameLen < Key.Length && Key[nameLen] != 0; nameLen++)
-            {
-                ;
-            }
+            var nameLen = Array.FindIndex(Key, c => c == 0) is var nullIdx and not -1 
+                ? nullIdx
+                : Key.Length;
 
             return Encoding.UTF8.GetString(Key, 0, nameLen);
         }
@@ -50,7 +47,6 @@ internal struct LocaEntry
     }
 }
 
-
 public class LocalizedText
 {
     public string Key;
@@ -58,14 +54,12 @@ public class LocalizedText
     public string Text;
 }
 
-
 public class LocaResource
 {
     public List<LocalizedText> Entries;
 }
 
-
-public class LocaReader : IDisposable
+public sealed class LocaReader : IDisposable
 {
     private Stream Stream;
 
@@ -84,8 +78,9 @@ public class LocaReader : IDisposable
         using var reader = new BinaryReader(Stream);
         var loca = new LocaResource
         {
-            Entries = new()
+            Entries = new List<LocalizedText>()
         };
+
         var header = BinUtils.ReadStruct<LocaHeader>(reader);
 
         if (header.Signature != (ulong)LocaHeader.DefaultSignature)
@@ -94,25 +89,26 @@ public class LocaReader : IDisposable
         }
 
         var entries = new LocaEntry[header.NumEntries];
-        BinUtils.ReadStructs<LocaEntry>(reader, entries);
+        BinUtils.ReadStructs(reader, entries);
 
         Stream.Position = header.TextsOffset;
         foreach (var entry in entries)
         {
             var text = Encoding.UTF8.GetString(reader.ReadBytes((int)entry.Length - 1));
-            loca.Entries.Add(new()
-            {
-                Key = entry.KeyString,
-                Version = entry.Version,
-                Text = text
-            });
+            loca.Entries.Add(
+                new LocalizedText
+                {
+                    Key = entry.KeyString,
+                    Version = entry.Version,
+                    Text = text
+                });
+
             reader.ReadByte();
         }
 
         return loca;
     }
 }
-
 
 public class LocaWriter
 {
@@ -126,18 +122,20 @@ public class LocaWriter
     public void Write(LocaResource res)
     {
         using var writer = new BinaryWriter(stream);
-        var header = new LocaHeader {
+        var header = new LocaHeader
+        {
             Signature = LocaHeader.DefaultSignature,
             NumEntries = (uint)res.Entries.Count,
             TextsOffset = (uint)(Marshal.SizeOf(typeof(LocaHeader)) + Marshal.SizeOf(typeof(LocaEntry)) * res.Entries.Count)
         };
-        BinUtils.WriteStruct<LocaHeader>(writer, ref header);
+
+        BinUtils.WriteStruct(writer, ref header);
 
         var entries = new LocaEntry[header.NumEntries];
         for (var i = 0; i < entries.Length; i++)
         {
             var entry = res.Entries[i];
-            entries[i] = new()
+            entries[i] = new LocaEntry
             {
                 KeyString = entry.Key,
                 Version = entry.Version,
@@ -145,7 +143,7 @@ public class LocaWriter
             };
         }
 
-        BinUtils.WriteStructs<LocaEntry>(writer, entries);
+        BinUtils.WriteStructs(writer, entries);
 
         foreach (var entry in res.Entries)
         {
@@ -155,7 +153,8 @@ public class LocaWriter
         }
     }
 }
-public class LocaXmlReader : IDisposable
+
+public sealed class LocaXmlReader : IDisposable
 {
     private Stream stream;
     private XmlReader reader;
@@ -181,15 +180,20 @@ public class LocaXmlReader : IDisposable
 
             case "content":
                 var key = reader["contentuid"];
-                var version = reader["version"] != null ? ushort.Parse(reader["version"]) : (ushort)1;
+                var version = reader["version"] != null
+                    ? ushort.Parse(reader["version"])
+                    : (ushort)1;
+
                 var text = reader.ReadString();
 
-                resource.Entries.Add(new()
-                {
-                    Key = key,
-                    Version = version,
-                    Text = text
-                });
+                resource.Entries.Add(
+                    new LocalizedText
+                    {
+                        Key = key,
+                        Version = version,
+                        Text = text
+                    });
+
                 break;
 
             default:
@@ -199,9 +203,9 @@ public class LocaXmlReader : IDisposable
 
     public LocaResource Read()
     {
-        resource = new()
+        resource = new LocaResource
         {
-            Entries = new()
+            Entries = new List<LocalizedText>()
         };
 
         using (reader = XmlReader.Create(stream))
@@ -218,7 +222,6 @@ public class LocaXmlReader : IDisposable
         return resource;
     }
 }
-
 
 public class LocaXmlWriter
 {
@@ -263,7 +266,7 @@ public enum LocaFormat
     Xml
 }
 
-public class LocaUtils
+public static class LocaUtils
 {
     public static LocaFormat ExtensionToFileFormat(string path)
     {
