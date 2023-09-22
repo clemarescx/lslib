@@ -430,7 +430,7 @@ public class StoryDebugExportVisitor
             // If a logical index is present, emit a column from the input tuple
             if (index != -1)
             {
-                writer.WriteValue(String.Format("input[{0}]", index));
+                writer.WriteValue($"input[{index}]");
             }
             // Otherwise check if a constant is mapped to the specified logical index
             else if (adapter.Constants.Logical.ContainsKey(i))

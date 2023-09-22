@@ -194,7 +194,7 @@ public class LocaXmlReader : IDisposable
                 break;
 
             default:
-                throw new InvalidFormatException(string.Format("Unknown element encountered: {0}", reader.Name));
+                throw new InvalidFormatException($"Unknown element encountered: {reader.Name}");
         }
     }
 

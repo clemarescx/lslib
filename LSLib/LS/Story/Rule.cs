@@ -34,7 +34,7 @@ public class RuleNode : RelNode
             variable.Read(reader);
             if (variable.Adapted)
             {
-                variable.VariableName = string.Format("_Var{0}", Variables.Count + 1);
+                variable.VariableName = $"_Var{Variables.Count + 1}";
             }
 
             Variables.Add(variable);

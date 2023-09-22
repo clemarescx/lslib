@@ -183,7 +183,7 @@ public class ColladaImporter
     {
         var exporterInfo = new ExporterInfo
         {
-            ExporterName = string.Format("LSLib GR2 Exporter v{0}", Common.LibraryVersion()),
+            ExporterName = $"LSLib GR2 Exporter v{Common.LibraryVersion()}",
             ExporterMajorRevision = Common.MajorVersion,
             ExporterMinorRevision = Common.MinorVersion,
             ExporterBuildNumber = 0,
@@ -527,10 +527,8 @@ public class ColladaImporter
 
         MakeExtendedData(mesh, m);
 
-        Utils.Info(string.Format("Imported {0} mesh ({1} tri groups, {2} tris)", 
-            m.VertexFormat.HasBoneWeights ? "skinned" : "rigid", 
-            m.PrimaryTopology.Groups.Count, 
-            collada.TriangleCount));
+        Utils.Info(
+            $"Imported {(m.VertexFormat.HasBoneWeights ? "skinned" : "rigid")} mesh ({m.PrimaryTopology.Groups.Count} tri groups, {collada.TriangleCount} tris)");
 
         return m;
     }
@@ -555,8 +553,7 @@ public class ColladaImporter
 
         if (!mesh.VertexFormat.HasBoneWeights)
         {
-            var msg = string.Format("Tried to apply skin to mesh ({0}) with non-skinned vertices", 
-                mesh.Name);
+            var msg = $"Tried to apply skin to mesh ({mesh.Name}) with non-skinned vertices";
             throw new ParsingException(msg);
         }
 
@@ -623,7 +620,7 @@ public class ColladaImporter
 
         // TODO
         if (influenceCounts.Count != mesh.OriginalToConsolidatedVertexIndexMap.Count)
-            Utils.Warn(string.Format("Vertex influence count ({0}) differs from vertex count ({1})", influenceCounts.Count, mesh.OriginalToConsolidatedVertexIndexMap.Count));
+            Utils.Warn($"Vertex influence count ({influenceCounts.Count}) differs from vertex count ({mesh.OriginalToConsolidatedVertexIndexMap.Count})");
 
         List<float> weights = null;
 
@@ -759,7 +756,7 @@ public class ColladaImporter
         }
 
         if (notInfluenced > 0)
-            Utils.Warn(string.Format("{0} vertices are not influenced by any bone", notInfluenced));
+            Utils.Warn($"{notInfluenced} vertices are not influenced by any bone");
 
         if (skin.bind_shape_matrix != null)
         {
@@ -980,7 +977,7 @@ public class ColladaImporter
                         }
                         else
                         {
-                            Utils.Warn(string.Format("Controller {0} is unsupported and will be ignored", controller.Item.GetType().Name));
+                            Utils.Warn($"Controller {controller.Item.GetType().Name} is unsupported and will be ignored");
                         }
                     }
                 }
@@ -1016,7 +1013,7 @@ public class ColladaImporter
                         }
                         else
                         {
-                            Utils.Warn(string.Format("Geometry type {0} is unsupported and will be ignored", geometry.Item.GetType().Name));
+                            Utils.Warn($"Geometry type {geometry.Item.GetType().Name} is unsupported and will be ignored");
                         }
                     }
                 }
@@ -1031,7 +1028,7 @@ public class ColladaImporter
             }
             else
             {
-                Utils.Warn(string.Format("Library {0} is unsupported and will be ignored", item.GetType().Name));
+                Utils.Warn($"Library {item.GetType().Name} is unsupported and will be ignored");
             }
         }
 

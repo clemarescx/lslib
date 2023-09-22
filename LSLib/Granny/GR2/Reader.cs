@@ -150,7 +150,7 @@ public class GR2Reader
         }
 
         if (header.version is < 6 or > 7)
-            throw new ParsingException(string.Format("Unsupported GR2 version; file is version {0}, supported versions are 6 and 7", header.version));
+            throw new ParsingException($"Unsupported GR2 version; file is version {header.version}, supported versions are 6 and 7");
 
         // if (header.tag != Header.Tag)
         //    throw new ParsingException(String.Format("Incorrect header tag; expected {0:X8}, got {1:X8}", Header.Tag, header.tag));
@@ -505,7 +505,7 @@ public class GR2Reader
         var defn = new MemberDefinition();
         int typeId = Reader.ReadInt32();
         if (typeId > (uint)MemberType.Max)
-            throw new ParsingException(string.Format("Unsupported member type: {0}", typeId));
+            throw new ParsingException($"Unsupported member type: {typeId}");
 
         defn.Type = (MemberType)typeId;
         var name = ReadStringReference();
@@ -1043,7 +1043,7 @@ public class GR2Reader
                 break;
 
             default:
-                throw new ParsingException(string.Format("Unhandled member type: {0}", definition.Type.ToString()));
+                throw new ParsingException($"Unhandled member type: {definition.Type.ToString()}");
         }
 
 #if DEBUG_GR2_SERIALIZATION

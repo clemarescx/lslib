@@ -280,7 +280,7 @@ public class LSJResourceConverter : JsonConverter
                             string[] nums = reader.Value.ToString().Split(' ');
                             int length = attribute.GetColumns();
                             if (length != nums.Length)
-                                throw new FormatException(string.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
+                                throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
 
                             int[] vec = new int[length];
                             for (int i = 0; i < length; i++)
@@ -297,7 +297,7 @@ public class LSJResourceConverter : JsonConverter
                             string[] nums = reader.Value.ToString().Split(' ');
                             int length = attribute.GetColumns();
                             if (length != nums.Length)
-                                throw new FormatException(string.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
+                                throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
 
                             float[] vec = new float[length];
                             for (int i = 0; i < length; i++)

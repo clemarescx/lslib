@@ -43,7 +43,7 @@ public class LSFWriter :ILSWriter
     {
         if (Version > LSFVersion.MaxWriteVersion)
         {
-            var msg = string.Format("Writing LSF version {0} is not supported (highest is {1})", Version, LSFVersion.MaxWriteVersion);
+            var msg = $"Writing LSF version {Version} is not supported (highest is {LSFVersion.MaxWriteVersion})";
             throw new InvalidDataException(msg);
         }
 

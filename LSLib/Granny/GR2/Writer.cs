@@ -369,7 +369,7 @@ public class WritableSection : Section
             }
 
             default:
-                throw new ParsingException(string.Format("Unhandled array member type: {0}", arrayDefn.Type.ToString()));
+                throw new ParsingException($"Unhandled array member type: {arrayDefn.Type.ToString()}");
         }
     }
 
@@ -567,7 +567,7 @@ public class WritableSection : Section
                 break;
 
             default:
-                throw new ParsingException(string.Format("Unhandled member type: {0}", definition.Type.ToString()));
+                throw new ParsingException($"Unhandled member type: {definition.Type.ToString()}");
         }
     }
 

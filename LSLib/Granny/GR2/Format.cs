@@ -856,7 +856,7 @@ public class MemberDefinition
                 return 17 * 4;
 
             default:
-                throw new ParsingException(string.Format("Unhandled member type: {0}", Type.ToString()));
+                throw new ParsingException($"Unhandled member type: {Type.ToString()}");
         }
     }
 
@@ -885,7 +885,7 @@ public class MemberDefinition
             MemberType.ReferenceToArray        => 4,
             MemberType.ArrayOfReferences       => 4,
             MemberType.ReferenceToVariantArray => 4,
-            _                                  => throw new ParsingException(string.Format("Unhandled member type: {0}", Type.ToString()))
+            _                                  => throw new ParsingException($"Unhandled member type: {Type.ToString()}")
         };
     }
 

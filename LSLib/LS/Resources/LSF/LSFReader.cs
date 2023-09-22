@@ -306,16 +306,13 @@ public class LSFReader : ILSReader
         var magic = BinUtils.ReadStruct<LSFMagic>(reader);
         if (magic.Magic != BitConverter.ToUInt32(LSFMagic.Signature, 0))
         {
-            var msg = string.Format(
-                "Invalid LSF signature; expected {0,8:X}, got {1,8:X}",
-                BitConverter.ToUInt32(LSFMagic.Signature, 0), magic.Magic
-            );
+            var msg = $"Invalid LSF signature; expected {BitConverter.ToUInt32(LSFMagic.Signature, 0),8:X}, got {magic.Magic,8:X}";
             throw new InvalidDataException(msg);
         }
 
         if (magic.Version < (ulong)LSFVersion.VerInitial || magic.Version > (ulong)LSFVersion.MaxReadVersion)
         {
-            var msg = string.Format("LSF version {0} is not supported", magic.Version);
+            var msg = $"LSF version {magic.Version} is not supported";
             throw new InvalidDataException(msg);
         }
 

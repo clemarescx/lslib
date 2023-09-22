@@ -167,7 +167,7 @@ public static class BinUtils
             default:
                 // Strings are serialized differently for each file format and should be
                 // handled by the format-specific ReadAttribute()
-                throw new InvalidFormatException(string.Format("ReadAttribute() not implemented for type {0}", type));
+                throw new InvalidFormatException($"ReadAttribute() not implemented for type {type}");
         }
 
         return attr;
@@ -265,7 +265,7 @@ public static class BinUtils
                 break;
 
             default:
-                throw new InvalidFormatException(string.Format("WriteAttribute() not implemented for type {0}", attr.Type));
+                throw new InvalidFormatException($"WriteAttribute() not implemented for type {attr.Type}");
         }
     }
 
@@ -353,7 +353,7 @@ public static class BinUtils
 
             default:
             {
-                var msg = string.Format("No decompressor found for this format: {0}", compressionFlags);
+                var msg = $"No decompressor found for this format: {compressionFlags}";
                 throw new InvalidDataException(msg);
             }
         }

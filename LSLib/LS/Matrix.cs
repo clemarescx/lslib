@@ -269,7 +269,7 @@ public class Matrix
         string s = "";
         for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < cols; j++) s += $"{string.Format("{0,5:0.00}", mat[i, j])} ";
+            for (int j = 0; j < cols; j++) s += $"{$"{mat[i, j],5:0.00}"} ";
             s += "\r\n";
         }
         return s;

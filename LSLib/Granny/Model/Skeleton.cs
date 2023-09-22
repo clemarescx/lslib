@@ -276,7 +276,7 @@ public class Skeleton
         if (!hasSkinnedMeshes || Bones.Count == 1)
         {
             IsDummy = true;
-            Utils.Info(string.Format("Skeleton '{0}' marked as dummy", Name));
+            Utils.Info($"Skeleton '{Name}' marked as dummy");
         }
 
         for (var i = 0; i < Bones.Count; i++)

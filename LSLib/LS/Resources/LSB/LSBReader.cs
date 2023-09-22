@@ -28,10 +28,10 @@ public class LSBReader : ILSReader
             // Check for BG3 header
             var header = BinUtils.ReadStruct<LSBHeader>(reader);
             if (header.Signature != BitConverter.ToUInt32(LSBHeader.SignatureBG3.AsSpan()) && header.Signature != LSBHeader.SignatureFW3)
-                throw new InvalidFormatException(string.Format("Illegal signature in LSB header ({0})", header.Signature));
+                throw new InvalidFormatException($"Illegal signature in LSB header ({header.Signature})");
 
             if (stream.Length != header.TotalSize)
-                throw new InvalidFormatException(string.Format("Invalid LSB file size; expected {0}, got {1}", header.TotalSize, stream.Length));
+                throw new InvalidFormatException($"Invalid LSB file size; expected {header.TotalSize}, got {stream.Length}");
 
             // The game only uses little-endian files on all platforms currently and big-endian support isn't worth the hassle
             if (header.BigEndian != 0)
@@ -84,7 +84,7 @@ public class LSBReader : ILSReader
             uint attrNameId = reader.ReadUInt32();
             uint attrTypeId = reader.ReadUInt32();
             if (attrTypeId > (int)NodeAttribute.DataType.DT_Max)
-                throw new InvalidFormatException(string.Format("Unsupported attribute data type: {0}", attrTypeId));
+                throw new InvalidFormatException($"Unsupported attribute data type: {attrTypeId}");
 
             node.Attributes[staticStrings[attrNameId]] = ReadAttribute((NodeAttribute.DataType)attrTypeId);
         }
@@ -186,7 +186,7 @@ public class LSBReader : ILSReader
             string s = ReadString(false);
             uint index = reader.ReadUInt32();
             if (staticStrings.ContainsKey(index))
-                throw new InvalidFormatException(string.Format("String ID {0} duplicated in static string map", index));
+                throw new InvalidFormatException($"String ID {index} duplicated in static string map");
             staticStrings.Add(index, s);
         }
     }

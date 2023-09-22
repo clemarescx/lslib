@@ -579,7 +579,7 @@ public class ColladaMesh
                 ConsolidatedIndices.Add(consolidatedIndex);
             }
 
-            Utils.Info(string.Format("Merged {0} vertices into {1} output vertices", Vertices.Count, ConsolidatedVertices.Count));
+            Utils.Info($"Merged {Vertices.Count} vertices into {ConsolidatedVertices.Count} output vertices");
         }
         else
         {

@@ -298,7 +298,7 @@ public class SaveFileHeader : OsirisSerializable
 
         if (Ver >= OsiVersion.VerAddVersionString)
         {
-            var versionString = string.Format("{0}.{1}", MajorVersion, MinorVersion);
+            var versionString = $"{MajorVersion}.{MinorVersion}";
             var versionBytes = Encoding.UTF8.GetBytes(versionString);
             byte[] version = new byte[0x80];
             versionBytes.CopyTo(version, 0);

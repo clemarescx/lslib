@@ -54,7 +54,7 @@ public class RelOpNode : RelNode
 
     public override string TypeName()
     {
-        return string.Format("RelOp {0}", RelOp);
+        return $"RelOp {RelOp}";
     }
 
     public override void DebugDump(TextWriter writer, Story story)

@@ -19,7 +19,7 @@ public static class Common
     /// </summary>
     public static string LibraryVersion()
     {
-        return String.Format("{0}.{1}.{2}", MajorVersion, MinorVersion, PatchVersion);
+        return $"{MajorVersion}.{MinorVersion}.{PatchVersion}";
     }
 
     /// <summary>

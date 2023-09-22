@@ -181,8 +181,7 @@ public class IRGenerator
                 type = Context.LookupType(astVar.Type);
                 if (type == null)
                 {
-                    Context.Log.Error(astVar.Location, DiagnosticCode.UnresolvedType,
-                        string.Format("Type \"{0}\" does not exist", astVar.Type));
+                    Context.Log.Error(astVar.Location, DiagnosticCode.UnresolvedType, $"Type \"{astVar.Type}\" does not exist");
                 }
             }
             else
@@ -267,8 +266,7 @@ public class IRGenerator
             type = Context.LookupType(astConstant.TypeName);
             if (type == null)
             {
-                Context.Log.Error(astConstant.Location, DiagnosticCode.UnresolvedType,
-                    string.Format("Type \"{0}\" does not exist", astConstant.TypeName));
+                Context.Log.Error(astConstant.Location, DiagnosticCode.UnresolvedType, $"Type \"{astConstant.TypeName}\" does not exist");
             }
         }
         else

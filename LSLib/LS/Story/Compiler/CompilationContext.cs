@@ -571,8 +571,7 @@ public class CompilationContext
         var nameAndArity = signature.GetNameAndArity();
         if (Signatures.ContainsKey(nameAndArity))
         {
-            Log.Error(null, DiagnosticCode.SignatureAlreadyDefined,
-                string.Format("Signature already registered: {0}({1})", nameAndArity.Name, nameAndArity.Arity));
+            Log.Error(null, DiagnosticCode.SignatureAlreadyDefined, $"Signature already registered: {nameAndArity.Name}({nameAndArity.Arity})");
             return false;
         }
 
@@ -585,8 +584,7 @@ public class CompilationContext
     {
         if (GoalsByName.ContainsKey(goal.Name))
         {
-            Log.Error(null, DiagnosticCode.GoalAlreadyDefined,
-                string.Format("Goal already registered: {0}", goal.Name));
+            Log.Error(null, DiagnosticCode.GoalAlreadyDefined, $"Goal already registered: {goal.Name}");
             return false;
         }
 

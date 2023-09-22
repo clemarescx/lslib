@@ -203,7 +203,7 @@ public class NodeAttribute
                 string[] nums = str.Split(' ');
                 int length = GetColumns();
                 if (length != nums.Length)
-                    throw new FormatException(string.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
+                    throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
 
                 int[] vec = new int[length];
                 for (int i = 0; i < length; i++)
@@ -220,7 +220,7 @@ public class NodeAttribute
                 string[] nums = str.Split(' ');
                 int length = GetColumns();
                 if (length != nums.Length)
-                    throw new FormatException(string.Format("A vector of length {0} was expected, got {1}", length, nums.Length));
+                    throw new FormatException($"A vector of length {length} was expected, got {nums.Length}");
 
                 float[] vec = new float[length];
                 for (int i = 0; i < length; i++)
@@ -297,7 +297,7 @@ public class NodeAttribute
 
             default:
                 // This should not happen!
-                throw new NotImplementedException(string.Format("FromString() not implemented for type {0}", type));
+                throw new NotImplementedException($"FromString() not implemented for type {type}");
         }
     }
 }

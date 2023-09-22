@@ -41,7 +41,7 @@ public class LSXReader : ILSReader
             while (reader.Read() && reader.NodeType != XmlNodeType.Element);
             if (reader.Name != "arguments")
             {
-                throw new InvalidFormatException(string.Format("Expected <arguments>: {0}", reader.Name));
+                throw new InvalidFormatException($"Expected <arguments>: {reader.Name}");
             }
 
             int processedArgs = 0;
@@ -51,7 +51,7 @@ public class LSXReader : ILSReader
                 {
                     if (reader.Name != "argument")
                     {
-                        throw new InvalidFormatException(string.Format("Expected <argument>: {0}", reader.Name));
+                        throw new InvalidFormatException($"Expected <argument>: {reader.Name}");
                     }
 
                     var arg = new TranslatedFSStringArgument
@@ -63,7 +63,7 @@ public class LSXReader : ILSReader
                     while (reader.Read() && reader.NodeType != XmlNodeType.Element);
                     if (reader.Name != "string")
                     {
-                        throw new InvalidFormatException(string.Format("Expected <string>: {0}", reader.Name));
+                        throw new InvalidFormatException($"Expected <string>: {reader.Name}");
                     }
 
                     arg.String = new();
@@ -166,7 +166,7 @@ public class LSXReader : ILSReader
 
                 var attrName = reader["id"];
                 if (attrTypeId > (int)NodeAttribute.DataType.DT_Max)
-                    throw new InvalidFormatException(string.Format("Unsupported attribute data type: {0}", attrTypeId));
+                    throw new InvalidFormatException($"Unsupported attribute data type: {attrTypeId}");
 
                 Debug.Assert(attrName != null);
                 var attr = new NodeAttribute((NodeAttribute.DataType)attrTypeId);
@@ -207,7 +207,7 @@ public class LSXReader : ILSReader
                 break;
 
             default:
-                throw new InvalidFormatException(string.Format("Unknown element encountered: {0}", reader.Name));
+                throw new InvalidFormatException($"Unknown element encountered: {reader.Name}");
         }
     }
 
@@ -235,7 +235,7 @@ public class LSXReader : ILSReader
                 break;
 
             default:
-                throw new InvalidFormatException(string.Format("Unknown element encountered: {0}", reader.Name));
+                throw new InvalidFormatException($"Unknown element encountered: {reader.Name}");
         }
     }
 
