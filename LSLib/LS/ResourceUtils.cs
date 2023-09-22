@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using LSLib.LS.Enums;
 
 namespace LSLib.LS;
@@ -159,18 +160,15 @@ public class ResourceUtils
         string currentPath,
         ResourceFormat format)
     {
-        foreach (string filePath in Directory.GetFiles(currentPath))
+        foreach (string filePath in Directory.GetFiles(currentPath).Where(filePath => IsA(filePath, format)))
         {
-            if (IsA(filePath, format))
+            var relativePath = filePath[rootPath.Length..];
+            if (relativePath[0] == '/' || relativePath[0] == '\\')
             {
-                var relativePath = filePath[rootPath.Length..];
-                if (relativePath[0] == '/' || relativePath[0] == '\\')
-                {
-                    relativePath = relativePath[1..];
-                }
-
-                paths.Add(relativePath);
+                relativePath = relativePath[1..];
             }
+
+            paths.Add(relativePath);
         }
 
         foreach (string directoryPath in Directory.GetDirectories(currentPath))
