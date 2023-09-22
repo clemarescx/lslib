@@ -305,52 +305,27 @@ public class StatValueParserFactory
 
     public IStatValueParser CreateParser(StatField field, StatDefinitionRepository definitions)
     {
-        switch (field.Type)
+        return field.Type switch
         {
-            case "Requirements":
-                return new ExpressionParser("Requirements", definitions, this);
-
-            case "Properties":
-                return new ExpressionParser("Properties", definitions, this);
-
-            case "Conditions":
-                return new ConditionsParser(definitions, this);
-
-            case "Enumeration":
-                return new EnumParser(field.EnumType);
-
-            case "EnumerationList":
-                return new MultiValueEnumParser(field.EnumType);
-                    
-            case "Boolean":
-                return new BooleanParser();
-
-            case "Integer":
-                return new Int32Parser();
-
-            case "Float":
-                return new FloatParser();
-
-            case "UUID":
-            case "RootTemplate":
-                return new UUIDParser();
-
-            case "StatReference":
-                return new StatReferenceParser(ReferenceValidator, field.ReferenceTypes);
-
-            case "StatReferences":
-                return new MultiValueStatReferenceParser(ReferenceValidator, field.ReferenceTypes);
-
-            case "BaseClass":
-            case "Name":
-            case "String":
-            case "TranslatedString":
-            case "Comment":
-            case "Color":
-                return new StringParser();
-
-            default:
-                throw new ArgumentException($"Could not create parser for type '{field.Type}'");
-        }
+            "Requirements"     => new ExpressionParser("Requirements", definitions, this),
+            "Properties"       => new ExpressionParser("Properties", definitions, this),
+            "Conditions"       => new ConditionsParser(definitions, this),
+            "Enumeration"      => new EnumParser(field.EnumType),
+            "EnumerationList"  => new MultiValueEnumParser(field.EnumType),
+            "Boolean"          => new BooleanParser(),
+            "Integer"          => new Int32Parser(),
+            "Float"            => new FloatParser(),
+            "UUID"             => new UUIDParser(),
+            "RootTemplate"     => new UUIDParser(),
+            "StatReference"    => new StatReferenceParser(ReferenceValidator, field.ReferenceTypes),
+            "StatReferences"   => new MultiValueStatReferenceParser(ReferenceValidator, field.ReferenceTypes),
+            "BaseClass"        => new StringParser(),
+            "Name"             => new StringParser(),
+            "String"           => new StringParser(),
+            "TranslatedString" => new StringParser(),
+            "Comment"          => new StringParser(),
+            "Color"            => new StringParser(),
+            _                  => throw new ArgumentException($"Could not create parser for type '{field.Type}'")
+        };
     }
 }

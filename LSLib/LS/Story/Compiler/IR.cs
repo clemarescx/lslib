@@ -321,15 +321,15 @@ public class IRConstant : IRValue
 
     public override string ToString()
     {
-        switch (ValueType)
+        return ValueType switch
         {
-            case IRConstantType.Unknown: return "(unknown)";
-            case IRConstantType.Integer: return IntegerValue.ToString();
-            case IRConstantType.Float:   return FloatValue.ToString();
-            case IRConstantType.String:  return "\"" + StringValue + "\"";
-            case IRConstantType.Name:    return StringValue;
-            default:                     return "(unknown type)";
-        }
+            IRConstantType.Unknown => "(unknown)",
+            IRConstantType.Integer => IntegerValue.ToString(),
+            IRConstantType.Float   => FloatValue.ToString(),
+            IRConstantType.String  => "\"" + StringValue + "\"",
+            IRConstantType.Name    => StringValue,
+            _                      => "(unknown type)"
+        };
     }
 }
 

@@ -91,79 +91,57 @@ public class NodeAttribute
 
     public override string ToString()
     {
-        switch (this.type)
+        return this.type switch
         {
-            case DataType.DT_ScratchBuffer:
+            DataType.DT_ScratchBuffer =>
                 // ScratchBuffer is a special case, as its stored as byte[] and ToString() doesn't really do what we want
-                return Convert.ToBase64String((byte[])this.value);
-
-            case DataType.DT_IVec2:
-            case DataType.DT_IVec3:
-            case DataType.DT_IVec4:
-                return String.Join(" ", new List<int>((int[])this.value).ConvertAll(i => i.ToString()).ToArray());
-
-            case DataType.DT_Vec2:
-            case DataType.DT_Vec3:
-            case DataType.DT_Vec4:
-                return String.Join(" ", new List<float>((float[])this.value).ConvertAll(i => i.ToString()).ToArray());
-
-            default:
-                return this.value.ToString();
-        }
+                Convert.ToBase64String((byte[])this.value),
+            DataType.DT_IVec2 => String.Join(" ", new List<int>((int[])this.value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec3 => String.Join(" ", new List<int>((int[])this.value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_IVec4 => String.Join(" ", new List<int>((int[])this.value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec2  => String.Join(" ", new List<float>((float[])this.value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec3  => String.Join(" ", new List<float>((float[])this.value).ConvertAll(i => i.ToString()).ToArray()),
+            DataType.DT_Vec4  => String.Join(" ", new List<float>((float[])this.value).ConvertAll(i => i.ToString()).ToArray()),
+            _                 => this.value.ToString()
+        };
     }
 
     public int GetRows()
     {
-        switch (this.type)
+        return this.type switch
         {
-            case DataType.DT_IVec2:
-            case DataType.DT_IVec3:
-            case DataType.DT_IVec4:
-            case DataType.DT_Vec2:
-            case DataType.DT_Vec3:
-            case DataType.DT_Vec4:
-                return 1;
-
-            case DataType.DT_Mat2:
-                return 2;
-
-            case DataType.DT_Mat3:
-            case DataType.DT_Mat3x4:
-                return 3;
-
-            case DataType.DT_Mat4x3:
-            case DataType.DT_Mat4:
-                return 4;
-
-            default:
-                throw new NotSupportedException("Data type does not have rows");
-        }
+            DataType.DT_IVec2  => 1,
+            DataType.DT_IVec3  => 1,
+            DataType.DT_IVec4  => 1,
+            DataType.DT_Vec2   => 1,
+            DataType.DT_Vec3   => 1,
+            DataType.DT_Vec4   => 1,
+            DataType.DT_Mat2   => 2,
+            DataType.DT_Mat3   => 3,
+            DataType.DT_Mat3x4 => 3,
+            DataType.DT_Mat4x3 => 4,
+            DataType.DT_Mat4   => 4,
+            _                  => throw new NotSupportedException("Data type does not have rows")
+        };
     }
 
     public int GetColumns()
     {
-        switch (this.type)
+        return this.type switch
         {
-            case DataType.DT_IVec2:
-            case DataType.DT_Vec2:
-            case DataType.DT_Mat2:
-                return 2;
-
-            case DataType.DT_IVec3:
-            case DataType.DT_Vec3:
-            case DataType.DT_Mat3:
-            case DataType.DT_Mat4x3:
-                return 3;
-
-            case DataType.DT_IVec4:
-            case DataType.DT_Vec4:
-            case DataType.DT_Mat3x4:
-            case DataType.DT_Mat4:
-                return 4;
-
-            default:
-                throw new NotSupportedException("Data type does not have columns");
-        }
+            DataType.DT_IVec2  => 2,
+            DataType.DT_Vec2   => 2,
+            DataType.DT_Mat2   => 2,
+            DataType.DT_IVec3  => 3,
+            DataType.DT_Vec3   => 3,
+            DataType.DT_Mat3   => 3,
+            DataType.DT_Mat4x3 => 3,
+            DataType.DT_IVec4  => 4,
+            DataType.DT_Vec4   => 4,
+            DataType.DT_Mat3x4 => 4,
+            DataType.DT_Mat4   => 4,
+            _                  => throw new NotSupportedException("Data type does not have columns")
+        };
     }
 
     public bool IsNumeric()

@@ -172,47 +172,19 @@ public class StoryReader
             Node node = null;
             var type = reader.ReadByte();
             var nodeId = reader.ReadUInt32();
-            switch ((Node.Type)type)
+            node = (Node.Type)type switch
             {
-                case Node.Type.Database:
-                    node = new DatabaseNode();
-                    break;
-
-                case Node.Type.Proc:
-                    node = new ProcNode();
-                    break;
-
-                case Node.Type.DivQuery:
-                    node = new DivQueryNode();
-                    break;
-
-                case Node.Type.InternalQuery:
-                    node = new InternalQueryNode();
-                    break;
-
-                case Node.Type.And:
-                    node = new AndNode();
-                    break;
-
-                case Node.Type.NotAnd:
-                    node = new NotAndNode();
-                    break;
-
-                case Node.Type.RelOp:
-                    node = new RelOpNode();
-                    break;
-
-                case Node.Type.Rule:
-                    node = new RuleNode();
-                    break;
-
-                case Node.Type.UserQuery:
-                    node = new UserQueryNode();
-                    break;
-
-                default:
-                    throw new NotImplementedException("No serializer found for this node type");
-            }
+                Node.Type.Database      => new DatabaseNode(),
+                Node.Type.Proc          => new ProcNode(),
+                Node.Type.DivQuery      => new DivQueryNode(),
+                Node.Type.InternalQuery => new InternalQueryNode(),
+                Node.Type.And           => new AndNode(),
+                Node.Type.NotAnd        => new NotAndNode(),
+                Node.Type.RelOp         => new RelOpNode(),
+                Node.Type.Rule          => new RuleNode(),
+                Node.Type.UserQuery     => new UserQueryNode(),
+                _                       => throw new NotImplementedException("No serializer found for this node type")
+            };
 
             node.Read(reader);
             nodes.Add(nodeId, node);

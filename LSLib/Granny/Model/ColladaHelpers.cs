@@ -59,27 +59,14 @@ static class NodeHelpers
             for (var i = 0; i < n.ItemsElementName.Length; i++)
             {
                 var name = n.ItemsElementName[i];
-                switch (name)
+                accum = name switch
                 {
-                    case ItemsChoiceType2.matrix:
-                        accum = (n.Items[i] as matrix).ToMatrix4() * Matrix4.Identity;
-                        break;
-
-                    case ItemsChoiceType2.translate:
-                        accum = (n.Items[i] as TargetableFloat3).TranslationToMatrix4() * Matrix4.Identity;
-                        break;
-
-                    case ItemsChoiceType2.rotate:
-                        accum = (n.Items[i] as rotate).ToMatrix4() * Matrix4.Identity;
-                        break;
-
-                    case ItemsChoiceType2.scale:
-                        accum = (n.Items[i] as TargetableFloat3).ScaleToMatrix4() * Matrix4.Identity;
-                        break;
-
-                    default:
-                        throw new Exception("Unsupported Collada NODE transform: " + name);
-                }
+                    ItemsChoiceType2.matrix    => (n.Items[i] as matrix).ToMatrix4() * Matrix4.Identity,
+                    ItemsChoiceType2.translate => (n.Items[i] as TargetableFloat3).TranslationToMatrix4() * Matrix4.Identity,
+                    ItemsChoiceType2.rotate    => (n.Items[i] as rotate).ToMatrix4() * Matrix4.Identity,
+                    ItemsChoiceType2.scale     => (n.Items[i] as TargetableFloat3).ScaleToMatrix4() * Matrix4.Identity,
+                    _                          => throw new Exception("Unsupported Collada NODE transform: " + name)
+                };
             }
         }
 

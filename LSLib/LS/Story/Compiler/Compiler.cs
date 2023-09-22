@@ -494,20 +494,15 @@ public class Compiler
 
     private Value.Type IntrinsicTypeToCompatibilityType(Value.Type typeId)
     {
-        switch ((Value.Type)typeId)
+        return (Value.Type)typeId switch
         {
-            case Value.Type.Integer:
-            case Value.Type.Integer64:
-            case Value.Type.Float:
-                return Value.Type.Integer;
-
-            case Value.Type.String:
-            case Value.Type.GuidString:
-                return Value.Type.String;
-
-            default:
-                throw new ArgumentException("Cannot check compatibility of unknown types");
-        }
+            Value.Type.Integer    => Value.Type.Integer,
+            Value.Type.Integer64  => Value.Type.Integer,
+            Value.Type.Float      => Value.Type.Integer,
+            Value.Type.String     => Value.Type.String,
+            Value.Type.GuidString => Value.Type.String,
+            _                     => throw new ArgumentException("Cannot check compatibility of unknown types")
+        };
     }
 
     private bool AreIntrinsicTypesCompatible(Value.Type type1, Value.Type type2)
@@ -803,16 +798,16 @@ public class Compiler
 
     private ValueType ConstantTypeToValueType(IRConstantType type)
     {
-        switch (type)
+        return type switch
         {
-            case IRConstantType.Unknown: return null;
+            IRConstantType.Unknown => null,
             // TODO - lookup type ID from enum
-            case IRConstantType.Integer: return Context.TypesById[1];
-            case IRConstantType.Float:   return Context.TypesById[3];
-            case IRConstantType.String:  return Context.TypesById[4];
-            case IRConstantType.Name:    return Context.TypesById[5];
-            default:                     throw new ArgumentException("Invalid IR constant type");
-        }
+            IRConstantType.Integer => Context.TypesById[1],
+            IRConstantType.Float   => Context.TypesById[3],
+            IRConstantType.String  => Context.TypesById[4],
+            IRConstantType.Name    => Context.TypesById[5],
+            _                      => throw new ArgumentException("Invalid IR constant type")
+        };
     }
 
     private ValueType DetermineSignature(IRConstant value)
@@ -1215,13 +1210,12 @@ public class Compiler
         if (procDefn is IRFuncCondition)
         {
             var def = procDefn as IRFuncCondition;
-            FunctionType type;
-            switch (rule.Type)
+            FunctionType type = rule.Type switch
             {
-                case RuleType.Proc:  type = FunctionType.Proc; break;
-                case RuleType.Query: type = FunctionType.UserQuery; break;
-                default:             throw new InvalidOperationException("Cannot register this type as a PROC or QUERY");
-            }
+                RuleType.Proc  => FunctionType.Proc,
+                RuleType.Query => FunctionType.UserQuery,
+                _              => throw new InvalidOperationException("Cannot register this type as a PROC or QUERY")
+            };
 
             bool updated = false;
             if (!PropagateSignatureIfRequired(rule, def.Func.Name, type, def.Params, true, ref updated))

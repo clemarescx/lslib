@@ -302,16 +302,16 @@ public partial class GoalParser
     private ASTBinaryCondition MakeNegatedBinaryCondition(CodeLocation location, object lvalue, object op, object rvalue)
     {
         var cond = MakeBinaryCondition(location, lvalue, op, rvalue);
-        switch (cond.Op)
+        cond.Op = cond.Op switch
         {
-            case RelOpType.Less:           cond.Op = RelOpType.GreaterOrEqual; break;
-            case RelOpType.LessOrEqual:    cond.Op = RelOpType.Greater; break;
-            case RelOpType.Greater:        cond.Op = RelOpType.LessOrEqual; break;
-            case RelOpType.GreaterOrEqual: cond.Op = RelOpType.Less; break;
-            case RelOpType.Equal:          cond.Op = RelOpType.NotEqual; break;
-            case RelOpType.NotEqual:       cond.Op = RelOpType.Equal; break;
-            default:                       throw new InvalidOperationException("Cannot negate unknown binary operator");
-        }
+            RelOpType.Less           => RelOpType.GreaterOrEqual,
+            RelOpType.LessOrEqual    => RelOpType.Greater,
+            RelOpType.Greater        => RelOpType.LessOrEqual,
+            RelOpType.GreaterOrEqual => RelOpType.Less,
+            RelOpType.Equal          => RelOpType.NotEqual,
+            RelOpType.NotEqual       => RelOpType.Equal,
+            _                        => throw new InvalidOperationException("Cannot negate unknown binary operator")
+        };
 
         return cond;
     }

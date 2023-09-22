@@ -139,20 +139,13 @@ public class RuleNode : RelNode
                 return null;
             }
 
-            switch (func.Type)
+            return func.Type switch
             {
-                case FunctionType.Event:
-                    return RuleType.Rule;
-
-                case FunctionType.Proc:
-                    return RuleType.Proc;
-
-                case FunctionType.UserQuery:
-                    return RuleType.Query;
-
-                default:
-                    throw new InvalidDataException($"Unsupported root function type: {func.Type}");
-            }
+                FunctionType.Event     => RuleType.Rule,
+                FunctionType.Proc      => RuleType.Proc,
+                FunctionType.UserQuery => RuleType.Query,
+                _                      => throw new InvalidDataException($"Unsupported root function type: {func.Type}")
+            };
         }
         else
         {

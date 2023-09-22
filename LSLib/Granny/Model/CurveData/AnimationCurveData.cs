@@ -104,55 +104,43 @@ public class CurveDataHeader
 
     public bool IsFloat()
     {
-        switch ((CurveFormat)Format)
+        return (CurveFormat)Format switch
         {
-            case CurveFormat.DaKeyframes32f:
-            case CurveFormat.DaK32fC32f:
-            case CurveFormat.DaIdentity:
-            case CurveFormat.DaConstant32f:
-            case CurveFormat.D3Constant32f:
-            case CurveFormat.D4Constant32f:
-                return true;
-
-            default:
-                return false;
-        }
+            CurveFormat.DaKeyframes32f => true,
+            CurveFormat.DaK32fC32f     => true,
+            CurveFormat.DaIdentity     => true,
+            CurveFormat.DaConstant32f  => true,
+            CurveFormat.D3Constant32f  => true,
+            CurveFormat.D4Constant32f  => true,
+            _                          => false
+        };
     }
 
     public int BytesPerKnot()
     {
-        switch ((CurveFormat)Format)
+        return (CurveFormat)Format switch
         {
-            case CurveFormat.DaKeyframes32f:
-            case CurveFormat.DaK32fC32f:
-            case CurveFormat.D3I1K32fC32f:
-                return 4;
-
-            case CurveFormat.DaIdentity:
-            case CurveFormat.DaConstant32f:
-            case CurveFormat.D3Constant32f:
-            case CurveFormat.D4Constant32f:
-                throw new ParsingException("Should not serialize knots/controls here");
-
-            case CurveFormat.DaK16uC16u:
-            case CurveFormat.D4nK16uC15u:
-            case CurveFormat.D3K16uC16u:
-            case CurveFormat.D9I1K16uC16u:
-            case CurveFormat.D9I3K16uC16u:
-            case CurveFormat.D3I1K16uC16u:
-                return 2;
-
-            case CurveFormat.DaK8uC8u:
-            case CurveFormat.D4nK8uC7u:
-            case CurveFormat.D3K8uC8u:
-            case CurveFormat.D9I1K8uC8u:
-            case CurveFormat.D9I3K8uC8u:
-            case CurveFormat.D3I1K8uC8u:
-                return 1;
-
-            default:
-                throw new ParsingException("Unsupported curve data format");
-        }
+            CurveFormat.DaKeyframes32f => 4,
+            CurveFormat.DaK32fC32f     => 4,
+            CurveFormat.D3I1K32fC32f   => 4,
+            CurveFormat.DaIdentity     => throw new ParsingException("Should not serialize knots/controls here"),
+            CurveFormat.DaConstant32f  => throw new ParsingException("Should not serialize knots/controls here"),
+            CurveFormat.D3Constant32f  => throw new ParsingException("Should not serialize knots/controls here"),
+            CurveFormat.D4Constant32f  => throw new ParsingException("Should not serialize knots/controls here"),
+            CurveFormat.DaK16uC16u     => 2,
+            CurveFormat.D4nK16uC15u    => 2,
+            CurveFormat.D3K16uC16u     => 2,
+            CurveFormat.D9I1K16uC16u   => 2,
+            CurveFormat.D9I3K16uC16u   => 2,
+            CurveFormat.D3I1K16uC16u   => 2,
+            CurveFormat.DaK8uC8u       => 1,
+            CurveFormat.D4nK8uC7u      => 1,
+            CurveFormat.D3K8uC8u       => 1,
+            CurveFormat.D9I1K8uC8u     => 1,
+            CurveFormat.D9I3K8uC8u     => 1,
+            CurveFormat.D3I1K8uC8u     => 1,
+            _                          => throw new ParsingException("Unsupported curve data format")
+        };
     }
 }
 

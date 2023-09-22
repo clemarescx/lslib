@@ -187,17 +187,12 @@ public class Exporter
 
     private Root Load(string inPath, ExportFormat format)
     {
-        switch (format)
+        return format switch
         {
-            case ExportFormat.GR2:
-                return LoadGR2(inPath);
-
-            case ExportFormat.DAE:
-                return LoadDAE(inPath);
-
-            default:
-                throw new NotImplementedException("Unsupported input format");
-        }
+            ExportFormat.GR2 => LoadGR2(inPath),
+            ExportFormat.DAE => LoadDAE(inPath),
+            _                => throw new NotImplementedException("Unsupported input format")
+        };
     }
 
     private void SaveGR2(string outPath, Root root)

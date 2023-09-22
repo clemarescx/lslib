@@ -272,17 +272,12 @@ public class LocaUtils
     {
         var extension = Path.GetExtension(path).ToLower();
 
-        switch (extension)
+        return extension switch
         {
-            case ".loca":
-                return LocaFormat.Loca;
-
-            case ".xml":
-                return LocaFormat.Xml;
-
-            default:
-                throw new ArgumentException("Unrecognized file extension: " + extension);
-        }
+            ".loca" => LocaFormat.Loca,
+            ".xml"  => LocaFormat.Xml,
+            _       => throw new ArgumentException("Unrecognized file extension: " + extension)
+        };
     }
 
     public static LocaResource Load(string inputPath)

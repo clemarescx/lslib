@@ -344,23 +344,14 @@ public class Magic
 
     public static byte[] SignatureFromFormat(Format format)
     {
-        switch (format)
+        return format switch
         {
-            case Format.LittleEndian32:
-                return LittleEndian32Magic;
-
-            case Format.LittleEndian64:
-                return LittleEndian64Magic;
-
-            case Format.BigEndian32:
-                return BigEndian32Magic;
-
-            case Format.BigEndian64:
-                return BigEndian64Magic;
-
-            default:
-                throw new ArgumentException();
-        }
+            Format.LittleEndian32 => LittleEndian32Magic,
+            Format.LittleEndian64 => LittleEndian64Magic,
+            Format.BigEndian32    => BigEndian32Magic,
+            Format.BigEndian64    => BigEndian64Magic,
+            _                     => throw new ArgumentException()
+        };
     }
 
     public void SetFormat(Format format, bool alternateSignature)
@@ -369,45 +360,25 @@ public class Magic
 
         if (alternateSignature)
         {
-            switch (format)
+            this.signature = format switch
             {
-                case Format.LittleEndian32:
-                    this.signature = LittleEndian32Magic2;
-                    break;
-
-                case Format.LittleEndian64:
-                    this.signature = LittleEndian64Magic2;
-                    break;
-
-                case Format.BigEndian32:
-                    this.signature = BigEndian32Magic2;
-                    break;
-
-                case Format.BigEndian64:
-                    this.signature = BigEndian64Magic2;
-                    break;
-            }
+                Format.LittleEndian32 => LittleEndian32Magic2,
+                Format.LittleEndian64 => LittleEndian64Magic2,
+                Format.BigEndian32    => BigEndian32Magic2,
+                Format.BigEndian64    => BigEndian64Magic2,
+                _                     => this.signature
+            };
         }
         else
         {
-            switch (format)
+            this.signature = format switch
             {
-                case Format.LittleEndian32:
-                    this.signature = LittleEndian32Magic;
-                    break;
-
-                case Format.LittleEndian64:
-                    this.signature = LittleEndian64Magic;
-                    break;
-
-                case Format.BigEndian32:
-                    this.signature = BigEndian32Magic;
-                    break;
-
-                case Format.BigEndian64:
-                    this.signature = BigEndian64Magic;
-                    break;
-            }
+                Format.LittleEndian32 => LittleEndian32Magic,
+                Format.LittleEndian64 => LittleEndian64Magic,
+                Format.BigEndian32    => BigEndian32Magic,
+                Format.BigEndian64    => BigEndian64Magic,
+                _                     => this.signature
+            };
         }
     }
 }
@@ -494,13 +465,12 @@ public class Header
 
     public UInt32 Size()
     {
-        UInt32 headerSize;
-        switch (version)
+        UInt32 headerSize = version switch
         {
-            case 6:  headerSize = HeaderSize_V6; break;
-            case 7:  headerSize = HeaderSize_V7; break;
-            default: throw new InvalidDataException("Cannot calculate CRC for unknown header versions.");
-        }
+            6 => HeaderSize_V6,
+            7 => HeaderSize_V7,
+            _ => throw new InvalidDataException("Cannot calculate CRC for unknown header versions.")
+        };
 
         return headerSize;
     }
@@ -922,40 +892,31 @@ public class MemberDefinition
 
     public UInt32 MarshallingSize()
     {
-        switch (Type)
+        return Type switch
         {
-            case MemberType.Inline:
-            case MemberType.Reference:
-            case MemberType.VariantReference:
-            case MemberType.EmptyReference:
-                return 0;
-
-            case MemberType.Int8:
-            case MemberType.BinormalInt8:
-            case MemberType.UInt8:
-            case MemberType.NormalUInt8:
-                return 1;
-
-            case MemberType.Int16:
-            case MemberType.BinormalInt16:
-            case MemberType.UInt16:
-            case MemberType.NormalUInt16:
-            case MemberType.Real16:
-                return 2;
-
-            case MemberType.String:
-            case MemberType.Transform:
-            case MemberType.Real32:
-            case MemberType.Int32:
-            case MemberType.UInt32:
-            case MemberType.ReferenceToArray:
-            case MemberType.ArrayOfReferences:
-            case MemberType.ReferenceToVariantArray:
-                return 4;
-
-            default:
-                throw new ParsingException(String.Format("Unhandled member type: {0}", Type.ToString()));
-        }
+            MemberType.Inline                  => 0,
+            MemberType.Reference               => 0,
+            MemberType.VariantReference        => 0,
+            MemberType.EmptyReference          => 0,
+            MemberType.Int8                    => 1,
+            MemberType.BinormalInt8            => 1,
+            MemberType.UInt8                   => 1,
+            MemberType.NormalUInt8             => 1,
+            MemberType.Int16                   => 2,
+            MemberType.BinormalInt16           => 2,
+            MemberType.UInt16                  => 2,
+            MemberType.NormalUInt16            => 2,
+            MemberType.Real16                  => 2,
+            MemberType.String                  => 4,
+            MemberType.Transform               => 4,
+            MemberType.Real32                  => 4,
+            MemberType.Int32                   => 4,
+            MemberType.UInt32                  => 4,
+            MemberType.ReferenceToArray        => 4,
+            MemberType.ArrayOfReferences       => 4,
+            MemberType.ReferenceToVariantArray => 4,
+            _                                  => throw new ParsingException(String.Format("Unhandled member type: {0}", Type.ToString()))
+        };
     }
 
     public bool ShouldSerialize(UInt32 version)

@@ -346,16 +346,16 @@ public class VariableManager
 
     private object Get(VariableType type, int index)
     {
-        switch (type)
+        return type switch
         {
-            case VariableType.Int:         return IntList.Get(index);
-            case VariableType.Int64:       return Int64List.Get(index);
-            case VariableType.Float:       return FloatList.Get(index);
-            case VariableType.String:      return StringList.Get(index);
-            case VariableType.FixedString: return FixedStringList.Get(index);
-            case VariableType.Float3:      return Float3List.Get(index);
-            default:                       throw new ArgumentException("Unsupported variable type");
-        }
+            VariableType.Int         => IntList.Get(index),
+            VariableType.Int64       => Int64List.Get(index),
+            VariableType.Float       => FloatList.Get(index),
+            VariableType.String      => StringList.Get(index),
+            VariableType.FixedString => FixedStringList.Get(index),
+            VariableType.Float3      => Float3List.Get(index),
+            _                        => throw new ArgumentException("Unsupported variable type")
+        };
     }
 
     public object GetRaw(string name)
@@ -367,16 +367,16 @@ public class VariableManager
 
     private object GetRaw(VariableType type, int index)
     {
-        switch (type)
+        return type switch
         {
-            case VariableType.Int:         return IntList.GetRaw(index);
-            case VariableType.Int64:       return Int64List.GetRaw(index);
-            case VariableType.Float:       return FloatList.GetRaw(index);
-            case VariableType.String:      return StringList.GetRaw(index);
-            case VariableType.FixedString: return FixedStringList.GetRaw(index);
-            case VariableType.Float3:      return Float3List.GetRaw(index);
-            default:                       throw new ArgumentException("Unsupported variable type");
-        }
+            VariableType.Int         => IntList.GetRaw(index),
+            VariableType.Int64       => Int64List.GetRaw(index),
+            VariableType.Float       => FloatList.GetRaw(index),
+            VariableType.String      => StringList.GetRaw(index),
+            VariableType.FixedString => FixedStringList.GetRaw(index),
+            VariableType.Float3      => Float3List.GetRaw(index),
+            _                        => throw new ArgumentException("Unsupported variable type")
+        };
     }
 
     private void LoadKeys(byte[] handleList)

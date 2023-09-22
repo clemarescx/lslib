@@ -64,26 +64,17 @@ public class ResourceUtils
     {
         var extension = Path.GetExtension(path).ToLower();
 
-        switch (extension)
+        return extension switch
         {
-            case ".lsx":
-                return ResourceFormat.LSX;
-
-            case ".lsb":
-                return ResourceFormat.LSB;
-
-            case ".lsf":
-            case ".lsfx":
-            case ".lsbc":
-            case ".lsbs":
-                return ResourceFormat.LSF;
-
-            case ".lsj":
-                return ResourceFormat.LSJ;
-
-            default:
-                throw new ArgumentException("Unrecognized file extension: " + extension);
-        }
+            ".lsx"  => ResourceFormat.LSX,
+            ".lsb"  => ResourceFormat.LSB,
+            ".lsf"  => ResourceFormat.LSF,
+            ".lsfx" => ResourceFormat.LSF,
+            ".lsbc" => ResourceFormat.LSF,
+            ".lsbs" => ResourceFormat.LSF,
+            ".lsj"  => ResourceFormat.LSJ,
+            _       => throw new ArgumentException("Unrecognized file extension: " + extension)
+        };
     }
 
     public static Resource LoadResource(string inputPath)
@@ -201,14 +192,14 @@ public class ResourceUtils
     private bool IsA(string path, ResourceFormat format)
     {
         var extension = Path.GetExtension(path).ToLower();
-        switch (format)
+        return format switch
         {
-            case ResourceFormat.LSX: return extension == ".lsx";
-            case ResourceFormat.LSB: return extension == ".lsb";
-            case ResourceFormat.LSF: return extension == ".lsf" || extension == ".lsbc" || extension == ".lsfx";
-            case ResourceFormat.LSJ: return extension == ".lsj";
-            default:                 return false;
-        }
+            ResourceFormat.LSX => extension == ".lsx",
+            ResourceFormat.LSB => extension == ".lsb",
+            ResourceFormat.LSF => extension == ".lsf" || extension == ".lsbc" || extension == ".lsfx",
+            ResourceFormat.LSJ => extension == ".lsj",
+            _                  => false
+        };
     }
 
     private void EnumerateFiles(

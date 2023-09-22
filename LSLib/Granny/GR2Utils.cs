@@ -24,18 +24,13 @@ public class GR2Utils
     {
         string extension = Path.GetExtension(path)?.ToLower();
 
-        switch (extension)
+        return extension switch
         {
-            case ".gr2":
-            case ".lsm":
-                return ExportFormat.GR2;
-
-            case ".dae":
-                return ExportFormat.DAE;
-
-            default:
-                throw new ArgumentException($"Unrecognized model file extension: {extension}");
-        }
+            ".gr2" => ExportFormat.GR2,
+            ".lsm" => ExportFormat.GR2,
+            ".dae" => ExportFormat.DAE,
+            _      => throw new ArgumentException($"Unrecognized model file extension: {extension}")
+        };
     }
 
     public static Root LoadModel(string inputPath)

@@ -271,38 +271,24 @@ public static class BinUtils
 
     public static CompressionMethod CompressionFlagsToMethod(byte flags)
     {
-        switch (flags & 0x0f)
+        return (flags & 0x0f) switch
         {
-            case (int)CompressionMethod.None:
-                return CompressionMethod.None;
-
-            case (int)CompressionMethod.Zlib:
-                return CompressionMethod.Zlib;
-
-            case (int)CompressionMethod.LZ4:
-                return CompressionMethod.LZ4;
-
-            default:
-                throw new ArgumentException("Invalid compression method");
-        }
+            (int)CompressionMethod.None => CompressionMethod.None,
+            (int)CompressionMethod.Zlib => CompressionMethod.Zlib,
+            (int)CompressionMethod.LZ4  => CompressionMethod.LZ4,
+            _                           => throw new ArgumentException("Invalid compression method")
+        };
     }
 
     public static CompressionLevel CompressionFlagsToLevel(byte flags)
     {
-        switch (flags & 0xf0)
+        return (flags & 0xf0) switch
         {
-            case (int)CompressionFlags.FastCompress:
-                return CompressionLevel.FastCompression;
-
-            case (int)CompressionFlags.DefaultCompress:
-                return CompressionLevel.DefaultCompression;
-
-            case (int)CompressionFlags.MaxCompressionLevel:
-                return CompressionLevel.MaxCompression;
-
-            default:
-                throw new ArgumentException("Invalid compression flags");
-        }
+            (int)CompressionFlags.FastCompress        => CompressionLevel.FastCompression,
+            (int)CompressionFlags.DefaultCompress     => CompressionLevel.DefaultCompression,
+            (int)CompressionFlags.MaxCompressionLevel => CompressionLevel.MaxCompression,
+            _                                         => throw new ArgumentException("Invalid compression flags")
+        };
     }
 
     public static byte MakeCompressionFlags(CompressionMethod method, CompressionLevel level)
@@ -380,20 +366,13 @@ public static class BinUtils
 
     public static byte[] Compress(byte[] uncompressed, CompressionMethod method, CompressionLevel compressionLevel, bool chunked = false)
     {
-        switch (method)
+        return method switch
         {
-            case CompressionMethod.None:
-                return uncompressed;
-
-            case CompressionMethod.Zlib:
-                return CompressZlib(uncompressed, compressionLevel);
-
-            case CompressionMethod.LZ4:
-                return CompressLZ4(uncompressed, compressionLevel, chunked);
-
-            default:
-                throw new ArgumentException("Invalid compression method specified");
-        }
+            CompressionMethod.None => uncompressed,
+            CompressionMethod.Zlib => CompressZlib(uncompressed, compressionLevel),
+            CompressionMethod.LZ4  => CompressLZ4(uncompressed, compressionLevel, chunked),
+            _                      => throw new ArgumentException("Invalid compression method specified")
+        };
     }
 
     public static byte[] CompressZlib(byte[] uncompressed, CompressionLevel compressionLevel)

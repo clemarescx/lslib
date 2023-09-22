@@ -444,13 +444,12 @@ public static class VertexSerializationHelpers
         {
             for (var i = 0; i < d.ColorMaps; i++)
             {
-                Vector4 color;
-                switch (d.ColorMapType)
+                Vector4 color = d.ColorMapType switch
                 {
-                    case ColorMapType.Float4: color = ReadVector4(reader); break;
-                    case ColorMapType.Byte4:  color = ReadNormalByteVector4(reader); break;
-                    default:                  throw new Exception($"Cannot unserialize color map: Unsupported format {d.ColorMapType}");
-                }
+                    ColorMapType.Float4 => ReadVector4(reader),
+                    ColorMapType.Byte4  => ReadNormalByteVector4(reader),
+                    _                   => throw new Exception($"Cannot unserialize color map: Unsupported format {d.ColorMapType}")
+                };
 
                 v.SetColor(i, color);
             }
@@ -460,13 +459,12 @@ public static class VertexSerializationHelpers
         {
             for (var i = 0; i < d.TextureCoordinates; i++)
             {
-                Vector2 uv;
-                switch (d.TextureCoordinateType)
+                Vector2 uv = d.TextureCoordinateType switch
                 {
-                    case TextureCoordinateType.Float2: uv = ReadVector2(reader); break;
-                    case TextureCoordinateType.Half2:  uv = ReadHalfVector2(reader); break;
-                    default:                           throw new Exception($"Cannot unserialize UV map: Unsupported format {d.TextureCoordinateType}");
-                }
+                    TextureCoordinateType.Float2 => ReadVector2(reader),
+                    TextureCoordinateType.Half2  => ReadHalfVector2(reader),
+                    _                            => throw new Exception($"Cannot unserialize UV map: Unsupported format {d.TextureCoordinateType}")
+                };
 
                 v.SetUV(i, uv);
             }

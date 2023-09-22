@@ -81,16 +81,16 @@ internal class FactPropertyDescriptor : PropertyDescriptor
     {
         get
         {
-            switch (BaseType)
+            return BaseType switch
             {
-                case Value.Type.Integer:   return typeof(Int32);
-                case Value.Type.Integer64: return typeof(Int64);
-                case Value.Type.Float:     return typeof(Single);
-                case Value.Type.String:
-                case Value.Type.GuidString: return typeof(String);
-                case Value.Type.None:
-                default: throw new InvalidOperationException("Cannot retrieve type of an unknown column");
-            }
+                Value.Type.Integer    => typeof(Int32),
+                Value.Type.Integer64  => typeof(Int64),
+                Value.Type.Float      => typeof(Single),
+                Value.Type.String     => typeof(String),
+                Value.Type.GuidString => typeof(String),
+                Value.Type.None       => throw new InvalidOperationException("Cannot retrieve type of an unknown column"),
+                _                     => throw new InvalidOperationException("Cannot retrieve type of an unknown column")
+            };
         }
     }
 

@@ -76,12 +76,12 @@ public class PageFile : IDisposable
     {
         Stream.Position = ChunkOffsets[pageIndex][chunkIndex] + (pageIndex * PageSize);
         var chunkHeader = BinUtils.ReadStruct<GTPChunkHeader>(Reader);
-        switch (chunkHeader.Codec)
+        return chunkHeader.Codec switch
         {
-            case GTSCodec.Uniform: return DoUnpackTileUniform(chunkHeader);
-            case GTSCodec.BC:      return DoUnpackTileBC(chunkHeader, outputSize);
-            default:               throw new InvalidDataException($"Unsupported codec: {chunkHeader.Codec}");
-        }
+            GTSCodec.Uniform => DoUnpackTileUniform(chunkHeader),
+            GTSCodec.BC      => DoUnpackTileBC(chunkHeader, outputSize),
+            _                => throw new InvalidDataException($"Unsupported codec: {chunkHeader.Codec}")
+        };
     }
 
     public BC5Image UnpackTileBC5(int pageIndex, int chunkIndex)

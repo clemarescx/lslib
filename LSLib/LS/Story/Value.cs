@@ -35,62 +35,44 @@ public class Value : OsirisSerializable
 
     public override string ToString()
     {
-        switch ((Type)TypeId)
+        return (Type)TypeId switch
         {
-            case Type.None:       return "";
-            case Type.Integer:    return IntValue.ToString();
-            case Type.Integer64:  return Int64Value.ToString();
-            case Type.Float:      return FloatValue.ToString();
-            case Type.String:     return StringValue;
-            case Type.GuidString: return StringValue;
-            default:              return StringValue;
-        }
+            Type.None       => "",
+            Type.Integer    => IntValue.ToString(),
+            Type.Integer64  => Int64Value.ToString(),
+            Type.Float      => FloatValue.ToString(),
+            Type.String     => StringValue,
+            Type.GuidString => StringValue,
+            _               => StringValue
+        };
     }
 
     public static uint ConvertOS1ToOS2Type(uint os1TypeId)
     {
         // Convert D:OS 1 type ID to D:OS 2 type ID
-        switch ((Type_OS1)os1TypeId)
+        return (Type_OS1)os1TypeId switch
         {
-            case Type_OS1.None:
-                return (uint)Type.None;
-
-            case Type_OS1.Integer:
-                return (uint)Type.Integer;
-
-            case Type_OS1.Float:
-                return (uint)Type.Float;
-
-            case Type_OS1.String:
-                return (uint)Type.String;
-
-            default:
-                return os1TypeId;
-        }
+            Type_OS1.None    => (uint)Type.None,
+            Type_OS1.Integer => (uint)Type.Integer,
+            Type_OS1.Float   => (uint)Type.Float,
+            Type_OS1.String  => (uint)Type.String,
+            _                => os1TypeId
+        };
     }
 
     public static uint ConvertOS2ToOS1Type(uint os2TypeId)
     {
         // Convert D:OS 2 type ID to D:OS 1 type ID
-        switch ((Type)os2TypeId)
+        return (Type)os2TypeId switch
         {
-            case Type.None:
-                return (uint)Type_OS1.None;
-
-            case Type.Integer:
-            case Type.Integer64:
-                return (uint)Type_OS1.Integer;
-
-            case Type.Float:
-                return (uint)Type_OS1.Float;
-
-            case Type.String:
-            case Type.GuidString:
-                return (uint)Type_OS1.String;
-
-            default:
-                return os2TypeId;
-        }
+            Type.None       => (uint)Type_OS1.None,
+            Type.Integer    => (uint)Type_OS1.Integer,
+            Type.Integer64  => (uint)Type_OS1.Integer,
+            Type.Float      => (uint)Type_OS1.Float,
+            Type.String     => (uint)Type_OS1.String,
+            Type.GuidString => (uint)Type_OS1.String,
+            _               => os2TypeId
+        };
     }
 
     public Type GetBuiltinTypeId(Story story)

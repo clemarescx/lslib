@@ -244,16 +244,16 @@ public class IRGenerator
     // TODO - un-copy + move to constant code?
     private ValueType ConstantTypeToValueType(IRConstantType type)
     {
-        switch (type)
+        return type switch
         {
-            case IRConstantType.Unknown: return null;
+            IRConstantType.Unknown => null,
             // TODO - lookup type ID from enum
-            case IRConstantType.Integer: return Context.TypesById[1];
-            case IRConstantType.Float:   return Context.TypesById[3];
-            case IRConstantType.String:  return Context.TypesById[4];
-            case IRConstantType.Name:    return Context.TypesById[5];
-            default:                     throw new ArgumentException("Invalid IR constant type");
-        }
+            IRConstantType.Integer => Context.TypesById[1],
+            IRConstantType.Float   => Context.TypesById[3],
+            IRConstantType.String  => Context.TypesById[4],
+            IRConstantType.Name    => Context.TypesById[5],
+            _                      => throw new ArgumentException("Invalid IR constant type")
+        };
     }
 
     private IRConstant ASTConstantToIR(ASTConstantValue astConstant)
