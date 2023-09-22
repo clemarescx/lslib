@@ -439,7 +439,7 @@ public class PackageWriter : IDisposable
             }
         }
 
-        md5.TransformFinalBlock(new byte[0], 0, 0);
+        md5.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
         byte[] hash = md5.Hash;
 
         // All hash bytes are incremented by 1

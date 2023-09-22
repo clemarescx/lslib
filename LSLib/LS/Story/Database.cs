@@ -49,7 +49,7 @@ internal class FactPropertyDescriptor : PropertyDescriptor
     public byte Type { get; private set; }
 
     public FactPropertyDescriptor(int index, Value.Type baseType, byte type)
-        : base(index.ToString(), new Attribute[0])
+        : base(index.ToString(), Array.Empty<Attribute>())
     {
         Index = index;
         BaseType = baseType;
