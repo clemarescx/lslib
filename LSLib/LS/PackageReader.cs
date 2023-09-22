@@ -23,7 +23,7 @@ public class NotAPackageException : Exception
     }
 }
 
-public class PackageReader : IDisposable
+public sealed class PackageReader : IDisposable
 {
     private readonly string _path;
     private readonly bool _metadataOnly;
@@ -37,16 +37,18 @@ public class PackageReader : IDisposable
 
     public void Dispose()
     {
-        if (_streams != null)
+        if (_streams == null)
         {
-            foreach (Stream stream in _streams)
-            {
-                stream.Dispose();
-            }
+            return;
+        }
+
+        foreach (Stream stream in _streams)
+        {
+            stream.Dispose();
         }
     }
 
-    private void OpenStreams(FileStream mainStream, int numParts)
+    private void OpenStreams(Stream mainStream, int numParts)
     {
         // Open a stream for each file chunk
         _streams = new Stream[numParts];
@@ -59,7 +61,7 @@ public class PackageReader : IDisposable
         }
     }
 
-    private Package ReadPackageV7(FileStream mainStream, BinaryReader reader)
+    private Package ReadPackageV7(Stream mainStream, BinaryReader reader)
     {
         var package = new Package();
         mainStream.Seek(0, SeekOrigin.Begin);
@@ -85,7 +87,7 @@ public class PackageReader : IDisposable
         return package;
     }
 
-    private Package ReadPackageV10(FileStream mainStream, BinaryReader reader)
+    private Package ReadPackageV10(Stream mainStream, BinaryReader reader)
     {
         var package = new Package();
         mainStream.Seek(4, SeekOrigin.Begin);
@@ -114,7 +116,7 @@ public class PackageReader : IDisposable
         return package;
     }
 
-    private Package ReadPackageV13(FileStream mainStream, BinaryReader reader)
+    private Package ReadPackageV13(Stream mainStream, BinaryReader reader)
     {
         var package = new Package();
         var header = BinUtils.ReadStruct<LSPKHeader13>(reader);
@@ -269,7 +271,7 @@ public class PackageReader : IDisposable
         }
     }
 
-    private Package ReadPackageV15(FileStream mainStream, BinaryReader reader)
+    private Package ReadPackageV15(Stream mainStream, BinaryReader reader)
     {
         var package = new Package();
         var header = BinUtils.ReadStruct<LSPKHeader15>(reader);
@@ -293,7 +295,7 @@ public class PackageReader : IDisposable
         return package;
     }
 
-    private Package ReadPackageV16(FileStream mainStream, BinaryReader reader)
+    private Package ReadPackageV16(Stream mainStream, BinaryReader reader)
     {
         var package = new Package();
         var header = BinUtils.ReadStruct<LSPKHeader16>(reader);
@@ -317,7 +319,7 @@ public class PackageReader : IDisposable
         return package;
     }
 
-    private Package ReadPackageV18(FileStream mainStream, BinaryReader reader)
+    private Package ReadPackageV18(Stream mainStream, BinaryReader reader)
     {
         var package = new Package();
         var header = BinUtils.ReadStruct<LSPKHeader16>(reader);
