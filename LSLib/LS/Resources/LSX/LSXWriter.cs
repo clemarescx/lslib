@@ -1,10 +1,11 @@
 ﻿using LSLib.LS.Enums;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
 namespace LSLib.LS;
 
-public class LSXWriter : ILSWriter
+public sealed class LSXWriter : ILSWriter
 {
     private Stream stream;
     private XmlWriter writer;
@@ -44,9 +45,9 @@ public class LSXWriter : ILSWriter
         }
     }
 
-    private void WriteRegions(Resource rsrc)
+    private void WriteRegions(Resource resource)
     {
-        foreach (var region in rsrc.Regions)
+        foreach (var region in resource.Regions)
         {
             writer.WriteStartElement("region");
             writer.WriteAttributeString("id", region.Key);
@@ -68,20 +69,21 @@ public class LSXWriter : ILSWriter
         writer.WriteAttributeString("handle", fs.Handle);
         writer.WriteAttributeString("arguments", fs.Arguments.Count.ToString());
 
-        if (fs.Arguments.Count > 0)
+        if (fs.Arguments.Count <= 0)
         {
-            writer.WriteStartElement("arguments");
-            for (int i = 0; i < fs.Arguments.Count; i++)
-            {
-                var argument = fs.Arguments[i];
-                writer.WriteStartElement("argument");
-                writer.WriteAttributeString("key", argument.Key);
-                writer.WriteAttributeString("value", argument.Value);
-                WriteTranslatedFSString(argument.String);
-                writer.WriteEndElement();
-            }
+            return;
+        }
+
+        writer.WriteStartElement("arguments");
+        foreach (var argument in fs.Arguments)
+        {
+            writer.WriteStartElement("argument");
+            writer.WriteAttributeString("key", argument.Key);
+            writer.WriteAttributeString("value", argument.Value);
+            WriteTranslatedFSString(argument.String);
             writer.WriteEndElement();
         }
+        writer.WriteEndElement();
     }
 
     private void WriteNode(Node node)
@@ -102,29 +104,36 @@ public class LSXWriter : ILSWriter
                 writer.WriteAttributeString("type", ((int)attribute.Value.Type).ToString());
             }
 
-            if (attribute.Value.Type == NodeAttribute.DataType.DT_TranslatedString)
+            switch (attribute.Value.Type)
             {
-                var ts = (TranslatedString)attribute.Value.Value;
-                writer.WriteAttributeString("handle", ts.Handle);
-                if (ts.Value != null)
+                case NodeAttribute.DataType.DT_TranslatedString:
                 {
-                    writer.WriteAttributeString("value", ts.ToString());
+                    var ts = (TranslatedString)attribute.Value.Value;
+                    writer.WriteAttributeString("handle", ts.Handle);
+                    if (ts.Value != null)
+                    {
+                        writer.WriteAttributeString("value", ts.ToString());
+                    }
+                    else
+                    {
+                        writer.WriteAttributeString("version", ts.Version.ToString());
+                    }
+
+                    break;
                 }
-                else
+
+                case NodeAttribute.DataType.DT_TranslatedFSString:
                 {
-                    writer.WriteAttributeString("version", ts.Version.ToString());
+                    var fs = (TranslatedFSString)attribute.Value.Value;
+                    writer.WriteAttributeString("value", fs.Value);
+                    WriteTranslatedFSStringInner(fs);
+                    break;
                 }
-            }
-            else if (attribute.Value.Type == NodeAttribute.DataType.DT_TranslatedFSString)
-            {
-                var fs = (TranslatedFSString)attribute.Value.Value;
-                writer.WriteAttributeString("value", fs.Value);
-                WriteTranslatedFSStringInner(fs);
-            }
-            else
-            {
-                // Replace bogus 001F characters found in certain LSF nodes
-                writer.WriteAttributeString("value", attribute.Value.ToString().Replace("\x1f", ""));
+
+                default:
+                    // Replace bogus 001F characters found in certain LSF nodes
+                    writer.WriteAttributeString("value", attribute.Value.ToString().Replace("\x1f", ""));
+                    break;
             }
 
             writer.WriteEndElement();
@@ -133,12 +142,9 @@ public class LSXWriter : ILSWriter
         if (node.ChildCount > 0)
         {
             writer.WriteStartElement("children");
-            foreach (var children in node.Children)
+            foreach (var child in node.Children.SelectMany(children => children.Value))
             {
-                foreach (var child in children.Value)
-                {
-                    WriteNode(child);
-                }
+                WriteNode(child);
             }
             writer.WriteEndElement();
         }
