@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace LSLib.LS;
 
-public class LSJWriter : ILSWriter
+public sealed class LSJWriter : ILSWriter
 {
     private Stream stream;
     private JsonTextWriter writer;
@@ -25,7 +25,7 @@ public class LSJWriter : ILSWriter
         var serializer = JsonSerializer.Create(settings);
 
         using var streamWriter = new StreamWriter(stream);
-        using (writer = new(streamWriter))
+        using (writer = new JsonTextWriter(streamWriter))
         {
             writer.IndentChar = '\t';
             writer.Indentation = 1;
