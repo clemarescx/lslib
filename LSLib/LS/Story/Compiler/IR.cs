@@ -39,7 +39,7 @@ public abstract class IRReference<NameType, ReferencedType>
         }
     }
         
-    abstract public ReferencedType Resolve();
+    public abstract ReferencedType Resolve();
 }
 
 /// <summary>

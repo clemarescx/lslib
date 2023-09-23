@@ -1,55 +1,52 @@
-﻿using OpenTK;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
+using OpenTK;
 
 namespace LSLib.LS.Save;
 
 public class OsirisVariableHelper
 {
-    private int NumericStringId;
-    private Dictionary<string, int> IdentifierToKey = new();
-    private Dictionary<int, string> KeyToIdentifier = new();
+    private readonly Dictionary<string, int> _identifierToKey = new();
+    private readonly Dictionary<int, string> _keyToIdentifier = new();
 
     public void Load(Node helper)
     {
-        NumericStringId = (int)helper.Attributes["NumericStringId"].Value;
-
         foreach (var mapping in helper.Children["IdentifierTable"])
         {
-            string name = (string)mapping.Attributes["MapKey"].Value;
-            int index = (int)mapping.Attributes["MapValue"].Value;
-            IdentifierToKey.Add(name, index);
-            KeyToIdentifier.Add(index, name);
+            var name = (string)mapping.Attributes["MapKey"].Value;
+            var index = (int)mapping.Attributes["MapValue"].Value;
+            _identifierToKey.Add(name, index);
+            _keyToIdentifier.Add(index, name);
         }
     }
 
     public int GetKey(string variableName)
     {
-        return IdentifierToKey[variableName];
+        return _identifierToKey[variableName];
     }
 
     public string GetName(int variableIndex)
     {
-        return KeyToIdentifier[variableIndex];
+        return _keyToIdentifier[variableIndex];
     }
 }
 
-abstract public class VariableHolder<TValue>
+public abstract class VariableHolder<TValue>
 {
     protected readonly List<TValue> Values = new();
-    private List<ushort> Remaps = new();
-        
+    private readonly List<ushort> _remaps = new();
+
     public TValue GetRaw(int index)
     {
         if (index == 0)
         {
-            return default(TValue);
+            return default;
         }
 
-        var valueSlot = Remaps[index - 1];
+        var valueSlot = _remaps[index - 1];
         return Values[valueSlot];
     }
 
@@ -59,18 +56,18 @@ abstract public class VariableHolder<TValue>
 
         var remaps = (byte[])variableList.Attributes["Remaps"].Value;
 
-        Remaps.Clear();
-        Remaps.Capacity = remaps.Length / 2;
+        _remaps.Clear();
+        _remaps.Capacity = remaps.Length / 2;
 
         using var ms = new MemoryStream(remaps);
         using var reader = new BinaryReader(ms);
-        for (var i = 0; i < remaps.Length/2; i++)
+        for (var i = 0; i < remaps.Length / 2; i++)
         {
-            Remaps.Add(reader.ReadUInt16());
+            _remaps.Add(reader.ReadUInt16());
         }
     }
 
-    abstract protected void LoadVariables(Node variableList);
+    protected abstract void LoadVariables(Node variableList);
 }
 
 public class IntVariableHolder : VariableHolder<int>
@@ -78,17 +75,15 @@ public class IntVariableHolder : VariableHolder<int>
     public int? Get(int index)
     {
         var raw = GetRaw(index);
-        if (raw == -1163005939) /* 0xbaadf00d */
+        if ((uint)raw == 0xbaadf00d) /* -1163005939 */
         {
             return null;
         }
-        else
-        {
-            return raw;
-        }
+
+        return raw;
     }
 
-    override protected void LoadVariables(Node variableList)
+    protected override void LoadVariables(Node variableList)
     {
         var variables = (byte[])variableList.Attributes["Variables"].Value;
         var numVars = variables.Length / 4;
@@ -110,17 +105,15 @@ public class Int64VariableHolder : VariableHolder<long>
     public long? Get(int index)
     {
         var raw = GetRaw(index);
-        if (raw == -4995072469926809587) /* 0xbaadf00dbaadf00d */
+        if ((ulong)raw == 0xbaadf00dbaadf00d) /* -4995072469926809587 */
         {
             return null;
         }
-        else
-        {
-            return raw;
-        }
+
+        return raw;
     }
 
-    override protected void LoadVariables(Node variableList)
+    protected override void LoadVariables(Node variableList)
     {
         var variables = (byte[])variableList.Attributes["Variables"].Value;
         var numVars = variables.Length / 8;
@@ -147,13 +140,11 @@ public class FloatVariableHolder : VariableHolder<float>
         {
             return null;
         }
-        else
-        {
-            return raw;
-        }
+
+        return raw;
     }
 
-    override protected void LoadVariables(Node variableList)
+    protected override void LoadVariables(Node variableList)
     {
         var variables = (byte[])variableList.Attributes["Variables"].Value;
         var numVars = variables.Length / 4;
@@ -179,13 +170,11 @@ public class StringVariableHolder : VariableHolder<string>
         {
             return null;
         }
-        else
-        {
-            return raw;
-        }
+
+        return raw;
     }
 
-    override protected void LoadVariables(Node variableList)
+    protected override void LoadVariables(Node variableList)
     {
         var variables = (byte[])variableList.Attributes["Variables"].Value;
 
@@ -216,13 +205,11 @@ public class Float3VariableHolder : VariableHolder<Vector3>
         {
             return null;
         }
-        else
-        {
-            return raw;
-        }
+
+        return raw;
     }
 
-    override protected void LoadVariables(Node variableList)
+    protected override void LoadVariables(Node variableList)
     {
         var variables = (byte[])variableList.Attributes["Variables"].Value;
         var numVars = variables.Length / 12;
@@ -240,6 +227,7 @@ public class Float3VariableHolder : VariableHolder<Vector3>
                 Y = reader.ReadSingle(),
                 Z = reader.ReadSingle()
             };
+
             Values.Add(vec);
         }
     }
@@ -265,10 +253,12 @@ internal struct Key2TableEntry
     /// Index of variable from OsirisVariableHelper.IdentifierTable
     /// </summary>
     public UInt32 NameIndex;
+
     /// <summary>
     /// Index and type of value
     /// </summary>
     public UInt32 ValueIndexAndType;
+
     /// <summary>
     /// Handle of the object that this variable is assigned to.
     /// </summary>
@@ -277,37 +267,40 @@ internal struct Key2TableEntry
     /// <summary>
     /// Index of value in the appropriate variable list
     /// </summary>
-    public int ValueIndex => (int)(ValueIndexAndType >> 3 & 0x3ff);
+    public readonly int ValueIndex => (int)(ValueIndexAndType >> 3 & 0x3ff);
 
     /// <summary>
     /// Type of value
     /// </summary>
-    public VariableType ValueType => (VariableType)(ValueIndexAndType & 7);
+    public readonly VariableType ValueType => (VariableType)(ValueIndexAndType & 7);
 }
 
 public class VariableManager
 {
-    private readonly OsirisVariableHelper VariableHelper;
-    private readonly Dictionary<int, Key2TableEntry> Keys = new();
-    private readonly IntVariableHolder IntList = new();
-    private readonly Int64VariableHolder Int64List = new();
-    private readonly FloatVariableHolder FloatList = new();
-    private readonly StringVariableHolder StringList = new();
-    private readonly StringVariableHolder FixedStringList = new();
-    private readonly Float3VariableHolder Float3List = new();
+    private readonly OsirisVariableHelper _variableHelper;
+    private readonly Dictionary<int, Key2TableEntry> _keys = new();
+    private readonly IntVariableHolder _intList = new();
+    private readonly Int64VariableHolder _int64List = new();
+    private readonly FloatVariableHolder _floatList = new();
+    private readonly StringVariableHolder _stringList = new();
+    private readonly StringVariableHolder _fixedStringList = new();
+    private readonly Float3VariableHolder _float3List = new();
 
     public VariableManager(OsirisVariableHelper variableHelper)
     {
-        VariableHelper = variableHelper;
+        _variableHelper = variableHelper;
     }
 
     public Dictionary<string, object> GetAll(bool includeDeleted = false)
     {
         var variables = new Dictionary<string, object>();
-        foreach (var key in Keys.Values)
+        foreach (var key in _keys.Values)
         {
-            var name = VariableHelper.GetName((int)key.NameIndex);
-            var value = includeDeleted ? GetRaw(key.ValueType, key.ValueIndex) : Get(key.ValueType, key.ValueIndex);
+            var name = _variableHelper.GetName((int)key.NameIndex);
+            var value = includeDeleted
+                ? GetRaw(key.ValueType, key.ValueIndex)
+                : Get(key.ValueType, key.ValueIndex);
+
             if (value != null)
             {
                 variables.Add(name, value);
@@ -319,8 +312,8 @@ public class VariableManager
 
     public object Get(string name)
     {
-        var index = VariableHelper.GetKey(name);
-        var key = Keys[index];
+        var index = _variableHelper.GetKey(name);
+        var key = _keys[index];
         return Get(key.ValueType, key.ValueIndex);
     }
 
@@ -328,20 +321,20 @@ public class VariableManager
     {
         return type switch
         {
-            VariableType.Int         => IntList.Get(index),
-            VariableType.Int64       => Int64List.Get(index),
-            VariableType.Float       => FloatList.Get(index),
-            VariableType.String      => StringList.Get(index),
-            VariableType.FixedString => FixedStringList.Get(index),
-            VariableType.Float3      => Float3List.Get(index),
+            VariableType.Int         => _intList.Get(index),
+            VariableType.Int64       => _int64List.Get(index),
+            VariableType.Float       => _floatList.Get(index),
+            VariableType.String      => _stringList.Get(index),
+            VariableType.FixedString => _fixedStringList.Get(index),
+            VariableType.Float3      => _float3List.Get(index),
             _                        => throw new ArgumentException("Unsupported variable type")
         };
     }
 
     public object GetRaw(string name)
     {
-        var index = VariableHelper.GetKey(name);
-        var key = Keys[index];
+        var index = _variableHelper.GetKey(name);
+        var key = _keys[index];
         return GetRaw(key.ValueType, key.ValueIndex);
     }
 
@@ -349,19 +342,19 @@ public class VariableManager
     {
         return type switch
         {
-            VariableType.Int         => IntList.GetRaw(index),
-            VariableType.Int64       => Int64List.GetRaw(index),
-            VariableType.Float       => FloatList.GetRaw(index),
-            VariableType.String      => StringList.GetRaw(index),
-            VariableType.FixedString => FixedStringList.GetRaw(index),
-            VariableType.Float3      => Float3List.GetRaw(index),
+            VariableType.Int         => _intList.GetRaw(index),
+            VariableType.Int64       => _int64List.GetRaw(index),
+            VariableType.Float       => _floatList.GetRaw(index),
+            VariableType.String      => _stringList.GetRaw(index),
+            VariableType.FixedString => _fixedStringList.GetRaw(index),
+            VariableType.Float3      => _float3List.GetRaw(index),
             _                        => throw new ArgumentException("Unsupported variable type")
         };
     }
 
     private void LoadKeys(byte[] handleList)
     {
-        Keys.Clear();
+        _keys.Clear();
 
         using var ms = new MemoryStream(handleList);
         using var reader = new BinaryReader(ms);
@@ -369,7 +362,7 @@ public class VariableManager
         for (var i = 0; i < numHandles; i++)
         {
             var entry = BinUtils.ReadStruct<Key2TableEntry>(reader);
-            Keys.Add((int)entry.NameIndex, entry);
+            _keys.Add((int)entry.NameIndex, entry);
         }
     }
 
@@ -377,32 +370,32 @@ public class VariableManager
     {
         if (variableManager.Children.TryGetValue("IntList", out var nodes))
         {
-            IntList.Load(nodes[0]);
+            _intList.Load(nodes[0]);
         }
 
         if (variableManager.Children.TryGetValue("Int64List", out nodes))
         {
-            Int64List.Load(nodes[0]);
+            _int64List.Load(nodes[0]);
         }
 
         if (variableManager.Children.TryGetValue("FloatList", out nodes))
         {
-            FloatList.Load(nodes[0]);
+            _floatList.Load(nodes[0]);
         }
 
         if (variableManager.Children.TryGetValue("StringList", out nodes))
         {
-            StringList.Load(nodes[0]);
+            _stringList.Load(nodes[0]);
         }
 
         if (variableManager.Children.TryGetValue("FixedStringList", out nodes))
         {
-            FixedStringList.Load(nodes[0]);
+            _fixedStringList.Load(nodes[0]);
         }
 
         if (variableManager.Children.TryGetValue("Float3List", out nodes))
         {
-            Float3List.Load(nodes[0]);
+            _float3List.Load(nodes[0]);
         }
 
         if (variableManager.Children.TryGetValue("Key2TableList", out nodes))
