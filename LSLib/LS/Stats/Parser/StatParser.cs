@@ -125,18 +125,16 @@ public partial class StatParser
     private StatDeclaration AddProperty(object declaration, object property)
     {
         var decl = (StatDeclaration)declaration;
-        if (property is StatProperty)
+        if (property is StatProperty prop)
         {
-            var prop = (StatProperty)property;
             decl.Properties[prop.Key] = prop.Value;
             if (prop.Location != null)
             {
                 decl.PropertyLocations[prop.Key] = prop.Location;
             }
         }
-        else if (property is StatElement)
+        else if (property is StatElement ele)
         {
-            var ele = (StatElement)property;
             if (!decl.Properties.TryGetValue(ele.Collection, out var cont))
             {
                 cont = new List<object>();
@@ -145,9 +143,8 @@ public partial class StatParser
 
             (cont as List<object>).Add(ele.Value);
         }
-        else if (property is StatDeclaration)
+        else if (property is StatDeclaration otherDecl)
         {
-            var otherDecl = (StatDeclaration)property;
             foreach (var kv in otherDecl.Properties)
             {
                 decl.Properties[kv.Key] = kv.Value;
@@ -207,36 +204,36 @@ public partial class StatParser
 
     private StatElement MakeElement(string key, object value)
     {
-        if (value is string)
+        if (value is string s)
         {
             return new()
             {
                 Collection = key,
-                Value = (string)value
+                Value = s
             };
         }
-        else if (value is StatCollection)
+        else if (value is StatCollection list)
         {
             return new()
             {
                 Collection = key,
-                Value = (StatCollection)value
+                Value = list
             };
         }
-        else if (value is Dictionary<string, object>)
+        else if (value is Dictionary<string, object> objects)
         {
             return new()
             {
                 Collection = key,
-                Value = (Dictionary<string, object>)value
+                Value = objects
             };
         }
-        else if (value is StatDeclaration)
+        else if (value is StatDeclaration declaration)
         {
             return new()
             {
                 Collection = key,
-                Value = ((StatDeclaration)value).Properties
+                Value = declaration.Properties
             };
         }
         else

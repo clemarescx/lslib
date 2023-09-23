@@ -85,28 +85,26 @@ public class IRGenerator
 
     private IRStatement ASTActionToIR(IRRule rule, ASTAction astAction)
     {
-        if (astAction is ASTGoalCompletedAction)
+        if (astAction is ASTGoalCompletedAction astGoal)
         {
-            var astGoal = astAction as ASTGoalCompletedAction;
             return new()
             {
                 Func = null,
                 Goal = rule.Goal,
                 Not = false,
                 Params = new(),
-                Location = astAction.Location
+                Location = astGoal.Location
             };
         }
-        else if (astAction is ASTStatement)
+        else if (astAction is ASTStatement astStmt)
         {
-            var astStmt = astAction as ASTStatement;
             var stmt = new IRStatement
             {
                 Func = new(new(astStmt.Name, astStmt.Params.Count)),
                 Goal = null,
                 Not = astStmt.Not,
                 Params = new(astStmt.Params.Count),
-                Location = astAction.Location
+                Location = astStmt.Location
             };
 
             foreach (var param in astStmt.Params)
@@ -124,16 +122,15 @@ public class IRGenerator
 
     private IRCondition ASTConditionToIR(IRRule rule, ASTCondition astCondition)
     {
-        if (astCondition is ASTFuncCondition)
+        if (astCondition is ASTFuncCondition astFunc)
         {
-            var astFunc = astCondition as ASTFuncCondition;
             var func = new IRFuncCondition
             {
                 Func = new(new(astFunc.Name, astFunc.Params.Count)),
                 Not = astFunc.Not,
                 Params = new(astFunc.Params.Count),
                 TupleSize = -1,
-                Location = astCondition.Location
+                Location = astFunc.Location
             };
 
             foreach (var param in astFunc.Params)
@@ -143,16 +140,15 @@ public class IRGenerator
 
             return func;
         }
-        else if (astCondition is ASTBinaryCondition)
+        else if (astCondition is ASTBinaryCondition astBin)
         {
-            var astBin = astCondition as ASTBinaryCondition;
             return new IRBinaryCondition
             {
                 LValue = ASTValueToIR(rule, astBin.LValue),
                 Op = astBin.Op,
                 RValue = ASTValueToIR(rule, astBin.RValue),
                 TupleSize = -1,
-                Location = astCondition.Location
+                Location = astBin.Location
             };
         }
         else
@@ -163,13 +159,12 @@ public class IRGenerator
 
     private IRValue ASTValueToIR(IRRule rule, ASTRValue astValue)
     {
-        if (astValue is ASTConstantValue)
+        if (astValue is ASTConstantValue value)
         {
-            return ASTConstantToIR(astValue as ASTConstantValue);
+            return ASTConstantToIR(value);
         }
-        else if (astValue is ASTLocalVar)
+        else if (astValue is ASTLocalVar astVar)
         {
-            var astVar = astValue as ASTLocalVar;
             // TODO - compiler error if type resolution fails
             ValueType type;
             if (astVar.Type != null)
@@ -191,7 +186,7 @@ public class IRGenerator
             {
                 Index = ruleVar.Index,
                 Type = type,
-                Location = astValue.Location
+                Location = astVar.Location
             };
         }
         else
@@ -202,35 +197,33 @@ public class IRGenerator
 
     private IRFact ASTFactToIR(IRGoal goal, ASTBaseFact astFact)
     {
-        if (astFact is ASTFact)
+        if (astFact is ASTFact fact1)
         {
-            var f = astFact as ASTFact;
             var fact = new IRFact
             {
-                Database = new(new(f.Database, f.Elements.Count)),
-                Not = f.Not,
-                Elements = new(f.Elements.Count),
+                Database = new(new(fact1.Database, fact1.Elements.Count)),
+                Not = fact1.Not,
+                Elements = new(fact1.Elements.Count),
                 Goal = null,
-                Location = f.Location
+                Location = fact1.Location
             };
 
-            foreach (var element in f.Elements)
+            foreach (var element in fact1.Elements)
             {
                 fact.Elements.Add(ASTConstantToIR(element));
             }
 
             return fact;
         }
-        else if (astFact is ASTGoalCompletedFact)
+        else if (astFact is ASTGoalCompletedFact fact)
         {
-            var f = astFact as ASTGoalCompletedFact;
             return new()
             {
                 Database = null,
                 Not = false,
                 Elements = new(),
                 Goal = goal,
-                Location = f.Location
+                Location = fact.Location
             };
         }
         else

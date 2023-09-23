@@ -216,16 +216,14 @@ public class ColladaMesh
     {
         foreach (var item in Mesh.Items)
         {
-            if (item is triangles)
+            if (item is triangles tris)
             {
-                var tris = item as triangles;
                 TriangleCount = (int)tris.count;
                 Inputs = tris.input;
                 Indices = ColladaHelpers.StringsToIntegers(tris.p);
             }
-            else if (item is polylist)
+            else if (item is polylist plist)
             {
-                var plist = item as polylist;
                 TriangleCount = (int)plist.count;
                 Inputs = plist.input;
                 Indices = ColladaHelpers.StringsToIntegers(plist.p);

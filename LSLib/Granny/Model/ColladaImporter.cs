@@ -26,9 +26,9 @@ internal class ColladaSource
 
         float_array floats = null;
         Name_array names = null;
-        if (src.Item is float_array)
+        if (src.Item is float_array item)
         {
-            floats = src.Item as float_array;
+            floats = item;
             // Workaround for empty arrays being null
             if (floats.Values == null)
             {
@@ -40,9 +40,9 @@ internal class ColladaSource
                 throw new ParsingException("Float source data size mismatch. Check source and accessor item counts.");
             }
         }
-        else if (src.Item is Name_array)
+        else if (src.Item is Name_array array)
         {
-            names = src.Item as Name_array;
+            names = array;
             // Workaround for empty arrays being null
             if (names.Values == null)
             {
@@ -980,9 +980,9 @@ public class ColladaImporter
         var childAnims = 0;
         foreach (var item in colladaAnim.Items)
         {
-            if (item is animation)
+            if (item is animation item1)
             {
-                ImportAnimation(item as animation, animation, trackGroup, skeleton);
+                ImportAnimation(item1, animation, trackGroup, skeleton);
                 childAnims++;
             }
         }
@@ -1042,17 +1042,16 @@ public class ColladaImporter
         // we reference both of them during skin import
         foreach (var item in collada.Items)
         {
-            if (item is library_controllers)
+            if (item is library_controllers controllers)
             {
-                var controllers = item as library_controllers;
                 if (controllers.controller != null)
                 {
                     foreach (var controller in controllers.controller)
                     {
-                        if (controller.Item is skin)
+                        if (controller.Item is skin skin)
                         {
-                            collSkins.Add(controller.Item as skin);
-                            SkinnedMeshes.Add((controller.Item as skin).source1[1..]);
+                            collSkins.Add(skin);
+                            SkinnedMeshes.Add(skin.source1[1..]);
                         }
                         else
                         {
@@ -1061,9 +1060,8 @@ public class ColladaImporter
                     }
                 }
             }
-            else if (item is library_visual_scenes)
+            else if (item is library_visual_scenes scenes)
             {
-                var scenes = item as library_visual_scenes;
                 if (scenes.visual_scene != null)
                 {
                     foreach (var scene in scenes.visual_scene)
@@ -1079,9 +1077,8 @@ public class ColladaImporter
                     }
                 }
             }
-            else if (item is library_geometries)
+            else if (item is library_geometries geometries)
             {
-                var geometries = item as library_geometries;
                 if (geometries.geometry != null)
                 {
                     foreach (var geometry in geometries.geometry)
@@ -1097,9 +1094,8 @@ public class ColladaImporter
                     }
                 }
             }
-            else if (item is library_animations)
+            else if (item is library_animations animations)
             {
-                var animations = item as library_animations;
                 if (animations.animation != null)
                 {
                     collAnimations.AddRange(animations.animation);

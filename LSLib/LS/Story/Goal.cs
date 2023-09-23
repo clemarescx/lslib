@@ -129,12 +129,11 @@ public class Goal : OsirisSerializable
 
         foreach (var node in story.Nodes)
         {
-            if (node.Value is RuleNode)
+            if (node.Value is RuleNode rule)
             {
-                var rule = node.Value as RuleNode;
                 if (rule.DerivedGoalRef != null && rule.DerivedGoalRef.Index == Index)
                 {
-                    node.Value.MakeScript(writer, story, nullTuple, false);
+                    rule.MakeScript(writer, story, nullTuple, false);
                     writer.WriteLine();
                 }
             }

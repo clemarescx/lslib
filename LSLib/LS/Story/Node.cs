@@ -113,9 +113,9 @@ public abstract class TreeNode : Node
         if (NextNode.NodeRef.IsValid)
         {
             var nextNode = NextNode.NodeRef.Resolve();
-            if (nextNode is RuleNode)
+            if (nextNode is RuleNode node)
             {
-                (nextNode as RuleNode).DerivedGoalRef = new(story, NextNode.GoalRef.Index);
+                node.DerivedGoalRef = new(story, NextNode.GoalRef.Index);
             }
         }
     }

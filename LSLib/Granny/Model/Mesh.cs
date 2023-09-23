@@ -181,9 +181,9 @@ public class VertexDataSectionSelector : SectionSelector
 {
     public SectionType SelectSection(MemberDefinition member, Type type, object obj)
     {
-        if (obj is VertexData)
+        if (obj is VertexData data)
         {
-            return ((VertexData)obj).SerializationSection;
+            return data.SerializationSection;
         }
         else
         {
@@ -442,9 +442,9 @@ public class TriTopologySectionSelector : SectionSelector
 {
     public SectionType SelectSection(MemberDefinition member, Type type, object obj)
     {
-        if (obj is TriTopology)
+        if (obj is TriTopology topology)
         {
-            return ((TriTopology)obj).SerializationSection;
+            return topology.SerializationSection;
         }
         else
         {

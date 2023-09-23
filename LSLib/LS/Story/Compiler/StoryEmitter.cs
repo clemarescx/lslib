@@ -89,12 +89,11 @@ public class StoryEmitter
 
     private TypedValue EmitTypedValue(IRValue val)
     {
-        if (val is IRVariable)
+        if (val is IRVariable variable)
         {
-            var variable = val as IRVariable;
             return new Variable
             {
-                TypeId = val.Type.TypeId,
+                TypeId = variable.Type.TypeId,
                 IsValid = false,
                 OutParam = false,
                 IsAType = true,
@@ -166,7 +165,7 @@ public class StoryEmitter
             {
                 Id = node.Index,
                 RuleId = 0,
-                Line = location != null ? location.StartLine : 0,
+                Line = location?.StartLine ?? 0,
                 ColumnToVariableMaps = new(),
                 DatabaseId = node.DatabaseRef.Index,
                 Name = node.Name,
@@ -174,13 +173,13 @@ public class StoryEmitter
                 ParentNodeId = 0
             };
 
-            if (node is JoinNode)
+            if (node is JoinNode joinNode)
             {
-                nodeDebug.ParentNodeId = (node as JoinNode).LeftParentRef.Index;
+                nodeDebug.ParentNodeId = joinNode.LeftParentRef.Index;
             }
-            else if (node is RelNode)
+            else if (node is RelNode relNode)
             {
-                nodeDebug.ParentNodeId = (node as RelNode).ParentRef.Index;
+                nodeDebug.ParentNodeId = relNode.ParentRef.Index;
             }
 
             if (node.Name != "")
@@ -632,22 +631,19 @@ public class StoryEmitter
             GoalRef = new(Story, goal)
         };
 
-        if (node is TreeNode)
+        if (node is TreeNode treeNode)
         {
-            var treeNode = node as TreeNode;
             Debug.Assert(treeNode.NextNode == null);
             treeNode.NextNode = targetRef;
         }
-        else if (node is DataNode)
+        else if (node is DataNode dataNode)
         {
-            var dataNode = node as DataNode;
             dataNode.ReferencedBy.Add(targetRef);
         }
 
-        if (target is RelNode)
+        if (target is RelNode relNode)
         {
             Debug.Assert(entryPoint == EntryPoint.None);
-            var relNode = target as RelNode;
             relNode.ParentRef = new(Story, node);
         }
         else
@@ -713,9 +709,9 @@ public class StoryEmitter
         for (var i = 0; i < condition.Params.Count; i++)
         {
             var param = condition.Params[i];
-            if (param is IRConstant)
+            if (param is IRConstant constant)
             {
-                var osiConst = EmitValue(param as IRConstant);
+                var osiConst = EmitValue(constant);
                 adapter.Constants.Physical.Add(osiConst);
                 adapter.Constants.Logical.Add(i, osiConst);
                 adapter.LogicalIndices.Add(-1);
@@ -944,9 +940,9 @@ public class StoryEmitter
             RelOp = condition.Op
         };
 
-        if (condition.LValue is IRConstant)
+        if (condition.LValue is IRConstant value)
         {
-            osiRelOp.LeftValue = EmitValue(condition.LValue as IRConstant);
+            osiRelOp.LeftValue = EmitValue(value);
             osiRelOp.LeftValueIndex = -1;
         }
         else
@@ -958,9 +954,9 @@ public class StoryEmitter
             osiRelOp.LeftValueIndex = (sbyte)(condition.LValue as IRVariable).Index;
         }
 
-        if (condition.RValue is IRConstant)
+        if (condition.RValue is IRConstant constant)
         {
-            osiRelOp.RightValue = EmitValue(condition.RValue as IRConstant);
+            osiRelOp.RightValue = EmitValue(constant);
             osiRelOp.RightValueIndex = -1;
         }
         else
@@ -1203,11 +1199,11 @@ public class StoryEmitter
         for (var i = 1; i < rule.Conditions.Count; i++)
         {
             var condition = rule.Conditions[i];
-            if (condition is IRBinaryCondition)
+            if (condition is IRBinaryCondition binaryCondition)
             {
-                var relOp = EmitRelOp(rule, condition as IRBinaryCondition, referencedDb, lastCondition, lastConditionNode);
+                var relOp = EmitRelOp(rule, binaryCondition, referencedDb, lastCondition, lastConditionNode);
                 AddJoinTarget(lastConditionNode, relOp, EntryPoint.None, goal);
-                AddNodeDebugInfo(relOp, condition.Location, relOp.AdapterRef.Resolve().LogicalToPhysicalMap.Count, rule);
+                AddNodeDebugInfo(relOp, binaryCondition.Location, relOp.AdapterRef.Resolve().LogicalToPhysicalMap.Count, rule);
                 lastConditionNode = relOp;
             }
             else

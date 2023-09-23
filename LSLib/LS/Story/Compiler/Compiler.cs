@@ -310,9 +310,9 @@ public class Compiler
 
     private void VerifyIRValue(IRRule rule, IRValue value, FunctionSignature func)
     {
-        if (value is IRConstant)
+        if (value is IRConstant constant)
         {
-            VerifyIRConstant(value as IRConstant);
+            VerifyIRConstant(constant);
         }
         else
         {
@@ -385,9 +385,9 @@ public class Compiler
     private void VerifyIRValueCall(IRRule rule, IRValue value, FunctionSignature signature, int parameterIndex, 
         int conditionIndex, bool not)
     {
-        if (value is IRVariable)
+        if (value is IRVariable variable)
         {
-            VerifyIRVariableCall(rule, value as IRVariable, signature, parameterIndex, conditionIndex, not);
+            VerifyIRVariableCall(rule, variable, signature, parameterIndex, conditionIndex, not);
         }
     }
 
@@ -539,9 +539,8 @@ public class Compiler
     {
         VerifyIRValue(rule, value, null);
 
-        if (value is IRVariable)
+        if (value is IRVariable variable)
         {
-            var variable = value as IRVariable;
             var ruleVar = rule.Variables[variable.Index];
             if (ruleVar.FirstBindingIndex == -1 || ruleVar.FirstBindingIndex >= conditionIndex)
             {
@@ -566,9 +565,9 @@ public class Compiler
             return;
         }
 
-        if (condition.LValue is IRVariable
-         && condition.RValue is IRVariable
-         && (condition.LValue as IRVariable).Index == (condition.RValue as IRVariable).Index
+        if (condition.LValue is IRVariable variable
+         && condition.RValue is IRVariable irVariable
+         && variable.Index == irVariable.Index
             // This bug was fixed in DOS2 DE
          && Game == TargetGame.DOS2
             // There is a known bug in the main campaign that we have to ignore
@@ -647,9 +646,9 @@ public class Compiler
         for (var i = 0; i < rule.Conditions.Count; i++)
         {
             var condition = rule.Conditions[i];
-            if (condition is IRBinaryCondition)
+            if (condition is IRBinaryCondition binaryCondition)
             {
-                VerifyIRBinaryCondition(rule, condition as IRBinaryCondition, i);
+                VerifyIRBinaryCondition(rule, binaryCondition, i);
             }
             else
             {
@@ -824,18 +823,17 @@ public class Compiler
 
     private ValueType DetermineSignature(IRRule rule, IRValue value)
     {
-        if (value is IRConstant)
+        if (value is IRConstant constant)
         {
-            return DetermineSignature(value as IRConstant);
+            return DetermineSignature(constant);
         }
-        else if (value is IRVariable)
+        else if (value is IRVariable irVar)
         {
-            if (value.Type != null)
+            if (irVar.Type != null)
             {
-                return value.Type;
+                return irVar.Type;
             }
 
-            var irVar = value as IRVariable;
             var ruleVar = rule.Variables[irVar.Index];
             if (ruleVar.Type != null)
             {
@@ -867,7 +865,7 @@ public class Compiler
             signature = new()
             {
                 Name = name.Name,
-                Type = type == null ? FunctionType.Database : (FunctionType)type,
+                Type = type ?? FunctionType.Database,
                 Inserted = false,
                 Deleted = false,
                 Read = false
@@ -1023,10 +1021,9 @@ public class Compiler
         int index = 0;
         foreach (var param in parameters)
         {
-            if (param is IRVariable)
+            if (param is IRVariable irVar)
             {
-                var irVar = param as IRVariable;
-                if (PropagateIRVariableType(rule, param as IRVariable, signature.Params[index].Type))
+                if (PropagateIRVariableType(rule, irVar, signature.Params[index].Type))
                 {
                     updated = true;
                 }
@@ -1052,9 +1049,8 @@ public class Compiler
     {
         bool updated = false;
         if (condition.LValue.Type == null
-         && condition.LValue is IRVariable)
+         && condition.LValue is IRVariable lval)
         {
-            var lval = condition.LValue as IRVariable;
             var ruleVariable = rule.Variables[lval.Index];
             if (ruleVariable.Type != null)
             {
@@ -1064,9 +1060,8 @@ public class Compiler
         }
 
         if (condition.RValue.Type == null
-         && condition.RValue is IRVariable)
+         && condition.RValue is IRVariable rval)
         {
-            var rval = condition.RValue as IRVariable;
             var ruleVariable = rule.Variables[rval.Index];
             if (ruleVariable.Type != null)
             {
@@ -1085,9 +1080,8 @@ public class Compiler
         int tupleSize = lastTupleSize;
         foreach (var param in condition.Params)
         {
-            if (param is IRVariable)
+            if (param is IRVariable variable)
             {
-                var variable = param as IRVariable;
                 if (variable.Index >= tupleSize)
                 {
                     tupleSize = variable.Index + 1;
@@ -1101,18 +1095,16 @@ public class Compiler
     private int ComputeTupleSize(IRRule rule, IRBinaryCondition condition, int lastTupleSize)
     {
         int tupleSize = lastTupleSize;
-        if (condition.LValue is IRVariable)
+        if (condition.LValue is IRVariable value)
         {
-            var variable = condition.LValue as IRVariable;
-            if (variable.Index >= tupleSize)
+            if (value.Index >= tupleSize)
             {
-                tupleSize = variable.Index + 1;
+                tupleSize = value.Index + 1;
             }
         }
 
-        if (condition.RValue is IRVariable)
+        if (condition.RValue is IRVariable variable)
         {
-            var variable = condition.RValue as IRVariable;
             if (variable.Index >= tupleSize)
             {
                 tupleSize = variable.Index + 1;
@@ -1129,9 +1121,8 @@ public class Compiler
         int lastTupleSize = 0;
         foreach (var condition in rule.Conditions)
         {
-            if (condition is IRFuncCondition)
+            if (condition is IRFuncCondition func)
             {
-                var func = condition as IRFuncCondition;
                 PropagateSignatureIfRequired(rule, func.Func.Name, null, func.Params, false, ref updated);
                 if (func.TupleSize == -1)
                 {
@@ -1206,9 +1197,8 @@ public class Compiler
     {
         // Check if all parameters in the PROC/QRY declaration are typed.
         var procDefn = rule.Conditions[0];
-        if (procDefn is IRFuncCondition)
+        if (procDefn is IRFuncCondition def)
         {
-            var def = procDefn as IRFuncCondition;
             FunctionType type = rule.Type switch
             {
                 RuleType.Proc  => FunctionType.Proc,

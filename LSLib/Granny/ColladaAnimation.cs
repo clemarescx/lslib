@@ -21,9 +21,9 @@ public class ColladaAnimation
         Sources = new();
         foreach (var item in Animation.Items)
         {
-            if (item is source)
+            if (item is source source)
             {
-                var src = ColladaSource.FromCollada(item as source);
+                var src = ColladaSource.FromCollada(source);
                 Sources.Add(src.id, src);
             }
         }
@@ -34,9 +34,9 @@ public class ColladaAnimation
         sampler sampler = null;
         foreach (var item in Animation.Items)
         {
-            if (item is sampler)
+            if (item is sampler item1)
             {
-                sampler = item as sampler;
+                sampler = item1;
                 break;
             }
         }
@@ -121,9 +121,9 @@ public class ColladaAnimation
         channel channel = null;
         foreach (var item in Animation.Items)
         {
-            if (item is channel)
+            if (item is channel item1)
             {
-                channel = item as channel;
+                channel = item1;
                 break;
             }
         }

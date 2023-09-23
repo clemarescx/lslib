@@ -154,49 +154,49 @@ public class StoryDebugExportVisitor
 
     public void VisitNode(Node node)
     {
-        if (node is RelOpNode)
+        if (node is RelOpNode opNode)
         {
-            Visit(node as RelOpNode);
+            Visit(opNode);
         }
-        else if (node is RuleNode)
+        else if (node is RuleNode ruleNode)
         {
-            Visit(node as RuleNode);
+            Visit(ruleNode);
         }
         //else if (node is RelNode)
         //    Visit(node as RelNode);
-        else if (node is UserQueryNode)
+        else if (node is UserQueryNode queryNode)
         {
-            Visit(node as QueryNode);
+            Visit(queryNode);
         }
-        else if (node is InternalQueryNode)
+        else if (node is InternalQueryNode internalQueryNode)
         {
-            Visit(node as QueryNode);
+            Visit(internalQueryNode);
         }
-        else if (node is DivQueryNode)
+        else if (node is DivQueryNode divQueryNode)
         {
-            Visit(node as QueryNode);
+            Visit(divQueryNode);
         }
         //else if (node is QueryNode)
         //    Visit(node as QueryNode);
-        else if (node is AndNode)
+        else if (node is AndNode andNode)
         {
-            Visit(node as JoinNode);
+            Visit(andNode);
         }
-        else if (node is NotAndNode)
+        else if (node is NotAndNode notAndNode)
         {
-            Visit(node as JoinNode);
+            Visit(notAndNode);
         }
         //else if (node is JoinNode)
         //    Visit(node as JoinNode);
         //else if (node is TreeNode)
         //    Visit(node as TreeNode);
-        else if (node is ProcNode)
+        else if (node is ProcNode procNode)
         {
-            Visit(node as DataNode);
+            Visit(procNode);
         }
-        else if (node is DatabaseNode)
+        else if (node is DatabaseNode databaseNode)
         {
-            Visit(node as DataNode);
+            Visit(databaseNode);
         }
         // else if (node is DataNode)
         //     Visit(node as DataNode);
@@ -241,13 +241,13 @@ public class StoryDebugExportVisitor
     public void VisitVar(Value val)
     {
         writer.WriteStartObject();
-        if (val is Variable)
+        if (val is Variable variable)
         {
-            Visit(val as Variable);
+            Visit(variable);
         }
-        else if (val is TypedValue)
+        else if (val is TypedValue value)
         {
-            Visit(val as TypedValue);
+            Visit(value);
         }
         else
         {

@@ -117,14 +117,12 @@ public class RuleNode : RelNode
         Node parent = this;
         for (;;)
         {
-            if (parent is RelNode)
+            if (parent is RelNode rel)
             {
-                var rel = parent as RelNode;
                 parent = rel.ParentRef.Resolve();
             }
-            else if (parent is JoinNode)
+            else if (parent is JoinNode join)
             {
-                var join = parent as JoinNode;
                 parent = join.LeftParentRef.Resolve();
             }
             else

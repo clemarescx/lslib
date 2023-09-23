@@ -105,13 +105,13 @@ internal class FactPropertyDescriptor : PropertyDescriptor
         {
             case Value.Type.Integer:
             {
-                if (value is string)
+                if (value is string s)
                 {
-                    column.IntValue = int.Parse((string)value);
+                    column.IntValue = int.Parse(s);
                 }
-                else if (value is int)
+                else if (value is int i)
                 {
-                    column.IntValue = (int)value;
+                    column.IntValue = i;
                 }
                 else
                 {
@@ -123,13 +123,13 @@ internal class FactPropertyDescriptor : PropertyDescriptor
 
             case Value.Type.Integer64:
             {
-                if (value is string)
+                if (value is string s)
                 {
-                    column.Int64Value = long.Parse((string)value);
+                    column.Int64Value = long.Parse(s);
                 }
-                else if (value is long)
+                else if (value is long l)
                 {
-                    column.Int64Value = (long)value;
+                    column.Int64Value = l;
                 }
                 else
                 {
@@ -141,13 +141,13 @@ internal class FactPropertyDescriptor : PropertyDescriptor
 
             case Value.Type.Float:
             {
-                if (value is string)
+                if (value is string s)
                 {
-                    column.FloatValue = float.Parse((string)value);
+                    column.FloatValue = float.Parse(s);
                 }
-                else if (value is float)
+                else if (value is float f)
                 {
-                    column.FloatValue = (float)value;
+                    column.FloatValue = f;
                 }
                 else
                 {

@@ -29,9 +29,9 @@ public abstract class DataNode : Node
             {
                 var ruleNode = reference.NodeRef.Resolve();
                 if (!reference.GoalRef.IsNull &&
-                    ruleNode is RuleNode)
+                    ruleNode is RuleNode node)
                 {
-                    (ruleNode as RuleNode).DerivedGoalRef = new(story, reference.GoalRef.Index);
+                    node.DerivedGoalRef = new(story, reference.GoalRef.Index);
                 }
             }
         }

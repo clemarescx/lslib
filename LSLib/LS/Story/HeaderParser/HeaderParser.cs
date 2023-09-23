@@ -35,17 +35,17 @@ public partial class HeaderParser
     private ASTDeclarations MakeDeclarationList(ASTNode declarations, ASTNode declaration)
     {
         var decls = declarations as ASTDeclarations;
-        if (declaration is ASTOption)
+        if (declaration is ASTOption option)
         {
-            decls.Options.Add((declaration as ASTOption).Name);
+            decls.Options.Add(option.Name);
         }
-        else if (declaration is ASTAlias)
+        else if (declaration is ASTAlias alias)
         {
-            decls.Aliases.Add(declaration as ASTAlias);
+            decls.Aliases.Add(alias);
         }
-        else if (declaration is ASTFunction)
+        else if (declaration is ASTFunction function)
         {
-            decls.Functions.Add(declaration as ASTFunction);
+            decls.Functions.Add(function);
         }
         else
         {
