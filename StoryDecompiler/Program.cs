@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using CommandLineParser.Exceptions;
 using LSLib.LS;
-using System.Linq;
 using System.Collections.Generic;
 
 namespace LSTools.StoryDecompiler
@@ -16,7 +15,7 @@ namespace LSTools.StoryDecompiler
             {
                 Package package = packageReader.Read();
 
-                AbstractFileInfo globalsFile = package.Files.FirstOrDefault(p => p.Name.ToLowerInvariant() == "globals.lsf");
+                AbstractFileInfo globalsFile = package.Files.Find(p => p.Name.ToLowerInvariant() == "globals.lsf");
                 if (globalsFile == null)
                 {
                     throw new Exception("Could not find globals.lsf in savegame archive.");

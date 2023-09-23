@@ -25,7 +25,7 @@ public class SavegameHelpers : IDisposable
 
     public Resource LoadGlobals()
     {
-        AbstractFileInfo globalsInfo = Package.Files.FirstOrDefault(p => p.Name.ToLowerInvariant() == "globals.lsf");
+        AbstractFileInfo globalsInfo = Package.Files.Find(p => p.Name.ToLowerInvariant() == "globals.lsf");
         if (globalsInfo == null)
         {
             throw new InvalidDataException("The specified package is not a valid savegame (globals.lsf not found)");
@@ -54,7 +54,7 @@ public class SavegameHelpers : IDisposable
 
     public Story.Story LoadStory()
     {
-        AbstractFileInfo storyInfo = Package.Files.FirstOrDefault(p => p.Name == "StorySave.bin");
+        AbstractFileInfo storyInfo = Package.Files.Find(p => p.Name == "StorySave.bin");
         if (storyInfo != null)
         {
             Stream rsrcStream = storyInfo.MakeStream();
@@ -110,12 +110,12 @@ public class SavegameHelpers : IDisposable
         var rewrittenPackage = new Package();
         var conversionParams = ResourceConversionParameters.FromGameVersion(game);
 
-        AbstractFileInfo storyBin = Package.Files.FirstOrDefault(p => p.Name == "StorySave.bin");
+        AbstractFileInfo storyBin = Package.Files.Find(p => p.Name == "StorySave.bin");
         if (storyBin == null)
         {
             var globalsStream = ResaveStoryToGlobals(story, conversionParams);
 
-            AbstractFileInfo globalsLsf = Package.Files.FirstOrDefault(p => p.Name.ToLowerInvariant() == "globals.lsf");
+            AbstractFileInfo globalsLsf = Package.Files.Find(p => p.Name.ToLowerInvariant() == "globals.lsf");
             StreamFileInfo globalsRepacked = StreamFileInfo.CreateFromStream(globalsStream, globalsLsf.Name);
             rewrittenPackage.Files.Add(globalsRepacked);
 

@@ -1,5 +1,4 @@
 ﻿using CommandLineParser.Arguments;
-using System;
 
 namespace LSTools.StoryDecompiler
 {

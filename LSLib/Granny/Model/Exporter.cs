@@ -608,7 +608,7 @@ public class Exporter
 
         if (original.Skeleton != null)
         {
-            var skeleton = Root.Skeletons.Where(skel => skel.Name == original.Skeleton.Name).FirstOrDefault();
+            var skeleton = Root.Skeletons.Find(skel => skel.Name == original.Skeleton.Name);
             if (skeleton == null)
             {
                 throw new ExportException($"Model '{original.Name}' references skeleton '{original.Skeleton.Name}' that does not exist in the source file.");
@@ -624,7 +624,7 @@ public class Exporter
             {
                 // Try to bind the original mesh, if it exists in the source file.
                 // If it doesn't, generate a dummy mesh with 0 vertices
-                var mesh = Root.Meshes.Where(m => m.Name == meshBinding.Mesh.Name).FirstOrDefault();
+                var mesh = Root.Meshes.Find(m => m.Name == meshBinding.Mesh.Name);
                 if (mesh == null)
                 {
                     mesh = GenerateDummyMesh(meshBinding);

@@ -115,7 +115,7 @@ namespace LSTools.DebuggerFrontend
             }
             else
             {
-                var frameVar = frame.Variables.FirstOrDefault(v => v.Name == lvar.Name);
+                var frameVar = frame.Variables.Find(v => v.Name == lvar.Name);
                 if (frameVar == null)
                 {
                     throw new RequestFailedException($"Variable does not exist: \"{lvar.Name}\"");

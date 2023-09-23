@@ -210,7 +210,7 @@ public class Skeleton
 
     public Bone GetBoneByName(string name)
     {
-        return Bones.FirstOrDefault(b => b.Name == name);
+        return Bones.Find(b => b.Name == name);
     }
 
     public void TransformRoots(Matrix4 transform)
