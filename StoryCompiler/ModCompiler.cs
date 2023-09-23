@@ -13,8 +13,11 @@ using System.Threading.Tasks;
 
 namespace LSTools.StoryCompiler
 {
-    class ModCompiler : IDisposable
+    partial class ModCompiler : IDisposable
     {
+        [GeneratedRegex("^([a-zA-Z0-9_]+)\\s+([0-9]+)$")]
+        private static partial Regex IgnoreRegexGenerator();
+
         class GoalScript
         {
             public string Name;
@@ -23,7 +26,7 @@ namespace LSTools.StoryCompiler
         }
 
         private Logger Logger;
-        private String GameDataPath;
+        private string GameDataPath;
         private Compiler Compiler = new Compiler();
         private ModResources Mods = new ModResources();
         private List<GoalScript> GoalScripts = new List<GoalScript>();
@@ -37,8 +40,9 @@ namespace LSTools.StoryCompiler
         public bool AllowTypeCoercion = false;
         public bool OsiExtender = false;
         public TargetGame Game = TargetGame.DOS2;
+        private static readonly Regex s_ignoreRegex = IgnoreRegexGenerator();
 
-        public ModCompiler(Logger logger, String gameDataPath)
+        public ModCompiler(Logger logger, string gameDataPath)
         {
             Logger = logger;
             GameDataPath = gameDataPath;
@@ -184,15 +188,24 @@ namespace LSTools.StoryCompiler
             foreach (var gameObject in gameObjects)
             {
                 if (gameObject.Attributes.TryGetValue("MapKey", out NodeAttribute objectGuid)
-                    && gameObject.Attributes.TryGetValue("Name", out NodeAttribute objectName)
-                    && gameObject.Attributes.TryGetValue("Type", out NodeAttribute objectType))
+                 && gameObject.Attributes.TryGetValue("Name", out NodeAttribute objectName)
+                 && gameObject.Attributes.TryGetValue("Type", out NodeAttribute objectType))
                 {
                     LSLib.LS.Story.Compiler.ValueType type = null;
                     switch ((string)objectType.Value)
                     {
-                        case "item": type = Compiler.Context.LookupType("ITEMGUID"); break;
-                        case "character": type = Compiler.Context.LookupType("CHARACTERGUID"); break;
-                        case "trigger": type = Compiler.Context.LookupType("TRIGGERGUID"); break;
+                        case "item":
+                            type = Compiler.Context.LookupType("ITEMGUID");
+                            break;
+
+                        case "character":
+                            type = Compiler.Context.LookupType("CHARACTERGUID");
+                            break;
+
+                        case "trigger":
+                            type = Compiler.Context.LookupType("TRIGGERGUID");
+                            break;
+
                         default:
                             // TODO - log unknown type
                             break;
@@ -205,6 +218,7 @@ namespace LSTools.StoryCompiler
                             Name = objectName.Value + "_" + objectGuid.Value,
                             Type = type
                         };
+
                         Compiler.Context.GameObjects[(string)objectGuid.Value] = gameObjectInfo;
                     }
                 }
@@ -251,6 +265,7 @@ namespace LSTools.StoryCompiler
                             Path = path,
                             ScriptBody = reader.ReadBytes((int)scriptStream.Length)
                         };
+
                         GoalScripts.Add(script);
                     }
                 }
@@ -264,22 +279,19 @@ namespace LSTools.StoryCompiler
         private void LoadOrphanQueryIgnores(ModInfo mod)
         {
             if (mod.OrphanQueryIgnoreList == null) return;
-            
+
             var ignoreStream = mod.OrphanQueryIgnoreList.MakeStream();
             try
             {
                 using (var reader = new StreamReader(ignoreStream))
                 {
-                    var ignoreRe = new Regex("^([a-zA-Z0-9_]+)\\s+([0-9]+)$");
-
                     while (!reader.EndOfStream)
                     {
                         string ignoreLine = reader.ReadLine();
-                        var match = ignoreRe.Match(ignoreLine);
+                        var match = s_ignoreRegex.Match(ignoreLine);
                         if (match.Success)
                         {
-                            var signature = new FunctionNameAndArity(
-                                match.Groups[1].Value, Int32.Parse(match.Groups[2].Value));
+                            var signature = new FunctionNameAndArity(match.Groups[1].Value, int.Parse(match.Groups[2].Value));
                             Compiler.IgnoreUnusedDatabases.Add(signature);
                         }
                     }
@@ -362,6 +374,7 @@ namespace LSTools.StoryCompiler
                     CollectLevels = CheckGameObjects,
                     LoadPackages = LoadPackages
                 };
+
                 visitor.Discover(GameDataPath);
                 Logger.TaskFinished();
 
@@ -373,6 +386,7 @@ namespace LSTools.StoryCompiler
                         Name = "NULL_00000000-0000-0000-0000-000000000000",
                         Type = Compiler.Context.LookupType("GUIDSTRING")
                     };
+
                     Compiler.Context.GameObjects.Add("00000000-0000-0000-0000-000000000000", nullGameObject);
                 }
 
@@ -439,7 +453,7 @@ namespace LSTools.StoryCompiler
                 Logger.TaskFinished();
             }
 
-            var asts = new Dictionary<String, ASTGoal>();
+            var asts = new Dictionary<string, ASTGoal>();
             var goalLoader = new IRGenerator(Compiler.Context);
 
             Logger.TaskStarted("Generating IR");
@@ -448,8 +462,8 @@ namespace LSTools.StoryCompiler
             {
                 Compiler.AddGoal(goal);
             }
-            Logger.TaskFinished();
 
+            Logger.TaskFinished();
 
             bool updated;
             var iter = 1;
@@ -461,8 +475,7 @@ namespace LSTools.StoryCompiler
 
                 if (iter++ > 10)
                 {
-                    Compiler.Context.Log.Error(null, DiagnosticCode.InternalError, 
-                        "Maximal number of rule propagation retries exceeded");
+                    Compiler.Context.Log.Error(null, DiagnosticCode.InternalError, "Maximal number of rule propagation retries exceeded");
                     break;
                 }
             } while (updated);
@@ -498,6 +511,7 @@ namespace LSTools.StoryCompiler
                     var writer = new StoryWriter();
                     writer.Write(file, story, false);
                 }
+
                 Logger.TaskFinished();
 
                 if (debugInfoPath != null)
@@ -508,6 +522,7 @@ namespace LSTools.StoryCompiler
                         var writer = new DebugInfoSaver();
                         writer.Save(file, emitter.DebugInfo);
                     }
+
                     Logger.TaskFinished();
                 }
             }

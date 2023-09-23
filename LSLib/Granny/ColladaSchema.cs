@@ -9849,8 +9849,6 @@ public class ellipsoid
 /// </summary>
 public partial class COLLADA
 {
-    private static Regex regex = new(@"\s+");
-
     public static string ConvertFromArray<T>(IList<T> array)
     {
         if (array == null)
@@ -9892,7 +9890,7 @@ public partial class COLLADA
 
     internal static string[] ConvertStringArray(string arrayStr)
     {
-        string[] elements = regex.Split(arrayStr.Trim());
+        string[] elements = arrayStr.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         string[] ret = new string[elements.Length];
         for (int i = 0; i < ret.Length; i++)
         {
@@ -9904,7 +9902,7 @@ public partial class COLLADA
 
     internal static int[] ConvertIntArray(string arrayStr)
     {
-        string[] elements = regex.Split(arrayStr.Trim());
+        string[] elements = arrayStr.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         int[] ret = new int[elements.Length];
         for (int i = 0; i < ret.Length; i++)
         {
@@ -9916,7 +9914,7 @@ public partial class COLLADA
 
     internal static double[] ConvertDoubleArray(string arrayStr)
     {
-        string[] elements = regex.Split(arrayStr.Trim());
+        string[] elements = arrayStr.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         double[] ret = new double[elements.Length];
         try
         {
@@ -9934,7 +9932,7 @@ public partial class COLLADA
 
     internal static bool[] ConvertBoolArray(string arrayStr)
     {
-        string[] elements = regex.Split(arrayStr.Trim());
+        string[] elements = arrayStr.Split(' ', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         bool[] ret = new bool[elements.Length];
         for (int i = 0; i < ret.Length; i++)
         {
@@ -9943,7 +9941,6 @@ public partial class COLLADA
 
         return ret;
     }
-
 
     public static COLLADA Load(string fileName)
     {

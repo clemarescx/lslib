@@ -11,7 +11,6 @@ namespace LSLib.LS;
 public class LSJResourceConverter : JsonConverter
 {
     private LSMetadata Metadata;
-    private readonly Regex _versionRegex = new(@"^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$");
 
     public override bool CanConvert(Type objectType)
     {
@@ -482,7 +481,7 @@ public class LSJResourceConverter : JsonConverter
 
                 case JsonToken.String or JsonToken.Integer when key == "version":
                 {
-                    var match = _versionRegex.Match(reader.Value.ToString());
+                    var match = Regexes.VersionRegex.Match(reader.Value.ToString());
                     if (match.Success)
                     {
                         resource.Metadata.MajorVersion = Convert.ToUInt32(match.Groups[1].Value);

@@ -138,7 +138,8 @@ namespace Divine.CLI
                 }
                 else
                 {
-                    expression = new Regex("^" + Regex.Escape(args.Expression).Replace(@"\*", ".*").Replace(@"\?", ".") + "$", RegexOptions.Singleline | RegexOptions.Compiled);
+                    var replace = Regex.Escape(args.Expression).Replace(@"\*", ".*").Replace(@"\?", ".");
+                    expression = new Regex($"^{replace}$", RegexOptions.Singleline | RegexOptions.Compiled);
                 }
 
                 filter = obj => obj.Name.Like(expression);

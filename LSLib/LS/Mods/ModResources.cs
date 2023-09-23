@@ -38,16 +38,7 @@ public sealed class ModResources : IDisposable
 
 public class ModPathVisitor
 {
-    private static readonly Regex metaRe = new("^Mods/([^/]+)/meta\\.lsx$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex scriptRe = new("^Mods/([^/]+)/Story/RawFiles/Goals/(.*\\.txt)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex statRe = new("^Public/([^/]+)/Stats/Generated/Data/(.*\\.txt)$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex orphanQueryIgnoresRe = new("^Mods/([^/]+)/Story/story_orphanqueries_ignore_local\\.txt$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex storyDefinitionsRe = new("^Mods/([^/]+)/Story/RawFiles/story_header\\.div$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex typeCoercionWhitelistRe = new("^Mods/([^/]+)/Story/RawFiles/TypeCoercionWhitelist\\.txt$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex globalsRe = new("^Mods/([^/]+)/Globals/.*/.*/.*\\.lsf$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-    private static readonly Regex levelObjectsRe = new("^Mods/([^/]+)/Levels/.*/(Characters|Items|Triggers)/.*\\.lsf$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
     // Pattern for excluding subsequent parts of a multi-part archive
-    public static readonly Regex archivePartRe = new("^(.*)_[0-9]+\\.pak$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     private readonly ModResources Resources;
 
@@ -131,7 +122,7 @@ public class ModPathVisitor
 
         if (file.Name.EndsWith("meta.lsx", StringComparison.Ordinal))
         {
-            var match = metaRe.Match(file.Name);
+            var match = Regexes.MetaRegex.Match(file.Name);
             if (match is { Success: true })
             {
                 AddMetadataToMod(match.Groups[1].Value, file);
@@ -142,7 +133,7 @@ public class ModPathVisitor
         {
             if (file.Name.EndsWith(".txt", StringComparison.Ordinal) && file.Name.Contains("/Story/RawFiles/Goals"))
             {
-                var match = scriptRe.Match(file.Name);
+                var match = Regexes.ScriptRegex.Match(file.Name);
                 if (match is { Success: true })
                 {
                     AddScriptToMod(match.Groups[1].Value, match.Groups[2].Value, file);
@@ -151,7 +142,7 @@ public class ModPathVisitor
 
             if (file.Name.EndsWith("/Story/story_orphanqueries_ignore_local.txt", StringComparison.Ordinal))
             {
-                var match = orphanQueryIgnoresRe.Match(file.Name);
+                var match = Regexes.OrphanQueryIgnoresRegex.Match(file.Name);
                 if (match is { Success: true })
                 {
                     GetMod(match.Groups[1].Value).OrphanQueryIgnoreList = file;
@@ -160,7 +151,7 @@ public class ModPathVisitor
 
             if (file.Name.EndsWith("/Story/RawFiles/story_header.div", StringComparison.Ordinal))
             {
-                var match = storyDefinitionsRe.Match(file.Name);
+                var match = Regexes.StoryDefinitionsRegex.Match(file.Name);
                 if (match is { Success: true })
                 {
                     GetMod(match.Groups[1].Value).StoryHeaderFile = file;
@@ -169,7 +160,7 @@ public class ModPathVisitor
 
             if (file.Name.EndsWith("/Story/RawFiles/TypeCoercionWhitelist.txt", StringComparison.Ordinal))
             {
-                var match = typeCoercionWhitelistRe.Match(file.Name);
+                var match = Regexes.TypeCoercionWhitelistRegex.Match(file.Name);
                 if (match is { Success: true })
                 {
                     GetMod(match.Groups[1].Value).TypeCoercionWhitelistFile = file;
@@ -179,7 +170,7 @@ public class ModPathVisitor
 
         if (CollectStats && file.Name.EndsWith(".txt", StringComparison.Ordinal) && file.Name.Contains("/Stats/Generated/Data"))
         {
-            var match = statRe.Match(file.Name);
+            var match = Regexes.StatRegex.Match(file.Name);
             if (match is { Success: true })
             {
                 AddStatToMod(match.Groups[1].Value, match.Groups[2].Value, file);
@@ -188,7 +179,7 @@ public class ModPathVisitor
 
         if (CollectGlobals && file.Name.EndsWith(".lsf", StringComparison.Ordinal) && file.Name.Contains("/Globals/"))
         {
-            var match = globalsRe.Match(file.Name);
+            var match = Regexes.GlobalsRegex.Match(file.Name);
             if (match is { Success: true })
             {
                 AddGlobalsToMod(match.Groups[1].Value, match.Groups[0].Value, file);
@@ -197,7 +188,7 @@ public class ModPathVisitor
 
         if (CollectLevels && file.Name.EndsWith(".lsf", StringComparison.Ordinal) && file.Name.Contains("/Levels/"))
         {
-            var match = levelObjectsRe.Match(file.Name);
+            var match = Regexes.LevelObjectsRegex.Match(file.Name);
             if (match is { Success: true })
             {
                 AddLevelObjectsToMod(match.Groups[1].Value, match.Groups[0].Value, file);
@@ -250,7 +241,7 @@ public class ModPathVisitor
             var baseName = Path.GetFileName(path);
             if (!_packageBlacklist.Contains(baseName)
                 // Don't load 2nd, 3rd, ... parts of a multi-part archive
-             && !archivePartRe.IsMatch(baseName))
+             && !Regexes.ArchivePartRegex.IsMatch(baseName))
             {
                 var reader = new PackageReader(path, true);
                 var package = reader.Read();
@@ -272,7 +263,7 @@ public class ModPathVisitor
         foreach (var packagePath in Directory.GetFiles(gameDataPath, "*.pak"))
         {
             // Don't load 2nd, 3rd, ... parts of a multi-part archive
-            if (!archivePartRe.IsMatch(packagePath))
+            if (!Regexes.ArchivePartRegex.IsMatch(packagePath))
             {
                 DiscoverPackage(packagePath);
             }

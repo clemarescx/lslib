@@ -25,17 +25,6 @@ public static class Common
     /// Compares the string against a given pattern.
     /// </summary>
     /// <param name="str">The string</param>
-    /// <param name="pattern">The pattern to match, where "*" means any sequence of characters, and "?" means any single character</param>
-    /// <returns><c>true</c> if the string matches the given pattern; otherwise <c>false</c>.</returns>
-    public static bool Like(this string str, string pattern)
-    {
-        return new Regex($"^{Regex.Escape(pattern).Replace(@"\*", ".*").Replace(@"\?", ".")}$", RegexOptions.Singleline).IsMatch(str);
-    }
-
-    /// <summary>
-    /// Compares the string against a given pattern.
-    /// </summary>
-    /// <param name="str">The string</param>
     /// <param name="pattern">The pattern to match as a RegEx object</param>
     /// <returns><c>true</c> if the string matches the given pattern; otherwise <c>false</c>.</returns>
     public static bool Like(this string str, Regex pattern)

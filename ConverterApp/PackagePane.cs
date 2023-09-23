@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
-using Alphaleonis.Win32.Filesystem;
 using LSLib.LS;
 using LSLib.LS.Enums;
 
@@ -79,7 +79,7 @@ namespace ConverterApp
             }
             catch (NotAPackageException)
             {
-                if (ModPathVisitor.archivePartRe.IsMatch(Path.GetFileName(extractPackagePath.Text)))
+                if (Regexes.ArchivePartRegex.IsMatch(Path.GetFileName(extractPackagePath.Text)))
                 {
                     MessageBox.Show($"The specified file is part of a multi-part package; only the first part needs to be extracted.", "Extraction Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
