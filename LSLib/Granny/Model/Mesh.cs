@@ -90,7 +90,7 @@ public class VertexDeduplicator
 
     public void MakeIdentityMapping(List<Vertex> vertices)
     {
-        if (vertices.Count() == 0)
+        if (!vertices.Any())
         {
             return;
         }
@@ -129,7 +129,7 @@ public class VertexDeduplicator
 
     public void Deduplicate(List<Vertex> vertices)
     {
-        if (vertices.Count() == 0)
+        if (!vertices.Any())
         {
             return;
         }

@@ -469,13 +469,10 @@ public class WritableSection : Section
                 if (node != null)
                 {
                     var inferredType = node.GetType();
-                    if (definition.TypeSelector != null)
+                    var variantType = definition.TypeSelector?.SelectType(definition, node);
+                    if (variantType != null)
                     {
-                        var variantType = definition.TypeSelector.SelectType(definition, node);
-                        if (variantType != null)
-                        {
-                            inferredType = variantType;
-                        }
+                        inferredType = variantType;
                     }
 
                     WriteStructReference(GR2.LookupStructDefinition(inferredType, node));
@@ -525,13 +522,10 @@ public class WritableSection : Section
                 if (list is { Count: > 0 })
                 {
                     var inferredType = list[0].GetType();
-                    if (definition.TypeSelector != null)
+                    var variantType = definition.TypeSelector?.SelectType(definition, node);
+                    if (variantType != null)
                     {
-                        var variantType = definition.TypeSelector.SelectType(definition, node);
-                        if (variantType != null)
-                        {
-                            inferredType = variantType;
-                        }
+                        inferredType = variantType;
                     }
 
                     WriteStructReference(GR2.LookupStructDefinition(inferredType, list[0]));

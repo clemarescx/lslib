@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace LSLib.LS;
 
-public class LSXReader : ILSReader
+public sealed class LSXReader : ILSReader
 {
     private Stream stream;
     private XmlReader reader;
@@ -35,71 +35,75 @@ public class LSXReader : ILSReader
         Debug.Assert(fs.Handle != null);
 
         var arguments = Convert.ToInt32(reader["arguments"]);
-        fs.Arguments = new(arguments);
-        if (arguments > 0)
+        fs.Arguments = new List<TranslatedFSStringArgument>(arguments);
+        if (arguments <= 0)
         {
+            return;
+        }
+
+        while (reader.Read() && reader.NodeType != XmlNodeType.Element)
+        {
+            ;
+        }
+
+        if (reader.Name != "arguments")
+        {
+            throw new InvalidFormatException($"Expected <arguments>: {reader.Name}");
+        }
+
+        int processedArgs = 0;
+        while (processedArgs < arguments && reader.Read())
+        {
+            if (reader.NodeType != XmlNodeType.Element)
+            {
+                continue;
+            }
+
+            if (reader.Name != "argument")
+            {
+                throw new InvalidFormatException($"Expected <argument>: {reader.Name}");
+            }
+
+            var arg = new TranslatedFSStringArgument
+            {
+                Key = reader["key"],
+                Value = reader["value"]
+            };
+
             while (reader.Read() && reader.NodeType != XmlNodeType.Element)
             {
                 ;
             }
 
-            if (reader.Name != "arguments")
+            if (reader.Name != "string")
             {
-                throw new InvalidFormatException($"Expected <arguments>: {reader.Name}");
+                throw new InvalidFormatException($"Expected <string>: {reader.Name}");
             }
 
-            int processedArgs = 0;
-            while (processedArgs < arguments && reader.Read())
-            {
-                if (reader.NodeType == XmlNodeType.Element)
-                {
-                    if (reader.Name != "argument")
-                    {
-                        throw new InvalidFormatException($"Expected <argument>: {reader.Name}");
-                    }
+            arg.String = new TranslatedFSString();
+            ReadTranslatedFSString(arg.String);
 
-                    var arg = new TranslatedFSStringArgument
-                    {
-                        Key = reader["key"],
-                        Value = reader["value"]
-                    };
-
-                    while (reader.Read() && reader.NodeType != XmlNodeType.Element)
-                    {
-                        ;
-                    }
-
-                    if (reader.Name != "string")
-                    {
-                        throw new InvalidFormatException($"Expected <string>: {reader.Name}");
-                    }
-
-                    arg.String = new();
-                    ReadTranslatedFSString(arg.String);
-
-                    fs.Arguments.Add(arg);
-                    processedArgs++;
-
-                    while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
-                    {
-                        ;
-                    }
-                }
-            }
+            fs.Arguments.Add(arg);
+            processedArgs++;
 
             while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
             {
                 ;
             }
-
-            // Close outer element
-            while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
-            {
-                ;
-            }
-
-            Debug.Assert(processedArgs == arguments);
         }
+
+        while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+        {
+            ;
+        }
+
+        // Close outer element
+        while (reader.Read() && reader.NodeType != XmlNodeType.EndElement)
+        {
+            ;
+        }
+
+        Debug.Assert(processedArgs == arguments);
     }
 
     private void ReadElement()
@@ -108,7 +112,7 @@ public class LSXReader : ILSReader
         {
             case "save":
                 // Root element
-                if (stack.Count() > 0)
+                if (stack.Any())
                 {
                     throw new InvalidFormatException("Node <save> was unexpected.");
                 }
@@ -126,7 +130,10 @@ public class LSXReader : ILSReader
                 resource.Metadata.MinorVersion = Convert.ToUInt32(reader["minor"]);
                 resource.Metadata.Revision = Convert.ToUInt32(reader["revision"]);
                 resource.Metadata.BuildNumber = Convert.ToUInt32(reader["build"]);
-                Version = resource.Metadata.MajorVersion >= 4 ? LSXVersion.V4 : LSXVersion.V3;
+                Version = resource.Metadata.MajorVersion >= 4
+                    ? LSXVersion.V4
+                    : LSXVersion.V3;
+
                 break;
 
             case "region":
@@ -153,7 +160,7 @@ public class LSXReader : ILSReader
                 }
 
                 Node node;
-                if (stack.Count() == 0)
+                if (!stack.Any())
                 {
                     // The node is the root node of the region
                     node = currentRegion;
@@ -161,7 +168,7 @@ public class LSXReader : ILSReader
                 else
                 {
                     // New node under the current parent
-                    node = new()
+                    node = new Node
                     {
                         Parent = stack[^1]
                     };
@@ -169,10 +176,7 @@ public class LSXReader : ILSReader
 
                 node.Name = reader["id"];
                 Debug.Assert(node.Name != null);
-                if (node.Parent != null)
-                {
-                    node.Parent.AppendChild(node);
-                }
+                node.Parent?.AppendChild(node);
 
                 if (!reader.IsEmptyElement)
                 {
@@ -210,26 +214,30 @@ public class LSXReader : ILSReader
                     attr.FromString(attrValue);
                 }
 
-                if (attr.Type == NodeAttribute.DataType.DT_TranslatedString)
+                switch (attr.Type)
                 {
-                    if (attr.Value == null)
+                    case NodeAttribute.DataType.DT_TranslatedString:
                     {
-                        attr.Value = new TranslatedString();
+                        attr.Value ??= new TranslatedString();
+
+                        var ts = (TranslatedString)attr.Value;
+                        ts.Handle = reader["handle"];
+                        Debug.Assert(ts.Handle != null);
+
+                        if (attrValue == null)
+                        {
+                            ts.Version = ushort.Parse(reader["version"]);
+                        }
+
+                        break;
                     }
 
-                    var ts = (TranslatedString)attr.Value;
-                    ts.Handle = reader["handle"];
-                    Debug.Assert(ts.Handle != null);
-
-                    if (attrValue == null)
+                    case NodeAttribute.DataType.DT_TranslatedFSString:
                     {
-                        ts.Version = ushort.Parse(reader["version"]);
+                        var fs = (TranslatedFSString)attr.Value;
+                        ReadTranslatedFSString(fs);
+                        break;
                     }
-                }
-                else if (attr.Type == NodeAttribute.DataType.DT_TranslatedFSString)
-                {
-                    var fs = (TranslatedFSString)attr.Value;
-                    ReadTranslatedFSString(fs);
                 }
 
                 stack[^1].Attributes.Add(attrName, attr);
@@ -280,16 +288,19 @@ public class LSXReader : ILSReader
             {
                 while (reader.Read())
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
+                    switch (reader.NodeType)
                     {
-                        ReadElement();
-                    }
-                    else if (reader.NodeType == XmlNodeType.EndElement)
-                    {
-                        ReadEndElement();
+                        case XmlNodeType.Element:
+                            ReadElement();
+                            break;
+
+                        case XmlNodeType.EndElement:
+                            ReadEndElement();
+                            break;
                     }
                 }
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 lastLine = ((IXmlLineInfo)reader).LineNumber;
                 lastColumn = ((IXmlLineInfo)reader).LinePosition;
@@ -300,9 +311,9 @@ public class LSXReader : ILSReader
 
     public Resource Read()
     {
-        resource = new();
+        resource = new Resource();
         currentRegion = null;
-        stack = new();
+        stack = new List<Node>();
         lastLine = lastColumn = 0;
         var resultResource = resource;
 
@@ -314,7 +325,7 @@ public class LSXReader : ILSReader
         {
             if (lastLine > 0)
             {
-                throw new($"Parsing error at or near line {lastLine}, column {lastColumn}:{Environment.NewLine}{e.Message}", e);
+                throw new Exception($"Parsing error at or near line {lastLine}, column {lastColumn}:{Environment.NewLine}{e.Message}", e);
             }
             else
             {

@@ -42,10 +42,7 @@ public class GR2Reader
 
     public void Dispose()
     {
-        if (Stream != null)
-        {
-            Stream.Dispose();
-        }
+        Stream?.Dispose();
     }
 
     public void Read(object root)

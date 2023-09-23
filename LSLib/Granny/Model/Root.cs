@@ -74,10 +74,7 @@ public class Root
             TransformSkeletons(transform);
         }
 
-        if (ArtToolInfo != null)
-        {
-            ArtToolInfo.SetYUp();
-        }
+        ArtToolInfo?.SetYUp();
 
         ZUp = false;
     }
@@ -128,10 +125,7 @@ public class Root
             triTopology.PostLoad();
         }
 
-        if (Meshes != null)
-        {
-            Meshes.ForEach(m => m.PostLoad());
-        }
+        Meshes?.ForEach(m => m.PostLoad());
 
         var modelIndex = 0;
         foreach (var model in Models ?? Enumerable.Empty<Model>())

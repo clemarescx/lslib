@@ -835,14 +835,7 @@ public class Compiler
             }
 
             var ruleVar = rule.Variables[irVar.Index];
-            if (ruleVar.Type != null)
-            {
-                return ruleVar.Type;
-            }
-            else
-            {
-                return null;
-            }
+            return ruleVar.Type;
         }
         else
         {
