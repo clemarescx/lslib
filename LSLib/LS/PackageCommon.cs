@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using LSLib.LS.Enums;
-using LSLib.Native;
 
 namespace LSLib.LS;
 
@@ -289,7 +288,8 @@ public sealed class PackagedFileInfo : AbstractFileInfo, IDisposable
 
         if (Crc != 0)
         {
-            var computedCrc = Crc32.Compute(compressed, 0);
+            var hash = System.IO.Hashing.Crc32.Hash(compressed);
+            var computedCrc = Crc = BitConverter.ToUInt32(hash);
             if (computedCrc != Crc)
             {
                 var msg = $"CRC check failed on file '{Name}', archive is possibly corrupted. Expected {Crc,8:X}, got {computedCrc,8:X}";

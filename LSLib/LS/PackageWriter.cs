@@ -6,7 +6,6 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using LSLib.LS.Enums;
-using LSLib.Native;
 using LZ4;
 
 namespace LSLib.LS;
@@ -84,7 +83,8 @@ public sealed class PackageWriter : IDisposable
         }
 
         packaged.SizeOnDisk = (ulong)(stream.Position - (long)packaged.OffsetInFile);
-        packaged.Crc = Crc32.Compute(compressed, 0);
+        var hash = System.IO.Hashing.Crc32.Hash(compressed);
+        packaged.Crc = BitConverter.ToUInt32(hash);
 
         if ((_package.Metadata.Flags & PackageFlags.Solid) != 0)
         {
@@ -463,46 +463,46 @@ public sealed class PackageWriter : IDisposable
         switch (Version)
         {
             case PackageVersion.V18:
-            {
-                WriteV18(mainStream);
-                break;
-            }
+                {
+                    WriteV18(mainStream);
+                    break;
+                }
 
             case PackageVersion.V16:
-            {
-                WriteV16(mainStream);
-                break;
-            }
+                {
+                    WriteV16(mainStream);
+                    break;
+                }
 
             case PackageVersion.V15:
-            {
-                WriteV15(mainStream);
-                break;
-            }
+                {
+                    WriteV15(mainStream);
+                    break;
+                }
 
             case PackageVersion.V13:
-            {
-                WriteV13(mainStream);
-                break;
-            }
+                {
+                    WriteV13(mainStream);
+                    break;
+                }
 
             case PackageVersion.V10:
-            {
-                WriteV10(mainStream);
-                break;
-            }
+                {
+                    WriteV10(mainStream);
+                    break;
+                }
 
             case PackageVersion.V9:
             case PackageVersion.V7:
-            {
-                WriteV7(mainStream);
-                break;
-            }
+                {
+                    WriteV7(mainStream);
+                    break;
+                }
 
             default:
-            {
-                throw new ArgumentException($"Cannot write version {Version} packages");
-            }
+                {
+                    throw new ArgumentException($"Cannot write version {Version} packages");
+                }
         }
     }
 }
