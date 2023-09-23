@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 
 namespace LSLib.LS.Stats;
@@ -12,15 +13,15 @@ public class StatEnumeration
     public StatEnumeration(string name)
     {
         Name = name;
-        Values = new();
-        ValueToIndexMap = new();
+        Values = new List<string>();
+        ValueToIndexMap = new Dictionary<string, int>();
     }
 
     public void AddItem(int index, string value)
     {
         if (Values.Count != index)
         {
-            throw new("Enumeration items must be added in order.");
+            throw new Exception("Enumeration items must be added in order.");
         }
 
         Values.Add(value);
@@ -39,12 +40,7 @@ public class StatField
 
     public IStatValueParser GetParser(StatValueParserFactory factory, StatDefinitionRepository definitions)
     {
-        if (parser == null)
-        {
-            parser = factory.CreateParser(this, definitions);
-        }
-
-        return parser;
+        return parser ??= factory.CreateParser(this, definitions);
     }
 }
 
@@ -59,8 +55,8 @@ public class StatSubtypeDefinition
     {
         Type = type;
         Name = name;
-        Fields = new();
-        SubObjects = new();
+        Fields = new Dictionary<string, StatField>();
+        SubObjects = new Dictionary<string, StatSubtypeDefinition>();
     }
 }
 
@@ -78,7 +74,7 @@ public class StatTypeDefinition
     {
         Name = name;
         SubtypeProperty = subtypeProperty;
-        Subtypes = new();
+        Subtypes = new Dictionary<string, StatSubtypeDefinition>();
     }
 }
 
@@ -117,7 +113,7 @@ public class StatDefinitionRepository
                 }
                 else if (definition.NameProperty != fieldName)
                 {
-                    throw new(
+                    throw new Exception(
                         $"Conflicting Name property for type '{definition.Name}': First seen using '{definition.NameProperty}', now seen using '{fieldName}'.");
                 }
 
@@ -130,7 +126,7 @@ public class StatDefinitionRepository
                 }
                 else if (definition.BaseClassProperty != fieldName)
                 {
-                    throw new(
+                    throw new Exception(
                         $"Conflicting BaseClass for type '{definition.Name}': First seen using '{definition.BaseClassProperty}', now seen using '{fieldName}'.");
                 }
 
@@ -138,11 +134,11 @@ public class StatDefinitionRepository
 
             case "StatReference":
             case "StatReferences":
-                referenceConstraints = new();
+                referenceConstraints = new List<StatReferenceConstraint>();
                 var descriptions = field.Element("stat_descriptions");
                 if (descriptions == null)
                 {
-                    throw new("Field of type 'StatReference' must have a list of stat types in the <stat_descriptions> node");
+                    throw new Exception("Field of type 'StatReference' must have a list of stat types in the <stat_descriptions> node");
                 }
 
                 var descs = descriptions.Elements("description");
@@ -175,7 +171,7 @@ public class StatDefinitionRepository
                 break;
 
             default:
-                throw new($"Unsupported stat field type: '{typeName}'");
+                throw new Exception($"Unsupported stat field type: '{typeName}'");
         }
 
         var statField = new StatField
@@ -221,7 +217,7 @@ public class StatDefinitionRepository
         if (!Definitions.TryGetValue(parentName, out StatTypeDefinition definition))
         {
             var subtypeProperty = defn.Attribute("subtype_property")?.Value ?? null;
-            definition = new(parentName, subtypeProperty);
+            definition = new StatTypeDefinition(parentName, subtypeProperty);
             Definitions.Add(parentName, definition);
         }
 
@@ -234,7 +230,7 @@ public class StatDefinitionRepository
         var name = enumEle.Attribute("name").Value;
         if (Enumerations.ContainsKey(name))
         {
-            throw new($"Enumeration '{name}' defined multiple times!");
+            throw new Exception($"Enumeration '{name}' defined multiple times!");
         }
 
         var enumType = new StatEnumeration(name);
@@ -268,11 +264,11 @@ public class StatDefinitionRepository
         var customizationVer = root.Attribute("lslib_customizations")?.Value;
         if (customizationVer == null)
         {
-            throw new("Can only load StatObjectDefinitions.sod with LSLib-specific modifications");
+            throw new Exception("Can only load StatObjectDefinitions.sod with LSLib-specific modifications");
         }
         else if (customizationVer != CustomizationsVersion)
         {
-            throw new($"Needs StatObjectDefinitions.sod with customization version '{CustomizationsVersion}'; got version '{customizationVer}'");
+            throw new Exception($"Needs StatObjectDefinitions.sod with customization version '{CustomizationsVersion}'; got version '{customizationVer}'");
         }
 
         var defnRoot = root.Element("stat_object_definitions");
@@ -290,11 +286,11 @@ public class StatDefinitionRepository
         var customizationVer = root.Attribute("lslib_customizations")?.Value;
         if (customizationVer == null)
         {
-            throw new("Can only load Enumerations.xml with LSLib-specific modifications");
+            throw new Exception("Can only load Enumerations.xml with LSLib-specific modifications");
         }
         else if (customizationVer != CustomizationsVersion)
         {
-            throw new($"Needs Enumerations.xml with customization version '{CustomizationsVersion}'; got version '{customizationVer}'");
+            throw new Exception($"Needs Enumerations.xml with customization version '{CustomizationsVersion}'; got version '{customizationVer}'");
         }
 
         var defnRoot = root.Element("enumerations");
