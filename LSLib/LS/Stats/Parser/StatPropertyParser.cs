@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using QUT.Gppg;
 
 namespace LSLib.LS.Stats.Properties;
 

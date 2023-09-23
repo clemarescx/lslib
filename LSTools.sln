@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30330.147
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSLib", "LSLib\LSLib.csproj", "{46372C50-4288-4B8E-AF21-C934560600E0}"
 EndProject
@@ -32,6 +31,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnpackGrid", "UnpackGrid\UnpackGrid.csproj", "{1948A6AF-41EE-4711-B617-B5CBA8434013}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TerrainFixup", "TerrainFixup\TerrainFixup.csproj", "{C3B44D0D-D7D8-4080-859B-90B391F8D5B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsirisParser", "OsirisParser\OsirisParser.csproj", "{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -184,6 +185,18 @@ Global
 		{C3B44D0D-D7D8-4080-859B-90B391F8D5B1}.RelWithDebInfo|Any CPU.Build.0 = Release|Any CPU
 		{C3B44D0D-D7D8-4080-859B-90B391F8D5B1}.RelWithDebInfo|x64.ActiveCfg = Release|Any CPU
 		{C3B44D0D-D7D8-4080-859B-90B391F8D5B1}.RelWithDebInfo|x64.Build.0 = Release|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.Debug|x64.Build.0 = Debug|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.Release|x64.ActiveCfg = Release|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.Release|x64.Build.0 = Release|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.RelWithDebInfo|Any CPU.ActiveCfg = Release|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.RelWithDebInfo|Any CPU.Build.0 = Release|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.RelWithDebInfo|x64.ActiveCfg = Release|Any CPU
+		{A094E3CD-DAFF-4B5D-8E6F-913E640FACAE}.RelWithDebInfo|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,7 @@
 ﻿using LSLib.LS.Story.GoalParser;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using QUT.Gppg;
 
 namespace LSLib.LS.Stats.StatParser;
 

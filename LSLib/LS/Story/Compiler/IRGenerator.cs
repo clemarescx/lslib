@@ -1,6 +1,7 @@
 ﻿using LSLib.LS.Story.GoalParser;
 using System;
 using System.IO;
+using OsirisParser.Goal;
 
 namespace LSLib.LS.Story.Compiler;
 
@@ -279,7 +280,7 @@ public class IRGenerator
     {
         var scanner = new GoalScanner(path);
         scanner.SetSource(stream);
-        var parser = new GoalParser.GoalParser(scanner);
+        var parser = new OsirisParser.Goal.GoalParser(scanner);
         bool parsed = parser.Parse();
 
         if (parsed)

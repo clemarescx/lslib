@@ -23,23 +23,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QUT.ShiftReduceParser">
-      <HintPath>..\external\gppg\binaries\QUT.ShiftReduceParser.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="LS\Stats\Parser\Stat.lex.cs" />
-    <Compile Include="LS\Stats\Parser\Stat.yy.cs" />
-    <Compile Include="LS\Stats\Parser\StatProperty.lex.cs" />
-    <Compile Include="LS\Stats\Parser\StatProperty.yy.cs" />
-    <Compile Include="LS\Story\GoalParser\Goal.lex.cs" />
-    <Compile Include="LS\Story\GoalParser\Goal.yy.cs" />
-    <Compile Include="LS\Story\HeaderParser\StoryHeader.lex.cs" />
-    <Compile Include="LS\Story\HeaderParser\StoryHeader.yy.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\LSLibNative\LSLibNative.vcxproj" />
     <ProjectReference Include="..\OpenTK\OpenTK.csproj" />
+    <ProjectReference Include="..\OsirisParser\OsirisParser.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
@@ -52,18 +38,6 @@
   </ItemGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(ProjectDir)\LS\Story\GoalParser\Goal.lex.cs" "$(ProjectDir)\LS\Story\GoalParser\Goal.lex"
-"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(ProjectDir)\LS\Story\GoalParser\Goal.yy.cs" "$(ProjectDir)\LS\Story\GoalParser\Goal.yy"
-
-"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(ProjectDir)\LS\Story\HeaderParser\StoryHeader.lex.cs" "$(ProjectDir)\LS\Story\HeaderParser\StoryHeader.lex"
-"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(ProjectDir)\LS\Story\HeaderParser\StoryHeader.yy.cs" "$(ProjectDir)\LS\Story\HeaderParser\StoryHeader.yy"
-
-"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(ProjectDir)\LS\Stats\Parser\Stat.lex.cs" "$(ProjectDir)\LS\Stats\Parser\Stat.lex"
-"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(ProjectDir)\LS\Stats\Parser\Stat.yy.cs" "$(ProjectDir)\LS\Stats\Parser\Stat.yy"
-
-"$(SolutionDir)\external\gppg\binaries\GpLex" /out:"$(ProjectDir)\LS\Stats\Parser\StatProperty.lex.cs" "$(ProjectDir)\LS\Stats\Parser\StatProperty.lex"
-"$(SolutionDir)\external\gppg\binaries\Gppg" /out:"$(ProjectDir)\LS\Stats\Parser\StatProperty.yy.cs" "$(ProjectDir)\LS\Stats\Parser\StatProperty.yy"
-</PreBuildEvent>
     <AssemblyTitle>LSLib</AssemblyTitle>
     <Product>LSLib</Product>
     <Copyright>Copyright © Norbyte 2012-2023</Copyright>
