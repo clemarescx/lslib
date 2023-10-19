@@ -35,7 +35,7 @@ public enum LSFVersion
     /// <summary>
     ///     Latest input version supported by this library
     /// </summary>
-    MaxReadVersion = 0x06,
+    MaxReadVersion = 0x07,
 
     /// <summary>
     ///     Latest output version supported by this library
