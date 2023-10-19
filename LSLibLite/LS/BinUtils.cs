@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using K4os.Compression.LZ4;
+using K4os.Compression.LZ4.Streams;
 using LSLibLite.LS.Enums;
 using CompressionLevel = LSLibLite.LS.Enums.CompressionLevel;
 
@@ -102,54 +103,54 @@ public static class BinUtils
             case NodeAttribute.DataType.DT_IVec2:
             case NodeAttribute.DataType.DT_IVec3:
             case NodeAttribute.DataType.DT_IVec4:
-            {
-                var columns = attr.GetColumns();
-                var vec = new int[columns];
-                for (var i = 0; i < columns; i++)
                 {
-                    vec[i] = reader.ReadInt32();
-                }
+                    var columns = attr.GetColumns();
+                    var vec = new int[columns];
+                    for (var i = 0; i < columns; i++)
+                    {
+                        vec[i] = reader.ReadInt32();
+                    }
 
-                attr.Value = vec;
-                break;
-            }
+                    attr.Value = vec;
+                    break;
+                }
 
             case NodeAttribute.DataType.DT_Vec2:
             case NodeAttribute.DataType.DT_Vec3:
             case NodeAttribute.DataType.DT_Vec4:
-            {
-                var columns = attr.GetColumns();
-                var vec = new float[columns];
-                for (var i = 0; i < columns; i++)
                 {
-                    vec[i] = reader.ReadSingle();
-                }
+                    var columns = attr.GetColumns();
+                    var vec = new float[columns];
+                    for (var i = 0; i < columns; i++)
+                    {
+                        vec[i] = reader.ReadSingle();
+                    }
 
-                attr.Value = vec;
-                break;
-            }
+                    attr.Value = vec;
+                    break;
+                }
 
             case NodeAttribute.DataType.DT_Mat2:
             case NodeAttribute.DataType.DT_Mat3:
             case NodeAttribute.DataType.DT_Mat3x4:
             case NodeAttribute.DataType.DT_Mat4x3:
             case NodeAttribute.DataType.DT_Mat4:
-            {
-                var columns = attr.GetColumns();
-                var rows = attr.GetRows();
-                var mat = new Matrix(rows, columns);
-                attr.Value = mat;
-
-                for (var col = 0; col < columns; col++)
                 {
-                    for (var row = 0; row < rows; row++)
-                    {
-                        mat[row, col] = reader.ReadSingle();
-                    }
-                }
+                    var columns = attr.GetColumns();
+                    var rows = attr.GetRows();
+                    var mat = new Matrix(rows, columns);
+                    attr.Value = mat;
 
-                break;
-            }
+                    for (var col = 0; col < columns; col++)
+                    {
+                        for (var row = 0; row < rows; row++)
+                        {
+                            mat[row, col] = reader.ReadSingle();
+                        }
+                    }
+
+                    break;
+                }
 
             case NodeAttribute.DataType.DT_Bool:
                 attr.Value = reader.ReadByte() != 0;
@@ -187,7 +188,7 @@ public static class BinUtils
         {
             throw new Exception("NodeAttribute.Value is null");
         }
-        
+
         switch (attr.Type)
         {
             case NodeAttribute.DataType.DT_None:
@@ -246,18 +247,18 @@ public static class BinUtils
             case NodeAttribute.DataType.DT_Mat3x4:
             case NodeAttribute.DataType.DT_Mat4x3:
             case NodeAttribute.DataType.DT_Mat4:
-            {
-                var mat = (Matrix)attrValue;
-                for (var col = 0; col < mat.cols; col++)
                 {
-                    for (var row = 0; row < mat.rows; row++)
+                    var mat = (Matrix)attrValue;
+                    for (var col = 0; col < mat.cols; col++)
                     {
-                        writer.Write((float)mat[row, col]);
+                        for (var row = 0; row < mat.rows; row++)
+                        {
+                            writer.Write((float)mat[row, col]);
+                        }
                     }
-                }
 
-                break;
-            }
+                    break;
+                }
 
             case NodeAttribute.DataType.DT_Bool:
                 writer.Write(
@@ -295,8 +296,8 @@ public static class BinUtils
         {
             (int)CompressionMethod.None => CompressionMethod.None,
             (int)CompressionMethod.Zlib => CompressionMethod.Zlib,
-            (int)CompressionMethod.LZ4  => CompressionMethod.LZ4,
-            _                           => throw new ArgumentException("Invalid compression method")
+            (int)CompressionMethod.LZ4 => CompressionMethod.LZ4,
+            _ => throw new ArgumentException("Invalid compression method")
         };
     }
 
@@ -304,10 +305,10 @@ public static class BinUtils
     {
         return (flags & 0xf0) switch
         {
-            (int)CompressionFlags.FastCompress        => CompressionLevel.FastCompression,
-            (int)CompressionFlags.DefaultCompress     => CompressionLevel.DefaultCompression,
+            (int)CompressionFlags.FastCompress => CompressionLevel.FastCompression,
+            (int)CompressionFlags.DefaultCompress => CompressionLevel.DefaultCompression,
             (int)CompressionFlags.MaxCompressionLevel => CompressionLevel.MaxCompression,
-            _                                         => throw new ArgumentException("Invalid compression flags")
+            _ => throw new ArgumentException("Invalid compression flags")
         };
     }
 
@@ -321,16 +322,16 @@ public static class BinUtils
         byte flags = method switch
         {
             CompressionMethod.Zlib => 0x1,
-            CompressionMethod.LZ4  => 0x2,
-            _                      => 0
+            CompressionMethod.LZ4 => 0x2,
+            _ => 0
         };
 
         flags |= level switch
         {
-            CompressionLevel.FastCompression    => 0x10,
+            CompressionLevel.FastCompression => 0x10,
             CompressionLevel.DefaultCompression => 0x20,
-            CompressionLevel.MaxCompression     => 0x40,
-            _                                   => 0
+            CompressionLevel.MaxCompression => 0x40,
+            _ => 0
         };
 
         return flags;
@@ -348,26 +349,28 @@ public static class BinUtils
                 return compressed;
 
             case CompressionMethod.Zlib:
-            {
-                using var compressedStream = new MemoryStream(compressed);
-                using var decompressedStream = new MemoryStream();
-                using var stream = new ZLibStream(compressedStream, CompressionMode.Decompress);
-                var buf = new byte[0x10000];
-                int length;
-                while ((length = stream.Read(buf, 0, buf.Length)) > 0)
                 {
-                    decompressedStream.Write(buf, 0, length);
-                }
+                    using var compressedStream = new MemoryStream(compressed);
+                    using var decompressedStream = new MemoryStream();
+                    using var stream = new ZLibStream(compressedStream, CompressionMode.Decompress);
+                    var buf = new byte[0x10000];
+                    int length;
+                    while ((length = stream.Read(buf, 0, buf.Length)) > 0)
+                    {
+                        decompressedStream.Write(buf, 0, length);
+                    }
 
-                return decompressedStream.ToArray();
-            }
+                    return decompressedStream.ToArray();
+                }
 
             case CompressionMethod.LZ4:
                 if (chunked)
                 {
-                    Span<byte> decompressed = new();
-                    LZ4Codec.Decode(compressed, decompressed);
-                    return decompressed.ToArray();
+                    using var compressedStream = new MemoryStream(compressed);
+                    using var source = LZ4Stream.Decode(compressedStream);
+                    using var memoryStream = new MemoryStream();
+                    source.CopyTo(memoryStream);
+                    return memoryStream.ToArray();
                 }
                 else
                 {
@@ -377,10 +380,10 @@ public static class BinUtils
                 }
 
             default:
-            {
-                var msg = $"No decoder found for this format: {compressionFlags}";
-                throw new InvalidDataException(msg);
-            }
+                {
+                    var msg = $"No decoder found for this format: {compressionFlags}";
+                    throw new InvalidDataException(msg);
+                }
         }
     }
 
@@ -399,8 +402,8 @@ public static class BinUtils
         {
             CompressionMethod.None => uncompressed,
             CompressionMethod.Zlib => CompressZlib(uncompressed, compressionLevel),
-            CompressionMethod.LZ4  => CompressLZ4(uncompressed, compressionLevel, chunked),
-            _                      => throw new ArgumentException("Invalid compression method specified")
+            CompressionMethod.LZ4 => CompressLZ4(uncompressed, compressionLevel, chunked),
+            _ => throw new ArgumentException("Invalid compression method specified")
         };
     }
 
@@ -408,10 +411,10 @@ public static class BinUtils
     {
         var level = compressionLevel switch
         {
-            CompressionLevel.FastCompression    => System.IO.Compression.CompressionLevel.Fastest,
+            CompressionLevel.FastCompression => System.IO.Compression.CompressionLevel.Fastest,
             CompressionLevel.DefaultCompression => System.IO.Compression.CompressionLevel.Optimal,
-            CompressionLevel.MaxCompression     => System.IO.Compression.CompressionLevel.SmallestSize,
-            _                                   => System.IO.Compression.CompressionLevel.Optimal
+            CompressionLevel.MaxCompression => System.IO.Compression.CompressionLevel.SmallestSize,
+            _ => System.IO.Compression.CompressionLevel.Optimal
         };
 
         using var outputStream = new MemoryStream();
